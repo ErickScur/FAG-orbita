@@ -1,0 +1,234 @@
+{
+  "palettes": {
+    "core": {
+      "base": "#1B2B34",
+      "secondary": "#2F4F5A",
+      "accent": "#5FD4C8",
+      "danger": "#E0B43C",
+      "light": "#D7E3E8",
+      "outline": "#0B1216"
+    },
+    "greenhouse": {
+      "base": "#1E2A1C",
+      "secondary": "#3F6B3A",
+      "accent": "#E58FB4",
+      "danger": "#B7D35A",
+      "light": "#D7E8CF",
+      "outline": "#0A120A"
+    },
+    "ui": {
+      "base": "#0B0F14",
+      "secondary": "#2F4F5A",
+      "accent": "#5FD4C8",
+      "danger": "#D9534F",
+      "light": "#D7E3E8",
+      "outline": "#05080C"
+    },
+    "space": {
+      "base": "#05080C",
+      "secondary": "#1A2A3A",
+      "accent": "#5FD4C8",
+      "danger": "#E0B43C",
+      "light": "#D7E3E8",
+      "outline": "#10161C"
+    }
+  },
+  "images": [
+    {
+      "id": "SPR-MU7",
+      "path": "sprites/mu7/mu7_sheet.png",
+      "frame": [32, 32],
+      "grid": [6, 10],
+      "frames": [4, 6, 2, 2, 2, 2, 4, 4, 4, 3],
+      "shape": "robot",
+      "palette": "core",
+      "body": "#5B6F82",
+      "seed": 101
+    },
+    {
+      "id": "SPR-SR3",
+      "path": "sprites/enemies/sr3_sheet.png",
+      "frame": [32, 16],
+      "grid": [4, 3],
+      "frames": [4, 3, 1],
+      "shape": "spider",
+      "palette": "core",
+      "body": "#D9822B",
+      "seed": 102
+    },
+    {
+      "id": "SPR-SPORE",
+      "path": "sprites/fx/spore.png",
+      "frame": [8, 8],
+      "grid": [4, 1],
+      "shape": "spore",
+      "palette": "greenhouse",
+      "body": "#B7D35A",
+      "seed": 103
+    },
+    {
+      "id": "SPR-TERMINAL",
+      "path": "sprites/world/terminal_sheet.png",
+      "frame": [32, 32],
+      "grid": [5, 1],
+      "shape": "box_screen",
+      "palette": "core",
+      "body": "#4A5561",
+      "seed": 104
+    },
+    {
+      "id": "SPR-DOCK",
+      "path": "sprites/world/dock_sheet.png",
+      "frame": [32, 48],
+      "grid": [5, 1],
+      "shape": "dock_frame",
+      "palette": "core",
+      "body": "#3A4652",
+      "seed": 105
+    },
+    {
+      "id": "SPR-DOOR",
+      "path": "sprites/world/door_sheet.png",
+      "frame": [16, 48],
+      "grid": [7, 1],
+      "shape": "bar_stripe",
+      "palette": "core",
+      "body": "#6B737B",
+      "seed": 106
+    },
+    {
+      "id": "SPR-PICKUPS",
+      "path": "sprites/pickups/pickups_sheet.png",
+      "frame": [16, 16],
+      "grid": [4, 5],
+      "shape": "diamond_rows",
+      "palette": "ui",
+      "rows": ["#4FA3FF", "#E0525A", "#5FE38A", "#E8C15A", "#A36BE0"],
+      "seed": 107
+    },
+    {
+      "id": "SPR-PLATFORM",
+      "path": "sprites/world/moving_platform.png",
+      "frame": [48, 8],
+      "grid": [1, 1],
+      "shape": "rect_border",
+      "palette": "core",
+      "body": "#6B737B",
+      "seed": 108
+    },
+    {
+      "id": "SPR-PLANT",
+      "path": "sprites/world/grow_plant_sheet.png",
+      "frame": [32, 64],
+      "grid": [6, 1],
+      "shape": "grow",
+      "palette": "greenhouse",
+      "body": "#4F8A3C",
+      "seed": 109
+    },
+    {
+      "id": "SPR-PROPS",
+      "path": "sprites/props/props_sheet.png",
+      "frame": [32, 32],
+      "grid": [6, 1],
+      "shape": "rect_index",
+      "palette": "core",
+      "body": "#56606A",
+      "seed": 110
+    },
+    {
+      "id": "SPR-BOTANICO",
+      "path": "sprites/npc/botanico_sheet.png",
+      "frame": [16, 16],
+      "grid": [6, 1],
+      "shape": "drone",
+      "palette": "greenhouse",
+      "body": "#CFE8C0",
+      "seed": 111
+    },
+    {
+      "id": "TIL-CORE",
+      "path": "tiles/core_tiles.png",
+      "frame": [16, 16],
+      "grid": [8, 4],
+      "shape": "tileset",
+      "palette": "core",
+      "seed": 112
+    },
+    {
+      "id": "TIL-GREENHOUSE",
+      "path": "tiles/greenhouse_tiles.png",
+      "frame": [16, 16],
+      "grid": [8, 4],
+      "shape": "tileset",
+      "palette": "greenhouse",
+      "seed": 113
+    },
+    {
+      "id": "BG-SPACE-FAR",
+      "path": "backgrounds/space_far.png",
+      "frame": [384, 216],
+      "grid": [1, 1],
+      "shape": "stars",
+      "palette": "space",
+      "seed": 1
+    },
+    {
+      "id": "BG-SPACE-MID",
+      "path": "backgrounds/space_mid.png",
+      "frame": [384, 216],
+      "grid": [1, 1],
+      "shape": "nebula",
+      "palette": "space",
+      "seed": 2
+    },
+    {
+      "id": "BG-SPACE-NEAR",
+      "path": "backgrounds/space_near.png",
+      "frame": [384, 216],
+      "grid": [1, 1],
+      "shape": "debris",
+      "palette": "space",
+      "seed": 3
+    },
+    {
+      "id": "UI-LOGO",
+      "path": "ui/logo.png",
+      "frame": [192, 48],
+      "grid": [1, 1],
+      "shape": "logo_blocks",
+      "palette": "ui",
+      "body": "#BFEFF0",
+      "seed": 114
+    },
+    {
+      "id": "UI-HUD",
+      "path": "ui/hud_sheet.png",
+      "frame": [16, 16],
+      "grid": [8, 2],
+      "shape": "hud_icons",
+      "palette": "ui",
+      "seed": 115
+    },
+    {
+      "id": "FX-LIGHT",
+      "path": "fx/light_radial.png",
+      "frame": [256, 256],
+      "grid": [1, 1],
+      "shape": "radial",
+      "palette": "ui",
+      "final": true,
+      "seed": 116
+    },
+    {
+      "id": "FX-LIGHT-CONE",
+      "path": "fx/light_cone.png",
+      "frame": [256, 128],
+      "grid": [1, 1],
+      "shape": "cone",
+      "palette": "ui",
+      "final": true,
+      "seed": 117
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+[
+  {"frame": 14, "screenshot": "f05_splash_logo"},
+  {"frame": 24, "scene": "res://tests/qa/scenes/asset_probe.tscn"},
+  {"frame": 40, "screenshot": "f05_contato_prova"},
+  {"frame": 50, "scene": "res://tests/qa/scenes/theme_probe.tscn"},
+  {"frame": 66, "screenshot": "f05_theme"},
+  {"frame": 72, "action": "ui_accept", "pressed": true},
+  {"frame": 74, "action": "ui_accept", "pressed": false},
+  {"frame": 78, "screenshot": "f05_sparks"},
+  {"frame": 90, "quit": true}
+]
