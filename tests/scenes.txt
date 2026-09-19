@@ -5,3 +5,8 @@ res://tests/qa/scenes/audio_probe.tscn
 res://scenes/fx/spark_burst.tscn
 res://tests/qa/scenes/theme_probe.tscn
 res://tests/qa/scenes/asset_probe.tscn
+res://scenes/ui/main_menu.tscn
+res://scenes/ui/confirm_dialog.tscn
+res://scenes/ui/options_menu.tscn
+res://scenes/ui/pause_menu.tscn
+res://tests/qa/scenes/pause_sandbox.tscn

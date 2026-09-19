@@ -1,0 +1,172 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0rbitamainmenu"]
+
+[ext_resource type="Script" path="res://scenes/ui/main_menu.gd" id="1_menu"]
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_menu")
+new_game_question = "O backup atual será apagado. Iniciar um novo sistema?"
+corrupted_message = "BACKUP CORROMPIDO"
+
+[node name="BackgroundLayer" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="Void" type="ColorRect" parent="BackgroundLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.019608, 0.031373, 0.047059, 1)
+
+[node name="Far" type="Parallax2D" parent="BackgroundLayer"]
+repeat_size = Vector2(384, 0)
+autoscroll = Vector2(-2, 0)
+repeat_times = 3
+
+[node name="FarSprite" type="Sprite2D" parent="BackgroundLayer/Far"]
+unique_name_in_owner = true
+centered = false
+
+[node name="Mid" type="Parallax2D" parent="BackgroundLayer"]
+repeat_size = Vector2(384, 0)
+autoscroll = Vector2(-5, 0)
+repeat_times = 3
+
+[node name="MidSprite" type="Sprite2D" parent="BackgroundLayer/Mid"]
+unique_name_in_owner = true
+centered = false
+
+[node name="Near" type="Parallax2D" parent="BackgroundLayer"]
+repeat_size = Vector2(384, 0)
+autoscroll = Vector2(-10, 0)
+repeat_times = 3
+
+[node name="NearSprite" type="Sprite2D" parent="BackgroundLayer/Near"]
+unique_name_in_owner = true
+centered = false
+
+[node name="Logo" type="TextureRect" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -96.0
+offset_top = 20.0
+offset_right = 96.0
+offset_bottom = 68.0
+grow_horizontal = 2
+mouse_filter = 2
+stretch_mode = 3
+
+[node name="LogoText" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -96.0
+offset_top = 20.0
+offset_right = 96.0
+offset_bottom = 68.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.878431, 0.921569, 0.933333, 1)
+theme_override_font_sizes/font_size = 32
+text = "ÓRBITA"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Buttons" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -65.0
+offset_top = -18.0
+offset_right = 65.0
+offset_bottom = 62.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 3
+
+[node name="ContinueButton" type="Button" parent="Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "CONTINUAR"
+
+[node name="NewGameButton" type="Button" parent="Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "NOVO SISTEMA"
+
+[node name="OptionsButton" type="Button" parent="Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "OPÇÕES"
+
+[node name="QuitButton" type="Button" parent="Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "SAIR"
+
+[node name="Version" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -92.0
+offset_top = -18.0
+offset_right = -4.0
+offset_bottom = -4.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.337255, 0.376471, 0.415686, 1)
+text = "DEMO v0.1"
+horizontal_alignment = 2
+
+[node name="Toast" type="Label" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -42.0
+offset_bottom = -26.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.905882, 0.470588, 0.384314, 1)
+text = "BACKUP CORROMPIDO"
+horizontal_alignment = 1
+
+[node name="ToastTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 2.0
+one_shot = true
+
+[node name="Overlay" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2

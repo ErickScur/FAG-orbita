@@ -1,0 +1,61 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0rbitapausesand"]
+
+[ext_resource type="Script" path="res://tests/qa/scenes/pause_sandbox.gd" id="1_sandbox"]
+
+[node name="PauseSandbox" type="Node2D" groups=["gameplay"]]
+script = ExtResource("1_sandbox")
+
+[node name="Background" type="ColorRect" parent="."]
+offset_right = 384.0
+offset_bottom = 216.0
+mouse_filter = 2
+color = Color(0.039216, 0.070588, 0.086275, 1)
+
+[node name="Title" type="Label" parent="."]
+unique_name_in_owner = true
+offset_left = 0.0
+offset_top = 6.0
+offset_right = 384.0
+offset_bottom = 22.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.372549, 0.831373, 0.784314, 1)
+text = "CENA DE PROVA — PAUSE"
+horizontal_alignment = 1
+
+[node name="Reactor" type="Label" parent="."]
+unique_name_in_owner = true
+offset_left = 0.0
+offset_top = 24.0
+offset_right = 384.0
+offset_bottom = 40.0
+mouse_filter = 2
+text = "Estabilidade do Reator: 100%"
+horizontal_alignment = 1
+
+[node name="Counter" type="Label" parent="."]
+unique_name_in_owner = true
+offset_left = 0.0
+offset_top = 40.0
+offset_right = 384.0
+offset_bottom = 56.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.905882, 0.752941, 0.384314, 1)
+text = "CONTADOR: 0"
+horizontal_alignment = 1
+
+[node name="Hint" type="Label" parent="."]
+offset_left = 0.0
+offset_top = 180.0
+offset_right = 384.0
+offset_bottom = 196.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.337255, 0.376471, 0.415686, 1)
+text = "ESC / START PARA PAUSAR"
+horizontal_alignment = 1
+
+[node name="Marker" type="ColorRect" parent="."]
+unique_name_in_owner = true
+offset_right = 8.0
+offset_bottom = 8.0
+mouse_filter = 2
+color = Color(0.372549, 0.831373, 0.784314, 1)

@@ -14,6 +14,28 @@ func test_is_level_rejects_other_scenes() -> void:
 	assert_false(ScenePaths.is_level("res://scenes/levels/greenhouse.txt"), "extensão errada")
 
 
+func test_menu_scenes_never_count_as_playable() -> void:
+	for path: String in [
+		ScenePaths.MAIN_MENU,
+		ScenePaths.SPLASH,
+		ScenePaths.LOADING,
+		"res://scenes/ui/options_menu.tscn",
+		"res://scenes/ui/pause_menu.tscn",
+		"res://scenes/ui/confirm_dialog.tscn",
+	]:
+		assert_false(ScenePaths.is_level(path), "cena de UI não é fase: %s" % path)
+
+
+func test_ui_scenes_exist() -> void:
+	for path: String in [
+		ScenePaths.MAIN_MENU,
+		"res://scenes/ui/options_menu.tscn",
+		"res://scenes/ui/pause_menu.tscn",
+		"res://scenes/ui/confirm_dialog.tscn",
+	]:
+		assert_true(ResourceLoader.exists(path), "cena existe: %s" % path)
+
+
 func test_level_key() -> void:
 	assert_eq(ScenePaths.level_key("res://scenes/levels/greenhouse.tscn"), "greenhouse", "chave")
 	assert_eq(ScenePaths.level_key("res://scenes/levels/core_hub.tscn"), "core_hub", "chave hub")

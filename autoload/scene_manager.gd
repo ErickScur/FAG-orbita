@@ -1,11 +1,13 @@
 extends Node
 
 const OVERLAY_LAYER: int = 100
+const PAUSE_MENU_SCENE: String = "res://scenes/ui/pause_menu.tscn"
 
 var pending_path: String = ""
 
 var _transitioning: bool = false
 var _overlay: ColorRect = null
+var _pause_menu: CanvasLayer = null
 
 
 func _ready() -> void:
@@ -22,11 +24,17 @@ func _ready() -> void:
 	_overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_overlay.modulate.a = 0.0
 	_overlay.visible = false
+	_spawn_pause_menu()
+
+
+func pause_menu() -> CanvasLayer:
+	return _pause_menu
 
 
 func goto(path: String) -> void:
 	if not _can_start(path):
 		return
+	_close_pause()
 	if ScenePaths.is_level(path):
 		_run_loading_transition(path)
 	else:
@@ -36,6 +44,7 @@ func goto(path: String) -> void:
 func goto_with_loading(path: String) -> void:
 	if not _can_start(path):
 		return
+	_close_pause()
 	_run_loading_transition(path)
 
 
@@ -43,6 +52,7 @@ func goto_instant(path: String) -> void:
 	if not ResourceLoader.exists(path):
 		push_error("SceneManager: cena inexistente %s" % path)
 		return
+	_close_pause()
 	pending_path = ""
 	_transitioning = false
 	if _overlay != null:
@@ -77,6 +87,25 @@ func abort_loading(reason: String) -> void:
 		get_tree().change_scene_to_file(ScenePaths.MAIN_MENU)
 	await _fade_to(0.0)
 	_transitioning = false
+
+
+func _spawn_pause_menu() -> void:
+	if not ResourceLoader.exists(PAUSE_MENU_SCENE):
+		return
+	var packed: PackedScene = load(PAUSE_MENU_SCENE)
+	if packed == null:
+		return
+	var instance: Node = packed.instantiate()
+	if not (instance is CanvasLayer):
+		instance.free()
+		return
+	_pause_menu = instance
+	add_child(_pause_menu)
+
+
+func _close_pause() -> void:
+	if _pause_menu != null and is_instance_valid(_pause_menu):
+		_pause_menu.call(&"close")
 
 
 func _can_start(path: String) -> bool:
