@@ -70,4 +70,4 @@ Professor: Jeferson Eduardo Guido — disciplina de Desenvolvimento de Jogos.
 
 | Asset | Autor | Licença |
 |---|---|---|
-| — | — | — |
+| m5x7 (fonte da UI) | Daniel Linssen | livre, crédito solicitado — https://managore.itch.io/m5x7 |
