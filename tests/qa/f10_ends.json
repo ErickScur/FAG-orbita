@@ -1,0 +1,16 @@
+[
+  {"frame": 30, "screenshot": "f10_00_probe"},
+  {"frame": 40, "action": "ui_accept", "pressed": true},
+  {"frame": 44, "action": "ui_accept", "pressed": false},
+  {"frame": 130, "screenshot": "f10_01_chassis_typing"},
+  {"frame": 270, "screenshot": "f10_02_chassis_full"},
+  {"frame": 290, "action": "interact", "pressed": true},
+  {"frame": 294, "action": "interact", "pressed": false},
+  {"frame": 330, "screenshot": "f10_03_chassis_closed"},
+  {"frame": 344, "action": "ui_down", "pressed": true},
+  {"frame": 348, "action": "ui_down", "pressed": false},
+  {"frame": 360, "action": "ui_accept", "pressed": true},
+  {"frame": 364, "action": "ui_accept", "pressed": false},
+  {"frame": 500, "screenshot": "f10_04_game_over"},
+  {"frame": 530, "quit": true}
+]

@@ -22,6 +22,9 @@ func test_menu_scenes_never_count_as_playable() -> void:
 		"res://scenes/ui/options_menu.tscn",
 		"res://scenes/ui/pause_menu.tscn",
 		"res://scenes/ui/confirm_dialog.tscn",
+		ScenePaths.GAME_OVER,
+		ScenePaths.DEMO_END,
+		ScenePaths.CHASSIS_LOST,
 	]:
 		assert_false(ScenePaths.is_level(path), "cena de UI não é fase: %s" % path)
 
@@ -32,6 +35,10 @@ func test_ui_scenes_exist() -> void:
 		"res://scenes/ui/options_menu.tscn",
 		"res://scenes/ui/pause_menu.tscn",
 		"res://scenes/ui/confirm_dialog.tscn",
+		ScenePaths.GAME_OVER,
+		ScenePaths.DEMO_END,
+		ScenePaths.CHASSIS_LOST,
+		"res://scenes/ui/save_toast.tscn",
 	]:
 		assert_true(ResourceLoader.exists(path), "cena existe: %s" % path)
 

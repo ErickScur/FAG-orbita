@@ -8,6 +8,7 @@ var pending_path: String = ""
 var _transitioning: bool = false
 var _overlay: ColorRect = null
 var _pause_menu: CanvasLayer = null
+var _chassis_lost: CanvasLayer = null
 
 
 func _ready() -> void:
@@ -25,10 +26,17 @@ func _ready() -> void:
 	_overlay.modulate.a = 0.0
 	_overlay.visible = false
 	_spawn_pause_menu()
+	EventBus.player_died.connect(_on_player_died)
+	EventBus.game_over.connect(_on_game_over)
+	EventBus.demo_completed.connect(_on_demo_completed)
 
 
 func pause_menu() -> CanvasLayer:
 	return _pause_menu
+
+
+func chassis_lost_overlay() -> CanvasLayer:
+	return _chassis_lost
 
 
 func goto(path: String) -> void:
@@ -101,6 +109,54 @@ func _spawn_pause_menu() -> void:
 		return
 	_pause_menu = instance
 	add_child(_pause_menu)
+
+
+func _on_player_died() -> void:
+	if GameState.reactor_percent <= 0.0:
+		return
+	_show_chassis_lost()
+
+
+func _on_game_over(_reason: StringName) -> void:
+	_dismiss_chassis_lost()
+	goto(ScenePaths.GAME_OVER)
+
+
+func _on_demo_completed() -> void:
+	_dismiss_chassis_lost()
+	goto(ScenePaths.DEMO_END)
+
+
+func _show_chassis_lost() -> void:
+	if _chassis_lost != null and is_instance_valid(_chassis_lost):
+		return
+	if not ResourceLoader.exists(ScenePaths.CHASSIS_LOST):
+		push_error("SceneManager: cena inexistente %s" % ScenePaths.CHASSIS_LOST)
+		return
+	var packed: PackedScene = load(ScenePaths.CHASSIS_LOST)
+	if packed == null:
+		return
+	var instance: Node = packed.instantiate()
+	if not (instance is CanvasLayer):
+		instance.free()
+		return
+	_chassis_lost = instance
+	add_child(_chassis_lost)
+	_chassis_lost.connect(&"finished", _on_chassis_lost_finished)
+	_chassis_lost.call(&"play")
+
+
+func _on_chassis_lost_finished() -> void:
+	_chassis_lost = null
+	EventBus.player_respawned.emit()
+
+
+func _dismiss_chassis_lost() -> void:
+	if _chassis_lost == null or not is_instance_valid(_chassis_lost):
+		_chassis_lost = null
+		return
+	_chassis_lost.queue_free()
+	_chassis_lost = null
 
 
 func _close_pause() -> void:

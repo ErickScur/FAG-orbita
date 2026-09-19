@@ -1,0 +1,11 @@
+[
+  {"frame": 30, "screenshot": "f10_10_probe"},
+  {"frame": 40, "action": "ui_down", "pressed": true},
+  {"frame": 44, "action": "ui_down", "pressed": false},
+  {"frame": 56, "action": "ui_down", "pressed": true},
+  {"frame": 60, "action": "ui_down", "pressed": false},
+  {"frame": 72, "action": "ui_accept", "pressed": true},
+  {"frame": 76, "action": "ui_accept", "pressed": false},
+  {"frame": 220, "screenshot": "f10_11_demo_end"},
+  {"frame": 250, "quit": true}
+]

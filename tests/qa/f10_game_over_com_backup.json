@@ -1,0 +1,8 @@
+[
+  {"frame": 30, "action": "ui_down", "pressed": true},
+  {"frame": 34, "action": "ui_down", "pressed": false},
+  {"frame": 46, "action": "ui_accept", "pressed": true},
+  {"frame": 50, "action": "ui_accept", "pressed": false},
+  {"frame": 200, "screenshot": "f10_05_game_over_com_backup"},
+  {"frame": 230, "quit": true}
+]

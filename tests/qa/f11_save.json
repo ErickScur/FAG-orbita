@@ -1,0 +1,22 @@
+[
+  {"frame": 20, "screenshot": "f11_00_inicial"},
+  {"frame": 26, "action": "ui_accept", "pressed": true},
+  {"frame": 28, "action": "ui_accept", "pressed": false},
+  {"frame": 46, "screenshot": "f11_01_alterado"},
+  {"frame": 54, "action": "ui_down", "pressed": true},
+  {"frame": 56, "action": "ui_down", "pressed": false},
+  {"frame": 64, "action": "ui_accept", "pressed": true},
+  {"frame": 66, "action": "ui_accept", "pressed": false},
+  {"frame": 82, "screenshot": "f11_02_toast"},
+  {"frame": 170, "action": "ui_down", "pressed": true},
+  {"frame": 172, "action": "ui_down", "pressed": false},
+  {"frame": 180, "action": "ui_accept", "pressed": true},
+  {"frame": 182, "action": "ui_accept", "pressed": false},
+  {"frame": 198, "screenshot": "f11_03_zerado"},
+  {"frame": 206, "action": "ui_down", "pressed": true},
+  {"frame": 208, "action": "ui_down", "pressed": false},
+  {"frame": 216, "action": "ui_accept", "pressed": true},
+  {"frame": 218, "action": "ui_accept", "pressed": false},
+  {"frame": 236, "screenshot": "f11_04_carregado"},
+  {"frame": 256, "quit": true}
+]

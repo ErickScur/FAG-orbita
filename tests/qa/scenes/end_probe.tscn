@@ -1,0 +1,98 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0rbitaendprobe"]
+
+[ext_resource type="Script" path="res://tests/qa/scenes/end_probe.gd" id="1_endprobe"]
+
+[node name="EndProbe" type="Node2D" groups=["gameplay"]]
+script = ExtResource("1_endprobe")
+
+[node name="Ui" type="CanvasLayer" parent="."]
+
+[node name="Root" type="Control" parent="Ui"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Background" type="ColorRect" parent="Ui/Root"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.0392157, 0.0705882, 0.0862745, 1)
+
+[node name="Title" type="Label" parent="Ui/Root"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 8.0
+offset_bottom = 24.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.372549, 0.831373, 0.784314, 1)
+theme_override_font_sizes/font_size = 16
+text = "CENA DE PROVA — FINS DE JOGO"
+horizontal_alignment = 1
+
+[node name="Status" type="Label" parent="Ui/Root"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 26.0
+offset_bottom = 42.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.541176, 0.607843, 0.658824, 1)
+theme_override_font_sizes/font_size = 16
+horizontal_alignment = 1
+
+[node name="Buttons" type="VBoxContainer" parent="Ui/Root"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -80.0
+offset_top = -34.0
+offset_right = 80.0
+offset_bottom = 34.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 4
+
+[node name="DeathButton" type="Button" parent="Ui/Root/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "CHASSI PERDIDO"
+
+[node name="GameOverButton" type="Button" parent="Ui/Root/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "PERDA DE ÓRBITA"
+
+[node name="DemoButton" type="Button" parent="Ui/Root/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "FIM DA DEMO"
+
+[node name="Hint" type="Label" parent="Ui/Root"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -24.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.337255, 0.376471, 0.415686, 1)
+theme_override_font_sizes/font_size = 16
+text = "E PULA A TELA DE CHASSI PERDIDO"
+horizontal_alignment = 1

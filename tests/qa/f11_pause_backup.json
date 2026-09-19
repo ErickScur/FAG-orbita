@@ -1,0 +1,12 @@
+[
+  {"frame": 30, "action": "pause", "pressed": true},
+  {"frame": 34, "action": "pause", "pressed": false},
+  {"frame": 70, "action": "ui_down", "pressed": true},
+  {"frame": 74, "action": "ui_down", "pressed": false},
+  {"frame": 86, "action": "ui_down", "pressed": true},
+  {"frame": 90, "action": "ui_down", "pressed": false},
+  {"frame": 102, "action": "ui_accept", "pressed": true},
+  {"frame": 106, "action": "ui_accept", "pressed": false},
+  {"frame": 140, "screenshot": "f11_08_pause_do_ultimo_backup"},
+  {"frame": 170, "quit": true}
+]

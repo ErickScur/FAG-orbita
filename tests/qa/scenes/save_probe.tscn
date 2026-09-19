@@ -1,0 +1,137 @@
+[gd_scene load_steps=3 format=3 uid="uid://c0rbitasaveprobe"]
+
+[ext_resource type="Script" path="res://tests/qa/scenes/save_probe.gd" id="1_saveprobe"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_frame"]
+content_margin_left = 8.0
+content_margin_top = 6.0
+content_margin_right = 8.0
+content_margin_bottom = 6.0
+bg_color = Color(0.0392157, 0.0666667, 0.0901961, 0.921569)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.207843, 0.435294, 0.435294, 1)
+anti_aliasing = false
+
+[node name="SaveProbe" type="Node2D" groups=["gameplay"]]
+script = ExtResource("1_saveprobe")
+
+[node name="Ui" type="CanvasLayer" parent="."]
+
+[node name="Root" type="Control" parent="Ui"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Background" type="ColorRect" parent="Ui/Root"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.0392157, 0.0705882, 0.0862745, 1)
+
+[node name="Title" type="Label" parent="Ui/Root"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 6.0
+offset_bottom = 22.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.372549, 0.831373, 0.784314, 1)
+theme_override_font_sizes/font_size = 16
+text = "CENA DE PROVA — BACKUP"
+horizontal_alignment = 1
+
+[node name="Panel" type="PanelContainer" parent="Ui/Root"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -160.0
+offset_top = 28.0
+offset_right = -12.0
+offset_bottom = 118.0
+grow_horizontal = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_frame")
+
+[node name="Rows" type="VBoxContainer" parent="Ui/Root/Panel"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 1
+
+[node name="Reactor" type="Label" parent="Ui/Root/Panel/Rows"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.498039, 0.839216, 0.784314, 1)
+theme_override_font_sizes/font_size = 16
+
+[node name="Integrity" type="Label" parent="Ui/Root/Panel/Rows"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.843137, 0.890196, 0.909804, 1)
+theme_override_font_sizes/font_size = 16
+
+[node name="Charge" type="Label" parent="Ui/Root/Panel/Rows"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.843137, 0.890196, 0.909804, 1)
+theme_override_font_sizes/font_size = 16
+
+[node name="Logs" type="Label" parent="Ui/Root/Panel/Rows"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.843137, 0.890196, 0.909804, 1)
+theme_override_font_sizes/font_size = 16
+
+[node name="Deaths" type="Label" parent="Ui/Root/Panel/Rows"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.843137, 0.890196, 0.909804, 1)
+theme_override_font_sizes/font_size = 16
+
+[node name="Buttons" type="VBoxContainer" parent="Ui/Root"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 12.0
+offset_top = -46.0
+offset_right = 140.0
+offset_bottom = 46.0
+grow_vertical = 2
+theme_override_constants/separation = 4
+
+[node name="ChangeButton" type="Button" parent="Ui/Root/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "ALTERAR ESTADO"
+
+[node name="SaveButton" type="Button" parent="Ui/Root/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "SALVAR"
+
+[node name="ResetButton" type="Button" parent="Ui/Root/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "ZERAR"
+
+[node name="LoadButton" type="Button" parent="Ui/Root/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "CARREGAR"

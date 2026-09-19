@@ -41,6 +41,8 @@ func _ready() -> void:
 	_focus_first()
 	for button: Button in _buttons():
 		button.focus_entered.connect(_play_move)
+	if SaveManager.is_corrupted():
+		_show_toast(corrupted_message)
 
 
 func _unhandled_input(event: InputEvent) -> void:

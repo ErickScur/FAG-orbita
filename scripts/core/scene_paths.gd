@@ -5,6 +5,9 @@ const LEVELS_DIR: String = "res://scenes/levels/"
 const MAIN_MENU: String = "res://scenes/ui/main_menu.tscn"
 const LOADING: String = "res://scenes/boot/loading.tscn"
 const SPLASH: String = "res://scenes/boot/splash.tscn"
+const GAME_OVER: String = "res://scenes/ui/game_over.tscn"
+const DEMO_END: String = "res://scenes/ui/demo_end.tscn"
+const CHASSIS_LOST: String = "res://scenes/ui/chassis_lost.tscn"
 
 
 static func is_level(path: String) -> bool:

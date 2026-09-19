@@ -1,0 +1,7 @@
+[
+  {"frame": 40, "screenshot": "f11_05_menu_continuar"},
+  {"frame": 54, "action": "ui_accept", "pressed": true},
+  {"frame": 58, "action": "ui_accept", "pressed": false},
+  {"frame": 200, "screenshot": "f11_06_continuou"},
+  {"frame": 230, "quit": true}
+]

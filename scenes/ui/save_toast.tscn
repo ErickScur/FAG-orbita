@@ -1,0 +1,48 @@
+[gd_scene load_steps=3 format=3 uid="uid://c0rbitasavetoast"]
+
+[ext_resource type="Script" path="res://scenes/ui/save_toast.gd" id="1_toast"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_toast"]
+content_margin_left = 5.0
+content_margin_top = 2.0
+content_margin_right = 5.0
+content_margin_bottom = 2.0
+bg_color = Color(0.0392157, 0.0666667, 0.0901961, 0.878431)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.207843, 0.435294, 0.435294, 1)
+anti_aliasing = false
+
+[node name="SaveToast" type="CanvasLayer"]
+process_mode = 3
+layer = 60
+script = ExtResource("1_toast")
+
+[node name="Root" type="Control" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="Root"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = -24.0
+offset_right = 92.0
+offset_bottom = -6.0
+grow_vertical = 0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.498039, 0.839216, 0.784314, 1)
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_toast")
+text = "BACKUP SALVO"
+horizontal_alignment = 1
+vertical_alignment = 1
