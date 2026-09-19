@@ -1,0 +1,6 @@
+[
+  {"frame": 12, "screenshot": "f06_splash"},
+  {"frame": 20, "scene": "res://tests/qa/scenes/loading_probe.tscn"},
+  {"frame": 70, "screenshot": "f06_loading"},
+  {"frame": 85, "quit": true}
+]

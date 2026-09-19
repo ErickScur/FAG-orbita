@@ -1,2 +1,4 @@
 res://scenes/boot/splash.tscn
 res://scenes/boot/loading.tscn
+res://tests/qa/scenes/input_probe.tscn
+res://tests/qa/scenes/audio_probe.tscn

@@ -1,0 +1,9 @@
+[
+  {"frame": 10, "screenshot": "f06_idle"},
+  {"frame": 20, "action": "move_right", "pressed": true},
+  {"frame": 25, "screenshot": "f06_move_right"},
+  {"frame": 30, "action": "move_right", "pressed": false},
+  {"frame": 35, "action": "jump", "pressed": true},
+  {"frame": 36, "screenshot": "f06_jump"},
+  {"frame": 40, "quit": true}
+]

@@ -1,0 +1,103 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://tests/qa/scenes/audio_probe.gd" id="1_audio"]
+
+[node name="AudioProbe" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_audio")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.0196078, 0.0313726, 0.0470588, 1)
+
+[node name="Title" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 12.0
+offset_bottom = 28.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.878431, 0.921569, 0.933333, 1)
+theme_override_font_sizes/font_size = 12
+text = "SONDA DE ÁUDIO"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Rows" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 24.0
+offset_top = 40.0
+offset_right = -24.0
+offset_bottom = 140.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_constants/separation = 4
+
+[node name="TrackLabel" type="Label" parent="Rows"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.968627, 0.827451, 0.333333, 1)
+theme_override_font_sizes/font_size = 10
+text = "TRILHA: nenhuma"
+
+[node name="MasterLabel" type="Label" parent="Rows"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.878431, 0.921569, 0.933333, 1)
+theme_override_font_sizes/font_size = 10
+text = "MASTER:"
+
+[node name="MusicLabel" type="Label" parent="Rows"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.498039, 0.839216, 0.784314, 1)
+theme_override_font_sizes/font_size = 10
+text = "MÚSICA:"
+
+[node name="SfxLabel" type="Label" parent="Rows"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.878431, 0.921569, 0.933333, 1)
+theme_override_font_sizes/font_size = 10
+text = "EFEITOS:"
+
+[node name="VoiceLabel" type="Label" parent="Rows"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.878431, 0.921569, 0.933333, 1)
+theme_override_font_sizes/font_size = 10
+text = "VOZ:"
+
+[node name="Hint" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = -32.0
+offset_right = -16.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.541176, 0.607843, 0.658824, 1)
+theme_override_font_sizes/font_size = 8
+text = "← → volume da música · ENTER efeito"
+autowrap_mode = 3
+horizontal_alignment = 1
+vertical_alignment = 2

@@ -1,0 +1,15 @@
+[
+  {"frame": 20, "screenshot": "f04_audio_start"},
+  {"frame": 30, "action": "ui_left", "pressed": true},
+  {"frame": 32, "action": "ui_left", "pressed": false},
+  {"frame": 40, "action": "ui_left", "pressed": true},
+  {"frame": 42, "action": "ui_left", "pressed": false},
+  {"frame": 50, "action": "ui_left", "pressed": true},
+  {"frame": 52, "action": "ui_left", "pressed": false},
+  {"frame": 60, "action": "ui_left", "pressed": true},
+  {"frame": 62, "action": "ui_left", "pressed": false},
+  {"frame": 75, "action": "ui_accept", "pressed": true},
+  {"frame": 77, "action": "ui_accept", "pressed": false},
+  {"frame": 90, "screenshot": "f04_audio_muted"},
+  {"frame": 100, "quit": true}
+]
