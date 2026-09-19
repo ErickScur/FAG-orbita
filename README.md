@@ -1,13 +1,22 @@
 # ÓRBITA
 
-> Jogo de plataforma 2D com puzzles de energia, feito em **Godot 4.7** para a disciplina de Desenvolvimento de Jogos.
-> Tema: **Estação** — a estação espacial de pesquisa **ARTEMIS**.
+> Uma IA de manutenção acorda sozinha numa estação espacial 200 anos depois da tripulação morrer e assume um velho chassi robótico para religar a estação antes que ela caia. Cada setor que ela ilumina revela um pedaço da verdade que ela mesma apagou da própria memória.
 
-ÓRBITA, a IA de manutenção da ARTEMIS, acorda 200 anos depois do último humano. Ela transfere a consciência para o MU-7, um velho chassi de manutenção, e religa a estação setor por setor antes que o reator a faça perder órbita. A energia é finita: cada sistema que você liga desliga outro. Cada setor iluminado revela um pedaço da verdade que ela mesma apagou da memória.
+Jogo de plataforma 2D em Godot 4.7, feito para a disciplina de **Desenvolvimento de Jogos**. Tema: **ESTAÇÃO** — a estação espacial de pesquisa **ARTEMIS**.
+
+## Sobre
+
+É um jogo de plataforma onde a energia é o inimigo e o recurso ao mesmo tempo. Cada luz que você acende apaga outra, e cada porta que você abre revela uma parte do passado que a protagonista preferia esquecer.
+
+Três pilares:
+
+1. **Escassez** — energia é finita; toda escolha tira algo de algum lugar.
+2. **Descoberta** — a história não é contada, é encontrada.
+3. **Ausência** — ninguém vivo na estação: todo aliado é uma gravação, todo inimigo é uma máquina cumprindo uma ordem de 200 anos atrás.
 
 ## Status
 
-🚧 **Em desenvolvimento — Demo (1ª entrega):** Núcleo Central (tutorial) + Estufa.
+🚧 **Demo (1ª entrega)** — Fase 0 Núcleo Central (tutorial) + Fase 1 Estufa.
 
 ## Controles
 
@@ -15,16 +24,36 @@
 |---|---|---|
 | Mover | A / D ou ← / → | Analógico esquerdo |
 | Pular (segurar = mais alto) | Espaço | A |
+| Dash magnético | Shift | B |
 | Interagir | E | X |
+| Feixe de Manutenção | Q | Y |
 | Lanterna | F | LB |
+| Arquivo de Logs | L | — |
 | Pause | Esc | Start |
+| Mapa da estação | Tab | Select *(entrega final)* |
 
-## Como jogar a partir do código-fonte
+## Como rodar
 
-1. Instale o [Godot 4.7](https://godotengine.org/download) (versão padrão, não a .NET).
+1. Baixe o **Godot 4.7** (versão padrão, não a .NET): https://godotengine.org/download
 2. Clone este repositório.
-3. Abra o Godot → **Import** → selecione o arquivo `project.godot` → **Import & Edit**.
-4. Pressione **F5**.
+3. Abra o Godot → **Import** → selecione o `project.godot` → **Import & Edit** → **F5**.
+   Ou, pelo terminal: `godot --path .`
+
+Builds prontas para Windows e macOS ficam na página de *Releases* (a partir da tag `v0.1-demo`).
+
+## Estrutura do projeto
+
+```
+autoload/      sistemas globais (estado, save, áudio, cenas, diálogo)
+scripts/core/  lógica pura e testável (energia, status, fases, balanceamento)
+scenes/        boot, ui, player, enemies, world, levels
+data/          fases em ASCII, puzzles de energia, logs e diálogos (JSON)
+assets/        sprites, tiles, ui, fontes, áudio
+tests/         testes de lógica e roteiros de QA
+tools/         utilitários (placeholders, smoke test)
+```
+
+As fases são escritas como **mapas ASCII** em `data/levels/` e montadas em tempo de execução.
 
 ## Design
 
@@ -35,9 +64,9 @@
 
 Alex Hoffmann · Erick Scur · Murilo Wolff Klug · Kauan Giacomin · Victor William
 
-Professor: Jeferson Eduardo Guido
+Professor: Jeferson Eduardo Guido — disciplina de Desenvolvimento de Jogos.
 
-## Créditos de assets
+## Créditos e licenças de assets
 
 | Asset | Autor | Licença |
 |---|---|---|
