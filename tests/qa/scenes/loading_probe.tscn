@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0rbitaloadprobe"]
+
+[ext_resource type="Script" path="res://tests/qa/scenes/loading_probe.gd" id="1_probe"]
+
+[node name="LoadingProbe" type="Node"]
+script = ExtResource("1_probe")

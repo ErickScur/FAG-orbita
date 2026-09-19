@@ -1,0 +1,13 @@
+{
+  "sector_names": {
+    "core_hub": "NÚCLEO CENTRAL",
+    "greenhouse": "ESTUFA"
+  },
+  "tips": [
+    "Ligar um sistema desliga outro. Não existe estado em que tudo está ligado.",
+    "A lanterna consome Carga. Apague-a quando não precisar enxergar.",
+    "Docas de recarga guardam um backup do chassi.",
+    "O reator não perde estabilidade enquanto o jogo está pausado.",
+    "Cada log lido devolve um pouco de estabilidade ao reator."
+  ]
+}

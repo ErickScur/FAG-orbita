@@ -563,7 +563,7 @@ Toda vez que a dificuldade sobe demais, o jogador ganha um upgrade que faz o con
 | `PLATFORM_WAIT` | 0.6 | s | AJ-012 |
 | `SECRET_WALL_FADE_TIME` | 0.3 | s | AJ-012 |
 | `SECRET_WALL_ALPHA` | 0.25 | alfa | AJ-012 |
-| `SECRETS_TOTAL` | 1 | un. (demo) | AJ-012 |
+| `SECRETS_TOTAL` | 4 | un. (jogo completo; 1 na demo) | AJ-012 |
 | `STEAM_WARN_TIME` | 0.5 | s | AJ-012 |
 | `DRONE_SPEED` | 45 | px/s | AJ-012 |
 | `DRONE_WANDER_RADIUS` | 64 | px | AJ-012 |
@@ -606,5 +606,9 @@ Toda vez que a dificuldade sobe demais, o jogador ganha um upgrade que faz o con
 | AJ-008 | 2026-09-19 | 2.5 | Diálogo tem dois modos: **bloqueante** (congela o timer, exige avançar) e **ambiente/bark** (não congela, some sozinho) | Sem isso qualquer fala da ÓRBITA pausaria o reator e o timer viraria decorativo |
 | AJ-009 | 2026-09-19 | 2.5 | Respawn devolve **Carga cheia** e a doca repara 10 Integridade/s; Célula/Kit não são consumidos com o recurso cheio | Casos não previstos no GDD; evitam desperdício e travamento após morte |
 | AJ-010 | 2026-09-19 | 2.5-energia | Puzzle da Estufa fixado em **5 sistemas / 2 unidades**; tutorial em 2 sistemas / 1 unidade | GDD dá exemplos diferentes (3/5 e até 6/3); a demo usa a faixa coerente com a curva da Fase 1 |
+| AJ-013 | 2026-09-19 | 2.5 | O **timer do reator só começa a cair no alarme da Fase 0** (Jornada etapa 2), não no carregamento do jogo | O Chamado para a Aventura é o que liga o timer; antes disso o tutorial seria punido |
+| AJ-014 | 2026-09-19 | 2.6.1 | Um setor pode ter **vários consoles do mesmo Terminal de Distribuição** (mesmo `terminal_id`) | A Estufa é vertical; obrigar a voltar ao mesmo console viraria backtracking puro |
+| AJ-015 | 2026-09-19 | 2.6.2-E | Na **Demo**, cair num buraco no escuro devolve o MU-7 ao andar de baixo em vez de matar | GDD-2.6.2-E diz "mata por queda"; na fase de aprendizado isso pune demais e custa 3% do reator |
+| AJ-016 | 2026-09-19 | 2.6.3 | Parede falsa de área secreta fica **translúcida** ao ser revelada, em vez de sumir | O jogador precisa entender que era uma parede, não um bug |
 | AJ-012 | 2026-09-19 | GDD-P | Constantes das features de mundo/inimigo/stretch (SR-3, feixe, lâmpada, escuridão ambiente, plataforma, parede secreta, vapor, drone) fixadas no GDD-P | Vieram dos ADRs locais das F22–F34; ficam num lugar só |
 | AJ-011 | 2026-09-19 | 2.6.1 | **Garras Magnéticas entregues no meio da Estufa** (log da Helena), e não só ao religar o Nó | Sem isso a habilidade da fase só seria usável depois que a fase acaba; assim ela abre a rota final do setor |
