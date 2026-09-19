@@ -528,6 +528,54 @@ Toda vez que a dificuldade sobe demais, o jogador ganha um upgrade que faz o con
 | `CAPACITOR_BONUS` | 25 | Carga máx. | 2.6.3 |
 | `LOGS_TOTAL` | 24 | un. | 2.6.3 |
 | `RESEARCH_TOTAL` | 12 | un. | 2.6.3 |
+| `DIFFICULTY_DAMAGE_MULT` | {easy: 0.5, normal: 1.0, hard: 1.5} | fator | AJ-003 |
+| `DIFFICULTY_REACTOR_MULT` | {easy: 0.5, normal: 1.0, hard: 1.5} | fator | AJ-003 |
+| `RESPAWN_CHARGE_RATIO` | 1.0 | fração | AJ-006 |
+| `DOCK_REPAIR_RATE` | 10 | Integridade/s | AJ-006 |
+| `INTERACT_RANGE` | 20 | px | AJ-006 |
+| `DEATH_DELAY` | 1.2 | s | AJ-006 |
+| `SCENE_FADE_TIME` | 0.4 | s | AJ-006 |
+| `LOADING_MIN_TIME` | 0.8 | s | AJ-006 |
+| `SPLASH_TIME` | 2.5 | s | AJ-006 |
+| `MUSIC_FADE_TIME` | 1.5 | s | AJ-006 |
+| `CAMERA_SMOOTHING` | 5.0 | fator | AJ-006 |
+| `CAMERA_LOOK_AHEAD` | 24 | px | AJ-006 |
+| `COYOTE_TIME` | 0.12 | s | AJ-006 |
+| `JUMP_BUFFER` | 0.12 | s | AJ-006 |
+| `INVULNERABLE_TIME` | 0.8 | s | AJ-006 |
+| `KNOCKBACK_SPEED` | 140 | px/s | AJ-006 |
+| `CLAW_CLIMB_SPEED` | 70 | px/s | AJ-006 |
+| `CLAW_JUMP_PUSH` | 90 | px/s | AJ-006 |
+| `SPORE_RADIUS` | 24 | px | AJ-006 |
+| `SPORE_RADIUS_HEATED` | 48 | px | AJ-006 |
+| `SPORE_EXPAND_TIME` | 2.0 | s | AJ-006 |
+| `STATUS_EXPOSURE_GRACE` | 0.3 | s | AJ-006 |
+| `PLATFORM_SPEED` | 40 | px/s | AJ-006 |
+| `PLANT_GROW_TIME` | 2.0 | s | AJ-006 |
+| `SR3_SPEED` | 40 | px/s | AJ-012 |
+| `SR3_KNOCKBACK_X` | 120 | px/s | AJ-012 |
+| `SR3_KNOCKBACK_Y` | 120 | px/s | AJ-012 |
+| `SR3_KNOCKBACK_LOCK` | 0.15 | s | AJ-012 |
+| `BEAM_RANGE` | 32 | px | AJ-012 |
+| `LAMP_RADIUS` | 96 | px | AJ-012 |
+| `LAMP_ENERGY` | 0.9 | fator | AJ-012 |
+| `AMBIENT_DARK` | #191D26 | cor | AJ-012 |
+| `PLATFORM_WAIT` | 0.6 | s | AJ-012 |
+| `SECRET_WALL_FADE_TIME` | 0.3 | s | AJ-012 |
+| `SECRET_WALL_ALPHA` | 0.25 | alfa | AJ-012 |
+| `SECRETS_TOTAL` | 1 | un. (demo) | AJ-012 |
+| `STEAM_WARN_TIME` | 0.5 | s | AJ-012 |
+| `DRONE_SPEED` | 45 | px/s | AJ-012 |
+| `DRONE_WANDER_RADIUS` | 64 | px | AJ-012 |
+| `DRONE_RETARGET_TIME` | 1.5 | s | AJ-012 |
+| `DRONE_FOLLOW_RADIUS` | 120 | px | AJ-012 |
+| `OVERHEAT_DPS` | 3 | pts/s | 2.6.2-F (Final) |
+| `OVERHEAT_CHARGE_MULT` | 2.0 | fator | 2.6.2-F (Final) |
+| `FREEZE_SPEED_MULT` | 0.5 | fator | 2.6.2-F (Final) |
+| `FREEZE_JUMP_MULT` | 0.7 | fator | 2.6.2-F (Final) |
+| `DISCHARGE_TIME` | 3.0 | s | 2.6.2-F (Final) |
+| `OVERLOAD_TIME` | 10.0 | s | 2.6.2-F (Final) |
+| `OVERLOAD_SPEED_MULT` | 1.3 | fator | 2.6.2-F (Final) |
 
 <a id="gdd-p-dificuldade"></a>
 ### Multiplicadores de dificuldade (AJ-003)
@@ -553,3 +601,10 @@ Toda vez que a dificuldade sobe demais, o jogador ganha um upgrade que faz o con
 | AJ-003 | 2026-09-19 | 2.8 | Adicionada **dificuldade Fácil/Normal/Difícil** além do "modo sem timer" | Critério da disciplina "Dificuldade ajustável" |
 | AJ-004 | 2026-09-19 | 2.7 | Demo (1ª entrega) = Fase 0 + Fase 1 jogáveis, terminando numa tela "FIM DA DEMO" | Escopo de 30% da 1ª entrega |
 | AJ-005 | 2026-09-19 | 2.2 | Jogo estritamente **2D**; itens de rubrica "3D" e "Elementos de FPS" fora de escopo | Decisão do time |
+| AJ-006 | 2026-09-19 | GDD-P | Constantes de implementação que o GDD não especificava (fades, câmera, coyote/buffer, i-frames, doca, esporos, garras, plataforma, planta) fixadas na tabela GDD-P | Números necessários para implementar; ficam versionados num lugar só |
+| AJ-007 | 2026-09-19 | 2.6.1 / 2.4 | **Doca de recarga ativa por contato** (não exige apertar E): entra em recarga/reparo ao parar dentro dela | GDD-2.4 lista a doca em `interact`, GDD-2.6.1 fala em "parado numa doca"; contato é mais fluido e evita prompt competindo com terminais |
+| AJ-008 | 2026-09-19 | 2.5 | Diálogo tem dois modos: **bloqueante** (congela o timer, exige avançar) e **ambiente/bark** (não congela, some sozinho) | Sem isso qualquer fala da ÓRBITA pausaria o reator e o timer viraria decorativo |
+| AJ-009 | 2026-09-19 | 2.5 | Respawn devolve **Carga cheia** e a doca repara 10 Integridade/s; Célula/Kit não são consumidos com o recurso cheio | Casos não previstos no GDD; evitam desperdício e travamento após morte |
+| AJ-010 | 2026-09-19 | 2.5-energia | Puzzle da Estufa fixado em **5 sistemas / 2 unidades**; tutorial em 2 sistemas / 1 unidade | GDD dá exemplos diferentes (3/5 e até 6/3); a demo usa a faixa coerente com a curva da Fase 1 |
+| AJ-012 | 2026-09-19 | GDD-P | Constantes das features de mundo/inimigo/stretch (SR-3, feixe, lâmpada, escuridão ambiente, plataforma, parede secreta, vapor, drone) fixadas no GDD-P | Vieram dos ADRs locais das F22–F34; ficam num lugar só |
+| AJ-011 | 2026-09-19 | 2.6.1 | **Garras Magnéticas entregues no meio da Estufa** (log da Helena), e não só ao religar o Nó | Sem isso a habilidade da fase só seria usável depois que a fase acaba; assim ela abre a rota final do setor |
