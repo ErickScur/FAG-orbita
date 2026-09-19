@@ -2,12 +2,23 @@ extends Control
 
 const DATA_PATH: String = "res://data/ui/loading.json"
 
+const SYSTEM_LINES: Array[String] = [
+	"SUPORTE DE VIDA",
+	"SENSORES INTERNOS",
+	"DISTRIBUIÇÃO DE ENERGIA",
+	"MAPA DO SETOR",
+]
+const SYSTEM_PENDING_COLOR: Color = Color(0.435294, 0.509804, 0.560784)
+const SYSTEM_READY_COLOR: Color = Color(0.372549, 0.831373, 0.784314)
+
 @onready var sector_label: Label = %SectorName
 @onready var bar: ProgressBar = %Bar
 @onready var tip_label: Label = %Tip
+@onready var systems_box: VBoxContainer = %Systems
 
 var _path: String = ""
 var _elapsed: float = 0.0
+var _system_labels: Array[Label] = []
 
 
 func _ready() -> void:
@@ -16,6 +27,7 @@ func _ready() -> void:
 	sector_label.text = _sector_name(data, _path)
 	tip_label.text = _random_tip(data)
 	bar.value = 0.0
+	_build_system_lines()
 	if _path.is_empty():
 		set_process(false)
 		return
@@ -30,6 +42,7 @@ func _process(delta: float) -> void:
 	var status: int = ResourceLoader.load_threaded_get_status(_path, progress)
 	if progress.size() > 0:
 		bar.value = float(progress[0]) * 100.0
+	_refresh_system_lines(minf(bar.value / 100.0, _elapsed / Balance.LOADING_MIN_TIME))
 	match status:
 		ResourceLoader.THREAD_LOAD_LOADED:
 			if _elapsed >= Balance.LOADING_MIN_TIME:
@@ -42,6 +55,7 @@ func _process(delta: float) -> void:
 func _complete() -> void:
 	set_process(false)
 	bar.value = bar.max_value
+	_refresh_system_lines(1.0)
 	var packed: Variant = ResourceLoader.load_threaded_get(_path)
 	SceneManager.finish_loading(packed as PackedScene)
 
@@ -71,3 +85,27 @@ func _random_tip(data: Dictionary) -> String:
 	if tips.is_empty():
 		return ""
 	return String(tips[randi() % tips.size()])
+
+
+func _build_system_lines() -> void:
+	for line in SYSTEM_LINES:
+		var label := Label.new()
+		label.text = "[  ] " + line
+		label.add_theme_font_size_override("font_size", 16)
+		label.add_theme_color_override("font_color", SYSTEM_PENDING_COLOR)
+		label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		systems_box.add_child(label)
+		_system_labels.append(label)
+
+
+func _refresh_system_lines(ratio: float) -> void:
+	var total: int = _system_labels.size()
+	if total == 0:
+		return
+	var ready_count: int = clampi(int(ratio * float(total + 1)), 0, total)
+	for i in range(total):
+		var label: Label = _system_labels[i]
+		var done: bool = i < ready_count
+		var prefix: String = "[OK] " if done else "[  ] "
+		label.text = prefix + SYSTEM_LINES[i]
+		label.add_theme_color_override("font_color", SYSTEM_READY_COLOR if done else SYSTEM_PENDING_COLOR)

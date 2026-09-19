@@ -1,6 +1,30 @@
-[gd_scene load_steps=2 format=3 uid="uid://c0rbitaloading"]
+[gd_scene load_steps=6 format=3 uid="uid://c0rbitaloading"]
 
 [ext_resource type="Script" path="res://scenes/boot/loading.gd" id="1_loading"]
+[ext_resource type="Texture2D" uid="uid://dfcxuv57nr1j1" path="res://assets/placeholder/backgrounds/space_far.png" id="2_stars"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_frame"]
+bg_color = Color(0.0392157, 0.0666667, 0.0901961, 0.921569)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.207843, 0.435294, 0.435294, 1)
+content_margin_left = 10.0
+content_margin_top = 8.0
+content_margin_right = 10.0
+content_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar_bg"]
+bg_color = Color(0.0784314, 0.117647, 0.145098, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.207843, 0.435294, 0.435294, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar_fill"]
+bg_color = Color(0.372549, 0.831373, 0.784314, 1)
 
 [node name="Loading" type="Control"]
 layout_mode = 3
@@ -19,37 +43,21 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-color = Color(0.0196078, 0.0313726, 0.0470588, 1)
+color = Color(0.0117647, 0.0196078, 0.0313726, 1)
 
-[node name="Title" type="Label" parent="."]
+[node name="Stars" type="TextureRect" parent="."]
+modulate = Color(1, 1, 1, 0.470588)
 layout_mode = 1
-anchors_preset = 10
+anchors_preset = 15
 anchor_right = 1.0
-offset_top = 48.0
-offset_bottom = 66.0
+anchor_bottom = 1.0
 grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
-theme_override_colors/font_color = Color(0.878431, 0.921569, 0.933333, 1)
-theme_override_font_sizes/font_size = 16
-text = "CARREGANDO SETOR"
-horizontal_alignment = 1
-vertical_alignment = 1
+texture = ExtResource("2_stars")
+stretch_mode = 1
 
-[node name="SectorName" type="Label" parent="."]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_top = 68.0
-offset_bottom = 86.0
-grow_horizontal = 2
-mouse_filter = 2
-theme_override_colors/font_color = Color(0.498039, 0.839216, 0.784314, 1)
-theme_override_font_sizes/font_size = 16
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Bar" type="ProgressBar" parent="."]
+[node name="Panel" type="PanelContainer" parent="."]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
@@ -57,14 +65,48 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -96.0
-offset_top = -3.0
-offset_right = 96.0
-offset_bottom = 5.0
+offset_left = -140.0
+offset_top = -62.0
+offset_right = 140.0
+offset_bottom = 50.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_frame")
+
+[node name="Rows" type="VBoxContainer" parent="Panel"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 3
+
+[node name="Title" type="Label" parent="Panel/Rows"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.878431, 0.921569, 0.933333, 1)
+theme_override_font_sizes/font_size = 16
+text = "CARREGANDO SETOR"
+
+[node name="SectorName" type="Label" parent="Panel/Rows"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.498039, 0.839216, 0.784314, 1)
+theme_override_font_sizes/font_size = 16
+
+[node name="Bar" type="ProgressBar" parent="Panel/Rows"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 7)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_bar_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_bar_fill")
 show_percentage = false
+
+[node name="Systems" type="VBoxContainer" parent="Panel/Rows"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 1
 
 [node name="Tip" type="Label" parent="."]
 unique_name_in_owner = true
@@ -73,14 +115,14 @@ anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 32.0
-offset_top = -48.0
-offset_right = -32.0
-offset_bottom = -12.0
+offset_left = 24.0
+offset_top = -42.0
+offset_right = -24.0
+offset_bottom = -8.0
 grow_horizontal = 2
 grow_vertical = 0
 mouse_filter = 2
-theme_override_colors/font_color = Color(0.541176, 0.607843, 0.658824, 1)
+theme_override_colors/font_color = Color(0.435294, 0.509804, 0.560784, 1)
 theme_override_font_sizes/font_size = 16
 autowrap_mode = 3
 horizontal_alignment = 1

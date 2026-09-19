@@ -535,7 +535,7 @@ Toda vez que a dificuldade sobe demais, o jogador ganha um upgrade que faz o con
 | `INTERACT_RANGE` | 20 | px | AJ-006 |
 | `DEATH_DELAY` | 1.2 | s | AJ-006 |
 | `SCENE_FADE_TIME` | 0.4 | s | AJ-006 |
-| `LOADING_MIN_TIME` | 0.8 | s | AJ-006 |
+| `LOADING_MIN_TIME` | 1.6 | s | AJ-017 |
 | `SPLASH_TIME` | 2.5 | s | AJ-006 |
 | `MUSIC_FADE_TIME` | 1.5 | s | AJ-006 |
 | `CAMERA_SMOOTHING` | 5.0 | fator | AJ-006 |
@@ -606,6 +606,7 @@ Toda vez que a dificuldade sobe demais, o jogador ganha um upgrade que faz o con
 | AJ-008 | 2026-09-19 | 2.5 | Diálogo tem dois modos: **bloqueante** (congela o timer, exige avançar) e **ambiente/bark** (não congela, some sozinho) | Sem isso qualquer fala da ÓRBITA pausaria o reator e o timer viraria decorativo |
 | AJ-009 | 2026-09-19 | 2.5 | Respawn devolve **Carga cheia** e a doca repara 10 Integridade/s; Célula/Kit não são consumidos com o recurso cheio | Casos não previstos no GDD; evitam desperdício e travamento após morte |
 | AJ-010 | 2026-09-19 | 2.5-energia | Puzzle da Estufa fixado em **5 sistemas / 2 unidades**; tutorial em 2 sistemas / 1 unidade | GDD dá exemplos diferentes (3/5 e até 6/3); a demo usa a faixa coerente com a curva da Fase 1 |
+| AJ-017 | 2026-09-19 | GDD-P | `LOADING_MIN_TIME` de 0,8 s para **1,6 s** | A tela de carregamento mostra os sistemas da estação religando um a um (Jornada etapa 1); em 0,8 s ninguém lê |
 | AJ-013 | 2026-09-19 | 2.5 | O **timer do reator só começa a cair no alarme da Fase 0** (Jornada etapa 2), não no carregamento do jogo | O Chamado para a Aventura é o que liga o timer; antes disso o tutorial seria punido |
 | AJ-014 | 2026-09-19 | 2.6.1 | Um setor pode ter **vários consoles do mesmo Terminal de Distribuição** (mesmo `terminal_id`) | A Estufa é vertical; obrigar a voltar ao mesmo console viraria backtracking puro |
 | AJ-015 | 2026-09-19 | 2.6.2-E | Na **Demo**, cair num buraco no escuro devolve o MU-7 ao andar de baixo em vez de matar | GDD-2.6.2-E diz "mata por queda"; na fase de aprendizado isso pune demais e custa 3% do reator |
