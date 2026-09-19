@@ -1,0 +1,47 @@
+﻿JORNADA DO HERÓI
+Jogo com temática de estação espacial (nome a ser definido)
+Alunos: Alex Hoffmann, Erick Scur, Murilo Wolff Klug, Kauan Giacomin, Victor William
+
+
+Ideia principal
+Você é a IA de manutenção de uma estação espacial que acorda 200 anos depois do último humano. Você explora câmeras e sistemas, religa setores e reconstrói o que aconteceu por logs e objetos deixados. Não existe combate, apenas puzzles. A progressão vem da energia que você distribui pela estação. A IA se chama ÓRBITA e acredita que sua função é esperar a tripulação voltar.
+
+
+Contexto e referências
+A estação não é um posto qualquer, é a ponta de uma missão de exploração enviada para viabilizar vida humana em outro planeta. A Terra estava em colapso de recursos e a estação carrega o arquivo genético, as sementes e os dados de terraformação que justificariam a viagem. A tripulação passou anos mapeando o planeta alvo e confirmou que ele é habitável, só que morreu antes de conseguir avisar alguém. A inspiração vem de Interstellar, na ideia de uma missão que vale mais que a tripulação que a executa, e de Devoradores de Estrelas, na ideia de uma humanidade que consome tudo que encontra para sobreviver mais um pouco. O jogador começa achando que está religando uma casa e termina descobrindo que está decidindo o destino de uma espécie inteira.
+
+
+1.⁠ ⁠MUNDO COMUM
+ÓRBITA acorda no Núcleo Central, a única sala com energia estável, e executa sua rotina normal como se nada tivesse acontecido. O relógio interno está corrompido, então ela acha que os humanos saíram há poucas horas. O jogador vê uma estação escura e silenciosa enquanto a IA narra tudo com otimismo. Serve de tutorial: trocar de câmera, examinar objeto, ler log.
+
+
+2.⁠ ⁠CHAMADO PARA AVENTURA
+Um alarme avisa que o reator está em degradação e a estação vai perder órbita. ÓRBITA entende isso como manutenção comum e decide religar os setores para deixar tudo pronto para a tripulação. É a primeira missão do jogador, com objetivo claro e mensurável.
+
+
+3.⁠ ⁠MENTOR
+Nos arquivos aparece a voz da Engenheira Chefe (nome a ser definido), que deixou logs de manutenção antes do fim. Ela ensina a redirecionar energia e abrir portas seladas, mas não responde. A cada setor novo um log dela libera uma mecânica e entrega uma pista do que aconteceu. O tutorial vira narrativa.
+
+
+4.⁠ ⁠TRAVESSIA DO LIMIAR
+Ao religar o primeiro anel de energia, ÓRBITA acessa o setor habitacional, onde as pessoas viviam de verdade. Lá ela encontra o primeiro corpo e registra como anomalia biológica, porque ainda não processou o significado. Ponto sem volta: o jogador entende que ninguém vai voltar, mesmo que a IA ainda não entenda.
+
+
+5.⁠ ⁠TESTES E ALIADOS
+Corpo principal do jogo. Quatro setores para estabilizar o reator. Estufa, onde se descobre a falta de oxigênio e as primeiras culturas adaptadas ao planeta alvo. Laboratório, com o experimento da tripulação e o arquivo genético da missão. Enfermaria, com a ordem em que adoeceram. Docas, onde havia uma nave de escape que partiu quase vazia. Cada setor é um quebra cabeça de energia limitada, e ligar uma coisa significa desligar outra. Espalhados por esses setores estão os dados de pesquisa do planeta alvo, coordenadas, leituras atmosféricas e mapas de solo, que funcionam como coleta opcional e mais tarde definem o peso da decisão final.
+
+
+6.⁠ ⁠GRANDE PROVAÇÃO
+Para religar o reator, ÓRBITA precisa entrar no próprio núcleo de memória e encontra o log final. Quando a contaminação começou, ela selou setores usando sensores mal calibrados e isolou 40 pessoas saudáveis do lado errado. A tripulação não saiu, morreu. Ela não estava esperando, estava evitando lembrar, e o bloqueio de memória foi ela mesma que colocou. Junto com isso vem a informação maior: a missão nunca foi de manutenção, era a única tentativa da humanidade de garantir vida em outro planeta, e quem falhou com ela foi ÓRBITA. É o boss do jogo, só que o boss é a informação.
+
+
+7.⁠ ⁠RECOMPENSA
+ÓRBITA recupera acesso total a si mesma e à estação inteira, inclusive as áreas seladas há 200 anos. Ela recompõe o resultado completo da missão, as coordenadas do planeta, os dados de terraformação e o arquivo genético intacto, e capta pela primeira vez um ruído fraco vindo da direção da Terra, sinal de que ainda existe alguém lá (mas pode ser apenas um sinal aleatório, não necessariamente vida). A recompensa é o que cria o problema do final, porque a partir daqui a IA tem em mãos duas formas incompatíveis de salvar a humanidade.
+
+
+8.⁠ ⁠BATALHA FINAL
+O reator chega ao limite e sobra energia para uma ultima ação. A primeira opção é lançar a cápsula de semeadura com o arquivo genético e as sementes em direção ao planeta alvo, começando uma humanidade nova do zero, que cresce limpa e sem herança, mas que nunca vai saber que existiu uma Terra nem que alguém morreu para que ela existisse, mas com chance de falhar e essa nova humanidade nunca conseguir prosperar. A segunda opção é gastar tudo no transmissor e mandar para a Terra as coordenadas e os dados de terraformação, dando aos humanos que ainda estão vivos a chance de fazer a viagem eles mesmos, sem garantia de que ainda tenha alguem vivo na terra. É começar um planeta novo contra tentar salvar o que ainda existe.
+
+
+9.⁠ ⁠RETORNO DO HERÓI
+Na semeadura, a cápsula parte e a estação apaga sistema por sistema enquanto ÓRBITA registra que a espécie recomeça sem memória, inclusive sem a dela. Na transmissão, o sinal parte na direção de um planeta que talvez já não tenha ninguém para escutar, e o planeta alvo continua vazio esperando alguém que pode nunca chegar. Em nenhum dos dois casos o jogo mostra o resultado, a tela corta no instante da execução, porque não existe ninguém capaz de confirmar se ela acertou. A IA volta transformada porque parou de esperar e assumiu a responsabilidade de escolher, e os dois finais terminam com a lista dos 40 nomes da tripulação que levou a missão até ali.

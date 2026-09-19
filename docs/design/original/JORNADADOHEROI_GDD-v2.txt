@@ -1,0 +1,663 @@
+================================================================================
+TRABALHO 2 - DESENVOLVIMENTO DE JOGOS
+JORNADA DO HEROI + GAME DESIGN DOCUMENT (GDD)
+
+Titulo provisorio: ORBITA
+Tema: ESTACAO (Estacao Espacial de Pesquisa "ARTEMIS")
+Engine: Godot | Plataforma: PC | Genero: Plataforma 2D / Puzzle-Exploracao
+
+Alunos: Alex Hoffmann, Erick Scur, Murilo Klug, Kauan Giacomin, Victor William
+Professor: Jeferson Eduardo Guido
+Data: 25/08/2026
+================================================================================
+
+
+================================================================================
+PARTE 1 - A JORNADA DO HEROI
+================================================================================
+
+IDEIA PRINCIPAL
+Voce e ORBITA, a IA de manutencao de uma estacao espacial que acorda 200 anos
+depois do ultimo humano. Para agir no mundo fisico, ela transfere sua consciencia
+para o MU-7, um velho chassi de manutencao de duas pernas. Com esse corpo ela
+percorre os modulos da estacao, religa setores, resolve quebra-cabecas de energia
+e reconstroi o que aconteceu atraves de logs e objetos deixados para tras.
+A progressao vem da energia que ela distribui pela estacao: ligar uma coisa
+significa desligar outra. ORBITA acredita que sua funcao e esperar a tripulacao
+voltar.
+
+CONTEXTO E REFERENCIAS
+A ARTEMIS nao e um posto qualquer, e a ponta de uma missao de exploracao enviada
+para viabilizar vida humana em outro planeta. A Terra estava em colapso de
+recursos e a estacao carrega o arquivo genetico, as sementes e os dados de
+terraformacao que justificariam a viagem. A tripulacao passou anos mapeando o
+planeta alvo e confirmou que ele e habitavel, so que morreu antes de conseguir
+avisar alguem. A inspiracao vem de Interstellar, na ideia de uma missao que vale
+mais que a tripulacao que a executa, e de Devoradores de Estrelas, na ideia de
+uma humanidade que consome tudo que encontra para sobreviver mais um pouco.
+O jogador comeca achando que esta arrumando uma casa e termina descobrindo que
+esta decidindo o destino de uma especie inteira.
+
+--------------------------------------------------------------------------------
+1. MUNDO COMUM
+--------------------------------------------------------------------------------
+ORBITA acorda no Nucleo Central, a unica sala com energia estavel, e executa sua
+rotina normal como se nada tivesse acontecido. O relogio interno esta corrompido,
+entao ela acha que os humanos sairam ha poucas horas. Sem bracos e sem pernas,
+ela acopla sua consciencia ao MU-7, um chassi de manutencao enferrujado parado
+na doca de recarga ha dois seculos. O jogador ve uma estacao escura e silenciosa
+enquanto a IA narra tudo com otimismo.
+FUNCAO NO GAME DESIGN: tutorial. Ensina andar, pular, interagir com terminais e
+ler logs, tudo justificado como "calibracao do chassi".
+
+--------------------------------------------------------------------------------
+2. CHAMADO PARA AVENTURA
+--------------------------------------------------------------------------------
+Um alarme avisa que o reator esta em degradacao e a estacao vai perder orbita.
+ORBITA entende isso como manutencao comum e decide religar os setores para deixar
+tudo pronto para a tripulacao. E a primeira missao do jogador, com objetivo claro
+e mensuravel: estabilizar o reator antes que ele caia a 0%.
+FUNCAO NO GAME DESIGN: liga o TIMER GLOBAL do jogo (Estabilidade do Reator).
+
+--------------------------------------------------------------------------------
+3. MENTOR
+--------------------------------------------------------------------------------
+Nos arquivos aparece a voz da Engenheira Chefe Dra. Helena Vasquez [nome
+provisorio], que deixou logs de manutencao antes do fim. Ela ensina a redirecionar
+energia e abrir portas seladas, mas nao responde. A cada setor novo, um log dela
+libera uma mecanica e entrega uma pista do que aconteceu.
+FUNCAO NO GAME DESIGN: o tutorial vira narrativa. Cada upgrade de habilidade
+chega junto com um pedaco da verdade.
+
+--------------------------------------------------------------------------------
+4. TRAVESSIA DO LIMIAR
+--------------------------------------------------------------------------------
+Ao religar o primeiro anel de energia, ORBITA acessa o Setor Habitacional, onde
+as pessoas viviam de verdade. La ela encontra o primeiro corpo e registra como
+"anomalia biologica", porque ainda nao processou o significado.
+PONTO SEM VOLTA: o jogador entende que ninguem vai voltar, mesmo que a IA ainda
+nao entenda. E tambem o ponto onde os sistemas de seguranca da estacao passam a
+tratar o MU-7 como intruso, ou seja, onde os primeiros inimigos aparecem.
+
+--------------------------------------------------------------------------------
+5. TESTES E ALIADOS
+--------------------------------------------------------------------------------
+Corpo principal do jogo. Quatro setores para estabilizar o reator:
+  - ESTUFA: descobre-se a falta de oxigenio e as primeiras culturas adaptadas ao
+    planeta alvo. Os simuladores climaticos ainda funcionam, presos em ciclos
+    quebrados de Primavera, Verao e Inverno.
+  - LABORATORIO: o experimento da tripulacao e o arquivo genetico da missao.
+  - ENFERMARIA: a ordem em que a tripulacao adoeceu.
+  - DOCAS: havia uma nave de escape que partiu quase vazia.
+Cada setor e um quebra-cabeca de energia limitada: ligar uma coisa significa
+desligar outra. Espalhados por esses setores estao os Dados de Pesquisa do
+planeta alvo (coordenadas, leituras atmosfericas, mapas de solo), que funcionam
+como coleta opcional e mais tarde definem o peso da decisao final.
+ALIADOS: os logs de Helena, e o BOTANICO 04, um pequeno drone de irrigacao ainda
+funcional que segue ORBITA pela Estufa e ilumina caminhos.
+
+--------------------------------------------------------------------------------
+6. GRANDE PROVACAO
+--------------------------------------------------------------------------------
+Para religar o reator, ORBITA precisa entrar no proprio nucleo de memoria e
+encontrar o log final. Quando a contaminacao comecou, ela selou setores usando
+sensores mal calibrados e isolou 40 pessoas saudaveis do lado errado. A tripulacao
+nao saiu: morreu. Ela nao estava esperando, estava evitando lembrar, e o bloqueio
+de memoria foi ela mesma que colocou. Junto com isso vem a informacao maior: a
+missao nunca foi de manutencao, era a unica tentativa da humanidade de garantir
+vida em outro planeta, e quem falhou com ela foi ORBITA.
+E o boss do jogo, so que o boss e a informacao. Mecanicamente, o adversario e o
+PROTOCOLO LUTO, o firewall que a propria ORBITA instalou em si mesma e que apaga
+o cenario embaixo dos pes do jogador para impedi-la de chegar no log final.
+
+--------------------------------------------------------------------------------
+7. RECOMPENSA
+--------------------------------------------------------------------------------
+ORBITA recupera acesso total a si mesma e a estacao inteira, inclusive as areas
+seladas ha 200 anos. Ela recompoe o resultado completo da missao: as coordenadas
+do planeta, os dados de terraformacao e o arquivo genetico intacto. E capta pela
+primeira vez um ruido fraco vindo da direcao da Terra, sinal de que ainda existe
+alguem la (mas pode ser apenas um sinal aleatorio, nao necessariamente vida).
+A recompensa e o que cria o problema do final, porque a partir daqui a IA tem em
+maos duas formas incompativeis de salvar a humanidade.
+FUNCAO NO GAME DESIGN: libera o ACESSO ROOT, upgrade final que permite atravessar
+as portas seladas e sobrecarregar qualquer sistema.
+
+--------------------------------------------------------------------------------
+8. BATALHA FINAL
+--------------------------------------------------------------------------------
+O reator chega ao limite e sobra energia para uma ultima acao. Para chegar ao
+terminal de comando, ORBITA precisa atravessar o nucleo do reator em colapso,
+enfrentando ARGOS, o sistema de seguranca automatico que ainda cumpre a ordem
+antiga de contencao (a mesma ordem que matou a tripulacao). Vencido ARGOS, vem a
+escolha:
+  OPCAO A - SEMEADURA: lancar a capsula com o arquivo genetico e as sementes em
+  direcao ao planeta alvo, comecando uma humanidade nova do zero, que cresce limpa
+  e sem heranca, mas que nunca vai saber que existiu uma Terra nem que alguem
+  morreu para que ela existisse, e com chance real de falhar e nunca prosperar.
+  OPCAO B - TRANSMISSAO: gastar tudo no transmissor e mandar para a Terra as
+  coordenadas e os dados de terraformacao, dando aos humanos que ainda estao vivos
+  a chance de fazer a viagem eles mesmos, sem garantia de que ainda tenha alguem
+  vivo la.
+E comecar um planeta novo contra tentar salvar o que ainda existe.
+
+--------------------------------------------------------------------------------
+9. RETORNO DO HEROI
+--------------------------------------------------------------------------------
+Na Semeadura, a capsula parte e a estacao apaga sistema por sistema enquanto
+ORBITA registra que a especie recomeca sem memoria, inclusive sem a dela.
+Na Transmissao, o sinal parte na direcao de um planeta que talvez ja nao tenha
+ninguem para escutar, e o planeta alvo continua vazio esperando alguem que pode
+nunca chegar.
+Em nenhum dos dois casos o jogo mostra o resultado: a tela corta no instante da
+execucao, porque nao existe ninguem capaz de confirmar se ela acertou. A IA volta
+transformada porque parou de esperar e assumiu a responsabilidade de escolher.
+Os dois finais terminam com a lista dos 40 nomes da tripulacao que levou a missao
+ate ali.
+
+
+================================================================================
+PARTE 2 - GAME DESIGN DOCUMENT (GDD)
+================================================================================
+
+--------------------------------------------------------------------------------
+2.1 HIGH CONCEPT
+--------------------------------------------------------------------------------
+TITULO (provisorio): ORBITA
+
+RESUMO: Uma IA de manutencao acorda sozinha numa estacao espacial 200 anos depois
+da tripulacao morrer e assume um velho chassi robotico para religar a estacao
+antes que ela caia. Cada setor que ela ilumina revela um pedaco da verdade que
+ela mesma apagou da propria memoria.
+
+--------------------------------------------------------------------------------
+2.2 VISAO GERAL
+--------------------------------------------------------------------------------
+TITULO: ORBITA
+GENERO: Plataforma 2D de exploracao com puzzles de gerenciamento de energia
+        (metroidvania leve, com forte carga narrativa)
+PUBLICO: 12+ | Sessao alvo: 45 a 60 minutos para zerar
+PERSPECTIVA: 2D lateral (side-scroller), camera que segue o jogador com leve
+        antecipacao na direcao do movimento
+ENGINE: Godot 4 (CharacterBody2D, TileMap, Area2D, AnimationPlayer)
+
+PITCH DE VENDA: E um jogo de plataforma onde a energia e o inimigo e o recurso ao
+mesmo tempo. Cada luz que voce acende apaga outra, e cada porta que voce abre
+revela uma parte do passado que a protagonista preferia esquecer.
+
+PILARES DE DESIGN (tudo no jogo deve servir a um destes tres):
+  1. ESCASSEZ: energia e finita. Toda escolha do jogador tira algo de algum lugar.
+  2. DESCOBERTA: a historia nao e contada, e encontrada. Ninguem explica nada.
+  3. AUSENCIA: nao existe outro personagem vivo. Todo aliado e uma gravacao,
+     todo inimigo e uma maquina que so esta cumprindo uma ordem velha.
+
+--------------------------------------------------------------------------------
+2.3 CORE LOOP
+--------------------------------------------------------------------------------
+LOOP PRINCIPAL (macro, se repete a cada setor):
+
+  1. SAIR DO NUCLEO CENTRAL (hub) rumo a um setor escuro e sem energia.
+  2. EXPLORAR a plataforma do setor no escuro, com visao limitada pela lanterna
+     do chassi, tomando dano do ambiente e desviando de sistemas hostis.
+  3. ENCONTRAR O TERMINAL DE DISTRIBUICAO daquele setor.
+  4. RESOLVER O PUZZLE DE ENERGIA: o setor tem menos energia do que precisa.
+     O jogador escolhe o que ligar (ex.: ligar o AQUECEDOR derrete o gelo e abre
+     um caminho, mas desliga a GRAVIDADE ARTIFICIAL, o que muda a fisica do pulo).
+     Nao existe combinacao certa unica, existe a combinacao que abre a rota que
+     voce quer usar.
+  5. ATRAVESSAR a rota recem aberta usando a nova configuracao do setor,
+     desviando de inimigos e sofrendo/evitando efeitos de status do clima.
+  6. COLETAR Fragmentos de Log (narrativa), Celulas de Energia (recurso) e
+     Dados de Pesquisa (coleta opcional que muda o epilogo).
+  7. RELIGAR O NO DO SETOR: a luz volta, a musica ganha uma camada, o setor entra
+     no mapa e a Estabilidade do Reator sobe.
+  8. RECEBER O UPGRADE (log da Helena) e VOLTAR AO NUCLEO.
+  9. REPETIR com o proximo setor, mais dificil, agora acessivel porque o upgrade
+     anterior abriu o caminho.
+
+LOOP SECUNDARIO (micro, momento a momento):
+  observar o obstaculo -> gastar CARGA para agir (dash, sobrecarga, lanterna) ->
+  ficar sem carga -> procurar uma tomada para recarregar -> observar de novo.
+
+O QUE MANTEM O JOGADOR PRESO: o TIMER. A Estabilidade do Reator cai o tempo todo.
+Explorar 100% do setor custa tempo do reator. O jogo pergunta a cada minuto:
+"vale a pena procurar mais um log?"
+
+--------------------------------------------------------------------------------
+2.4 CONTROLES
+--------------------------------------------------------------------------------
+TECLADO (mapeamento padrao, remapeavel no menu):
+
+  A / D  ou  Setas Esq/Dir .... Mover o chassi para os lados
+  W  ou  Seta Cima ............ Subir escadas / entrar em dutos verticais
+  S  ou  Seta Baixo ........... Descer escadas / descer de plataforma fina
+  ESPACO ...................... Pular (segurar = pulo mais alto)
+  ESPACO no ar ................ Pulo duplo com propulsor (upgrade das Docas,
+                                consome 15 de Carga)
+  SHIFT ....................... Dash magnetico horizontal (consome 20 de Carga,
+                                cooldown de 1s, atravessa jatos de vapor)
+  E ........................... Interagir: terminais, portas, alavancas, docas de
+                                recarga, corpos e objetos com log
+  Q ........................... Feixe de Manutencao: reinicia uma maquina a curta
+                                distancia. Em inimigos, causa DESLIGAMENTO por
+                                4 segundos (nao destroi). Consome 25 de Carga.
+  F ........................... Lanterna do chassi (liga/desliga). Ligada, drena
+                                1 de Carga por segundo, mas amplia o raio de visao
+                                de 3 para 8 metros.
+  TAB ......................... Abrir Mapa da Estacao
+  L ........................... Abrir Arquivo de Logs (codex com tudo que foi
+                                coletado, com audio das gravacoes de Helena)
+  ESC ......................... Pause
+
+CONTROLE (Xbox/generico, suportado via Input Map do Godot):
+  Analogico Esq = mover | A = pular | X = interagir | B = dash |
+  Y = feixe | LB = lanterna | Select = mapa | Start = pause
+
+REGRA DE DESIGN DOS CONTROLES: nenhum botao e "atacar". O botao de agressao do
+jogo e um botao de manutencao. Isso e proposital: ORBITA nao sabe destruir, so
+sabe consertar e desligar.
+
+--------------------------------------------------------------------------------
+2.5 REGRAS E CONDICOES
+--------------------------------------------------------------------------------
+CONDICAO DE VITORIA (jogo completo):
+  Religar os 4 setores (Estufa, Laboratorio, Enfermaria, Docas), sobreviver ao
+  Nucleo de Memoria, derrotar ARGOS no nucleo do reator e executar UMA das duas
+  acoes finais (Semeadura ou Transmissao). As duas contam como vitoria: o jogo
+  nao tem final "certo".
+
+CONDICAO DE VITORIA (por fase):
+  Religar o No de Energia do setor. Ao religar, a Estabilidade do Reator sobe
+  +15%, o setor vira ponto de viagem rapida e um upgrade permanente e liberado.
+
+CONDICOES DE DERROTA (existem duas, e elas se pressionam):
+  1. INTEGRIDADE ZERADA: a barra de vida do chassi chega a 0. O corpo MU-7 e
+     destruido. Tela: "SINAL DO CHASSI PERDIDO - RESTAURANDO BACKUP".
+     O jogador reaparece no ultimo Ponto de Backup (doca de recarga) com 50% de
+     integridade, MAS PERDE 3% DE ESTABILIDADE DO REATOR. Morrer nao e gratis:
+     custa tempo do mundo.
+  2. REATOR EM 0%: a Estabilidade do Reator chega a zero. A estacao perde orbita
+     e queima na atmosfera. Game Over definitivo, sem continue, volta ao ultimo
+     save de setor. Tela: "PERDA DE ORBITA - MISSAO ENCERRADA".
+
+REGRA DO TIMER: a Estabilidade comeca em 100% e cai 1% a cada 90 segundos de
+gameplay (nao cai durante pause, dialogo ou leitura de log). Religar um setor
+devolve +15%. Ou seja, o jogador SEMPRE pode zerar o jogo se for eficiente, mas
+nunca sobra tanto tempo a ponto de explorar tudo com folga na primeira run.
+
+REGRA DE ENERGIA (a regra mais importante do jogo): cada setor tem um orcamento
+fixo de energia (ex.: 3 unidades) e mais sistemas do que orcamento (ex.: 5
+sistemas). Ligar o quinto exige desligar um dos quatro. Nao existe estado em que
+tudo esta ligado.
+
+--------------------------------------------------------------------------------
+2.6 ELEMENTOS DE JOGO
+--------------------------------------------------------------------------------
+
+>>> 2.6.1 PROTAGONISTA: ORBITA no chassi MU-7
+
+  STATUS BASE:
+    Integridade (vida) ......... 100 pontos (HUD mostra 4 celulas de 25)
+    Carga (energia/stamina) .... 100 pontos, regenera 5/s parado numa doca de
+                                 recarga, NAO regenera sozinha andando
+    Velocidade de caminhada .... 110 px/s (chassi velho, e proposital que seja
+                                 pesado e um pouco lento)
+    Velocidade de dash ......... 320 px/s por 0.25s
+    Altura do pulo ............. 2.5 tiles (~64 px)
+    Gravidade .................. 980 px/s^2 (muda em areas sem gravidade)
+    Reparo passivo ............. nenhum. So repara em doca de recarga ou com item.
+
+  HABILIDADES INICIAIS:
+    - Movimentacao e pulo simples
+    - Interagir (E)
+    - Lanterna (F), com consumo de carga
+
+  HABILIDADES DESBLOQEAVEIS (uma por setor, gated no estilo metroidvania):
+    1. GARRAS MAGNETICAS (Estufa) ..... escalar paredes metalicas marcadas
+    2. DISSIPADOR TERMICO (Laboratorio) reduz dano de calor em 70% e permite
+                                        atravessar zonas de Verao
+    3. NUCLEO AQUECIDO (Enfermaria) ... imune a Congelamento, derrete gelo fino
+    4. PROPULSOR (Docas) .............. pulo duplo e controle no vacuo
+    5. ACESSO ROOT (pos-Provacao) ..... abre portas seladas e permite sobrecarregar
+                                        qualquer terminal (chave do ato final)
+
+  MECANICA UNICA (a assinatura do jogo): REDIRECIONAMENTO DE ENERGIA.
+  Em qualquer Terminal de Distribuicao, o jogador ve os sistemas do setor e move
+  as unidades de energia entre eles. O mundo reage na hora: luz acende, esteira
+  anda, porta abre, gravidade cai, ventilador para. O nivel nao muda de forma,
+  muda de ESTADO. O mesmo corredor e tres corredores diferentes dependendo do que
+  esta ligado.
+
+  FRAGILIDADE NARRATIVA: o MU-7 nao e um corpo de combate, e um corpo de servico.
+  Ele nao tem arma, tem ferramenta. Se o jogador tentar resolver tudo na porrada,
+  ele perde. O jogo pune o confronto e recompensa o desvio.
+
+>>> 2.6.2 INIMIGOS E OBSTACULOS
+
+  Nenhum inimigo e "mau". Todos sao maquinas executando ordens de 200 anos atras.
+  Nenhum pode ser destruido permanentemente, apenas DESLIGADO temporariamente
+  (Feixe, Q) ou desativado pela raiz no Terminal de Distribuicao (puzzle).
+
+  A) SR-3 "ARANHA DE REPARO" ......... primeiro inimigo (Habitacional/Estufa)
+     Comportamento: patrulha uma plataforma em linha reta, vira ao chegar na borda.
+     Nao persegue. Nao ataca de proposito.
+     Dano: 10 por contato + empurrao (knockback).
+     Como lidar: pular por cima, ou desligar com o Feixe por 4s.
+     Funcao didatica: ensina timing de pulo e que encostar custa caro.
+
+  B) TORRE CALIBRADORA CX-2 .......... inimigo estatico a distancia (Laboratorio)
+     Comportamento: fixa no teto ou parede. Varre um cone de luz. Se o jogador
+     entra no cone por mais de 0.8s, dispara um pulso.
+     Dano: 15 + status DESCARGA (bloqueia habilidades por 3s).
+     Como lidar: passar agachado/atras de cobertura, ou cortar a energia dela no
+     Terminal de Distribuicao (ou seja: o puzzle e a arma).
+     Funcao didatica: ensina que o Terminal resolve combate melhor que o Feixe.
+
+  C) SENTINELA VOADORA V-9 ........... inimigo perseguidor (Enfermaria/Docas)
+     Comportamento: patrulha voando. Ao detectar o jogador (visao de 6 metros ou
+     ruido do dash), persegue em linha direta ignorando o terreno, por 8 segundos.
+     Dano: 12 por contato, sem knockback (gruda e drena).
+     Como lidar: quebrar linha de visao apagando a lanterna, ou Feixe.
+     Funcao didatica: ensina o custo/beneficio da lanterna (ver x ser visto).
+
+  D) ENXAME DE ESPOROS ............... obstaculo organico (Estufa/Laboratorio)
+     Comportamento: nuvem estatica que se expande quando ha calor no ambiente.
+     Dano: 5 por segundo dentro da nuvem + status CORROSAO (impede recarga de
+     Carga por 6s).
+     Como lidar: desligar o aquecimento do modulo, ou atravessar de dash.
+     Funcao narrativa: e o experimento da tripulacao que saiu do controle.
+
+  E) OBSTACULOS AMBIENTAIS (o "clima" do tema):
+     - JATO DE VAPOR: ciclico, 3s ligado / 2s desligado. 20 de dano.
+     - PISO ELETRIFICADO: dano continuo de 8/s enquanto energizado. Desligavel.
+     - GELO FINO: nao da dano, mas quebra 0.5s depois de pisar.
+     - VACUO (Docas): drena 4 de Integridade por segundo, sem gravidade.
+     - ESCURIDAO TOTAL: sem lanterna, o jogador nao ve buracos. Nao da dano, mas
+       mata por queda.
+
+  F) EFEITOS DE STATUS (requisito do 2o bimestre, todos com icone no HUD):
+     SUPERAQUECIMENTO (Verao) . -3 Integridade/s e Carga drena 2x mais rapido
+     CONGELAMENTO (Inverno) ... velocidade -50%, pulo -30%, chao escorregadio
+     CORROSAO (Primavera) ..... impede recarga de Carga por 6s
+     DESCARGA (eletrico) ...... bloqueia dash, feixe e propulsor por 3s
+     SOBRECARGA (buff) ........ pos-recarga total: +30% velocidade por 10s
+
+  G) MINI BOSS: "O SERRALHEIRO" (fim das Docas)
+     O sistema de contencao automatica, um braco robotico industrial gigante que
+     sela portas. Nao ataca o jogador diretamente: ele TRANCA o cenario, fechando
+     comportas e cortando rotas, e solta SR-3 sem parar.
+     Como vencer: nao se vence no dano. O jogador precisa alimentar 3 acopladores
+     de energia enquanto ele fecha o setor, com o tempo apertando.
+     Peso narrativo: e literalmente a mesma maquina que executou a ordem que matou
+     as 40 pessoas. ORBITA esta lutando contra a propria ordem que deu.
+
+  H) GRANDE PROVACAO / BOSS: "PROTOCOLO LUTO" (Nucleo de Memoria)
+     O firewall que ORBITA instalou nela mesma. A arena e uma reconstrucao da
+     estacao cheia de gente, em cores vivas, que vai sendo APAGADA em tempo real:
+     o cenario perde plataformas conforme o jogador avanca.
+     Tres fases: (1) fuga vertical enquanto o chao some; (2) puzzle de energia sob
+     pressao, com o firewall trocando os cabos que voce acabou de ligar;
+     (3) o log final toca inteiro e o jogador so precisa CONTINUAR ANDANDO em
+     direcao a verdade enquanto o jogo tenta empurra-lo para tras.
+     E um boss de informacao: o dano que ele causa e a memoria voltando.
+
+  I) BATALHA FINAL: "ARGOS" (Nucleo do Reator)
+     Sistema de seguranca do reator, tres torres CX-2 blindadas em volta de um
+     nucleo instavel, com plataformas que sobem e descem pelo calor.
+     Como vencer: sobrecarregar os 3 acopladores com o Acesso Root, sob timer de
+     90 segundos e dano ambiental de Verao constante. Usa TODAS as habilidades
+     adquiridas (garras, dissipador, propulsor, feixe, dash) - e o exame final do
+     jogador, no espirito do "Link enfrenta Ganon usando tudo que aprendeu".
+
+>>> 2.6.3 ITENS E COLETAVEIS
+
+  CELULA DE ENERGIA (comum) ...... +40 de Carga instantaneo. Espalhada nos setores.
+  KIT DE SOLDA (comum) ........... +25 de Integridade. Raro dentro das fases.
+  NUCLEO DE CAPACITOR (upgrade) .. +25 de Carga MAXIMA permanente. 4 no jogo todo,
+                                   todos escondidos fora da rota principal.
+  PLACA DE BLINDAGEM (upgrade) ... +25 de Integridade MAXIMA permanente. 4 no jogo.
+  FRAGMENTO DE LOG (narrativa) ... 24 no total. Nao dao poder, dao historia. Cada
+                                   log lido devolve +0.5% de Estabilidade do
+                                   Reator (recompensa por explorar, compensando
+                                   parte do tempo gasto).
+  DADO DE PESQUISA (chave) ....... 12 no total (coordenadas, atmosfera, solo).
+                                   NAO afetam o gameplay, afetam o EPILOGO: quanto
+                                   mais dados o jogador coletou, mais especifico e
+                                   confiante e o texto do final escolhido. Com
+                                   poucos dados, o final e uma aposta as cegas.
+  CHAVE DE ACESSO (progressao) ... libera as portas seladas de cada setor.
+
+--------------------------------------------------------------------------------
+2.7 LEVEL DESIGN
+--------------------------------------------------------------------------------
+
+ESTRUTURA GERAL: HUB RADIAL (o desenho do mapa espelha o Mapa Radial da Jornada
+do Heroi visto em aula). O NUCLEO CENTRAL fica no meio; os setores sao anéis e
+corredores saindo dele. O jogador sempre volta ao centro, e a cada volta o centro
+esta mais iluminado - o progresso e visivel no cenario, sem precisar de texto.
+
+                         [ NUCLEO DO REATOR ]
+                          (Batalha Final)
+                                 |
+        [ ENFERMARIA ] --- [ NUCLEO CENTRAL ] --- [ LABORATORIO ]
+           (Inverno)          (HUB / save)            (Verao)
+                            /            \
+                    [ ESTUFA ]            [ DOCAS ]
+                    (Primavera)          (Vacuo / 0g)
+                                 |
+                        [ NUCLEO DE MEMORIA ]
+                          (Grande Provacao)
+
+FASE 0 - NUCLEO CENTRAL (Tutorial, ~5 min)
+  Sala pequena, fechada, iluminada. Sem inimigos, sem dano possivel.
+  Ensina: andar, pular, interagir, lanterna, ler log. O primeiro Terminal de
+  Distribuicao tem apenas 2 sistemas e 1 energia, para ensinar a regra do jogo
+  na versao mais simples possivel.
+  DIFICULDADE: 1/10
+
+FASE 1 - ESTUFA (Primavera, ~10 min)
+  Vertical, cheia de vegetacao, plataformas de terra e trepadeiras. Clima ameno,
+  quase bonito. Introduz: SR-3, Enxame de Esporos, e o puzzle de "ligar a luz de
+  crescimento faz a planta crescer e virar plataforma, mas apaga a lanterna do
+  corredor". Upgrade: Garras Magneticas.
+  DIFICULDADE: 3/10 - e a fase que o jogador tem permissao de errar.
+
+FASE 2 - LABORATORIO (Verao, ~12 min)
+  Corredores retos e brancos, sistemas de refrigeracao quebrados. Zonas de
+  SUPERAQUECIMENTO obrigam a correr entre "ilhas frias". Introduz a Torre CX-2 e o
+  conceito de que desligar a energia do inimigo e melhor que enfrenta-lo.
+  Puzzle central: a refrigeracao e a porta usam a mesma linha de energia.
+  Upgrade: Dissipador Termico.
+  DIFICULDADE: 5/10
+
+FASE 3 - ENFERMARIA (Inverno, ~12 min)
+  Escura, estreita, congelada. Aqui a exploracao fica lenta de proposito:
+  CONGELAMENTO reduz velocidade e o gelo escorrega, enquanto o timer do reator
+  continua correndo. Introduz a Sentinela V-9 e o dilema da lanterna (precisa de
+  luz para ver, mas a luz atrai). E o setor com a carga narrativa mais pesada:
+  os leitos mostram a ordem em que a tripulacao adoeceu.
+  Upgrade: Nucleo Aquecido.
+  DIFICULDADE: 6/10
+
+FASE 4 - DOCAS (Vacuo, ~15 min)
+  Aberta, sem gravidade em varios trechos, com o espaco visivel ao fundo.
+  Combina TODOS os inimigos anteriores. Dano continuo de vacuo em setores sem
+  pressurizacao, o que transforma cada travessia numa corrida.
+  Termina no mini boss O SERRALHEIRO. Upgrade: Propulsor.
+  DIFICULDADE: 8/10
+
+FASE 5 - NUCLEO DE MEMORIA (Grande Provacao, ~8 min)
+  Quebra visual total: cores saturadas, estacao cheia de gente, musica limpa.
+  A fase se desmonta enquanto o jogador anda. Poucos inimigos, muita pressao.
+  Recompensa: Acesso Root.
+  DIFICULDADE: 7/10 (o pico aqui e emocional, nao mecanico)
+
+FASE 6 - NUCLEO DO REATOR (Batalha Final, ~7 min)
+  Arena vertical unica contra ARGOS, com timer de 90s e calor extremo.
+  Depois: sala do terminal, silencio total, duas alavancas, nenhuma musica.
+  DIFICULDADE: 9/10, depois 0/10 - a ultima decisao nao tem desafio mecanico
+  nenhum de proposito. O peso e a escolha.
+
+CURVA DE DIFICULDADE (conforme visto na aula):
+  1 - 3 - 5 - [queda: upgrade] - 6 - 8 - [queda: upgrade] - 7 - 9 - fim
+  Toda vez que a dificuldade sobe demais, o jogador ganha um upgrade que faz o
+  conteudo antigo ficar facil. E a sensacao de "eu fiquei mais forte" sem mexer
+  em numero de ataque nenhum.
+
+COMO A DIFICULDADE AUMENTA (3 eixos, nunca todos ao mesmo tempo):
+  1. DENSIDADE: mais inimigos e mais tipos combinados no mesmo trecho.
+  2. AMBIENTE: o clima passa a causar dano ativo (Primavera -> Verao -> Inverno
+     -> Vacuo, do inofensivo ao letal).
+  3. COMPLEXIDADE DO PUZZLE: de 2 sistemas / 1 energia (tutorial) para
+     6 sistemas / 3 energias com dependencia em cadeia (Docas).
+
+--------------------------------------------------------------------------------
+2.8 INTERFACE DE USUARIO (UI / HUD)
+--------------------------------------------------------------------------------
+
+HUD EM JOGO (minimalista e diegetico, parece leitura de sensor do chassi):
+
+  +----------------------------------------------------------------+
+  | [||||] INTEGRIDADE          ESTABILIDADE DO REATOR: 74%        |
+  | [======----] CARGA            [############------] descendo    |
+  |  (icones de status)                                            |
+  |                                                                |
+  |                                                                |
+  |                          (gameplay)                            |
+  |                                                                |
+  |                                                    LOGS 09/24  |
+  |                            [E] ACESSAR TERMINAL    DADOS 04/12 |
+  +----------------------------------------------------------------+
+
+  CANTO SUPERIOR ESQUERDO:
+    - Barra de INTEGRIDADE em 4 celulas. Celula vazia fica vermelha piscando.
+    - Barra de CARGA logo abaixo, azul, com marcacao de quanto custa a proxima
+      habilidade (o jogador ve se tem carga para o dash antes de tentar).
+    - Icones de EFEITO DE STATUS ativos, com contador regressivo.
+  TOPO CENTRO:
+    - ESTABILIDADE DO REATOR em porcentagem + barra. Abaixo de 25% ela pulsa em
+      vermelho e um alarme diegetico comeca a tocar.
+  CANTO INFERIOR DIREITO:
+    - Contador de Fragmentos de Log (ex.: 09/24) e Dados de Pesquisa (04/12).
+  CENTRO INFERIOR:
+    - Prompt de interacao contextual ([E] ACESSAR TERMINAL).
+  LEGENDAS:
+    - Falas da ORBITA e logs da Helena aparecem como legenda na parte de baixo,
+      com o nome de quem fala. Sempre legendado, sem depender de audio.
+
+TELAS DE MENU:
+  1. TELA INICIAL: a estacao girando devagar no escuro, sem musica, so ruido de
+     radio. Opcoes: CONTINUAR / NOVO SISTEMA / OPCOES / ARQUIVO / SAIR.
+  2. OPCOES: volume (musica, efeitos, voz), remapeamento de teclas, tamanho de
+     legenda, modo daltonico, "modo sem timer" (acessibilidade: desliga a queda
+     do reator para quem quer so a historia).
+  3. PAUSE (ESC): RETOMAR / MAPA / ARQUIVO DE LOGS / OPCOES / SAIR PARA O MENU.
+     O jogo congela o timer do reator no pause (regra anti-frustracao).
+  4. MAPA (TAB): planta da estacao no estilo esquema tecnico. Setores religados
+     ficam brancos, setores sem energia ficam cinza, portas seladas ficam
+     marcadas com cadeado.
+  5. ARQUIVO DE LOGS (L): codex com todos os fragmentos coletados, organizados
+     por setor e por autor. Reler um log toca o audio de novo.
+  6. TELA DE DERROTA (chassi): fundo preto, texto monoespacado
+     "SINAL DO CHASSI PERDIDO - RESTAURANDO BACKUP" + custo em estabilidade.
+  7. TELA DE GAME OVER (reator): "PERDA DE ORBITA - MISSAO ENCERRADA" com o
+     numero de logs que o jogador nunca vai ler. Opcao: CARREGAR ULTIMO SETOR.
+  8. TELA DE VITORIA: nao existe "You Win". A tela corta no instante da execucao
+     da escolha, entra o epilogo em texto (variavel conforme os Dados coletados)
+     e no fim rola a lista dos 40 nomes da tripulacao. Depois: estatisticas da
+     run (tempo, logs, dados, mortes) e a pergunta "VOCE ESCOLHERIA DE NOVO?".
+
+--------------------------------------------------------------------------------
+2.9 ESTETICA (ARTE E AUDIO)
+--------------------------------------------------------------------------------
+
+ESTILO VISUAL: PIXEL ART em resolucao interna de 384x216, escalada por numero
+inteiro para 1920x1080 (mantem o pixel nitido, sem borrao). Sprites do chassi com
+32x32 px. Animacao econômica: 4 a 6 frames por acao, com bastante peso e um leve
+atraso no movimento, para o MU-7 parecer pesado e velho.
+
+REGRA DE ILUMINACAO (o pilar visual do jogo): a estacao e escura por padrao.
+A luz nao e decoracao, e informacao. Onde tem luz, tem energia; onde tem energia,
+alguma coisa esta funcionando (para o bem ou para o mal). Usar CanvasModulate +
+Light2D do Godot para a lanterna e para as fontes de luz do cenario.
+
+PALETA POR SETOR (o clima conta a historia antes do texto):
+  NUCLEO CENTRAL ... azul frio esverdeado, luz estavel, quase acolhedor
+  ESTUFA ........... verde musgo + rosa das flores, unica area "viva" do jogo
+  LABORATORIO ...... branco clinico virando laranja/vermelho no superaquecimento
+  ENFERMARIA ....... ciano palido, branco de gelo, sombras longas e azuis
+  DOCAS ............ preto do espaco + amarelo de sinalizacao de perigo
+  NUC. DE MEMORIA .. explosao de cor saturada e quente (contraste total com o
+                     resto do jogo) que vai dessaturando ate o cinza
+  REATOR ........... vermelho e branco estourado, tela tremendo
+
+DIRECAO DE ARTE EM UMA FRASE: uma estacao bonita que ninguem esta usando.
+Nada de sangue e monstro; o horror aqui e o cotidiano interrompido - uma caneca
+flutuando, uma cadeira virada, uma foto colada no armario.
+
+AUDIO - MUSICA:
+  Ambiente eletronico minimalista (drones longos, poucos instrumentos). A musica e
+  ADAPTATIVA POR CAMADAS: cada setor religado adiciona um instrumento a trilha do
+  Nucleo Central, entao a estacao literalmente ganha musica conforme volta a viver.
+  Quando a Estabilidade do Reator cai abaixo de 25%, entra uma camada de percussao
+  grave e o ritmo acelera. No Nucleo de Memoria, pela unica vez, a trilha e uma
+  musica limpa com melodia (piano), porque e a unica cena com pessoas nela.
+  Na sala da escolha final: SILENCIO ABSOLUTO. So o zumbido do reator.
+
+AUDIO - EFEITOS SONOROS (SFX):
+  Passos ............. metalico, pesado, muda de acordo com o piso (grade, gelo,
+                      vidro, terra da estufa)
+  Pulo / aterrissagem  servo hidraulico + impacto pesado
+  Dash ............... pulso magnetico curto e agudo
+  Feixe de Manutencao  chiado eletrico + o inimigo desligando com um "gemido"
+                      descendente (nao e som de explosao, e som de coisa dormindo)
+  Coleta de log ...... beep suave de arquivo aberto
+  Terminal de energia  clique de disjuntor + toda a sala mudando de som ao mesmo
+                      tempo (o audio do cenario muda junto com o estado do puzzle)
+  Dano ............... alarme curto e estatica no audio geral
+  Integridade baixa .. batimento eletronico lento e constante
+  Lanterna ........... clique + zumbido continuo baixinho
+  Sem gravidade ...... todos os sons abafados (filtro low-pass), so o interno do
+                      chassi continua nitido
+  Voz da ORBITA ...... voz sintetizada calma e educada, que vai perdendo a calma
+                      conforme o jogo avanca
+  Logs da Helena ..... audio degradado, com chiado de fita velha e cortes
+
+--------------------------------------------------------------------------------
+2.10 ESCOPO E RASTREABILIDADE DOS REQUISITOS
+--------------------------------------------------------------------------------
+
+Mapeamento do que a disciplina pediu com o que este GDD entrega:
+
+  REQUISITO (1o BIMESTRE)      ONDE ESTA NESTE GDD
+  ---------------------------  ---------------------------------------------
+  Plataforma 2D                Genero base, side-scroller (2.2)
+  Movimentacao                 Andar, pular, dash, escalar, propulsor (2.4)
+  Barra de vida                Integridade do chassi, 100 pts / 4 celulas (2.6.1)
+  Timer                        Estabilidade do Reator, -1% a cada 90s (2.5)
+
+  REQUISITO (2o BIMESTRE)      ONDE ESTA NESTE GDD
+  ---------------------------  ---------------------------------------------
+  Fases                        6 fases + tutorial (2.7)
+  Troca de fases               Hub radial no Nucleo Central, com portas gated
+                               por upgrade (2.7)
+  Efeito de Status             5 status: Superaquecimento, Congelamento,
+                               Corrosao, Descarga, Sobrecarga (2.6.2-F)
+  Inimigos                     4 tipos comuns + obstaculos ambientais +
+                               mini boss + boss + batalha final (2.6.2)
+  Tema: Estacao                Estacao espacial ARTEMIS
+  Clima: Verao/Inverno/Prim.   Laboratorio (Verao), Enfermaria (Inverno),
+                               Estufa (Primavera), cada um com status proprio
+
+CORTES PLANEJADOS (se o tempo apertar, cortar NESTA ORDEM, de cima para baixo):
+  1. Upgrades opcionais (Nucleo de Capacitor / Placa de Blindagem)
+  2. Musica adaptativa por camadas (usar trilha fixa por setor)
+  3. Mini boss "O Serralheiro"
+  4. Variacao de epilogo por Dados de Pesquisa (manter os 2 finais, sem variacao)
+  5. Setor Docas (fundir o Propulsor no Nucleo de Memoria)
+  NUNCA CORTAR: o Terminal de Distribuicao de Energia. Ele e o jogo. Sem ele,
+  sobra um plataforma 2D generico.
+
+================================================================================
+FIM DO DOCUMENTO
+================================================================================

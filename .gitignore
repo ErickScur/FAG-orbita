@@ -1,0 +1,8 @@
+.godot/
+/android/
+/builds/
+.DS_Store
+CLAUDE.md
+.claude/
+docs/*
+!docs/design/
