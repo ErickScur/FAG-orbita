@@ -7,15 +7,17 @@ signal answered(confirmed: bool)
 @onready var no_button: Button = %NoButton
 
 var _answered: bool = false
+var _focus_trap: FocusTrap = FocusTrap.new()
 
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	yes_button.pressed.connect(_answer.bind(true))
 	no_button.pressed.connect(_answer.bind(false))
-	no_button.grab_focus()
 	yes_button.focus_entered.connect(_play_move)
 	no_button.focus_entered.connect(_play_move)
+	_focus_trap.capture([no_button, yes_button] as Array[Control])
+	no_button.grab_focus()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -39,6 +41,7 @@ func _answer(confirmed: bool) -> void:
 	if _answered:
 		return
 	_answered = true
+	_focus_trap.release()
 	AudioManager.play_sfx(&"ui_confirm" if confirmed else &"ui_back")
 	answered.emit(confirmed)
 	queue_free()

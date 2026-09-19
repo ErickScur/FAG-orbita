@@ -21,6 +21,7 @@ const VOICE_SAMPLE: String = "res://assets/audio/sfx/ui_confirm.wav"
 @onready var fullscreen_check: CheckBox = %FullscreenCheck
 @onready var back_button: Button = %BackButton
 
+var _focus_trap: FocusTrap = FocusTrap.new()
 var _dragging: bool = false
 var _closing: bool = false
 
@@ -51,6 +52,7 @@ func _ready() -> void:
 	fullscreen_check.toggled.connect(_on_fullscreen_toggled)
 	back_button.pressed.connect(close)
 	_link_focus()
+	_focus_trap.capture(_focus_chain())
 	master_slider.grab_focus()
 	for control: Control in _focus_chain():
 		control.focus_entered.connect(_play_move)
@@ -76,6 +78,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func close() -> void:
+	_focus_trap.release()
 	if _closing:
 		return
 	_closing = true
