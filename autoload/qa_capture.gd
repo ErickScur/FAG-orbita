@@ -6,6 +6,8 @@ const FLAG_SCRIPT: String = "--qa-script="
 const FLAG_OUT: String = "--qa-out="
 const FLAG_SCALE: String = "--qa-scale="
 const FLAG_NEW_GAME: String = "--qa-new-game"
+const FLAG_SCREEN: String = "--qa-screen="
+const ENV_SCREEN: String = "ORBITA_QA_SCREEN"
 const DEFAULT_OUT: String = "user://qa/"
 const LOG_FILE: String = "qa_log.txt"
 const TAIL_FRAMES: int = 30
@@ -34,6 +36,9 @@ func _ready() -> void:
 	var scene_path: String = ""
 	var script_path: String = ""
 	var new_game: bool = false
+	var screen_index: int = -1
+	if OS.has_environment(ENV_SCREEN):
+		screen_index = int(OS.get_environment(ENV_SCREEN))
 	for argument: String in arguments:
 		if argument.begins_with(FLAG_SCENE):
 			scene_path = argument.substr(FLAG_SCENE.length())
@@ -43,8 +48,11 @@ func _ready() -> void:
 			_out_dir = argument.substr(FLAG_OUT.length())
 		elif argument.begins_with(FLAG_SCALE):
 			_scale = maxi(1, int(argument.substr(FLAG_SCALE.length())))
+		elif argument.begins_with(FLAG_SCREEN):
+			screen_index = int(argument.substr(FLAG_SCREEN.length()))
 		elif argument == FLAG_NEW_GAME:
 			new_game = true
+	_place_window(screen_index)
 	_prepare_out_dir()
 	_events = _load_script(script_path)
 	_end_frame = _last_frame() + TAIL_FRAMES
@@ -208,3 +216,17 @@ func _write_log() -> void:
 	for line: String in _log_lines:
 		file.store_line(line)
 	file.close()
+
+
+func _place_window(screen_index: int) -> void:
+	if DisplayServer.get_name() == "headless":
+		return
+	DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_NO_FOCUS, true)
+	if screen_index < 0 or screen_index >= DisplayServer.get_screen_count():
+		return
+	DisplayServer.window_set_current_screen(screen_index)
+	var screen_size: Vector2i = DisplayServer.screen_get_size(screen_index)
+	var window_size: Vector2i = DisplayServer.window_get_size()
+	var offset: Vector2i = (screen_size - window_size) / 2
+	DisplayServer.window_set_position(DisplayServer.screen_get_position(screen_index) + offset)
+	_log("janela movida para a tela %d" % screen_index)
