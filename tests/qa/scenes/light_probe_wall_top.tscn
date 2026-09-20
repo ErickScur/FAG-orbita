@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0rbitalightpb01"]
+
+[ext_resource type="Script" path="res://tests/qa/scenes/light_probe.gd" id="1_lightprobe"]
+
+[node name="LightProbeWallTop" type="Node2D"]
+script = ExtResource("1_lightprobe")
+spawn_tile = Vector2i(41, 5)
+energy_state = Array[StringName]([&"grow_light", &"canopy_light"])
+abilities = Array[StringName]([&"magnetic_claws"])

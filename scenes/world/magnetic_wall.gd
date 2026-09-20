@@ -18,10 +18,22 @@ func _ready() -> void:
 	collision_mask = 0
 	_apply_texture()
 	_setup_glow()
+	_merge_glow.call_deferred()
 
 
 func glow_energy() -> float:
-	return _glow.energy
+	return _glow.energy if _glow.enabled else 0.0
+
+
+func glow_enabled() -> bool:
+	return _glow.enabled
+
+
+func cell() -> Vector2i:
+	return Vector2i(
+		floori(global_position.x / float(TILE_FRAME.x)),
+		floori(global_position.y / float(TILE_FRAME.y))
+	)
 
 
 func _apply_texture() -> void:
@@ -32,7 +44,8 @@ func _apply_texture() -> void:
 		push_warning("MagneticWall: tile de parede magnética ausente em %s" % TILE_SHEET)
 		return
 	_sprite.texture = texture
-	_sprite.self_modulate = Color(Balance.MAGNETIC_SELF_LIGHT, Balance.MAGNETIC_SELF_LIGHT, Balance.MAGNETIC_SELF_LIGHT, 1.0)
+	var self_light: float = Balance.MAGNETIC_SELF_LIGHT
+	_sprite.self_modulate = Color(self_light, self_light, self_light, 1.0)
 
 
 func _setup_glow() -> void:
@@ -43,4 +56,43 @@ func _setup_glow() -> void:
 	_glow.shadow_enabled = false
 	_glow.color = Balance.MAGNETIC_GLOW_COLOR
 	_glow.energy = Balance.MAGNETIC_GLOW_ENERGY
-	_glow.texture_scale = LightMath.scale_for_radius(Balance.MAGNETIC_GLOW_RADIUS, LightMath.TEXTURE_SIZE)
+	_glow.texture_scale = LightMath.scale_for_radius(
+		Balance.MAGNETIC_GLOW_RADIUS, LightMath.TEXTURE_SIZE
+	)
+
+
+func _merge_glow() -> void:
+	var column: Dictionary = _column_cells()
+	var here: Vector2i = cell()
+	var top: int = here.y
+	while column.has(top - 1):
+		top -= 1
+	if (here.y - top) % Balance.MAGNETIC_GLOW_SEGMENT_TILES != 0:
+		_glow.enabled = false
+		return
+	var span: int = 1
+	while span < Balance.MAGNETIC_GLOW_SEGMENT_TILES and column.has(here.y + span):
+		span += 1
+	_stretch_glow(span)
+
+
+func _column_cells() -> Dictionary:
+	var column: Dictionary = {}
+	var here: Vector2i = cell()
+	for node: Node in get_tree().get_nodes_in_group(ClimbLogic.MAGNETIC_GROUP):
+		var wall: MagneticWall = node as MagneticWall
+		if wall == null:
+			continue
+		var other: Vector2i = wall.cell()
+		if other.x == here.x:
+			column[other.y] = true
+	return column
+
+
+func _stretch_glow(span: int) -> void:
+	var tile_height: float = float(TILE_FRAME.y)
+	var covered: float = (float(span) + Balance.MAGNETIC_GLOW_SEGMENT_OVERLAP) * tile_height
+	var diameter: float = Balance.MAGNETIC_GLOW_RADIUS * 2.0
+	_glow.position = Vector2(0.0, (float(span) - 1.0) * tile_height * 0.5)
+	_glow.scale = Vector2(1.0, maxf(1.0, covered / diameter))
+	_glow.energy = Balance.MAGNETIC_GLOW_ENERGY * Balance.MAGNETIC_GLOW_MERGE_GAIN

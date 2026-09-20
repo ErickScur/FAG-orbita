@@ -1,0 +1,19 @@
+[
+ {"frame": 40, "screenshot": "01_topo_lanterna_off"},
+ {"frame": 50, "action": "flashlight", "pressed": true},
+ {"frame": 52, "action": "flashlight", "pressed": false},
+ {"frame": 85, "screenshot": "02_topo_lanterna_on"},
+ {"frame": 95, "scene": "res://tests/qa/scenes/light_probe_wall_top_noglow.tscn"},
+ {"frame": 135, "screenshot": "03_topo_semglow_off"},
+ {"frame": 145, "action": "flashlight", "pressed": true},
+ {"frame": 147, "action": "flashlight", "pressed": false},
+ {"frame": 180, "screenshot": "04_topo_semglow_on"},
+ {"frame": 190, "scene": "res://tests/qa/scenes/light_probe_wall_mid.tscn"},
+ {"frame": 195, "action": "move_right", "pressed": true},
+ {"frame": 240, "screenshot": "05_meio_lanterna_off"},
+ {"frame": 250, "action": "flashlight", "pressed": true},
+ {"frame": 252, "action": "flashlight", "pressed": false},
+ {"frame": 285, "screenshot": "06_meio_lanterna_on"},
+ {"frame": 295, "action": "move_right", "pressed": false},
+ {"frame": 305, "quit": true}
+]
