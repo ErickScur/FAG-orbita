@@ -34,7 +34,6 @@ const CLAW_PROBE_REACH: float = 10.0
 const STEP_FRAMES: Array[int] = [1, 4]
 const DROP_NUDGE: float = 1.0
 const BLINK_INTERVAL: float = 0.1
-const SHADOW_SMOOTH: float = 1.5
 
 @export var floor_sfx: StringName = &"step_metal"
 
@@ -399,7 +398,7 @@ func _setup_flashlight() -> void:
 	_flashlight.blend_mode = Light2D.BLEND_MODE_ADD
 	_flashlight.shadow_enabled = true
 	_flashlight.shadow_filter = Light2D.SHADOW_FILTER_PCF13
-	_flashlight.shadow_filter_smooth = SHADOW_SMOOTH
+	_flashlight.shadow_filter_smooth = Balance.SHADOW_FILTER_SMOOTH
 	_flashlight.texture_scale = LightMath.scale_for_radius(
 		Balance.VISION_RADIUS_OFF, LightMath.TEXTURE_SIZE
 	)

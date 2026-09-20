@@ -8,7 +8,6 @@ const ATLAS_COLUMNS: int = 8
 const FRAME_ON: int = 22
 const FRAME_OFF: int = 25
 const FIXTURE_TINT: float = 0.35
-const SHADOW_SMOOTH: float = 1.5
 
 @export var terminal_id: StringName = &""
 @export var system_id: StringName = &""
@@ -36,7 +35,7 @@ func _ready() -> void:
 	_light.blend_mode = Light2D.BLEND_MODE_ADD
 	_light.shadow_enabled = true
 	_light.shadow_filter = Light2D.SHADOW_FILTER_PCF13
-	_light.shadow_filter_smooth = SHADOW_SMOOTH
+	_light.shadow_filter_smooth = Balance.SHADOW_FILTER_SMOOTH
 	_apply_shape()
 	set_powered_silent(powered)
 	EventBus.energy_changed.connect(_on_energy_changed)

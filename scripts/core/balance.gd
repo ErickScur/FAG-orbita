@@ -81,6 +81,7 @@ const LAMP_ENERGY: float = 0.9
 const AMBIENT_DARK: Color = Color("0d1219")
 const FLASHLIGHT_ENERGY: float = 1.5
 const SENSOR_ENERGY: float = 0.7
+const SHADOW_FILTER_SMOOTH: float = 1.5
 const LIGHT_FADE_TIME: float = 0.15
 const LAMP_COLOR: Color = Color("bfe6ff")
 const FLASHLIGHT_COLOR: Color = Color("cfeaf2")
