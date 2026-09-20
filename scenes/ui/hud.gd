@@ -19,6 +19,8 @@ const CHARGE_TOASTS: Dictionary = {
 	PickupRules.KIND_CAPACITOR: &"toast_capacity",
 }
 const CHARGE_FRAME_WIDTH: float = 72.0
+const TOAST_ROW_HEIGHT: float = 16.0
+const CELL_LOST_COLOR: Color = Color(1.0, 0.55, 0.45)
 
 var _texts: Dictionary = {}
 var _cells: Array[TextureRect] = []
@@ -30,6 +32,7 @@ var _blink_time: float = 0.0
 var _flash_left: float = 0.0
 var _low_integrity: bool = false
 var _cell_states: Array[int] = []
+var _charge_target: float = 0.0
 
 @onready var _cells_box: HBoxContainer = %Cells
 @onready var _charge_bar: ProgressBar = %ChargeBar
@@ -65,6 +68,7 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	_blink_time += delta
 	_update_blink()
+	_update_charge_bar(delta)
 	_update_statuses(delta)
 	_update_flash(delta)
 	_update_reactor_visibility()
@@ -125,6 +129,7 @@ func _connect_events() -> void:
 func _sync_with_state() -> void:
 	_on_integrity_changed(GameState.integrity, GameState.integrity_max)
 	_on_charge_changed(GameState.charge, GameState.charge_max)
+	_snap_charge_bar()
 	_critical = GameState.is_reactor_critical()
 	_on_reactor_changed(GameState.reactor_percent)
 	_refresh_counters()
@@ -133,6 +138,7 @@ func _sync_with_state() -> void:
 
 
 func _on_integrity_changed(current: int, maximum: int) -> void:
+	var previous: Array[int] = _cell_states.duplicate()
 	_cell_states = HudModel.cell_states(current, maximum, Balance.INTEGRITY_CELLS)
 	for index: int in range(_cells.size()):
 		var state: int = _cell_state(index)
@@ -147,7 +153,30 @@ func _on_integrity_changed(current: int, maximum: int) -> void:
 			_:
 				cell.texture = _icon(HudModel.CELL_BLINK)
 				cell.modulate = NORMAL_COLOR
+	_pulse_lost_cells(previous, _cell_states)
 	_update_low_integrity(_cell_states, current > 0)
+
+
+func _pulse_lost_cells(previous: Array[int], current: Array[int]) -> void:
+	for index: int in range(_cells.size()):
+		if index >= previous.size() or index >= current.size():
+			continue
+		if previous[index] == HudModel.STATE_EMPTY:
+			continue
+		if current[index] != HudModel.STATE_EMPTY:
+			continue
+		_pulse_cell(_cells[index])
+
+
+func _pulse_cell(cell: TextureRect) -> void:
+	cell.pivot_offset = Vector2(ATLAS_FRAME) * 0.5
+	cell.scale = Vector2.ONE * Balance.HUD_CELL_LOST_SCALE
+	cell.modulate = CELL_LOST_COLOR
+	var tween: Tween = cell.create_tween()
+	tween.tween_property(cell, "scale", Vector2.ONE, Balance.HUD_CELL_LOST_TIME)
+	tween.parallel().tween_property(
+		cell, "modulate", NORMAL_COLOR, Balance.HUD_CELL_LOST_TIME
+	)
 
 
 func _cell_state(index: int) -> int:
@@ -189,8 +218,22 @@ func _update_blink() -> void:
 
 func _on_charge_changed(current: float, maximum: float) -> void:
 	_charge_bar.max_value = maxf(maximum, 1.0)
-	_charge_bar.value = clampf(current, 0.0, _charge_bar.max_value)
+	_charge_target = clampf(current, 0.0, _charge_bar.max_value)
 	_resize_charge_frame(_charge_bar.max_value)
+
+
+func _update_charge_bar(delta: float) -> void:
+	if is_equal_approx(_charge_bar.value, _charge_target):
+		return
+	if Balance.HUD_BAR_SLIDE_TIME <= 0.0:
+		_charge_bar.value = _charge_target
+		return
+	var rate: float = _charge_bar.max_value / Balance.HUD_BAR_SLIDE_TIME
+	_charge_bar.value = move_toward(_charge_bar.value, _charge_target, rate * delta)
+
+
+func _snap_charge_bar() -> void:
+	_charge_bar.value = _charge_target
 
 
 func _resize_charge_frame(maximum: float) -> void:
@@ -412,14 +455,28 @@ func _toast(text: String) -> void:
 		var oldest: Node = _toasts.get_child(0)
 		_toasts.remove_child(oldest)
 		oldest.queue_free()
+	var holder := Control.new()
+	holder.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	holder.custom_minimum_size = Vector2(0.0, TOAST_ROW_HEIGHT)
 	var label := Label.new()
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	label.add_theme_font_size_override("font_size", TOAST_FONT_SIZE)
 	label.add_theme_color_override("font_color", TOAST_COLOR)
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label.text = text
-	_toasts.add_child(label)
-	var tween: Tween = label.create_tween()
+	holder.add_child(label)
+	label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_toasts.add_child(holder)
+	label.position.y = Balance.HUD_TOAST_SLIDE
+	label.modulate.a = 0.0
+	var tween: Tween = holder.create_tween()
+	tween.set_trans(Tween.TRANS_SINE)
+	tween.set_ease(Tween.EASE_OUT)
+	tween.tween_property(label, "position:y", 0.0, Balance.HUD_TOAST_SLIDE_TIME)
+	tween.parallel().tween_property(label, "modulate:a", 1.0, Balance.HUD_TOAST_SLIDE_TIME)
 	tween.tween_interval(Balance.HUD_TOAST_TIME * 0.6)
-	tween.tween_property(label, "modulate:a", 0.0, Balance.HUD_TOAST_TIME * 0.4)
-	tween.tween_callback(label.queue_free)
+	tween.tween_property(
+		label, "position:y", -Balance.HUD_TOAST_SLIDE, Balance.HUD_TOAST_TIME * 0.4
+	)
+	tween.parallel().tween_property(label, "modulate:a", 0.0, Balance.HUD_TOAST_TIME * 0.4)
+	tween.tween_callback(holder.queue_free)

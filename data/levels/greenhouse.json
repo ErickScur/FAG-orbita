@@ -4,6 +4,7 @@
   "tileset": "res://assets/tiles/greenhouse_tileset.tres",
   "ambient_color": "#5f7f55",
   "ambient_restored": "#8fbf7f",
+  "ambient_motes": "#a8d98a",
   "parallax": true,
   "floor_sfx": "step_soil",
   "music": "greenhouse",
@@ -86,8 +87,14 @@
       "terminal_id": "greenhouse",
       "system_id": "lift_platform",
       "path": [
-        [0, 0],
-        [0, -10]
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          -10
+        ]
       ],
       "speed": 40.0,
       "wait": 1.2
@@ -208,38 +215,68 @@
   "triggers": [
     {
       "id": "gh_t_spores",
-      "rect": [9, 33, 2, 5],
+      "rect": [
+        9,
+        33,
+        2,
+        5
+      ],
       "dialogue": "gh_spores",
       "once": true
     },
     {
       "id": "gh_t_terminal",
-      "rect": [17, 33, 2, 5],
+      "rect": [
+        17,
+        33,
+        2,
+        5
+      ],
       "dialogue": "gh_terminal_first",
       "objective": "obj_gh_choose_route",
       "once": true
     },
     {
       "id": "gh_t_zone_b",
-      "rect": [18, 24, 3, 4],
+      "rect": [
+        18,
+        24,
+        3,
+        4
+      ],
       "objective": "obj_gh_reach_corridor",
       "once": true
     },
     {
       "id": "gh_t_zone_c",
-      "rect": [12, 14, 3, 4],
+      "rect": [
+        12,
+        14,
+        3,
+        4
+      ],
       "objective": "obj_gh_find_claws",
       "once": true
     },
     {
       "id": "gh_t_corridor",
-      "rect": [22, 14, 2, 4],
+      "rect": [
+        22,
+        14,
+        2,
+        4
+      ],
       "dialogue": "gh_dark_corridor",
       "once": true
     },
     {
       "id": "gh_t_zone_d",
-      "rect": [33, 4, 3, 4],
+      "rect": [
+        33,
+        4,
+        3,
+        4
+      ],
       "dialogue": "gh_node_room",
       "objective": "obj_gh_open_node_door",
       "once": true

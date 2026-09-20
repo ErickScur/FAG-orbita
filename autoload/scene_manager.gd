@@ -195,6 +195,8 @@ func _fade_to(alpha: float) -> void:
 	_overlay.visible = true
 	var tween := create_tween()
 	tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+	tween.set_trans(Tween.TRANS_SINE)
+	tween.set_ease(Tween.EASE_IN_OUT)
 	tween.tween_property(_overlay, "modulate:a", alpha, Balance.SCENE_FADE_TIME)
 	await tween.finished
 	_overlay.visible = alpha > 0.0

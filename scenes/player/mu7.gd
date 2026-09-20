@@ -5,18 +5,21 @@ enum State { IDLE, WALK, JUMP, FALL, LAND, CLIMB, ACTION }
 
 const SHEET_PATH: String = "res://assets/sprites/mu7/mu7_sheet.png"
 const LIGHT_TEXTURE: String = "res://assets/fx/light_radial.png"
+const FLASH_SHADER: String = "res://scenes/fx/hit_flash.gdshader"
+const FLASH_AMOUNT: StringName = &"flash_amount"
+const FLASH_COLOR: StringName = &"flash_color"
 const FRAME_SIZE: Vector2i = Vector2i(32, 32)
 const ANIMATION_ROWS: Array[Dictionary] = [
-	{"name": &"idle", "row": 0, "frames": 4, "fps": 4.0, "loop": true},
-	{"name": &"walk", "row": 1, "frames": 6, "fps": 10.0, "loop": true},
-	{"name": &"jump", "row": 2, "frames": 2, "fps": 8.0, "loop": false},
-	{"name": &"fall", "row": 3, "frames": 2, "fps": 8.0, "loop": true},
-	{"name": &"land", "row": 4, "frames": 2, "fps": 12.0, "loop": false},
-	{"name": &"hurt", "row": 5, "frames": 2, "fps": 10.0, "loop": false},
-	{"name": &"interact", "row": 6, "frames": 4, "fps": 8.0, "loop": false},
-	{"name": &"climb", "row": 7, "frames": 4, "fps": 8.0, "loop": true},
-	{"name": &"death", "row": 8, "frames": 4, "fps": 8.0, "loop": false},
-	{"name": &"dash", "row": 9, "frames": 3, "fps": 12.0, "loop": false},
+	{"name": &"idle", "row": 0, "frames": 4, "fps": Balance.MU7_FPS_IDLE, "loop": true},
+	{"name": &"walk", "row": 1, "frames": 6, "fps": Balance.MU7_FPS_WALK, "loop": true},
+	{"name": &"jump", "row": 2, "frames": 2, "fps": Balance.MU7_FPS_JUMP, "loop": false},
+	{"name": &"fall", "row": 3, "frames": 2, "fps": Balance.MU7_FPS_FALL, "loop": true},
+	{"name": &"land", "row": 4, "frames": 2, "fps": Balance.MU7_FPS_LAND, "loop": false},
+	{"name": &"hurt", "row": 5, "frames": 2, "fps": Balance.MU7_FPS_HURT, "loop": false},
+	{"name": &"interact", "row": 6, "frames": 4, "fps": Balance.MU7_FPS_INTERACT, "loop": false},
+	{"name": &"climb", "row": 7, "frames": 4, "fps": Balance.MU7_FPS_CLIMB, "loop": true},
+	{"name": &"death", "row": 8, "frames": 4, "fps": Balance.MU7_FPS_DEATH, "loop": false},
+	{"name": &"dash", "row": 9, "frames": 3, "fps": Balance.MU7_FPS_DASH, "loop": false},
 ]
 const STATE_ANIMATIONS: Dictionary = {
 	State.IDLE: &"idle",
@@ -58,6 +61,11 @@ var _joypad: bool = false
 var _interaction_target: Interactable = null
 var _interaction_prompt: String = ""
 var _jump_assist: JumpAssist = JumpAssist.new(Balance.COYOTE_TIME, Balance.JUMP_BUFFER)
+var _shake_left: float = 0.0
+var _shake_amplitude: float = 0.0
+var _shake_elapsed: float = 0.0
+var _flash_left: float = 0.0
+var _flash_material: ShaderMaterial = null
 
 @onready var _sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var _camera: Camera2D = $Camera2D
@@ -73,6 +81,7 @@ var _jump_assist: JumpAssist = JumpAssist.new(Balance.COYOTE_TIME, Balance.JUMP_
 
 func _ready() -> void:
 	_build_animations()
+	_setup_flash()
 	_setup_sensor()
 	_setup_flashlight()
 	_camera.offset = Vector2.ZERO
@@ -87,6 +96,8 @@ func _ready() -> void:
 	EventBus.dialogue_finished.connect(_on_dialogue_finished)
 	EventBus.player_died.connect(_on_player_died)
 	EventBus.player_respawned.connect(_on_player_respawned)
+	EventBus.player_damaged.connect(_on_player_damaged)
+	EventBus.sector_restored.connect(_on_sector_restored)
 	_play(&"idle")
 
 
@@ -110,6 +121,8 @@ func _physics_process(delta: float) -> void:
 	_process_hurtbox(delta)
 	_update_flashlight(delta)
 	_update_interaction()
+	_update_shake(delta)
+	_update_flash(delta)
 
 
 func _walk_step(delta: float) -> void:
@@ -122,9 +135,10 @@ func _walk_step(delta: float) -> void:
 	_apply_gravity(delta)
 	_handle_jump(delta)
 	var was_on_floor: bool = is_on_floor()
+	var fall_speed: float = velocity.y
 	move_and_slide()
 	if not was_on_floor and is_on_floor():
-		_land()
+		_land(fall_speed)
 	_update_facing(axis)
 	if _try_grab(axis):
 		return
@@ -289,6 +303,84 @@ func _build_animations() -> void:
 		push_warning("MU7: sprite sheet ausente em %s" % SHEET_PATH)
 		return
 	_sprite.sprite_frames = SpriteSheet.build_frames(texture, FRAME_SIZE, ANIMATION_ROWS)
+
+
+func shake(amplitude: float) -> void:
+	_shake_amplitude = ScreenShake.amplitude_for(
+		_shake_amplitude * ScreenShake.falloff(_shake_left, Balance.SHAKE_TIME), amplitude
+	)
+	_shake_left = Balance.SHAKE_TIME
+
+
+func shake_offset() -> Vector2:
+	if _camera == null:
+		return Vector2.ZERO
+	return _camera.offset
+
+
+func flash_amount() -> float:
+	if _flash_material == null:
+		return 0.0
+	return float(_flash_material.get_shader_parameter(FLASH_AMOUNT))
+
+
+func _setup_flash() -> void:
+	if not ResourceLoader.exists(FLASH_SHADER):
+		push_warning("MU7: shader de flash ausente em %s" % FLASH_SHADER)
+		return
+	var shader: Shader = load(FLASH_SHADER)
+	if shader == null:
+		return
+	_flash_material = ShaderMaterial.new()
+	_flash_material.shader = shader
+	_flash_material.set_shader_parameter(FLASH_COLOR, Balance.HIT_FLASH_COLOR)
+	_flash_material.set_shader_parameter(FLASH_AMOUNT, 0.0)
+	_sprite.material = _flash_material
+
+
+func _update_shake(delta: float) -> void:
+	if _camera == null:
+		return
+	if _shake_left <= 0.0:
+		if not _camera.offset.is_zero_approx():
+			_camera.offset = Vector2.ZERO
+		return
+	_shake_elapsed += delta
+	_shake_left = ScreenShake.remaining_after(_shake_left, delta)
+	_camera.offset = ScreenShake.offset(
+		_shake_amplitude,
+		_shake_left,
+		Balance.SHAKE_TIME,
+		_shake_elapsed,
+		Balance.SHAKE_FREQUENCY
+	)
+	if _shake_left <= 0.0:
+		_shake_amplitude = 0.0
+
+
+func _update_flash(delta: float) -> void:
+	if _flash_material == null or _flash_left <= 0.0:
+		return
+	_flash_left = maxf(0.0, _flash_left - delta)
+	var amount: float = 0.0
+	if Balance.HIT_FLASH_TIME > 0.0:
+		amount = clampf(_flash_left / Balance.HIT_FLASH_TIME, 0.0, 1.0)
+	_flash_material.set_shader_parameter(FLASH_AMOUNT, amount)
+	if _flash_left > 0.0:
+		_sprite.visible = true
+
+
+func _on_player_damaged(_amount: int) -> void:
+	shake(Balance.SHAKE_DAMAGE)
+	if _flash_material == null:
+		return
+	_flash_left = Balance.HIT_FLASH_TIME
+	_flash_material.set_shader_parameter(FLASH_AMOUNT, 1.0)
+	_sprite.visible = true
+
+
+func _on_sector_restored(_sector_id: StringName) -> void:
+	shake(Balance.SHAKE_SECTOR)
 
 
 func _setup_sensor() -> void:
@@ -517,10 +609,17 @@ func _interaction_blocked() -> bool:
 	return _locked or _dead or _hurt_timer > 0.0 or DialogueManager.freezes_timer()
 
 
-func _land() -> void:
+func _land(fall_speed: float = 0.0) -> void:
 	_wall_push = 0.0
 	AudioManager.play_sfx(&"land")
 	_set_state(State.LAND)
+	var amplitude: float = ScreenShake.land_amplitude(
+		fall_speed, Balance.LAND_SHAKE_SPEED, Balance.SHAKE_LAND
+	)
+	if amplitude <= 0.0:
+		return
+	shake(amplitude)
+	Fx.burst(self, Fx.DUST_PUFF, global_position, Fx.DUST_TINT)
 
 
 func _update_facing(axis: float) -> void:

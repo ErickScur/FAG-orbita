@@ -536,6 +536,7 @@ Toda vez que a dificuldade sobe demais, o jogador ganha um upgrade que faz o con
 | `DEATH_DELAY` | 1.2 | s | AJ-006 |
 | `SCENE_FADE_TIME` | 0.4 | s | AJ-006 |
 | `LOADING_MIN_TIME` | 1.6 | s | AJ-017 |
+| AJ-022 | 2026-09-20 | GDD-P | Constantes de apresentação do polimento visual (tremor de câmera, flash de dano, pulso de lâmpada, vinheta, esporos de ambiente, camadas de parallax, clarão ao religar setor, animações do HUD e cadência de cada animação do MU-7) | O GDD descrevia sensação ("pesado", "a luz é informação") sem números; a F35 precisou fixá-los |
 | AJ-021 | 2026-09-19 | GDD-P | Amplitude e velocidade da flutuação dos coletáveis | O GDD pedia itens "flutuando" sem número |
 | AJ-020 | 2026-09-19 | GDD-P | Velocidade de digitação do diálogo, tempo mínimo de fala ambiente, cores e fade das luzes | Números de apresentação que o GDD descrevia em palavras ("legenda", "luz fria") |
 | AJ-019 | 2026-09-19 | GDD-P | Ritmo do alarme do reator, duração do aviso do HUD, frequência do pulso crítico e do bipe de integridade baixa | Números de feedback do HUD/áudio que o GDD descrevia só em palavras |
@@ -577,6 +578,48 @@ Toda vez que a dificuldade sobe demais, o jogador ganha um upgrade que faz o con
 | `DIALOGUE_AMBIENT_MIN_TIME` | 2.0 | s | AJ-020 |
 | `PICKUP_BOB_AMPLITUDE` | 2.0 | px | AJ-021 |
 | `PICKUP_BOB_SPEED` | 2.0 | ciclos/s | AJ-021 |
+| `SHAKE_TIME` | 0.25 | s | AJ-022 |
+| `SHAKE_FREQUENCY` | 24.0 | Hz | AJ-022 |
+| `SHAKE_DAMAGE` | 4.0 | px | AJ-022 |
+| `SHAKE_LAND` | 2.0 | px | AJ-022 |
+| `SHAKE_SECTOR` | 3.0 | px | AJ-022 |
+| `LAND_SHAKE_SPEED` | 260.0 | px/s | AJ-022 |
+| `HIT_FLASH_TIME` | 0.12 | s | AJ-022 |
+| `HIT_FLASH_COLOR` | Color("fff4e0") | cor | AJ-022 |
+| `LAMP_PULSE_HZ` | 0.45 | Hz | AJ-022 |
+| `LAMP_PULSE_DEPTH` | 0.12 | fator | AJ-022 |
+| `VIGNETTE_STRENGTH` | 0.55 | fator | AJ-022 |
+| `VIGNETTE_INNER` | 0.45 | fator | AJ-022 |
+| `VIGNETTE_OUTER` | 1.0 | fator | AJ-022 |
+| `VIGNETTE_COLOR` | Color("06090f") | cor | AJ-022 |
+| `BACKGROUND_TINT` | Color("6b7a8c") | cor | AJ-022 |
+| `AMBIENT_MOTE_AMOUNT` | 28 | un. | AJ-022 |
+| `AMBIENT_MOTE_LIFETIME` | 7.0 | s | AJ-022 |
+| `AMBIENT_MOTE_SPEED` | 5.0 | px/s | AJ-022 |
+| `AMBIENT_MOTE_RISE` | -3.0 | px/s | AJ-022 |
+| `PARALLAX_FAR_SCALE` | Vector2(0.04, 0.02) | fator | AJ-022 |
+| `PARALLAX_MID_SCALE` | Vector2(0.18, 0.09) | fator | AJ-022 |
+| `PARALLAX_NEAR_SCALE` | Vector2(0.55, 0.28) | fator | AJ-022 |
+| `PARALLAX_FAR_DIM` | 0.45 | fator | AJ-022 |
+| `PARALLAX_MID_DIM` | 0.7 | fator | AJ-022 |
+| `SECTOR_FLASH_TIME` | 0.12 | s | AJ-022 |
+| `SECTOR_SETTLE_TIME` | 1.2 | s | AJ-022 |
+| `SECTOR_FLASH_COLOR` | Color("e8f4ff") | cor | AJ-022 |
+| `HUD_BAR_SLIDE_TIME` | 0.25 | s | AJ-022 |
+| `HUD_CELL_LOST_TIME` | 0.35 | s | AJ-022 |
+| `HUD_CELL_LOST_SCALE` | 1.5 | fator | AJ-022 |
+| `HUD_TOAST_SLIDE` | 8.0 | px | AJ-022 |
+| `HUD_TOAST_SLIDE_TIME` | 0.18 | s | AJ-022 |
+| `MU7_FPS_IDLE` | 3.0 | — | AJ-022 |
+| `MU7_FPS_WALK` | 8.0 | — | AJ-022 |
+| `MU7_FPS_JUMP` | 9.0 | — | AJ-022 |
+| `MU7_FPS_FALL` | 6.0 | — | AJ-022 |
+| `MU7_FPS_LAND` | 10.0 | px | AJ-022 |
+| `MU7_FPS_HURT` | 8.0 | — | AJ-022 |
+| `MU7_FPS_INTERACT` | 6.0 | — | AJ-022 |
+| `MU7_FPS_CLIMB` | 5.0 | — | AJ-022 |
+| `MU7_FPS_DEATH` | 4.0 | — | AJ-022 |
+| `MU7_FPS_DASH` | 12.0 | — | AJ-022 |
 | `SR3_SPEED` | 40 | px/s | AJ-012 |
 | `SR3_KNOCKBACK_X` | 120 | px/s | AJ-012 |
 | `SR3_KNOCKBACK_Y` | 120 | px/s | AJ-012 |

@@ -117,6 +117,7 @@ func collect() -> bool:
 	_collected = true
 	set_deferred(&"monitoring", false)
 	AudioManager.play_sfx(PickupRules.sfx_for(kind))
+	Fx.burst(self, Fx.PICKUP_SPARKLE, global_position, Fx.SPARKLE_TINT)
 	match kind:
 		PickupRules.KIND_CELL:
 			GameState.add_charge(Balance.ENERGY_CELL_CHARGE)

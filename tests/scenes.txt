@@ -3,6 +3,10 @@ res://scenes/boot/loading.tscn
 res://tests/qa/scenes/input_probe.tscn
 res://tests/qa/scenes/audio_probe.tscn
 res://scenes/fx/spark_burst.tscn
+res://scenes/fx/dust_puff.tscn
+res://scenes/fx/pickup_sparkle.tscn
+res://scenes/fx/power_pulse.tscn
+res://scenes/fx/vignette.tscn
 res://tests/qa/scenes/theme_probe.tscn
 res://tests/qa/scenes/asset_probe.tscn
 res://scenes/ui/main_menu.tscn
@@ -47,6 +51,7 @@ res://scenes/enemies/spore_swarm.tscn
 res://tests/qa/scenes/enemy_sandbox.tscn
 res://tests/qa/scenes/spore_sandbox.tscn
 res://scenes/world/space_parallax.tscn
+res://scenes/world/ambient_motes.tscn
 res://scenes/world/secret_wall.tscn
 res://scenes/dev/secret_test.tscn
 res://scenes/dev/parallax_test.tscn

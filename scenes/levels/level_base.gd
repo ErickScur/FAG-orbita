@@ -5,6 +5,8 @@ const PLAYER_SCENE: String = "res://scenes/player/mu7.tscn"
 const HUD_SCENE: String = "res://scenes/ui/hud.tscn"
 const DEFAULT_TILESET: String = "res://assets/tiles/core_tileset.tres"
 const PARALLAX_SCENE: String = "res://scenes/world/space_parallax.tscn"
+const VIGNETTE_SCENE: String = "res://scenes/fx/vignette.tscn"
+const MOTES_SCENE: String = "res://scenes/world/ambient_motes.tscn"
 
 @export var level_id: String = ""
 
@@ -40,6 +42,8 @@ func _ready() -> void:
 	EventBus.player_respawned.connect(_on_player_respawned)
 	_load_energy()
 	_spawn_player()
+	_mount_vignette()
+	_mount_motes()
 	_mount_hud()
 	_apply_atmosphere()
 	_apply_progress()
@@ -144,6 +148,26 @@ func _spawn_player() -> void:
 		_player.call("snap_camera")
 
 
+func _mount_vignette() -> void:
+	if not ResourceLoader.exists(VIGNETTE_SCENE):
+		push_warning("level_base: vinheta ausente em %s" % VIGNETTE_SCENE)
+		return
+	add_child(load(VIGNETTE_SCENE).instantiate())
+
+
+func _mount_motes() -> void:
+	var color_text: String = String(_meta.get("ambient_motes", ""))
+	if color_text.is_empty():
+		return
+	if not ResourceLoader.exists(MOTES_SCENE):
+		push_warning("level_base: partículas de ambiente ausentes em %s" % MOTES_SCENE)
+		return
+	var instance: Node = load(MOTES_SCENE).instantiate()
+	if instance is AmbientMotes:
+		(instance as AmbientMotes).tint = Color(color_text)
+	_entities.add_child(instance)
+
+
 func _mount_hud() -> void:
 	if not ResourceLoader.exists(HUD_SCENE):
 		push_warning("level_base: HUD ainda não implementado (F15)")
@@ -154,6 +178,7 @@ func _mount_hud() -> void:
 func _apply_atmosphere() -> void:
 	var color_text: String = String(_meta.get("ambient_color", ""))
 	_ambient.color = Color(color_text) if not color_text.is_empty() else Balance.AMBIENT_DARK
+	_background.modulate = Balance.BACKGROUND_TINT
 	var music: String = String(_meta.get("music", ""))
 	if not music.is_empty():
 		AudioManager.play_music(StringName(music))

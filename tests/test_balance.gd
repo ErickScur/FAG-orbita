@@ -95,6 +95,46 @@ const EXPECTED: Dictionary = {
 	"DIALOGUE_CPS": 40.0,
 	"DIALOGUE_READ_CPS": 15.0,
 	"DIALOGUE_AMBIENT_MIN_TIME": 2.0,
+	"HUD_TOAST_TIME": 2.0,
+	"HUD_PULSE_HZ": 2.0,
+	"LOW_INTEGRITY_BEEP_INTERVAL": 1.5,
+	"PICKUP_BOB_AMPLITUDE": 2.0,
+	"PICKUP_BOB_SPEED": 2.0,
+	"SHAKE_TIME": 0.25,
+	"SHAKE_FREQUENCY": 24.0,
+	"SHAKE_DAMAGE": 4.0,
+	"SHAKE_LAND": 2.0,
+	"SHAKE_SECTOR": 3.0,
+	"LAND_SHAKE_SPEED": 260.0,
+	"HIT_FLASH_TIME": 0.12,
+	"LAMP_PULSE_HZ": 0.45,
+	"LAMP_PULSE_DEPTH": 0.12,
+	"VIGNETTE_STRENGTH": 0.55,
+	"VIGNETTE_INNER": 0.45,
+	"VIGNETTE_OUTER": 1.0,
+	"AMBIENT_MOTE_AMOUNT": 28,
+	"AMBIENT_MOTE_LIFETIME": 7.0,
+	"AMBIENT_MOTE_SPEED": 5.0,
+	"AMBIENT_MOTE_RISE": -3.0,
+	"PARALLAX_FAR_DIM": 0.45,
+	"PARALLAX_MID_DIM": 0.7,
+	"SECTOR_FLASH_TIME": 0.12,
+	"SECTOR_SETTLE_TIME": 1.2,
+	"HUD_BAR_SLIDE_TIME": 0.25,
+	"HUD_CELL_LOST_TIME": 0.35,
+	"HUD_CELL_LOST_SCALE": 1.5,
+	"HUD_TOAST_SLIDE": 8.0,
+	"HUD_TOAST_SLIDE_TIME": 0.18,
+	"MU7_FPS_IDLE": 3.0,
+	"MU7_FPS_WALK": 8.0,
+	"MU7_FPS_JUMP": 9.0,
+	"MU7_FPS_FALL": 6.0,
+	"MU7_FPS_LAND": 10.0,
+	"MU7_FPS_HURT": 8.0,
+	"MU7_FPS_INTERACT": 6.0,
+	"MU7_FPS_CLIMB": 5.0,
+	"MU7_FPS_DEATH": 4.0,
+	"MU7_FPS_DASH": 12.0,
 }
 
 
@@ -108,6 +148,32 @@ func test_constants_match_gdd() -> void:
 
 func test_ambient_dark_color() -> void:
 	assert_eq(Balance.AMBIENT_DARK, Color("191d26"), "AMBIENT_DARK")
+
+
+func test_polish_colors() -> void:
+	assert_eq(Balance.HIT_FLASH_COLOR, Color("fff4e0"), "HIT_FLASH_COLOR")
+	assert_eq(Balance.VIGNETTE_COLOR, Color("06090f"), "VIGNETTE_COLOR")
+	assert_eq(Balance.BACKGROUND_TINT, Color("6b7a8c"), "BACKGROUND_TINT")
+	assert_eq(Balance.SECTOR_FLASH_COLOR, Color("e8f4ff"), "SECTOR_FLASH_COLOR")
+
+
+func test_parallax_layers_get_further_apart() -> void:
+	assert_true(
+		Balance.PARALLAX_FAR_SCALE.x < Balance.PARALLAX_MID_SCALE.x,
+		"o fundo distante anda menos que o do meio"
+	)
+	assert_true(
+		Balance.PARALLAX_MID_SCALE.x < Balance.PARALLAX_NEAR_SCALE.x,
+		"o do meio anda menos que o próximo"
+	)
+	assert_true(
+		Balance.PARALLAX_FAR_SCALE.y < Balance.PARALLAX_FAR_SCALE.x,
+		"a subida arrasta menos o fundo que o lado"
+	)
+	assert_true(
+		Balance.PARALLAX_FAR_DIM < Balance.PARALLAX_MID_DIM,
+		"o fundo distante é o mais escuro"
+	)
 
 
 func test_light_colors() -> void:

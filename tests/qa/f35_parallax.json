@@ -1,0 +1,18 @@
+[
+  {
+    "frame": 60,
+    "screenshot": "p01_antes_do_passo"
+  },
+  {
+    "frame": 120,
+    "screenshot": "p02_depois_do_passo"
+  },
+  {
+    "frame": 400,
+    "screenshot": "p03_autoscroll"
+  },
+  {
+    "frame": 420,
+    "quit": true
+  }
+]

@@ -91,4 +91,10 @@ func _light_the_sector() -> void:
 	if _ambient == null:
 		return
 	var tween: Tween = create_tween()
-	tween.tween_property(_ambient, ^"color", restored_color(), Balance.LIGHT_FADE_TIME)
+	tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+	tween.tween_property(
+		_ambient, ^"color", Balance.SECTOR_FLASH_COLOR, Balance.SECTOR_FLASH_TIME
+	)
+	tween.tween_property(_ambient, ^"color", restored_color(), Balance.SECTOR_SETTLE_TIME)
+	tween.set_trans(Tween.TRANS_SINE)
+	tween.set_ease(Tween.EASE_OUT)

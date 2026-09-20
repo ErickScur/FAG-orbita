@@ -1,0 +1,1524 @@
+[
+  {
+    "frame": 10,
+    "screenshot": "01_orbita_acorda"
+  },
+  {
+    "frame": 20,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 23,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 29,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 32,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 38,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 41,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 47,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 50,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 56,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 59,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 65,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 68,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 74,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 77,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 83,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 86,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 92,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 95,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 101,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 104,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 110,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 113,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 119,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 122,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 128,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 131,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 137,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 140,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 160,
+    "screenshot": "02_nucleo_aceso"
+  },
+  {
+    "frame": 170,
+    "action": "move_right",
+    "pressed": true
+  },
+  {
+    "frame": 290,
+    "screenshot": "03_degrau_de_um_tile"
+  },
+  {
+    "frame": 300,
+    "action": "move_right",
+    "pressed": false
+  },
+  {
+    "frame": 310,
+    "action": "jump",
+    "pressed": true
+  },
+  {
+    "frame": 310,
+    "action": "move_right",
+    "pressed": true
+  },
+  {
+    "frame": 322,
+    "action": "jump",
+    "pressed": false
+  },
+  {
+    "frame": 332,
+    "screenshot": "b_pouso_0332"
+  },
+  {
+    "frame": 334,
+    "screenshot": "b_pouso_0334"
+  },
+  {
+    "frame": 336,
+    "screenshot": "b_pouso_0336"
+  },
+  {
+    "frame": 338,
+    "screenshot": "b_pouso_0338"
+  },
+  {
+    "frame": 340,
+    "screenshot": "b_pouso_0340"
+  },
+  {
+    "frame": 342,
+    "screenshot": "b_pouso_0342"
+  },
+  {
+    "frame": 344,
+    "screenshot": "b_pouso_0344"
+  },
+  {
+    "frame": 346,
+    "screenshot": "b_pouso_0346"
+  },
+  {
+    "frame": 348,
+    "screenshot": "b_pouso_0348"
+  },
+  {
+    "frame": 350,
+    "screenshot": "b_pouso_0350"
+  },
+  {
+    "frame": 352,
+    "screenshot": "b_pouso_0352"
+  },
+  {
+    "frame": 354,
+    "screenshot": "b_pouso_0354"
+  },
+  {
+    "frame": 356,
+    "screenshot": "b_pouso_0356"
+  },
+  {
+    "frame": 358,
+    "screenshot": "b_pouso_0358"
+  },
+  {
+    "frame": 360,
+    "screenshot": "b_pouso_0360"
+  },
+  {
+    "frame": 362,
+    "screenshot": "b_pouso_0362"
+  },
+  {
+    "frame": 364,
+    "screenshot": "b_pouso_0364"
+  },
+  {
+    "frame": 366,
+    "screenshot": "b_pouso_0366"
+  },
+  {
+    "frame": 368,
+    "screenshot": "b_pouso_0368"
+  },
+  {
+    "frame": 370,
+    "screenshot": "b_pouso_0370"
+  },
+  {
+    "frame": 372,
+    "screenshot": "b_pouso_0372"
+  },
+  {
+    "frame": 374,
+    "screenshot": "b_pouso_0374"
+  },
+  {
+    "frame": 410,
+    "screenshot": "04_degrau_de_dois_tiles"
+  },
+  {
+    "frame": 420,
+    "action": "move_right",
+    "pressed": false
+  },
+  {
+    "frame": 435,
+    "action": "jump",
+    "pressed": true
+  },
+  {
+    "frame": 435,
+    "action": "move_right",
+    "pressed": true
+  },
+  {
+    "frame": 451,
+    "action": "jump",
+    "pressed": false
+  },
+  {
+    "frame": 480,
+    "screenshot": "05_plataforma_alta"
+  },
+  {
+    "frame": 570,
+    "action": "move_right",
+    "pressed": false
+  },
+  {
+    "frame": 580,
+    "screenshot": "06_prompt_do_log"
+  },
+  {
+    "frame": 595,
+    "action": "interact",
+    "pressed": true
+  },
+  {
+    "frame": 598,
+    "action": "interact",
+    "pressed": false
+  },
+  {
+    "frame": 640,
+    "screenshot": "07_log_da_helena"
+  },
+  {
+    "frame": 660,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 663,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 669,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 672,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 678,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 681,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 687,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 690,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 696,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 699,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 705,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 708,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 714,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 717,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 723,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 726,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 732,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 735,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 741,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 744,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 750,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 753,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 759,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 762,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 768,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 771,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 777,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 780,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 786,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 789,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 795,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 798,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 804,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 807,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 813,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 816,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 830,
+    "screenshot": "08_objetivo_apos_log"
+  },
+  {
+    "frame": 850,
+    "action": "jump",
+    "pressed": true
+  },
+  {
+    "frame": 850,
+    "action": "move_right",
+    "pressed": true
+  },
+  {
+    "frame": 862,
+    "action": "jump",
+    "pressed": false
+  },
+  {
+    "frame": 900,
+    "screenshot": "09_corredor_sem_lampada"
+  },
+  {
+    "frame": 915,
+    "action": "flashlight",
+    "pressed": true
+  },
+  {
+    "frame": 918,
+    "action": "flashlight",
+    "pressed": false
+  },
+  {
+    "frame": 950,
+    "screenshot": "10_lanterna_ligada"
+  },
+  {
+    "frame": 1002,
+    "screenshot": "a05_antes_da_celula"
+  },
+  {
+    "frame": 1005,
+    "screenshot": "11_vala_com_dado"
+  },
+  {
+    "frame": 1005,
+    "screenshot": "a06_celula_coletada"
+  },
+  {
+    "frame": 1008,
+    "screenshot": "a07_celula_coletada"
+  },
+  {
+    "frame": 1010,
+    "action": "move_right",
+    "pressed": false
+  },
+  {
+    "frame": 1012,
+    "screenshot": "a08_celula_coletada"
+  },
+  {
+    "frame": 1030,
+    "action": "jump",
+    "pressed": true
+  },
+  {
+    "frame": 1030,
+    "action": "move_right",
+    "pressed": true
+  },
+  {
+    "frame": 1042,
+    "action": "jump",
+    "pressed": false
+  },
+  {
+    "frame": 1090,
+    "screenshot": "12_saindo_da_vala"
+  },
+  {
+    "frame": 1150,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 1153,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 1159,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 1162,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 1168,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 1171,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 1177,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 1180,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 1180,
+    "screenshot": "13_fala_do_terminal"
+  },
+  {
+    "frame": 1186,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 1189,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 1195,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 1198,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 1204,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 1207,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 1213,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 1216,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 1222,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 1225,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 1231,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 1234,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 1320,
+    "action": "move_right",
+    "pressed": false
+  },
+  {
+    "frame": 1340,
+    "screenshot": "14_prompt_do_terminal"
+  },
+  {
+    "frame": 1360,
+    "action": "interact",
+    "pressed": true
+  },
+  {
+    "frame": 1363,
+    "action": "interact",
+    "pressed": false
+  },
+  {
+    "frame": 1400,
+    "screenshot": "15_terminal_2_sistemas_1_energia"
+  },
+  {
+    "frame": 1420,
+    "action": "interact",
+    "pressed": true
+  },
+  {
+    "frame": 1423,
+    "action": "interact",
+    "pressed": false
+  },
+  {
+    "frame": 1440,
+    "screenshot": "a09_sistema_alternado"
+  },
+  {
+    "frame": 1446,
+    "screenshot": "a10_sistema_alternado"
+  },
+  {
+    "frame": 1455,
+    "screenshot": "16_iluminacao_desligada"
+  },
+  {
+    "frame": 1470,
+    "action": "move_down",
+    "pressed": true
+  },
+  {
+    "frame": 1473,
+    "action": "move_down",
+    "pressed": false
+  },
+  {
+    "frame": 1495,
+    "action": "interact",
+    "pressed": true
+  },
+  {
+    "frame": 1498,
+    "action": "interact",
+    "pressed": false
+  },
+  {
+    "frame": 1530,
+    "screenshot": "17_porta_ligada"
+  },
+  {
+    "frame": 1550,
+    "action": "ui_cancel",
+    "pressed": true
+  },
+  {
+    "frame": 1553,
+    "action": "ui_cancel",
+    "pressed": false
+  },
+  {
+    "frame": 1600,
+    "screenshot": "18_nucleo_no_escuro"
+  },
+  {
+    "frame": 1615,
+    "action": "move_right",
+    "pressed": true
+  },
+  {
+    "frame": 1645,
+    "screenshot": "19_alarme_do_reator"
+  },
+  {
+    "frame": 1650,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 1653,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 1659,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 1662,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 1668,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 1671,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 1677,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 1680,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 1686,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 1689,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 1695,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 1698,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 1700,
+    "screenshot": "20_alarme_texto"
+  },
+  {
+    "frame": 1704,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 1707,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 1713,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 1716,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 1722,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 1725,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 1731,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 1734,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 1740,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 1743,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 1749,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 1752,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 1780,
+    "screenshot": "21_doca_e_reator"
+  },
+  {
+    "frame": 1800,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 1803,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 1809,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 1812,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 1818,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 1821,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 1827,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 1830,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 1830,
+    "screenshot": "22_primeiro_corpo"
+  },
+  {
+    "frame": 1836,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 1839,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 1845,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 1848,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 1854,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 1857,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 1863,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 1866,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 1872,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 1875,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 1881,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 1884,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 1970,
+    "screenshot": "23_traje_de_perto"
+  },
+  {
+    "frame": 1980,
+    "action": "move_right",
+    "pressed": false
+  },
+  {
+    "frame": 1995,
+    "action": "interact",
+    "pressed": true
+  },
+  {
+    "frame": 1998,
+    "action": "interact",
+    "pressed": false
+  },
+  {
+    "frame": 2040,
+    "screenshot": "24_log_do_traje"
+  },
+  {
+    "frame": 2060,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 2063,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 2069,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 2072,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 2078,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 2081,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 2087,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 2090,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 2096,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 2099,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 2105,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 2108,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 2114,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 2117,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 2123,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 2126,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 2132,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 2135,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 2141,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 2144,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 2150,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 2153,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 2159,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 2162,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 2168,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 2171,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 2177,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 2180,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 2200,
+    "screenshot": "25_batente_antes_da_sr3"
+  },
+  {
+    "frame": 2215,
+    "action": "jump",
+    "pressed": true
+  },
+  {
+    "frame": 2215,
+    "action": "move_right",
+    "pressed": true
+  },
+  {
+    "frame": 2229,
+    "action": "jump",
+    "pressed": false
+  },
+  {
+    "frame": 2274,
+    "screenshot": "c_dano_2274"
+  },
+  {
+    "frame": 2275,
+    "screenshot": "c_dano_2275"
+  },
+  {
+    "frame": 2276,
+    "screenshot": "c_dano_2276"
+  },
+  {
+    "frame": 2277,
+    "screenshot": "c_dano_2277"
+  },
+  {
+    "frame": 2278,
+    "screenshot": "c_dano_2278"
+  },
+  {
+    "frame": 2279,
+    "screenshot": "c_dano_2279"
+  },
+  {
+    "frame": 2280,
+    "screenshot": "26_sr3_patrulhando"
+  },
+  {
+    "frame": 2280,
+    "screenshot": "c_dano_2280"
+  },
+  {
+    "frame": 2281,
+    "screenshot": "c_dano_2281"
+  },
+  {
+    "frame": 2282,
+    "screenshot": "c_dano_2282"
+  },
+  {
+    "frame": 2283,
+    "screenshot": "c_dano_2283"
+  },
+  {
+    "frame": 2284,
+    "screenshot": "c_dano_2284"
+  },
+  {
+    "frame": 2285,
+    "screenshot": "c_dano_2285"
+  },
+  {
+    "frame": 2286,
+    "screenshot": "c_dano_2286"
+  },
+  {
+    "frame": 2287,
+    "screenshot": "c_dano_2287"
+  },
+  {
+    "frame": 2288,
+    "screenshot": "c_dano_2288"
+  },
+  {
+    "frame": 2289,
+    "screenshot": "c_dano_2289"
+  },
+  {
+    "frame": 2290,
+    "screenshot": "c_dano_2290"
+  },
+  {
+    "frame": 2291,
+    "screenshot": "c_dano_2291"
+  },
+  {
+    "frame": 2292,
+    "screenshot": "c_dano_2292"
+  },
+  {
+    "frame": 2293,
+    "screenshot": "c_dano_2293"
+  },
+  {
+    "frame": 2294,
+    "screenshot": "c_dano_2294"
+  },
+  {
+    "frame": 2295,
+    "screenshot": "c_dano_2295"
+  },
+  {
+    "frame": 2296,
+    "screenshot": "c_dano_2296"
+  },
+  {
+    "frame": 2297,
+    "screenshot": "c_dano_2297"
+  },
+  {
+    "frame": 2298,
+    "screenshot": "c_dano_2298"
+  },
+  {
+    "frame": 2299,
+    "screenshot": "c_dano_2299"
+  },
+  {
+    "frame": 2300,
+    "screenshot": "c_dano_2300"
+  },
+  {
+    "frame": 2301,
+    "screenshot": "c_dano_2301"
+  },
+  {
+    "frame": 2330,
+    "action": "move_right",
+    "pressed": false
+  },
+  {
+    "frame": 2345,
+    "action": "move_right",
+    "pressed": true
+  },
+  {
+    "frame": 2350,
+    "action": "jump",
+    "pressed": true
+  },
+  {
+    "frame": 2364,
+    "action": "jump",
+    "pressed": false
+  },
+  {
+    "frame": 2430,
+    "screenshot": "27_fragmento_e_saida"
+  },
+  {
+    "frame": 2450,
+    "action": "move_right",
+    "pressed": false
+  },
+  {
+    "frame": 2460,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 2463,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 2469,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 2472,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 2478,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 2481,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 2487,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 2490,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 2496,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 2499,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 2505,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 2508,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 2514,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 2517,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 2523,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 2526,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 2532,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 2535,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 2540,
+    "screenshot": "28_fim_da_demo"
+  },
+  {
+    "frame": 2541,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 2544,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 2550,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 2553,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 2559,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 2562,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 2568,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 2571,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 2577,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 2580,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 2586,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 2589,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 2595,
+    "action": "ui_accept",
+    "pressed": true
+  },
+  {
+    "frame": 2598,
+    "action": "ui_accept",
+    "pressed": false
+  },
+  {
+    "frame": 2604,
+    "screenshot": "a14_transicao"
+  },
+  {
+    "frame": 2610,
+    "action": "move_right",
+    "pressed": true
+  },
+  {
+    "frame": 2670,
+    "screenshot": "29_saida_iluminada"
+  },
+  {
+    "frame": 2680,
+    "action": "move_right",
+    "pressed": false
+  },
+  {
+    "frame": 2760,
+    "screenshot": "30_fim_da_demo"
+  },
+  {
+    "frame": 2820,
+    "quit": true
+  }
+]

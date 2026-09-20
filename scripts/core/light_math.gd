@@ -24,3 +24,10 @@ static func can_enable(charge: float, drain_per_second: float) -> bool:
 	if charge <= 0.0:
 		return false
 	return charge >= drain_per_second
+
+
+static func pulse(base_energy: float, elapsed: float, frequency: float, depth: float) -> float:
+	if base_energy <= 0.0 or frequency <= 0.0 or depth <= 0.0:
+		return maxf(base_energy, 0.0)
+	var wave: float = sin(elapsed * frequency * TAU)
+	return maxf(0.0, base_energy * (1.0 + wave * clampf(depth, 0.0, 1.0)))

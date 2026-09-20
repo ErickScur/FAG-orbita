@@ -49,3 +49,20 @@ func test_radius_constants_match_gdd() -> void:
 func test_light_fade_time_is_short() -> void:
 	assert_true(Balance.LIGHT_FADE_TIME > 0.0, "fade positivo")
 	assert_true(Balance.LIGHT_FADE_TIME < Balance.SCENE_FADE_TIME, "fade menor que o de cena")
+
+
+func test_pulse_stays_around_the_base_energy() -> void:
+	var base: float = Balance.LAMP_ENERGY
+	var depth: float = Balance.LAMP_PULSE_DEPTH
+	var elapsed: float = 0.0
+	while elapsed < 4.0:
+		var value: float = LightMath.pulse(base, elapsed, Balance.LAMP_PULSE_HZ, depth)
+		assert_true(value >= base * (1.0 - depth) - 0.0001, "nunca apaga demais")
+		assert_true(value <= base * (1.0 + depth) + 0.0001, "nunca estoura")
+		elapsed += STEP
+
+
+func test_pulse_without_depth_returns_the_base() -> void:
+	assert_almost_eq(LightMath.pulse(1.5, 2.0, 0.45, 0.0), 1.5, 0.0001, "sem profundidade")
+	assert_almost_eq(LightMath.pulse(1.5, 2.0, 0.0, 0.2), 1.5, 0.0001, "sem frequência")
+	assert_almost_eq(LightMath.pulse(0.0, 2.0, 0.45, 0.2), 0.0, 0.0001, "apagada")

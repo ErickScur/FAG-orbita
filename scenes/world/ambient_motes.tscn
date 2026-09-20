@@ -1,0 +1,25 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0rbitaambmotes"]
+
+[ext_resource type="Script" path="res://scenes/world/ambient_motes.gd" id="1_motes"]
+
+[node name="AmbientMotes" type="Node2D"]
+z_index = 4
+script = ExtResource("1_motes")
+
+[node name="Particles" type="CPUParticles2D" parent="."]
+emitting = false
+amount = 28
+lifetime = 7.0
+preprocess = 4.0
+randomness = 0.6
+local_coords = false
+emission_shape = 3
+emission_rect_extents = Vector2(230, 130)
+direction = Vector2(1, 0)
+spread = 180.0
+gravity = Vector2(0, -3)
+initial_velocity_min = 1.0
+initial_velocity_max = 5.0
+scale_amount_min = 1.0
+scale_amount_max = 1.0
+color = Color(0.658824, 0.843137, 0.541176, 0.65)
