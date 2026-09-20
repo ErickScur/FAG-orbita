@@ -58,6 +58,13 @@ func camera_rect() -> Rect2i:
 	return LevelBuilder.camera_rect(_parsed)
 
 
+func meta_color(key: String) -> Color:
+	var value: String = String(_meta.get(key, ""))
+	if value.is_empty():
+		return _ambient.color
+	return Color(value)
+
+
 func _load_data() -> bool:
 	var text_path: String = LEVELS_DIR + level_id + ".txt"
 	var meta_path: String = LEVELS_DIR + level_id + ".json"

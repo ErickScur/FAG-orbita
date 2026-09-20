@@ -225,8 +225,8 @@ func _start_or_interrupt(blocking: bool) -> void:
 
 
 func _promote_blocking() -> void:
-	var blocking_entries: Array = []
-	var ambient_entries: Array = []
+	var blocking_entries: Array[Dictionary] = []
+	var ambient_entries: Array[Dictionary] = []
 	for entry: Dictionary in _queue:
 		if entry["kind"] == KIND_LOG or _entry_is_blocking(entry):
 			blocking_entries.append(entry)

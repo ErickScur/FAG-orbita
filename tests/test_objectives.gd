@@ -6,9 +6,14 @@ const DEMO_IDS: Array[StringName] = [
 	&"obj_open_habitat",
 	&"obj_reach_greenhouse",
 	&"obj_find_terminal_gh",
-	&"obj_reach_node",
+	&"obj_gh_choose_route",
+	&"obj_gh_ride_lift",
+	&"obj_gh_climb_plant",
+	&"obj_gh_reach_corridor",
+	&"obj_gh_find_claws",
+	&"obj_gh_climb_wall",
+	&"obj_gh_open_node_door",
 	&"obj_restore_gh",
-	&"obj_demo_exit",
 ]
 
 var _table: Dictionary = {}

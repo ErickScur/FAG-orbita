@@ -4,7 +4,12 @@
   "obj_open_habitat": "Abrir a porta do Setor Habitacional no Terminal de Distribuição",
   "obj_reach_greenhouse": "Atravessar o Setor Habitacional até a Estufa",
   "obj_find_terminal_gh": "Encontrar o Terminal de Distribuição da Estufa",
-  "obj_reach_node": "Chegar à câmara do Nó do Setor",
-  "obj_restore_gh": "Religar o Nó do Setor da Estufa",
-  "obj_demo_exit": "Seguir para a saída da Estufa"
+  "obj_gh_choose_route": "Escolher no Terminal: ELEVADOR DE CARGA ou LUZ DE CRESCIMENTO",
+  "obj_gh_ride_lift": "Subir pelo elevador de carga, no poço da direita",
+  "obj_gh_climb_plant": "Subir pela trepadeira que cresceu",
+  "obj_gh_reach_corridor": "Achar a escada da passarela até o corredor superior",
+  "obj_gh_find_claws": "Atravessar o corredor até o terminal de registros",
+  "obj_gh_climb_wall": "Escalar o painel magnético: encoste nele e segure CIMA",
+  "obj_gh_open_node_door": "Abrir a PORTA DO NÓ DO SETOR no terminal",
+  "obj_restore_gh": "Religar o Nó do Setor da Estufa"
 }

@@ -1,0 +1,248 @@
+{
+  "id": "greenhouse",
+  "name": "Estufa",
+  "tileset": "res://assets/tiles/greenhouse_tileset.tres",
+  "ambient_color": "#5f7f55",
+  "ambient_restored": "#8fbf7f",
+  "parallax": true,
+  "floor_sfx": "step_soil",
+  "music": "greenhouse",
+  "reactor_online": true,
+  "objective": "obj_find_terminal_gh",
+  "on_enter_dialogue": "gh_enter",
+  "terminals": [
+    "greenhouse"
+  ],
+  "entities": {
+    "3,37": {
+      "id": "gh_dock_01"
+    },
+    "7,37": {
+      "id": "log_gh_01"
+    },
+    "11,37": {
+      "id": "gh_sr3_01",
+      "dir": 1
+    },
+    "12,34": {
+      "id": "gh_spore_01",
+      "group": "gh_spores",
+      "terminal_id": "greenhouse",
+      "system_id": "heating"
+    },
+    "12,32": {
+      "id": "gh_vent_01",
+      "group": "gh_heat_vents",
+      "terminal_id": "greenhouse",
+      "system_id": "heating",
+      "color": "#e0904a",
+      "radius": 140.0,
+      "energy": 1.5
+    },
+    "14,37": {
+      "id": "cell_gh_01"
+    },
+    "18,37": {
+      "id": "gh_console_a",
+      "terminal": "greenhouse"
+    },
+    "21,37": {
+      "id": "gh_plant_1",
+      "terminal_id": "greenhouse",
+      "system_id": "grow_light"
+    },
+    "21,32": {
+      "id": "gh_grow_lamp_01",
+      "group": "gh_grow_lamps",
+      "terminal_id": "greenhouse",
+      "system_id": "grow_light",
+      "color": "#e58fb5",
+      "radius": 150.0,
+      "energy": 1.7
+    },
+    "25,37": {
+      "id": "data_gh_01"
+    },
+    "27,34": {
+      "id": "gh_spore_02",
+      "group": "gh_spores",
+      "terminal_id": "greenhouse",
+      "system_id": "heating"
+    },
+    "27,32": {
+      "id": "gh_vent_02",
+      "group": "gh_heat_vents",
+      "terminal_id": "greenhouse",
+      "system_id": "heating",
+      "color": "#e0904a",
+      "radius": 140.0,
+      "energy": 1.5
+    },
+    "30,37": {
+      "id": "kit_gh_01"
+    },
+    "35,37": {
+      "id": "gh_lift",
+      "terminal_id": "greenhouse",
+      "system_id": "lift_platform",
+      "path": [
+        [0, 0],
+        [0, -10]
+      ],
+      "speed": 40.0,
+      "wait": 1.2
+    },
+    "2,27": {
+      "id": "capacitor_gh_01"
+    },
+    "4,26": {
+      "id": "gh_secret_upper",
+      "secret_id": "gh_secret_01"
+    },
+    "4,27": {
+      "id": "gh_secret_lower",
+      "secret_id": "gh_secret_01"
+    },
+    "14,27": {
+      "id": "kit_gh_02"
+    },
+    "17,27": {
+      "id": "gh_console_b",
+      "terminal": "greenhouse"
+    },
+    "26,27": {
+      "id": "cell_gh_02"
+    },
+    "28,27": {
+      "id": "gh_sr3_02",
+      "dir": -1
+    },
+    "30,24": {
+      "id": "gh_spore_03",
+      "group": "gh_spores",
+      "terminal_id": "greenhouse",
+      "system_id": "heating"
+    },
+    "32,27": {
+      "id": "log_gh_02"
+    },
+    "5,17": {
+      "id": "data_gh_02"
+    },
+    "7,17": {
+      "id": "cell_gh_03"
+    },
+    "14,17": {
+      "id": "gh_dock_02"
+    },
+    "21,12": {
+      "id": "gh_corridor_lamp_01",
+      "group": "gh_corridor_lamps",
+      "terminal_id": "greenhouse",
+      "system_id": "corridor_light",
+      "color": "#b7e08a",
+      "radius": 150.0,
+      "energy": 1.6
+    },
+    "31,12": {
+      "id": "gh_corridor_lamp_02",
+      "group": "gh_corridor_lamps",
+      "terminal_id": "greenhouse",
+      "system_id": "corridor_light",
+      "color": "#b7e08a",
+      "radius": 150.0,
+      "energy": 1.6
+    },
+    "32,17": {
+      "id": "log_gh_03",
+      "prompt_text": "LER PROTOCOLO"
+    },
+    "2,7": {
+      "id": "gh_photo",
+      "frame": 2
+    },
+    "4,7": {
+      "id": "gh_sector_node",
+      "scene": "res://scenes/world/sector_node.tscn",
+      "sector_id": "greenhouse"
+    },
+    "5,5": {
+      "id": "gh_node_lamp",
+      "terminal_id": "greenhouse",
+      "system_id": "node_door",
+      "color": "#8fe3b0",
+      "radius": 150.0,
+      "energy": 1.7
+    },
+    "8,7": {
+      "id": "gh_node_door",
+      "terminal_id": "greenhouse",
+      "system_id": "node_door"
+    },
+    "12,4": {
+      "id": "gh_lamp_node_floor_01",
+      "color": "#e0b43c",
+      "radius": 150.0,
+      "energy": 1.5
+    },
+    "15,7": {
+      "id": "data_gh_03"
+    },
+    "20,7": {
+      "id": "log_gh_04"
+    },
+    "26,4": {
+      "id": "gh_lamp_node_floor_02",
+      "color": "#e0b43c",
+      "radius": 150.0,
+      "energy": 1.5
+    },
+    "30,7": {
+      "id": "gh_console_c",
+      "terminal": "greenhouse"
+    },
+    "33,7": {
+      "id": "cell_gh_04"
+    }
+  },
+  "triggers": [
+    {
+      "id": "gh_t_spores",
+      "rect": [9, 33, 2, 5],
+      "dialogue": "gh_spores",
+      "once": true
+    },
+    {
+      "id": "gh_t_terminal",
+      "rect": [17, 33, 2, 5],
+      "dialogue": "gh_terminal_first",
+      "objective": "obj_gh_choose_route",
+      "once": true
+    },
+    {
+      "id": "gh_t_zone_b",
+      "rect": [18, 24, 3, 4],
+      "objective": "obj_gh_reach_corridor",
+      "once": true
+    },
+    {
+      "id": "gh_t_zone_c",
+      "rect": [12, 14, 3, 4],
+      "objective": "obj_gh_find_claws",
+      "once": true
+    },
+    {
+      "id": "gh_t_corridor",
+      "rect": [22, 14, 2, 4],
+      "dialogue": "gh_dark_corridor",
+      "once": true
+    },
+    {
+      "id": "gh_t_zone_d",
+      "rect": [33, 4, 3, 4],
+      "dialogue": "gh_node_room",
+      "objective": "obj_gh_open_node_door",
+      "once": true
+    }
+  ]
+}

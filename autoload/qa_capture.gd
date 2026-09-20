@@ -11,7 +11,7 @@ const ENV_SCREEN: String = "ORBITA_QA_SCREEN"
 const DEFAULT_OUT: String = "user://qa/"
 const LOG_FILE: String = "qa_log.txt"
 const TAIL_FRAMES: int = 30
-const SAFETY_FRAMES: int = 3600
+const SAFETY_FRAMES: int = 10800
 
 var is_active: bool = false
 var _events: Array[Dictionary] = []
@@ -146,9 +146,23 @@ func _capture(shot_name: String) -> void:
 	if error != OK:
 		_log("frame %d ERRO ao salvar %s (%d)" % [frame_index, file_name, error])
 		return
-	_log("frame %d screenshot %s (%dx%d)" % [
-		frame_index, file_name, image.get_width(), image.get_height()
+	_log("frame %d screenshot %s (%dx%d)%s" % [
+		frame_index, file_name, image.get_width(), image.get_height(), _player_mark()
 	])
+
+
+func _player_mark() -> String:
+	var tree: SceneTree = get_tree()
+	if tree == null:
+		return ""
+	var players: Array[Node] = tree.get_nodes_in_group(&"player")
+	if players.is_empty():
+		return ""
+	var body := players[0] as Node2D
+	if body == null:
+		return ""
+	var tile: Vector2i = Vector2i(body.global_position) / Balance.TILE_SIZE
+	return " jogador em %d,%d" % [tile.x, tile.y]
 
 
 func _finish() -> void:

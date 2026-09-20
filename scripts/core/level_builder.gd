@@ -319,9 +319,10 @@ static func _already_collected(item_id: StringName) -> bool:
 
 
 static func _instantiate(symbol: String, definition: Dictionary, params: Dictionary) -> Node2D:
-	if bool(definition.get("prop_sheet", false)) and not params.has("log"):
+	var override: String = String(params.get("scene", ""))
+	if override.is_empty() and bool(definition.get("prop_sheet", false)) and not params.has("log"):
 		return _make_prop(params)
-	var path: String = String(definition.get("scene", ""))
+	var path: String = override if not override.is_empty() else String(definition.get("scene", ""))
 	if not ResourceLoader.exists(path):
 		push_warning(
 			"LevelBuilder: entidade '%s' (%s) ainda não implementada (%s)"

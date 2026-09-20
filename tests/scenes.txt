@@ -58,3 +58,4 @@ res://tests/qa/scenes/platform_sandbox.tscn
 res://tests/qa/scenes/parallax_sandbox.tscn
 res://scenes/world/level_exit.tscn
 res://scenes/levels/core_hub.tscn
+res://scenes/levels/greenhouse.tscn
