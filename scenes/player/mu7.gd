@@ -64,6 +64,8 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	_update_drop_through(delta)
+	if not _locked and Input.is_action_just_pressed(&"move_down"):
+		_try_drop_through()
 	var axis: float = 0.0 if _locked else Input.get_axis(&"move_left", &"move_right")
 	_apply_horizontal(axis, delta)
 	_apply_gravity(delta)

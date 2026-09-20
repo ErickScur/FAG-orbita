@@ -1,0 +1,9 @@
+[
+  {"frame": 20, "action": "move_right", "pressed": true},
+  {"frame": 218, "action": "move_right", "pressed": false},
+  {"frame": 250, "screenshot": "a_na_ponte"},
+  {"frame": 260, "action": "move_down", "pressed": true},
+  {"frame": 268, "action": "move_down", "pressed": false},
+  {"frame": 300, "screenshot": "b_apos_seta_baixo"},
+  {"frame": 310, "quit": true}
+]
