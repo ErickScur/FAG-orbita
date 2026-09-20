@@ -1,0 +1,52 @@
+[
+ {
+  "frame": 30,
+  "screenshot": "01_terminal_distribuicao_a_distancia"
+ },
+ {
+  "frame": 50,
+  "action": "move_right",
+  "pressed": true
+ },
+ {
+  "frame": 78,
+  "action": "move_right",
+  "pressed": false
+ },
+ {
+  "frame": 120,
+  "screenshot": "02_terminal_distribuicao_de_perto"
+ },
+ {
+  "frame": 140,
+  "action": "interact",
+  "pressed": true
+ },
+ {
+  "frame": 143,
+  "action": "interact",
+  "pressed": false
+ },
+ {
+  "frame": 205,
+  "screenshot": "03_terminal_ativo_com_ui"
+ },
+ {
+  "frame": 235,
+  "action": "ui_cancel",
+  "pressed": true
+ },
+ {
+  "frame": 238,
+  "action": "ui_cancel",
+  "pressed": false
+ },
+ {
+  "frame": 290,
+  "screenshot": "04_terminal_de_volta_ligado"
+ },
+ {
+  "frame": 320,
+  "quit": true
+ }
+]

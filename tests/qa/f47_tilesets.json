@@ -1,0 +1,18 @@
+[
+  {"frame": 40, "action": "flashlight", "pressed": true},
+  {"frame": 42, "action": "flashlight", "pressed": false},
+  {"frame": 75, "screenshot": "f47_01_nucleo_luminaria_apagada"},
+  {"frame": 85, "scene": "res://tests/qa/scenes/f47_probe_lamp_on.tscn"},
+  {"frame": 145, "screenshot": "f47_02_nucleo_luminaria_acesa"},
+  {"frame": 155, "scene": "res://tests/qa/scenes/f47_probe_window.tscn"},
+  {"frame": 205, "action": "flashlight", "pressed": true},
+  {"frame": 207, "action": "flashlight", "pressed": false},
+  {"frame": 240, "screenshot": "f47_03_nucleo_vigia_parallax"},
+  {"frame": 250, "scene": "res://tests/qa/scenes/f47_probe_edges.tscn"},
+  {"frame": 300, "action": "flashlight", "pressed": true},
+  {"frame": 302, "action": "flashlight", "pressed": false},
+  {"frame": 335, "screenshot": "f47_04_nucleo_plataforma_e_bordas"},
+  {"frame": 345, "scene": "res://tests/qa/scenes/gh_probe_wall.tscn"},
+  {"frame": 415, "screenshot": "f47_05_estufa_parede_magnetica"},
+  {"frame": 445, "quit": true}
+]

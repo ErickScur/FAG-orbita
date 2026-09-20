@@ -2,11 +2,12 @@ class_name Door
 extends AnimatableBody2D
 
 const SHEET_PATH: String = "res://assets/sprites/world/door_sheet.png"
-const FRAME_SIZE: Vector2i = Vector2i(16, 48)
+const FRAME_SIZE: Vector2i = Vector2i(32, 48)
+const BLOCK_SIZE: Vector2i = Vector2i(16, 48)
 const FRAME_CLOSED: int = 0
-const FRAME_OPEN: int = 5
-const FRAME_SEALED: int = 6
-const OPEN_FPS: float = 12.0
+const FRAME_OPEN: int = 4
+const OPEN_FPS: float = 9.0
+const SEALED_TINT: Color = Color("ff7a7a")
 const ANIM_CLOSED: StringName = &"closed"
 const ANIM_OPENING: StringName = &"opening"
 const ANIM_OPEN: StringName = &"open"
@@ -47,6 +48,8 @@ func set_powered(on: bool) -> void:
 
 func set_powered_silent(on: bool) -> void:
 	powered = on and not sealed
+	if _sprite != null:
+		_sprite.modulate = SEALED_TINT if sealed else Color.WHITE
 	if sealed:
 		_play(ANIM_SEALED)
 		_set_blocking(true)
@@ -83,10 +86,10 @@ func _build_animations() -> void:
 	if frames.has_animation(&"default"):
 		frames.remove_animation(&"default")
 	_add_animation(frames, texture, ANIM_CLOSED, [FRAME_CLOSED])
-	_add_animation(frames, texture, ANIM_OPENING, [1, 2, 3, 4])
+	_add_animation(frames, texture, ANIM_OPENING, [1, 2, 3])
 	_add_animation(frames, texture, ANIM_OPEN, [FRAME_OPEN])
-	_add_animation(frames, texture, ANIM_CLOSING, [4, 3, 2, 1])
-	_add_animation(frames, texture, ANIM_SEALED, [FRAME_SEALED])
+	_add_animation(frames, texture, ANIM_CLOSING, [3, 2, 1])
+	_add_animation(frames, texture, ANIM_SEALED, [FRAME_CLOSED])
 	_sprite.sprite_frames = frames
 
 
@@ -124,13 +127,13 @@ func _push_bodies_out() -> void:
 	var tree: SceneTree = get_tree()
 	if tree == null:
 		return
-	var half_width: float = float(FRAME_SIZE.x) * 0.5
+	var half_width: float = float(BLOCK_SIZE.x) * 0.5
 	for node: Node in tree.get_nodes_in_group(&"player"):
 		var body := node as Node2D
 		if body == null:
 			continue
 		var offset: Vector2 = body.global_position - global_position
-		if absf(offset.x) > half_width or offset.y > 0.0 or offset.y < -float(FRAME_SIZE.y):
+		if absf(offset.x) > half_width or offset.y > 0.0 or offset.y < -float(BLOCK_SIZE.y):
 			continue
 		var direction: float = signf(offset.x)
 		if is_zero_approx(direction):

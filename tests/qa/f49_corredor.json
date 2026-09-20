@@ -1,0 +1,7 @@
+[
+  { "frame": 40, "screenshot": "f49_14_corredor_inicio" },
+  { "frame": 50, "action": "move_right", "pressed": true },
+  { "frame": 350, "action": "move_right", "pressed": false },
+  { "frame": 390, "screenshot": "f49_15_corredor_direita" },
+  { "frame": 420, "quit": true }
+]

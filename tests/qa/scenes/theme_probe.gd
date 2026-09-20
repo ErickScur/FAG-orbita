@@ -8,11 +8,11 @@ const SAMPLES: Array[Dictionary] = [
 	{"path": "res://assets/sprites/world/terminal_sheet.png", "frame": Vector2i(32, 32), "cell": Vector2i(1, 0)},
 	{"path": "res://assets/sprites/world/dock_sheet.png", "frame": Vector2i(32, 48), "cell": Vector2i(2, 0)},
 	{"path": "res://assets/sprites/pickups/pickups_sheet.png", "frame": Vector2i(16, 16), "cell": Vector2i(0, 0)},
-	{"path": "res://assets/sprites/world/grow_plant_sheet.png", "frame": Vector2i(32, 64), "cell": Vector2i(5, 0)},
+	{"path": "res://assets/sprites/world/grow_plant_sheet.png", "frame": Vector2i(64, 64), "cell": Vector2i(5, 0)},
 	{"path": "res://assets/tiles/core_tiles.png", "frame": Vector2i(16, 16), "cell": Vector2i(0, 0)},
 	{"path": "res://assets/tiles/greenhouse_tiles.png", "frame": Vector2i(16, 16), "cell": Vector2i(0, 0)},
 	{"path": "res://assets/ui/hud_sheet.png", "frame": Vector2i(16, 16), "cell": Vector2i(0, 0)},
-	{"path": "res://assets/sprites/world/door_sheet.png", "frame": Vector2i(16, 48), "cell": Vector2i(0, 0)},
+	{"path": "res://assets/sprites/world/door_sheet.png", "frame": Vector2i(32, 48), "cell": Vector2i(4, 0)},
 	{"path": "res://assets/sprites/npc/botanico_sheet.png", "frame": Vector2i(16, 16), "cell": Vector2i(0, 0)},
 	{"path": "res://assets/sprites/props/props_sheet.png", "frame": Vector2i(32, 32), "cell": Vector2i(0, 0)},
 ]

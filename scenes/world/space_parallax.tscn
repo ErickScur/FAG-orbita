@@ -18,9 +18,9 @@ color = Color(0.019608, 0.031373, 0.047059, 1)
 [node name="Far" type="Parallax2D" parent="."]
 scroll_scale = Vector2(0.1, 0.1)
 follow_viewport = false
-repeat_size = Vector2(384, 216)
+repeat_size = Vector2(1152, 216)
 autoscroll = Vector2(-1, 0)
-repeat_times = 4
+repeat_times = 3
 
 [node name="FarSprite" type="Sprite2D" parent="Far"]
 centered = false
@@ -28,9 +28,9 @@ centered = false
 [node name="Mid" type="Parallax2D" parent="."]
 scroll_scale = Vector2(0.25, 0.25)
 follow_viewport = false
-repeat_size = Vector2(384, 216)
+repeat_size = Vector2(1152, 216)
 autoscroll = Vector2(-3, 0)
-repeat_times = 4
+repeat_times = 3
 
 [node name="MidSprite" type="Sprite2D" parent="Mid"]
 centered = false
@@ -38,9 +38,9 @@ centered = false
 [node name="Near" type="Parallax2D" parent="."]
 scroll_scale = Vector2(0.5, 0.5)
 follow_viewport = false
-repeat_size = Vector2(384, 216)
+repeat_size = Vector2(1152, 216)
 autoscroll = Vector2(-6, 0)
-repeat_times = 4
+repeat_times = 3
 
 [node name="NearSprite" type="Sprite2D" parent="Near"]
 centered = false

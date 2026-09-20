@@ -5,6 +5,8 @@
 [node name="PoweredLamp" type="Node2D" groups=["powered"]]
 script = ExtResource("1_lamp")
 
+[node name="Fixture" type="Sprite2D" parent="."]
+
 [node name="Light" type="PointLight2D" parent="."]
 blend_mode = 0
 shadow_enabled = true

@@ -1,0 +1,7 @@
+[
+  { "frame": 40, "screenshot": "f49_16_esporos_longe" },
+  { "frame": 50, "action": "move_right", "pressed": true },
+  { "frame": 150, "action": "move_right", "pressed": false },
+  { "frame": 190, "screenshot": "f49_17_esporos_perto" },
+  { "frame": 220, "quit": true }
+]

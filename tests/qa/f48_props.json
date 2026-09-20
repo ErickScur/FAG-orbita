@@ -1,0 +1,14 @@
+[
+ {
+  "frame": 40,
+  "screenshot": "01_seis_props_no_mundo"
+ },
+ {
+  "frame": 90,
+  "screenshot": "02_seis_props_no_mundo"
+ },
+ {
+  "frame": 120,
+  "quit": true
+ }
+]

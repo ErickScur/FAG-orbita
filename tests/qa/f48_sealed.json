@@ -1,0 +1,24 @@
+[
+ {
+  "frame": 30,
+  "screenshot": "01_porta_selada_a_distancia"
+ },
+ {
+  "frame": 50,
+  "action": "move_left",
+  "pressed": true
+ },
+ {
+  "frame": 69,
+  "action": "move_left",
+  "pressed": false
+ },
+ {
+  "frame": 120,
+  "screenshot": "02_porta_selada_de_perto"
+ },
+ {
+  "frame": 150,
+  "quit": true
+ }
+]

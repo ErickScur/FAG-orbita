@@ -1,0 +1,32 @@
+[
+ {
+  "frame": 30,
+  "screenshot": "01_plataforma_no_poco"
+ },
+ {
+  "frame": 50,
+  "action": "move_right",
+  "pressed": true
+ },
+ {
+  "frame": 80,
+  "action": "move_right",
+  "pressed": false
+ },
+ {
+  "frame": 130,
+  "screenshot": "02_sobre_a_plataforma"
+ },
+ {
+  "frame": 210,
+  "screenshot": "03_plataforma_subindo"
+ },
+ {
+  "frame": 290,
+  "screenshot": "04_plataforma_no_alto"
+ },
+ {
+  "frame": 330,
+  "quit": true
+ }
+]

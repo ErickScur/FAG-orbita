@@ -2,6 +2,12 @@ class_name PoweredLamp
 extends Node2D
 
 const LIGHT_TEXTURE: String = "res://assets/fx/light_radial.png"
+const TILE_SHEET: String = "res://assets/tiles/core_tiles.png"
+const TILE_FRAME: Vector2i = Vector2i(16, 16)
+const ATLAS_COLUMNS: int = 8
+const FRAME_ON: int = 22
+const FRAME_OFF: int = 25
+const FIXTURE_TINT: float = 0.35
 
 @export var terminal_id: StringName = &""
 @export var system_id: StringName = &""
@@ -9,12 +15,16 @@ const LIGHT_TEXTURE: String = "res://assets/fx/light_radial.png"
 @export var lamp_color: Color = Balance.LAMP_COLOR
 @export var radius: float = Balance.LAMP_RADIUS
 @export var energy: float = Balance.LAMP_ENERGY
+@export var sheet: String = TILE_SHEET
+@export var frame_on: int = FRAME_ON
+@export var frame_off: int = FRAME_OFF
 
 var _tween: Tween = null
 var _pulse_time: float = 0.0
 var _base_energy: float = 0.0
 
 @onready var _light: PointLight2D = $Light
+@onready var _fixture: Sprite2D = $Fixture
 
 
 func _ready() -> void:
@@ -45,6 +55,7 @@ func set_powered(on: bool) -> void:
 	if powered == on:
 		return
 	powered = on
+	_apply_fixture()
 	AudioManager.play_sfx(&"power_on" if on else &"power_off")
 	_kill_tween()
 	_base_energy = energy
@@ -56,6 +67,7 @@ func set_powered(on: bool) -> void:
 
 func set_powered_silent(on: bool) -> void:
 	powered = on
+	_apply_fixture()
 	_kill_tween()
 	_base_energy = energy
 	_light.energy = energy if on else 0.0
@@ -68,6 +80,9 @@ func configure(params: Dictionary) -> void:
 		lamp_color = Color(String(params.get("color", "")))
 	radius = float(params.get("radius", radius))
 	energy = float(params.get("energy", energy))
+	sheet = String(params.get("sheet", sheet))
+	frame_on = int(params.get("frame_on", frame_on))
+	frame_off = int(params.get("frame_off", frame_off))
 	if _light == null:
 		return
 	_apply_shape()
@@ -81,6 +96,22 @@ func is_lit() -> bool:
 func _apply_shape() -> void:
 	_light.color = lamp_color
 	_light.texture_scale = LightMath.scale_for_radius(radius, LightMath.TEXTURE_SIZE)
+
+
+func _apply_fixture() -> void:
+	if _fixture == null:
+		return
+	var index: int = frame_on if powered else frame_off
+	var texture: AtlasTexture = AssetResolver.atlas(
+		sheet, TILE_FRAME, index % ATLAS_COLUMNS, index / ATLAS_COLUMNS
+	)
+	if texture == null:
+		push_warning("PoweredLamp: quadro de luminária ausente em %s" % sheet)
+		return
+	_fixture.texture = texture
+	_fixture.self_modulate = (
+		Color.WHITE.lerp(lamp_color, FIXTURE_TINT) if powered else Color.WHITE
+	)
 
 
 func _pulse_phase() -> float:

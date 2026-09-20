@@ -1,0 +1,38 @@
+[
+ {
+  "frame": 30,
+  "screenshot": "01_porta_aberta_doca_e_traje"
+ },
+ {
+  "frame": 50,
+  "action": "move_right",
+  "pressed": true
+ },
+ {
+  "frame": 69,
+  "action": "move_right",
+  "pressed": false
+ },
+ {
+  "frame": 120,
+  "screenshot": "02_traje_do_tripulante"
+ },
+ {
+  "frame": 140,
+  "action": "interact",
+  "pressed": true
+ },
+ {
+  "frame": 143,
+  "action": "interact",
+  "pressed": false
+ },
+ {
+  "frame": 190,
+  "screenshot": "03_traje_examinado"
+ },
+ {
+  "frame": 220,
+  "quit": true
+ }
+]

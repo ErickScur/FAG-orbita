@@ -1,0 +1,6 @@
+[
+  { "frame": 50, "screenshot": "f49_04_emenda_a" },
+  { "frame": 110, "screenshot": "f49_05_emenda_b" },
+  { "frame": 170, "screenshot": "f49_06_emenda_c" },
+  { "frame": 200, "quit": true }
+]

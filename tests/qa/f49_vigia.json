@@ -1,0 +1,128 @@
+[
+ {
+  "frame": 20,
+  "action": "interact",
+  "pressed": true
+ },
+ {
+  "frame": 22,
+  "action": "interact",
+  "pressed": false
+ },
+ {
+  "frame": 34,
+  "action": "interact",
+  "pressed": true
+ },
+ {
+  "frame": 36,
+  "action": "interact",
+  "pressed": false
+ },
+ {
+  "frame": 48,
+  "action": "interact",
+  "pressed": true
+ },
+ {
+  "frame": 50,
+  "action": "interact",
+  "pressed": false
+ },
+ {
+  "frame": 62,
+  "action": "interact",
+  "pressed": true
+ },
+ {
+  "frame": 64,
+  "action": "interact",
+  "pressed": false
+ },
+ {
+  "frame": 76,
+  "action": "interact",
+  "pressed": true
+ },
+ {
+  "frame": 78,
+  "action": "interact",
+  "pressed": false
+ },
+ {
+  "frame": 90,
+  "action": "interact",
+  "pressed": true
+ },
+ {
+  "frame": 92,
+  "action": "interact",
+  "pressed": false
+ },
+ {
+  "frame": 104,
+  "action": "interact",
+  "pressed": true
+ },
+ {
+  "frame": 106,
+  "action": "interact",
+  "pressed": false
+ },
+ {
+  "frame": 118,
+  "action": "interact",
+  "pressed": true
+ },
+ {
+  "frame": 120,
+  "action": "interact",
+  "pressed": false
+ },
+ {
+  "frame": 132,
+  "action": "flashlight",
+  "pressed": true
+ },
+ {
+  "frame": 134,
+  "action": "flashlight",
+  "pressed": false
+ },
+ {
+  "frame": 152,
+  "screenshot": "f49_07_nucleo_vigia_perto"
+ },
+ {
+  "frame": 162,
+  "action": "move_right",
+  "pressed": true
+ },
+ {
+  "frame": 492,
+  "action": "move_right",
+  "pressed": false
+ },
+ {
+  "frame": 522,
+  "screenshot": "f49_08_nucleo_vigia_longe"
+ },
+ {
+  "frame": 532,
+  "action": "move_right",
+  "pressed": true
+ },
+ {
+  "frame": 652,
+  "action": "move_right",
+  "pressed": false
+ },
+ {
+  "frame": 682,
+  "screenshot": "f49_09_nucleo_vigia_alta"
+ },
+ {
+  "frame": 712,
+  "quit": true
+ }
+]

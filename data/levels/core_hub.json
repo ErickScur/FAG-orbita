@@ -55,8 +55,14 @@
       "terminal_id": "core_hub",
       "system_id": "lift_core",
       "path": [
-        [0, 0.75],
-        [0, -5.5]
+        [
+          0,
+          0.75
+        ],
+        [
+          0,
+          -5.5
+        ]
       ]
     },
     "54,9": {
@@ -96,7 +102,7 @@
     "65,11": {
       "id": "hab_suit",
       "log": "log_hab_01",
-      "frame": 1,
+      "frame": 3,
       "prompt_text": "EXAMINAR TRAJE"
     },
     "70,11": {
@@ -114,68 +120,123 @@
   "triggers": [
     {
       "id": "core_t_move",
-      "rect": [3, 8, 6, 4],
+      "rect": [
+        3,
+        8,
+        6,
+        4
+      ],
       "tutorial": "tut_move",
       "once": false
     },
     {
       "id": "core_t_pause",
-      "rect": [14, 8, 3, 4],
+      "rect": [
+        14,
+        8,
+        3,
+        4
+      ],
       "tutorial": "tut_pause",
       "once": false
     },
     {
       "id": "core_t_jump",
-      "rect": [17, 8, 2, 4],
+      "rect": [
+        17,
+        8,
+        2,
+        4
+      ],
       "tutorial": "tut_jump",
       "once": false
     },
     {
       "id": "core_t_drop",
-      "rect": [23, 8, 4, 2],
+      "rect": [
+        23,
+        8,
+        4,
+        2
+      ],
       "tutorial": "tut_drop",
       "once": false
     },
     {
       "id": "core_t_log",
-      "rect": [31, 7, 3, 5],
+      "rect": [
+        31,
+        7,
+        3,
+        5
+      ],
       "tutorial": "tut_interact",
       "once": true
     },
     {
       "id": "core_t_chassis",
-      "rect": [35, 7, 3, 5],
+      "rect": [
+        35,
+        7,
+        3,
+        5
+      ],
       "tutorial": "tut_chassis",
       "once": false
     },
     {
       "id": "core_t_dark",
-      "rect": [39, 7, 3, 5],
+      "rect": [
+        39,
+        7,
+        3,
+        5
+      ],
       "tutorial": "tut_flashlight",
       "once": true
     },
     {
       "id": "core_t_terminal",
-      "rect": [52, 7, 3, 5],
+      "rect": [
+        52,
+        7,
+        3,
+        5
+      ],
       "tutorial": "tut_terminal",
       "dialogue": "core_terminal_first",
       "once": true
     },
     {
       "id": "core_t_alarm",
-      "rect": [61, 7, 2, 5],
+      "rect": [
+        61,
+        7,
+        2,
+        5
+      ],
       "dialogue": "core_alarm",
       "once": true
     },
     {
       "id": "core_t_body",
-      "rect": [64, 7, 2, 5],
+      "rect": [
+        64,
+        7,
+        2,
+        5
+      ],
       "dialogue": "hab_body",
       "once": true
     },
     {
       "id": "core_t_sr3",
-      "rect": [68, 7, 2, 5],
+      "rect": [
+        68,
+        7,
+        2,
+        5
+      ],
       "dialogue": "hab_first_sr3",
       "once": true
     }

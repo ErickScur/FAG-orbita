@@ -13,22 +13,13 @@ const NEAR_PATH: String = "res://assets/backgrounds/space_near.png"
 
 
 func _ready() -> void:
-	_apply(_far, FAR_PATH)
-	_apply(_mid, MID_PATH)
-	_apply(_near, NEAR_PATH)
-	_tune(_far_layer, Balance.PARALLAX_FAR_SCALE, Balance.PARALLAX_FAR_DIM)
-	_tune(_mid_layer, Balance.PARALLAX_MID_SCALE, Balance.PARALLAX_MID_DIM)
-	_tune(_near_layer, Balance.PARALLAX_NEAR_SCALE, 1.0)
+	_mount(_far_layer, _far, FAR_PATH, Balance.PARALLAX_FAR_SCALE, Balance.PARALLAX_FAR_DIM)
+	_mount(_mid_layer, _mid, MID_PATH, Balance.PARALLAX_MID_SCALE, Balance.PARALLAX_MID_DIM)
+	_mount(_near_layer, _near, NEAR_PATH, Balance.PARALLAX_NEAR_SCALE, 1.0)
 
 
 func layer_scales() -> PackedVector2Array:
 	return [_far_layer.scroll_scale, _mid_layer.scroll_scale, _near_layer.scroll_scale]
-
-
-func _tune(layer: Parallax2D, scroll: Vector2, dim: float) -> void:
-	layer.scroll_scale = scroll
-	layer.follow_viewport = false
-	layer.modulate = Color(dim, dim, dim, 1.0)
 
 
 func layer_offsets() -> PackedVector2Array:
@@ -39,9 +30,23 @@ func layer_offsets() -> PackedVector2Array:
 	]
 
 
-func _apply(sprite: Sprite2D, path: String) -> void:
+func layer_sizes() -> PackedVector2Array:
+	return [_far_layer.repeat_size, _mid_layer.repeat_size, _near_layer.repeat_size]
+
+
+func _mount(
+	layer: Parallax2D, sprite: Sprite2D, path: String, scroll: Vector2, dim: float
+) -> void:
+	_tune(layer, scroll, dim)
 	var texture: Texture2D = AssetResolver.texture(path)
 	if texture == null:
 		push_warning("SpaceParallax: camada ausente em %s" % path)
 		return
 	sprite.texture = texture
+	layer.repeat_size = texture.get_size()
+
+
+func _tune(layer: Parallax2D, scroll: Vector2, dim: float) -> void:
+	layer.scroll_scale = scroll
+	layer.follow_viewport = false
+	layer.modulate = Color(dim, dim, dim, 1.0)

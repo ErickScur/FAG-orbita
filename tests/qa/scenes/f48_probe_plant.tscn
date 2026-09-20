@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0rbitaf48pb06"]
+
+[ext_resource type="Script" path="res://tests/qa/scenes/props_probe.gd" id="1_f48probe"]
+
+[node name="F48ProbePlant" type="Node2D"]
+script = ExtResource("1_f48probe")
+level_scene = "res://scenes/levels/greenhouse.tscn"
+spawn_tile = Vector2i(11, 61)
+terminal_id = &"greenhouse"
+silenced_sequences = Array[StringName]([&"gh_enter"])
+energy_state = Array[StringName]([&"grow_light", &"corridor_light"])

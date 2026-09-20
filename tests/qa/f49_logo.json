@@ -1,0 +1,6 @@
+[
+  { "frame": 45, "screenshot": "f49_01_splash_logo" },
+  { "frame": 230, "screenshot": "f49_02_menu_logo" },
+  { "frame": 470, "screenshot": "f49_03_menu_parallax" },
+  { "frame": 500, "quit": true }
+]

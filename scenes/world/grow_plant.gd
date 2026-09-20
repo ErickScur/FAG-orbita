@@ -3,7 +3,7 @@ extends Node2D
 
 const SHEET_PATH: String = "res://assets/sprites/world/grow_plant_sheet.png"
 const LIGHT_TEXTURE: String = "res://assets/fx/light_radial.png"
-const FRAME_SIZE: Vector2i = Vector2i(32, 64)
+const FRAME_SIZE: Vector2i = Vector2i(64, 64)
 const FRAME_COUNT: int = 6
 const ANIMATION_ID: StringName = &"grow"
 const POWERED_GROUP: StringName = &"powered"

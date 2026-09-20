@@ -3,8 +3,8 @@ extends TestCase
 const LEVELS_DIR: String = "res://data/levels/"
 const PLAYABLE_LEVELS: PackedStringArray = ["core_hub", "greenhouse"]
 const TILESETS: Dictionary = {
-	"core_hub": "res://assets/placeholder/tiles/core_tiles.png",
-	"greenhouse": "res://assets/placeholder/tiles/greenhouse_tiles.png",
+	"core_hub": "res://assets/tiles/core_tiles.png",
+	"greenhouse": "res://assets/tiles/greenhouse_tiles.png",
 }
 const SOLID_TILE_ROWS: int = 2
 const TILE_SIZE: int = 16
@@ -84,7 +84,7 @@ func _meta(level_id: String) -> Dictionary:
 
 
 func _solid_tile_luma(texture_path: String) -> float:
-	var texture: Texture2D = load(texture_path)
+	var texture: Texture2D = AssetResolver.texture(texture_path)
 	if texture == null:
 		return 0.0
 	var image: Image = texture.get_image()
