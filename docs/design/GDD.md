@@ -600,8 +600,8 @@ Toda vez que a dificuldade sobe demais, o jogador ganha um upgrade que faz o con
 | `PARALLAX_FAR_SCALE` | Vector2(0.04, 0.02) | fator | AJ-022 |
 | `PARALLAX_MID_SCALE` | Vector2(0.18, 0.09) | fator | AJ-022 |
 | `PARALLAX_NEAR_SCALE` | Vector2(0.55, 0.28) | fator | AJ-022 |
-| `PARALLAX_FAR_DIM` | 0.45 | fator | AJ-022 |
-| `PARALLAX_MID_DIM` | 0.7 | fator | AJ-022 |
+| `PARALLAX_FAR_DIM` | 0.75 | fator | AJ-022 |
+| `PARALLAX_MID_DIM` | 0.9 | fator | AJ-022 |
 | `SECTOR_FLASH_TIME` | 0.12 | s | AJ-022 |
 | `SECTOR_SETTLE_TIME` | 1.2 | s | AJ-022 |
 | `SECTOR_FLASH_COLOR` | Color("e8f4ff") | cor | AJ-022 |

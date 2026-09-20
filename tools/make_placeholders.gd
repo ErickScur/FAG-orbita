@@ -599,10 +599,10 @@ func _draw_stars(image: Image, origin: Vector2i, size: Vector2i, palette: Dictio
 		var blend: float = float(y) / float(size.y)
 		_fill_rect(image, origin.x, origin.y + y, size.x, 1, _shade(base, 0.12 * blend))
 	var light: Color = palette.get("light", Color.WHITE)
-	for index: int in range(220):
+	for index: int in range(420):
 		var x: int = _rng.randi_range(0, size.x - 1)
 		var y: int = _rng.randi_range(0, size.y - 1)
-		var brightness: float = _rng.randf_range(0.25, 1.0)
+		var brightness: float = _rng.randf_range(0.45, 1.0)
 		var star: Color = light
 		star.a = brightness
 		_put(image, origin.x + x, origin.y + y, star)
@@ -620,7 +620,7 @@ func _draw_nebula(image: Image, origin: Vector2i, size: Vector2i, palette: Dicti
 		var rx: float = _rng.randf_range(34.0, 84.0)
 		var ry: float = _rng.randf_range(18.0, 40.0)
 		var tint: Color = teal if blob % 2 == 0 else purple
-		tint.a = 0.30
+		tint.a = 0.42
 		_blend_ellipse(image, float(origin.x) + cx, float(origin.y) + cy, rx, ry, tint)
 	var planet: Color = Color("#3E8C7A")
 	_fill_ellipse(image, float(origin.x) + 300.0, float(origin.y) + 70.0, 18.0, 18.0, planet)
