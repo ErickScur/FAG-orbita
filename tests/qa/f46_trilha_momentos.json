@@ -1,0 +1,16 @@
+[
+  {"frame": 30, "screenshot": "f46_01_trilha_da_fase"},
+  {"frame": 40, "action": "ui_down", "pressed": true},
+  {"frame": 44, "action": "ui_down", "pressed": false},
+  {"frame": 50, "action": "ui_down", "pressed": true},
+  {"frame": 54, "action": "ui_down", "pressed": false},
+  {"frame": 62, "action": "ui_accept", "pressed": true},
+  {"frame": 66, "action": "ui_accept", "pressed": false},
+  {"frame": 90, "screenshot": "f46_02_camada_critica"},
+  {"frame": 100, "action": "ui_up", "pressed": true},
+  {"frame": 104, "action": "ui_up", "pressed": false},
+  {"frame": 118, "action": "ui_accept", "pressed": true},
+  {"frame": 122, "action": "ui_accept", "pressed": false},
+  {"frame": 150, "screenshot": "f46_03_setor_religado"},
+  {"frame": 190, "quit": true}
+]

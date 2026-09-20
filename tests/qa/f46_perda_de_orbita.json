@@ -1,0 +1,15 @@
+[
+  {"frame": 30, "action": "ui_down", "pressed": true},
+  {"frame": 34, "action": "ui_down", "pressed": false},
+  {"frame": 40, "action": "ui_down", "pressed": true},
+  {"frame": 44, "action": "ui_down", "pressed": false},
+  {"frame": 50, "action": "ui_down", "pressed": true},
+  {"frame": 54, "action": "ui_down", "pressed": false},
+  {"frame": 60, "action": "ui_down", "pressed": true},
+  {"frame": 64, "action": "ui_down", "pressed": false},
+  {"frame": 72, "screenshot": "f46_19_foco_perda"},
+  {"frame": 80, "action": "ui_accept", "pressed": true},
+  {"frame": 84, "action": "ui_accept", "pressed": false},
+  {"frame": 170, "screenshot": "f46_20_perda_de_orbita"},
+  {"frame": 210, "quit": true}
+]

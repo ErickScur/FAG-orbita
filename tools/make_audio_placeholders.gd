@@ -11,6 +11,22 @@ const MUSIC_SPECS: Dictionary = {
 	"menu": {"base": 55.0, "partial": 110.0, "noise": 0.35, "bell": 0.0},
 	"core": {"base": 65.0, "partial": 97.5, "noise": 0.08, "bell": 0.0},
 	"greenhouse": {"base": 73.0, "partial": 109.5, "noise": 0.05, "bell": 584.0},
+	"chassis_lost": {
+		"base": 49.0, "partial": 73.5, "noise": 0.22, "bell": 0.0,
+		"seconds": 6.0, "pulse": 2.0, "loop": false,
+	},
+	"game_over": {
+		"base": 41.0, "partial": 61.5, "noise": 0.30, "bell": 0.0,
+		"seconds": 10.0, "pulse": 1.0, "loop": false,
+	},
+	"sector_restored": {
+		"base": 87.0, "partial": 130.5, "noise": 0.03, "bell": 659.0,
+		"seconds": 15.0, "pulse": 3.0, "loop": false,
+	},
+	"reactor_critical": {
+		"base": 58.0, "partial": 116.0, "noise": 0.14, "bell": 466.0,
+		"seconds": 20.0, "pulse": 20.0, "loop": true,
+	},
 }
 
 const SFX_SPECS: Dictionary = {
@@ -96,30 +112,44 @@ func _to_pcm16(samples: PackedFloat32Array) -> PackedByteArray:
 
 
 func _build_music(spec: Dictionary) -> PackedFloat32Array:
-	var count: int = int(MIX_RATE * MUSIC_SECONDS)
+	var seconds: float = float(spec.get("seconds", MUSIC_SECONDS))
+	var looping: bool = bool(spec.get("loop", true))
+	var count: int = int(MIX_RATE * seconds)
 	var samples := PackedFloat32Array()
 	samples.resize(count)
 	var base: float = float(spec.get("base", 55.0))
 	var partial: float = float(spec.get("partial", 110.0))
 	var noise_amount: float = float(spec.get("noise", 0.0))
 	var bell: float = float(spec.get("bell", 0.0))
-	var base_cycles: float = roundf(base * MUSIC_SECONDS)
-	var partial_cycles: float = roundf(partial * MUSIC_SECONDS)
-	var bell_cycles: float = roundf(bell * MUSIC_SECONDS)
+	var breath_cycles: float = maxf(1.0, roundf(float(spec.get("pulse", 1.0))))
+	var base_cycles: float = roundf(base * seconds)
+	var partial_cycles: float = roundf(partial * seconds)
+	var bell_cycles: float = roundf(bell * seconds)
+	var chime_cycles: float = maxf(1.0, roundf(2.0 * seconds / MUSIC_SECONDS))
 	var filtered: float = 0.0
 	var cutoff: float = 0.04
 	for index: int in range(count):
 		var phase: float = float(index) / float(count)
 		filtered += (_rng.randf_range(-1.0, 1.0) - filtered) * cutoff
-		var breath: float = 0.5 + 0.5 * sin(TAU * phase)
+		var breath: float = 0.5 + 0.5 * sin(TAU * breath_cycles * phase)
 		var value: float = sin(TAU * base_cycles * phase)
 		value += 0.45 * sin(TAU * partial_cycles * phase)
 		value += noise_amount * filtered * 6.0 * breath
 		if bell > 0.0:
-			var pulse: float = maxf(0.0, sin(TAU * 2.0 * phase))
+			var pulse: float = maxf(0.0, sin(TAU * chime_cycles * phase))
 			value += 0.18 * sin(TAU * bell_cycles * phase) * pow(pulse, 6.0)
-		samples[index] = value * MUSIC_GAIN * (0.75 + 0.25 * breath)
+		var shape: float = value * MUSIC_GAIN * (0.75 + 0.25 * breath)
+		samples[index] = shape if looping else shape * _tail(phase, seconds)
 	return samples
+
+
+func _tail(phase: float, seconds: float) -> float:
+	var edge: float = clampf(0.5 / maxf(seconds, 0.001), 0.01, 0.25)
+	if phase < edge:
+		return phase / edge
+	if phase > 1.0 - edge:
+		return (1.0 - phase) / edge
+	return 1.0
 
 
 func _build_sfx(spec: Dictionary) -> PackedFloat32Array:

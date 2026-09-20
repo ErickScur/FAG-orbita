@@ -51,6 +51,7 @@ func play() -> void:
 	if _phase != Phase.IDLE:
 		return
 	AudioManager.play_sfx(&"chassis_lost")
+	AudioManager.play_one_shot(&"chassis_lost")
 	var viewport: Viewport = get_viewport()
 	if viewport != null:
 		viewport.gui_release_focus()

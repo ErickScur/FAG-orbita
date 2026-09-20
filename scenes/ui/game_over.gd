@@ -22,7 +22,7 @@ func _ready() -> void:
 	menu_button.pressed.connect(_on_menu)
 	for button: Button in [load_button, menu_button]:
 		button.focus_entered.connect(_play_move)
-	AudioManager.stop_music()
+	AudioManager.play_one_shot(&"game_over", false)
 	AudioManager.play_sfx(&"reactor_alarm")
 	_focus_first()
 

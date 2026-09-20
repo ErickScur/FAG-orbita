@@ -1,0 +1,118 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0rbitamusicprobe"]
+
+[ext_resource type="Script" path="res://tests/qa/scenes/music_probe.gd" id="1_musicprobe"]
+
+[node name="MusicProbe" type="Node2D" groups=["gameplay"]]
+script = ExtResource("1_musicprobe")
+
+[node name="Ui" type="CanvasLayer" parent="."]
+
+[node name="Root" type="Control" parent="Ui"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Background" type="ColorRect" parent="Ui/Root"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.0392157, 0.0705882, 0.0862745, 1)
+
+[node name="Title" type="Label" parent="Ui/Root"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 4.0
+offset_bottom = 20.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.372549, 0.831373, 0.784314, 1)
+theme_override_font_sizes/font_size = 16
+text = "CENA DE PROVA — TRILHA POR MOMENTO"
+horizontal_alignment = 1
+
+[node name="TrackLabel" type="Label" parent="Ui/Root"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 24.0
+offset_bottom = 40.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.541176, 0.607843, 0.658824, 1)
+theme_override_font_sizes/font_size = 16
+horizontal_alignment = 1
+
+[node name="MomentLabel" type="Label" parent="Ui/Root"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 40.0
+offset_bottom = 56.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.921569, 0.717647, 0.290196, 1)
+theme_override_font_sizes/font_size = 16
+horizontal_alignment = 1
+
+[node name="LayerLabel" type="Label" parent="Ui/Root"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 56.0
+offset_bottom = 72.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.870588, 0.407843, 0.376471, 1)
+theme_override_font_sizes/font_size = 16
+horizontal_alignment = 1
+
+[node name="Buttons" type="VBoxContainer" parent="Ui/Root"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -84.0
+offset_top = -128.0
+offset_right = 84.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 4
+
+[node name="ChassisButton" type="Button" parent="Ui/Root/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "CHASSI PERDIDO"
+
+[node name="SectorButton" type="Button" parent="Ui/Root/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "SETOR RELIGADO"
+
+[node name="CriticalOnButton" type="Button" parent="Ui/Root/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "CRÍTICO LIGA"
+
+[node name="CriticalOffButton" type="Button" parent="Ui/Root/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "CRÍTICO DESLIGA"
+
+[node name="OrbitButton" type="Button" parent="Ui/Root/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "PERDA DE ÓRBITA"

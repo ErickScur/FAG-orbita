@@ -72,3 +72,4 @@ res://tests/qa/scenes/chassis_probe.tscn
 res://scenes/fx/sector_cutscene.tscn
 res://tests/qa/scenes/cutscene_probe_core.tscn
 res://tests/qa/scenes/cutscene_probe_greenhouse.tscn
+res://tests/qa/scenes/music_probe.tscn
