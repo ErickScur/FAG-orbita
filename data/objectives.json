@@ -4,7 +4,7 @@
   "obj_open_habitat": "Abrir a porta do Setor Habitacional no Terminal de Distribuição",
   "obj_reach_greenhouse": "Atravessar o Setor Habitacional até a Estufa",
   "obj_find_terminal_gh": "Encontrar o Terminal de Distribuição da Estufa",
-  "obj_reach_node": "Chegar à câmara do Nó de Energia",
-  "obj_restore_gh": "Religar o Nó de Energia da Estufa",
+  "obj_reach_node": "Chegar à câmara do Nó do Setor",
+  "obj_restore_gh": "Religar o Nó do Setor da Estufa",
   "obj_demo_exit": "Seguir para a saída da Estufa"
 }

@@ -56,7 +56,7 @@ func _mutate_state() -> void:
 	GameState.deaths = 2
 	GameState.play_time = 754.2
 	GameState.flags = {"tutorial_done": true, "secret_greenhouse_01": true}
-	GameState.current_objective = "Religar o Nó de Energia da Estufa"
+	GameState.current_objective = "Religar o Nó do Setor da Estufa"
 
 
 func test_save_creates_versioned_file() -> void:

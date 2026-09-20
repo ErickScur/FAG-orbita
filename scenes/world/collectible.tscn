@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://c0rbitacollectible"]
+
+[ext_resource type="Script" path="res://scenes/world/collectible.gd" id="1_collectible"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_collectible"]
+size = Vector2(12, 12)
+
+[node name="Collectible" type="Area2D"]
+collision_layer = 32
+collision_mask = 2
+script = ExtResource("1_collectible")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_collectible")

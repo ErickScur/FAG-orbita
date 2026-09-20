@@ -194,7 +194,7 @@ func test_set_objective_emits_text() -> void:
 	_state.set_objective(&"obj_inexistente")
 	EventBus.objective_changed.disconnect(handler)
 	assert_eq(texts.size(), 1, "emite uma vez por objetivo novo")
-	assert_eq(texts[0], "Religar o Nó de Energia da Estufa", "texto do objetivo")
+	assert_eq(texts[0], "Religar o Nó do Setor da Estufa", "texto do objetivo")
 	assert_eq(_state.current_objective, texts[0], "estado guarda o texto")
 
 

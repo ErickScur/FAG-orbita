@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://c0rbitamagwall"]
+
+[ext_resource type="Script" path="res://scenes/world/magnetic_wall.gd" id="1_magwall"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_magwall"]
+size = Vector2(16, 16)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_magwall"]
+polygon = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+
+[node name="MagneticWall" type="StaticBody2D" groups=["magnetic"]]
+collision_layer = 1
+collision_mask = 0
+script = ExtResource("1_magwall")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_magwall")
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+occluder = SubResource("OccluderPolygon2D_magwall")

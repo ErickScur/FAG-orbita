@@ -1,5 +1,9 @@
 extends TestCase
 
+const DEMO_SEQUENCES: int = 34
+const DEMO_LOGS: int = 7
+const DEMO_SPEAKERS: int = 3
+
 var _manager: Node = null
 var _started: int = 0
 var _finished: int = 0
@@ -44,9 +48,11 @@ func test_content_loaded() -> void:
 	if _manager == null:
 		fail("DialogueManager ausente")
 		return
-	assert_eq((_manager.call("sequence_ids") as Array).size(), 19, "sequências da demo")
-	assert_eq((_manager.call("log_ids") as Array).size(), 6, "logs da demo")
-	assert_eq((_manager.call("speakers") as Dictionary).size(), 3, "falantes")
+	assert_eq(
+		(_manager.call("sequence_ids") as Array).size(), DEMO_SEQUENCES, "sequências da demo"
+	)
+	assert_eq((_manager.call("log_ids") as Array).size(), DEMO_LOGS, "logs da demo")
+	assert_eq((_manager.call("speakers") as Dictionary).size(), DEMO_SPEAKERS, "falantes")
 
 
 func test_play_blocking_freezes_timer() -> void:

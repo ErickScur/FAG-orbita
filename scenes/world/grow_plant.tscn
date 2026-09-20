@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3 uid="uid://c0rbitagrowplant"]
+
+[ext_resource type="Script" path="res://scenes/world/grow_plant.gd" id="1_plant"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_planttop"]
+size = Vector2(32, 4)
+
+[node name="GrowPlant" type="Node2D" groups=["powered"]]
+script = ExtResource("1_plant")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+offset = Vector2(0, -32)
+
+[node name="Top" type="StaticBody2D" parent="."]
+collision_layer = 64
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Top"]
+position = Vector2(0, -62)
+shape = SubResource("RectangleShape2D_planttop")
+one_way_collision = true
+disabled = true
+
+[node name="GrowLight" type="PointLight2D" parent="."]
+position = Vector2(0, -32)
+blend_mode = 0

@@ -14,10 +14,11 @@ const BLINK_MIN_ALPHA: float = 0.25
 const TOAST_COLOR: Color = Color(0.498039, 0.839216, 0.784314)
 const TOAST_FONT_SIZE: int = 16
 const CHARGE_TOASTS: Dictionary = {
-	&"energy_cell": &"toast_charge",
-	&"repair_kit": &"toast_integrity",
-	&"capacitor": &"toast_capacity",
+	PickupRules.KIND_CELL: &"toast_charge",
+	PickupRules.KIND_REPAIR_KIT: &"toast_integrity",
+	PickupRules.KIND_CAPACITOR: &"toast_capacity",
 }
+const CHARGE_FRAME_WIDTH: float = 72.0
 
 var _texts: Dictionary = {}
 var _cells: Array[TextureRect] = []
@@ -58,10 +59,6 @@ func _ready() -> void:
 	_beep_timer.wait_time = Balance.LOW_INTEGRITY_BEEP_INTERVAL
 	_beep_timer.timeout.connect(_on_beep_timeout)
 	_connect_events()
-	var frame_width: float = _cost_mark.get_parent().custom_minimum_size.x
-	_cost_mark.position.x = roundf(
-		frame_width * HudModel.charge_ratio(Balance.DASH_COST, Balance.CHARGE_MAX)
-	)
 	_sync_with_state()
 
 
@@ -193,6 +190,18 @@ func _update_blink() -> void:
 func _on_charge_changed(current: float, maximum: float) -> void:
 	_charge_bar.max_value = maxf(maximum, 1.0)
 	_charge_bar.value = clampf(current, 0.0, _charge_bar.max_value)
+	_resize_charge_frame(_charge_bar.max_value)
+
+
+func _resize_charge_frame(maximum: float) -> void:
+	var frame: Control = _charge_bar.get_parent()
+	var width: float = roundf(CHARGE_FRAME_WIDTH * maximum / Balance.CHARGE_MAX)
+	if is_equal_approx(frame.custom_minimum_size.x, width):
+		return
+	frame.custom_minimum_size.x = width
+	_cost_mark.position.x = roundf(
+		width * HudModel.charge_ratio(Balance.DASH_COST, maximum)
+	)
 
 
 func _on_player_damaged(_amount: int) -> void:
@@ -325,20 +334,10 @@ func _on_collectible_picked(kind: StringName, _item_id: StringName) -> void:
 		return
 	_toast(
 		HudModel.format_single(
-			HudModel.text_for(StringName(CHARGE_TOASTS[kind]), _texts), _pickup_amount(kind)
+			HudModel.text_for(StringName(CHARGE_TOASTS[kind]), _texts),
+			PickupRules.amount_for(kind)
 		)
 	)
-
-
-func _pickup_amount(kind: StringName) -> int:
-	match kind:
-		&"energy_cell":
-			return int(Balance.ENERGY_CELL_CHARGE)
-		&"repair_kit":
-			return Balance.REPAIR_KIT_INTEGRITY
-		&"capacitor":
-			return int(Balance.CAPACITOR_BONUS)
-	return 0
 
 
 func _refresh_counters() -> void:

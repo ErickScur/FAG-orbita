@@ -56,6 +56,16 @@ collision_mask = 64
 target_position = Vector2(0, -24)
 collision_mask = 64
 
+[node name="ClawProbeTop" type="RayCast2D" parent="."]
+position = Vector2(0, -20)
+target_position = Vector2(10, 0)
+collision_mask = 1
+
+[node name="ClawProbeBottom" type="RayCast2D" parent="."]
+position = Vector2(0, -4)
+target_position = Vector2(10, 0)
+collision_mask = 1
+
 [node name="Camera2D" type="Camera2D" parent="."]
 process_callback = 0
 position_smoothing_enabled = true

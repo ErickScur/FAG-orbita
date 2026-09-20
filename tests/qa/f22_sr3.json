@@ -1,0 +1,12 @@
+[
+  {"frame": 30, "screenshot": "f22_01_patrulha"},
+  {"frame": 80, "screenshot": "f22_02_virou_na_parede"},
+  {"frame": 235, "screenshot": "f22_03_dano_knockback"},
+  {"frame": 280, "screenshot": "f22_04_desligada"},
+  {"frame": 290, "action": "move_left", "pressed": true},
+  {"frame": 350, "action": "move_left", "pressed": false},
+  {"frame": 360, "screenshot": "f22_05_atravessa_sem_dano"},
+  {"frame": 520, "screenshot": "f22_06_acordou"},
+  {"frame": 610, "screenshot": "f22_07_virou_na_borda"},
+  {"frame": 650, "quit": true}
+]

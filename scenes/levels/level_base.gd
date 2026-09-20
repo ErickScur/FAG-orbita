@@ -4,6 +4,7 @@ const LEVELS_DIR: String = "res://data/levels/"
 const PLAYER_SCENE: String = "res://scenes/player/mu7.tscn"
 const HUD_SCENE: String = "res://scenes/ui/hud.tscn"
 const DEFAULT_TILESET: String = "res://assets/tiles/core_tileset.tres"
+const PARALLAX_SCENE: String = "res://scenes/world/space_parallax.tscn"
 
 @export var level_id: String = ""
 
@@ -14,6 +15,7 @@ var _death_armed: bool = true
 
 @onready var _background: TileMapLayer = $Background
 @onready var _solid: TileMapLayer = $Solid
+@onready var _parallax: Node2D = $Parallax
 @onready var _entities: Node2D = $Entities
 @onready var _triggers: Node2D = $Triggers
 @onready var _death_zone: Area2D = $DeathZone
@@ -29,6 +31,7 @@ func _ready() -> void:
 	if not _load_data():
 		return
 	_apply_tileset()
+	_mount_parallax()
 	LevelBuilder.build_tiles(_parsed, _solid, _background)
 	LevelBuilder.build_entities(_parsed, _meta, _entities, level_id)
 	LevelBuilder.build_triggers(_meta, _triggers)
@@ -93,6 +96,15 @@ func _apply_tileset() -> void:
 	var tile_set: TileSet = load(path)
 	_background.tile_set = tile_set
 	_solid.tile_set = tile_set
+
+
+func _mount_parallax() -> void:
+	if not bool(_meta.get("parallax", false)):
+		return
+	if not ResourceLoader.exists(PARALLAX_SCENE):
+		push_warning("level_base: parallax espacial ausente (F26)")
+		return
+	_parallax.add_child(load(PARALLAX_SCENE).instantiate())
 
 
 func _load_energy() -> void:

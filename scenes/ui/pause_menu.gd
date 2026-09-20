@@ -74,6 +74,8 @@ func can_pause() -> bool:
 		return false
 	if SceneManager.is_transitioning():
 		return false
+	if DialogueManager.is_active() and DialogueManager.freezes_timer():
+		return false
 	var scene: Node = get_tree().current_scene
 	if scene == null:
 		return false

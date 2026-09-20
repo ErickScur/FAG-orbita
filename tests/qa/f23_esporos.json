@@ -1,0 +1,58 @@
+[
+  {
+    "frame": 30,
+    "screenshot": "f23_01_nuvem_quente"
+  },
+  {
+    "frame": 35,
+    "action": "move_right",
+    "pressed": true
+  },
+  {
+    "frame": 160,
+    "screenshot": "f23_02_dentro_da_nuvem"
+  },
+  {
+    "frame": 205,
+    "action": "move_right",
+    "pressed": false
+  },
+  {
+    "frame": 215,
+    "screenshot": "f23_03_celula_nao_coletada"
+  },
+  {
+    "frame": 225,
+    "action": "move_left",
+    "pressed": true
+  },
+  {
+    "frame": 395,
+    "action": "move_left",
+    "pressed": false
+  },
+  {
+    "frame": 450,
+    "screenshot": "f23_04_doca_sem_recarga"
+  },
+  {
+    "frame": 660,
+    "screenshot": "f23_05_corrosao_passou"
+  },
+  {
+    "frame": 720,
+    "screenshot": "f23_06_recarregando"
+  },
+  {
+    "frame": 880,
+    "screenshot": "f23_07_nuvem_encolheu"
+  },
+  {
+    "frame": 1040,
+    "screenshot": "f23_08_nuvem_cresceu"
+  },
+  {
+    "frame": 1070,
+    "quit": true
+  }
+]

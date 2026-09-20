@@ -1,0 +1,89 @@
+{
+  "id": "greenhouse",
+  "title": "ESTUFA - DISTRIBUIÇÃO",
+  "budget": 2,
+  "goal_text": "Abrir a Porta do Nó do Setor e religar o Nó",
+  "goal_done_text": "Porta do Nó do Setor aberta. Falta religar o Nó",
+  "goal_systems": ["node_door"],
+  "intro_bark": "gh_rule_reminder",
+  "initial": ["heating", "corridor_light"],
+  "systems": [
+    {
+      "id": "heating",
+      "name": "AQUECIMENTO DO MÓDULO",
+      "tag": "PERIGO",
+      "description": "Aquece o módulo. O calor expande o enxame de esporos.",
+      "effect_off": "O módulo esfria: os esporos encolhem e o elevador para.",
+      "bark_on": "gh_bark_heating_on",
+      "bark_off": "gh_bark_heating_off",
+      "cost": 1,
+      "requires": [],
+      "locked": false,
+      "effects": [
+        { "target": "group:gh_spores", "action": "power" },
+        { "target": "group:gh_heat_vents", "action": "power" }
+      ]
+    },
+    {
+      "id": "corridor_light",
+      "name": "ILUMINAÇÃO DO CORREDOR",
+      "tag": "VISÃO",
+      "description": "Acende o corredor inferior e mostra o poço.",
+      "effect_off": "O corredor apaga. O poço só aparece sob a lanterna.",
+      "bark_on": "gh_bark_corridor_on",
+      "bark_off": "gh_bark_corridor_off",
+      "cost": 1,
+      "requires": [],
+      "locked": false,
+      "effects": [
+        { "target": "group:gh_corridor_lamps", "action": "power" }
+      ]
+    },
+    {
+      "id": "grow_light",
+      "name": "LUZ DE CRESCIMENTO",
+      "tag": "ROTA",
+      "description": "A trepadeira cresce e vira plataforma até a passarela.",
+      "effect_off": "A trepadeira murcha e a passarela fica fora de alcance.",
+      "bark_on": "gh_bark_grow_on",
+      "bark_off": "gh_bark_grow_off",
+      "cost": 1,
+      "requires": [],
+      "locked": false,
+      "effects": [
+        { "target": "group:gh_grow_lamps", "action": "power" },
+        { "target": "id:gh_plant_1", "action": "power" }
+      ]
+    },
+    {
+      "id": "lift_platform",
+      "name": "PLATAFORMA DE CARGA",
+      "tag": "ROTA",
+      "description": "O elevador de carga sobe até a passarela alta.",
+      "effect_off": "O elevador para onde estiver e a subida se fecha.",
+      "bark_on": "gh_bark_lift_on",
+      "bark_off": "gh_bark_lift_off",
+      "cost": 1,
+      "requires": ["heating"],
+      "locked": false,
+      "effects": [
+        { "target": "id:gh_lift", "action": "power" }
+      ]
+    },
+    {
+      "id": "node_door",
+      "name": "PORTA DO NÓ DO SETOR",
+      "tag": "META",
+      "description": "Abre a comporta da câmara do Nó do Setor.",
+      "effect_off": "A comporta do Nó fecha e o setor segue desligado.",
+      "bark_on": "gh_bark_node_door_on",
+      "bark_off": "gh_bark_node_door_off",
+      "cost": 1,
+      "requires": [],
+      "locked": false,
+      "effects": [
+        { "target": "id:gh_node_door", "action": "power" }
+      ]
+    }
+  ]
+}

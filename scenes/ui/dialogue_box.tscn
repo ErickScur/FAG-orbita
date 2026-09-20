@@ -63,7 +63,7 @@ layout_mode = 2
 mouse_filter = 2
 theme_override_colors/font_color = Color(0.941176, 0.760784, 0.498039, 1)
 theme_override_font_sizes/font_size = 16
-text = "▮ REPRODUZINDO"
+text = "[REC] REPRODUZINDO"
 
 [node name="Next" type="Label" parent="Root/Box/Content/SpeakerRow"]
 unique_name_in_owner = true
@@ -71,7 +71,7 @@ layout_mode = 2
 mouse_filter = 2
 theme_override_colors/font_color = Color(0.843137, 0.890196, 0.909804, 1)
 theme_override_font_sizes/font_size = 16
-text = "▼"
+text = "v"
 
 [node name="Text" type="RichTextLabel" parent="Root/Box/Content"]
 unique_name_in_owner = true

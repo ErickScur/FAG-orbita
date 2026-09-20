@@ -104,6 +104,8 @@ const DIALOGUE_AMBIENT_MIN_TIME: float = 2.0
 const HUD_TOAST_TIME: float = 2.0
 const HUD_PULSE_HZ: float = 2.0
 const LOW_INTEGRITY_BEEP_INTERVAL: float = 1.5
+const PICKUP_BOB_AMPLITUDE: float = 2.0
+const PICKUP_BOB_SPEED: float = 2.0
 
 
 static func difficulty_damage_multiplier(difficulty: StringName) -> float:

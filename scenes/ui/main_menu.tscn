@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://c0rbitamainmenu"]
+[gd_scene load_steps=3 format=3 uid="uid://c0rbitamainmenu"]
 
 [ext_resource type="Script" path="res://scenes/ui/main_menu.gd" id="1_menu"]
+[ext_resource type="PackedScene" uid="uid://c0rbitaspaceprlx" path="res://scenes/world/space_parallax.tscn" id="2_parallax"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -13,44 +14,7 @@ script = ExtResource("1_menu")
 new_game_question = "O backup atual será apagado. Iniciar um novo sistema?"
 corrupted_message = "BACKUP CORROMPIDO"
 
-[node name="BackgroundLayer" type="CanvasLayer" parent="."]
-layer = -1
-
-[node name="Void" type="ColorRect" parent="BackgroundLayer"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-color = Color(0.019608, 0.031373, 0.047059, 1)
-
-[node name="Far" type="Parallax2D" parent="BackgroundLayer"]
-repeat_size = Vector2(384, 0)
-autoscroll = Vector2(-2, 0)
-repeat_times = 3
-
-[node name="FarSprite" type="Sprite2D" parent="BackgroundLayer/Far"]
-unique_name_in_owner = true
-centered = false
-
-[node name="Mid" type="Parallax2D" parent="BackgroundLayer"]
-repeat_size = Vector2(384, 0)
-autoscroll = Vector2(-5, 0)
-repeat_times = 3
-
-[node name="MidSprite" type="Sprite2D" parent="BackgroundLayer/Mid"]
-unique_name_in_owner = true
-centered = false
-
-[node name="Near" type="Parallax2D" parent="BackgroundLayer"]
-repeat_size = Vector2(384, 0)
-autoscroll = Vector2(-10, 0)
-repeat_times = 3
-
-[node name="NearSprite" type="Sprite2D" parent="BackgroundLayer/Near"]
-unique_name_in_owner = true
-centered = false
+[node name="SpaceParallax" parent="." instance=ExtResource("2_parallax")]
 
 [node name="Logo" type="TextureRect" parent="."]
 unique_name_in_owner = true

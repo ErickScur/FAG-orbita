@@ -1,0 +1,46 @@
+[gd_scene load_steps=5 format=3 uid="uid://c0rbitasr3"]
+
+[ext_resource type="Script" path="res://scenes/enemies/sr3.gd" id="1_sr3"]
+[ext_resource type="Script" path="res://scenes/world/damage_area.gd" id="2_sr3_damage"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sr3_body"]
+size = Vector2(24, 10)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sr3_hitbox"]
+size = Vector2(26, 12)
+
+[node name="SR3" type="CharacterBody2D" groups=["beam_target", "enemy"]]
+collision_layer = 4
+collision_mask = 1
+floor_snap_length = 4.0
+script = ExtResource("1_sr3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -5)
+shape = SubResource("RectangleShape2D_sr3_body")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -8)
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("2_sr3_damage")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2(0, -6)
+shape = SubResource("RectangleShape2D_sr3_hitbox")
+
+[node name="FloorProbe" type="RayCast2D" parent="."]
+position = Vector2(10, -2)
+target_position = Vector2(0, 10)
+collision_mask = 65
+
+[node name="WallProbe" type="RayCast2D" parent="."]
+position = Vector2(0, -5)
+target_position = Vector2(14, 0)
+collision_mask = 1
+
+[node name="WarningLight" type="PointLight2D" parent="."]
+position = Vector2(0, -10)
+blend_mode = 0

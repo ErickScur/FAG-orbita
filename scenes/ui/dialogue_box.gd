@@ -1,7 +1,7 @@
 extends CanvasLayer
 
-const REC_TEXT: String = "▮ REPRODUZINDO"
-const NEXT_TEXT: String = "▼"
+const REC_TEXT: String = "[REC] REPRODUZINDO"
+const NEXT_TEXT: String = "v"
 const BLINK_PERIOD: float = 1.0
 const BOTTOM_MARGIN: float = 6.0
 const DEGRADED_TINT: Color = Color(1.0, 0.878, 0.714, 1.0)

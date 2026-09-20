@@ -1,0 +1,21 @@
+[
+  { "frame": 20, "action": "move_right", "pressed": true },
+  { "frame": 110, "action": "move_up", "pressed": true },
+  { "frame": 130, "screenshot": "f24_01_sem_garras" },
+  { "frame": 140, "action": "move_right", "pressed": false },
+  { "frame": 141, "action": "move_up", "pressed": false },
+  { "frame": 160, "screenshot": "f24_02_garras_liberadas" },
+  { "frame": 165, "action": "move_right", "pressed": true },
+  { "frame": 180, "screenshot": "f24_03_grudado" },
+  { "frame": 185, "action": "move_up", "pressed": true },
+  { "frame": 250, "screenshot": "f24_04_subindo" },
+  { "frame": 288, "screenshot": "f24_05_topo_da_parede" },
+  { "frame": 400, "action": "move_up", "pressed": false },
+  { "frame": 405, "screenshot": "f24_06_parado_na_parede" },
+  { "frame": 410, "action": "move_right", "pressed": false },
+  { "frame": 415, "action": "jump", "pressed": true },
+  { "frame": 420, "action": "jump", "pressed": false },
+  { "frame": 435, "screenshot": "f24_07_pulo_da_parede" },
+  { "frame": 460, "screenshot": "f24_08_na_plataforma" },
+  { "frame": 500, "quit": true }
+]

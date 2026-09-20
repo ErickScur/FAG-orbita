@@ -131,3 +131,59 @@ func test_timer_freezes_without_timer_setting() -> void:
 	Settings.no_timer = false
 	assert_false(_state.is_timer_frozen(), "sem congelamento")
 	Settings.no_timer = previous
+
+
+func test_expand_charge_max_is_permanent() -> void:
+	_state.charge = 10.0
+	_state.expand_charge_max(Balance.CAPACITOR_BONUS)
+	assert_almost_eq(
+		_state.charge_max, Balance.CHARGE_MAX + Balance.CAPACITOR_BONUS, 0.0001, "charge_max"
+	)
+	assert_almost_eq(_state.charge, 10.0 + Balance.CAPACITOR_BONUS, 0.0001, "charge")
+	_state.add_charge(1000.0)
+	assert_almost_eq(_state.charge, _state.charge_max, 0.0001, "satura no novo máximo")
+
+
+func test_capacitor_bonus_survives_the_save() -> void:
+	_state.expand_charge_max(Balance.CAPACITOR_BONUS)
+	_state.register_pickup(&"capacitor", &"cap_01")
+	var decoded: Variant = JSON.parse_string(JSON.stringify(_state.to_dict()))
+	var restored: Node = load(GAME_STATE_SCRIPT).new()
+	restored.from_dict(decoded)
+	assert_almost_eq(
+		restored.charge_max, Balance.CHARGE_MAX + Balance.CAPACITOR_BONUS, 0.0001, "charge_max"
+	)
+	assert_true(restored.collected_ids.has(&"cap_01"), "capacitor não reaparece")
+	restored.free()
+
+
+func test_get_stats_reports_the_run() -> void:
+	_state.play_time = 754.2
+	_state.deaths = 2
+	_state.register_pickup(&"log", &"log_core_01")
+	_state.register_pickup(&"research", &"res_01")
+	_state.register_pickup(&"research", &"res_02")
+	_state.sectors_restored.append(&"greenhouse")
+	_state.flags["secret_greenhouse_01"] = true
+	var stats: Dictionary = _state.get_stats()
+	assert_almost_eq(float(stats["time"]), 754.2, 0.0001, "time")
+	assert_eq(String(stats["time_text"]), "12:34", "time_text")
+	assert_eq(int(stats["logs"]), 1, "logs")
+	assert_eq(int(stats["logs_total"]), Balance.LOGS_TOTAL, "logs_total")
+	assert_eq(int(stats["research"]), 2, "research")
+	assert_eq(int(stats["research_total"]), Balance.RESEARCH_TOTAL, "research_total")
+	assert_eq(int(stats["deaths"]), 2, "deaths")
+	assert_eq(int(stats["secrets"]), 1, "secrets")
+	assert_eq(int(stats["secrets_total"]), Balance.SECRETS_TOTAL, "secrets_total")
+	assert_eq(int(stats["sectors"]), 1, "sectors")
+
+
+func test_get_stats_rows_match_run_stats() -> void:
+	_state.play_time = 61.0
+	var stats: Dictionary = _state.get_stats()
+	var rows: Array = stats["rows"]
+	assert_eq(rows.size(), 5, "cinco linhas")
+	var first: PackedStringArray = rows[0]
+	assert_eq(first[0], "TEMPO", "rótulo")
+	assert_eq(first[1], "01:01", "valor")
+	assert_eq((stats["lines"] as PackedStringArray).size(), 5, "linhas formatadas")

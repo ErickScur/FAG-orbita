@@ -5,16 +5,10 @@ const FALLBACK_LEVEL: String = "res://tests/qa/scenes/loading_target.tscn"
 const OPTIONS_SCENE: String = "res://scenes/ui/options_menu.tscn"
 const CONFIRM_SCENE: String = "res://scenes/ui/confirm_dialog.tscn"
 const LOGO_PATH: String = "res://assets/ui/logo.png"
-const BACKGROUND_FAR: String = "res://assets/backgrounds/space_far.png"
-const BACKGROUND_MID: String = "res://assets/backgrounds/space_mid.png"
-const BACKGROUND_NEAR: String = "res://assets/backgrounds/space_near.png"
 
 @export var new_game_question: String = ""
 @export var corrupted_message: String = ""
 
-@onready var far_sprite: Sprite2D = %FarSprite
-@onready var mid_sprite: Sprite2D = %MidSprite
-@onready var near_sprite: Sprite2D = %NearSprite
 @onready var logo_image: TextureRect = %Logo
 @onready var logo_text: Label = %LogoText
 @onready var continue_button: Button = %ContinueButton
@@ -27,7 +21,6 @@ const BACKGROUND_NEAR: String = "res://assets/backgrounds/space_near.png"
 
 
 func _ready() -> void:
-	_apply_background()
 	_apply_logo()
 	AudioManager.play_music(&"menu")
 	continue_button.disabled = not SaveManager.has_save()
@@ -165,8 +158,3 @@ func _apply_logo() -> void:
 	logo_image.visible = true
 	logo_text.visible = false
 
-
-func _apply_background() -> void:
-	far_sprite.texture = AssetResolver.texture(BACKGROUND_FAR)
-	mid_sprite.texture = AssetResolver.texture(BACKGROUND_MID)
-	near_sprite.texture = AssetResolver.texture(BACKGROUND_NEAR)

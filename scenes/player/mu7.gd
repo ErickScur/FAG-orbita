@@ -1,7 +1,7 @@
 class_name Mu7
 extends CharacterBody2D
 
-enum State { IDLE, WALK, JUMP, FALL, LAND, ACTION }
+enum State { IDLE, WALK, JUMP, FALL, LAND, CLIMB, ACTION }
 
 const SHEET_PATH: String = "res://assets/sprites/mu7/mu7_sheet.png"
 const LIGHT_TEXTURE: String = "res://assets/fx/light_radial.png"
@@ -24,8 +24,10 @@ const STATE_ANIMATIONS: Dictionary = {
 	State.JUMP: &"jump",
 	State.FALL: &"fall",
 	State.LAND: &"land",
+	State.CLIMB: &"climb",
 }
 const ONE_WAY_BIT: int = 7
+const CLAW_PROBE_REACH: float = 10.0
 const STEP_FRAMES: Array[int] = [1, 4]
 const DROP_NUDGE: float = 1.0
 const BLINK_INTERVAL: float = 0.1
@@ -41,11 +43,15 @@ var _dead: bool = false
 var _drop_timer: float = 0.0
 var _hurt_timer: float = 0.0
 var _invincible_left: float = 0.0
+var _invincible_hold: bool = false
 var _blink_timer: float = 0.0
 var _damage_accumulator: float = 0.0
 var _look_ahead: float = 0.0
 var _camera_limits: Rect2i = Rect2i()
 var _has_camera_limits: bool = false
+var _climbing: bool = false
+var _claw_blocked: bool = false
+var _wall_push: float = 0.0
 var _flashlight_on: bool = false
 var _light_tween: Tween = null
 var _joypad: bool = false
@@ -57,6 +63,8 @@ var _jump_assist: JumpAssist = JumpAssist.new(Balance.COYOTE_TIME, Balance.JUMP_
 @onready var _camera: Camera2D = $Camera2D
 @onready var _one_way_probe: RayCast2D = $OneWayProbe
 @onready var _one_way_clearance: RayCast2D = $OneWayClearance
+@onready var _claw_top: RayCast2D = $ClawProbeTop
+@onready var _claw_bottom: RayCast2D = $ClawProbeBottom
 @onready var _hurtbox: Area2D = $Hurtbox
 @onready var _sensor: Area2D = $InteractionSensor
 @onready var _sensor_shape: CollisionShape2D = $InteractionSensor/CollisionShape2D
@@ -95,11 +103,22 @@ func _input(event: InputEvent) -> void:
 func _physics_process(delta: float) -> void:
 	_update_timers(delta)
 	_update_drop_through(delta)
+	if _climbing:
+		_climb_step(delta)
+	else:
+		_walk_step(delta)
+	_process_hurtbox(delta)
+	_update_flashlight(delta)
+	_update_interaction()
+
+
+func _walk_step(delta: float) -> void:
 	if not _movement_blocked() and Input.is_action_just_pressed(&"move_down"):
 		_try_drop_through()
 	var axis: float = 0.0 if _movement_blocked() else Input.get_axis(&"move_left", &"move_right")
 	if _hurt_timer <= 0.0:
 		_apply_horizontal(axis, delta)
+	_apply_wall_push(axis)
 	_apply_gravity(delta)
 	_handle_jump(delta)
 	var was_on_floor: bool = is_on_floor()
@@ -107,11 +126,108 @@ func _physics_process(delta: float) -> void:
 	if not was_on_floor and is_on_floor():
 		_land()
 	_update_facing(axis)
+	if _try_grab(axis):
+		return
 	_update_state(axis)
 	_update_look_ahead(axis, delta)
-	_process_hurtbox(delta)
-	_update_flashlight(delta)
-	_update_interaction()
+
+
+func _climb_step(delta: float) -> void:
+	_aim_claw_probes()
+	if _movement_blocked() or ClimbLogic.should_release(_touching_magnetic(), _has_claws()):
+		_release_climb()
+		return
+	if Input.is_action_just_pressed(&"jump"):
+		_jump_off_wall()
+		return
+	velocity = ClimbLogic.climb_velocity(
+		Input.get_axis(&"move_up", &"move_down"), Balance.CLAW_CLIMB_SPEED
+	)
+	move_and_slide()
+	_update_look_ahead(0.0, delta)
+
+
+func _try_grab(axis: float) -> bool:
+	if _movement_blocked():
+		return false
+	_aim_claw_probes()
+	var touching: bool = _touching_magnetic()
+	if _claw_blocked:
+		if not touching or is_on_floor():
+			_claw_blocked = false
+		return false
+	var up: bool = Input.is_action_pressed(&"move_up")
+	if not ClimbLogic.can_grab(_has_claws(), touching, axis, facing, up):
+		return false
+	_climbing = true
+	_wall_push = 0.0
+	velocity = Vector2.ZERO
+	_jump_assist.cancel()
+	_set_state(State.CLIMB)
+	AudioManager.play_sfx(&"claw_grab")
+	return true
+
+
+func _jump_off_wall() -> void:
+	var jump_speed: float = absf(
+		PlatformerMath.jump_velocity(Balance.JUMP_HEIGHT, Balance.GRAVITY)
+	)
+	velocity = ClimbLogic.jump_off_velocity(facing, Balance.CLAW_JUMP_PUSH, jump_speed)
+	_wall_push = velocity.x
+	_climbing = false
+	_claw_blocked = true
+	_jump_assist.cancel()
+	_set_state(State.JUMP)
+	AudioManager.play_sfx(&"jump")
+	move_and_slide()
+
+
+func _release_climb() -> void:
+	_climbing = false
+	_claw_blocked = true
+	_jump_assist.cancel()
+	_set_state(State.FALL)
+
+
+func _apply_wall_push(axis: float) -> void:
+	if is_zero_approx(_wall_push):
+		return
+	if is_on_floor() or not is_zero_approx(axis):
+		_wall_push = 0.0
+		return
+	if absf(velocity.x) < absf(_wall_push):
+		velocity.x = _wall_push
+
+
+func _aim_claw_probes() -> void:
+	if _claw_top == null or _claw_bottom == null:
+		return
+	var reach: float = float(facing) * CLAW_PROBE_REACH
+	_claw_top.target_position.x = reach
+	_claw_bottom.target_position.x = reach
+	_claw_top.force_raycast_update()
+	_claw_bottom.force_raycast_update()
+
+
+func _touching_magnetic() -> bool:
+	return _probe_hits_magnetic(_claw_top) or _probe_hits_magnetic(_claw_bottom)
+
+
+func _probe_hits_magnetic(probe: RayCast2D) -> bool:
+	if probe == null or not probe.is_colliding():
+		return false
+	var collider: Object = probe.get_collider()
+	if not (collider is Node):
+		return false
+	return (collider as Node).is_in_group(ClimbLogic.MAGNETIC_GROUP)
+
+
+func _has_claws() -> bool:
+	return ClimbLogic.has_ability(GameState.abilities)
+
+
+func is_climbing() -> bool:
+	return _climbing
 
 
 func set_input_locked(locked: bool) -> void:
@@ -127,7 +243,11 @@ func is_input_locked() -> bool:
 
 
 func is_invincible() -> bool:
-	return _invincible_left > 0.0
+	return _invincible_left > 0.0 or _invincible_hold
+
+
+func set_invincible(active: bool) -> void:
+	_invincible_hold = active
 
 
 func is_flashlight_on() -> bool:
@@ -272,7 +392,7 @@ func _movement_blocked() -> bool:
 
 
 func _process_hurtbox(delta: float) -> void:
-	if _dead:
+	if _dead or _invincible_hold:
 		_damage_accumulator = 0.0
 		return
 	var per_second: float = 0.0
@@ -282,11 +402,11 @@ func _process_hurtbox(delta: float) -> void:
 		var source: DamageArea = area
 		if source.hurts_over_time():
 			per_second += source.damage_per_second
-		if not source.hurts_on_contact() or _invincible_left > 0.0:
+		if not source.hurts_on_contact() or is_invincible():
 			continue
 		GameState.apply_damage(source.contact_damage)
 		source.notify_status()
-		_start_hurt(source.global_position, source.knockback)
+		_start_hurt(source.global_position, source.knockback, source.knockback_x, source.knockback_y)
 	if per_second <= 0.0:
 		_damage_accumulator = 0.0
 		return
@@ -296,7 +416,7 @@ func _process_hurtbox(delta: float) -> void:
 		GameState.apply_damage(int(dealt.x))
 
 
-func _start_hurt(source: Vector2, push: bool) -> void:
+func _start_hurt(source: Vector2, push: bool, push_x: float = Balance.KNOCKBACK_SPEED, push_y: float = Balance.KNOCKBACK_SPEED) -> void:
 	_invincible_left = Balance.INVULNERABLE_TIME
 	_blink_timer = 0.0
 	AudioManager.play_sfx(&"damage")
@@ -308,7 +428,7 @@ func _start_hurt(source: Vector2, push: bool) -> void:
 	var direction: float = signf(global_position.x - source.x)
 	if is_zero_approx(direction):
 		direction = -float(facing)
-	velocity = Vector2(direction * Balance.KNOCKBACK_SPEED, -Balance.KNOCKBACK_SPEED)
+	velocity = Vector2(direction * push_x, -push_y)
 	_hurt_timer = Balance.SR3_KNOCKBACK_LOCK
 	_jump_assist.cancel()
 
@@ -398,6 +518,7 @@ func _interaction_blocked() -> bool:
 
 
 func _land() -> void:
+	_wall_push = 0.0
 	AudioManager.play_sfx(&"land")
 	_set_state(State.LAND)
 
@@ -474,6 +595,9 @@ func _on_player_died() -> void:
 	if _dead:
 		return
 	_dead = true
+	_climbing = false
+	_claw_blocked = false
+	_wall_push = 0.0
 	set_input_locked(true)
 	velocity = Vector2.ZERO
 	_hurt_timer = 0.0
@@ -491,6 +615,10 @@ func _on_player_respawned() -> void:
 		global_position = spawn
 	_dead = false
 	_locked = false
+	_climbing = false
+	_claw_blocked = false
+	_wall_push = 0.0
+	_invincible_hold = false
 	velocity = Vector2.ZERO
 	_hurt_timer = 0.0
 	_damage_accumulator = 0.0

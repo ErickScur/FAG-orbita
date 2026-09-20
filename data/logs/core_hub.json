@@ -32,6 +32,21 @@
         "Pedi um diagnóstico completo para quando o turno esvaziar.",
         "Depois eu vejo isso com calma."
       ]
+    },
+    {
+      "id": "log_hab_02",
+      "sector": "core_hub",
+      "author": "helena",
+      "title": "LOG PESSOAL 09",
+      "subtitle": "DRA. HELENA VASQUEZ",
+      "unlock_ability": "",
+      "lines": [
+        "Log pessoal. Nove. Gravando do corredor habitacional, porque aqui ainda tem energia.",
+        "A ÓRBITA continua dizendo que está tudo dentro do esperado.",
+        "Eu acho que ela acredita nisso. Deve ser bom acreditar nisso.",
+        "Se alguém achar este registro: a Estufa é o primeiro setor a religar.",
+        "Sem ela, o resto não tem para que voltar."
+      ]
     }
   ]
 }

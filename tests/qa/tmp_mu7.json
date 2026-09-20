@@ -1,0 +1,11 @@
+[
+  {"frame": 40, "screenshot": "01_parado"},
+  {"frame": 50, "action": "move_right", "pressed": true},
+  {"frame": 90, "screenshot": "02_andando"},
+  {"frame": 100, "action": "jump", "pressed": true},
+  {"frame": 112, "action": "jump", "pressed": false},
+  {"frame": 118, "screenshot": "03_pulando"},
+  {"frame": 150, "action": "move_right", "pressed": false},
+  {"frame": 170, "screenshot": "04_parado_de_novo"},
+  {"frame": 180, "quit": true}
+]

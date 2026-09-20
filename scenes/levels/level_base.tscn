@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://c0rbitalevelbase"]
+[gd_scene load_steps=3 format=3 uid="uid://c0rbitalevelbase"]
 
 [ext_resource type="Script" path="res://scenes/levels/level_base.gd" id="1_level"]
+[ext_resource type="Script" path="res://scenes/world/energy_network.gd" id="2_energy"]
 
 [node name="Level" type="Node2D" groups=["level"]]
 script = ExtResource("1_level")
@@ -22,6 +23,7 @@ collision_mask = 2
 monitorable = false
 
 [node name="EnergyNetwork" type="Node" parent="." groups=["energy_network"]]
+script = ExtResource("2_energy")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 color = Color(0.098039, 0.113725, 0.14902, 1)

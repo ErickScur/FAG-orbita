@@ -1,0 +1,56 @@
+{
+  "id": "energy_test",
+  "name": "Bancada de energia",
+  "tileset": "res://assets/tiles/greenhouse_tileset.tres",
+  "ambient_color": "#191d26",
+  "floor_sfx": "step_soil",
+  "reactor_online": false,
+  "objective": "obj_restore_gh",
+  "terminals": ["greenhouse"],
+  "entities": {
+    "3,5": {
+      "id": "gh_lamp_corridor",
+      "terminal_id": "greenhouse",
+      "system_id": "corridor_light",
+      "group": "gh_corridor_lamps"
+    },
+    "8,5": {
+      "id": "gh_lamp_grow",
+      "terminal_id": "greenhouse",
+      "system_id": "grow_light",
+      "group": "gh_grow_lamps",
+      "color": "#b7d35a"
+    },
+    "13,5": {
+      "id": "gh_lamp_heat",
+      "terminal_id": "greenhouse",
+      "system_id": "heating",
+      "group": "gh_heat_vents",
+      "color": "#e0b43c"
+    },
+    "18,5": {
+      "id": "gh_lamp_lift",
+      "terminal_id": "greenhouse",
+      "system_id": "lift_platform"
+    },
+    "23,5": {
+      "id": "gh_lamp_door",
+      "terminal_id": "greenhouse",
+      "system_id": "node_door"
+    },
+    "5,12": { "id": "gh_console_a", "terminal": "greenhouse" },
+    "12,12": { "id": "gh_console_b", "terminal": "greenhouse" },
+    "17,12": {
+      "id": "gh_node_door",
+      "terminal_id": "greenhouse",
+      "system_id": "node_door"
+    },
+    "22,12": {
+      "id": "gh_sector_node",
+      "terminal": "greenhouse",
+      "role": "sector_node",
+      "sector": "greenhouse",
+      "log_on_restore": "log_gh_03"
+    }
+  }
+}

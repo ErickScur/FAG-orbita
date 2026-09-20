@@ -28,11 +28,22 @@ func test_placeholder_path_ignores_paths_outside_assets() -> void:
 	)
 
 
-func test_texture_falls_back_to_placeholder() -> void:
+func test_texture_follows_the_contract_with_or_without_final_art() -> void:
 	var texture: Texture2D = AssetResolver.texture(MU7)
 	assert_not_null(texture, "textura do MU-7")
 	assert_eq(texture.get_size(), Vector2(192, 320), "contrato 6x10 de 32x32")
-	assert_true(AssetResolver.is_placeholder(MU7), "veio do espelho de placeholder")
+
+
+func test_texture_falls_back_to_placeholder_when_final_is_missing() -> void:
+	var without_final: String = "res://assets/sprites/enemies/sr3_sheet.png"
+	assert_true(
+		AssetResolver.is_placeholder(without_final),
+		"asset ainda sem arte final resolve para o espelho de placeholder"
+	)
+	assert_false(
+		AssetResolver.is_placeholder(MU7),
+		"asset com arte final entregue resolve para o caminho definitivo"
+	)
 
 
 func test_tiles_follow_the_contract() -> void:

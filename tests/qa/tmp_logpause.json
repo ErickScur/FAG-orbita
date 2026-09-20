@@ -1,0 +1,9 @@
+[
+  {"frame": 30, "action": "move_right", "pressed": true},
+  {"frame": 200, "action": "move_right", "pressed": false},
+  {"frame": 230, "action": "interact", "pressed": true},
+  {"frame": 232, "action": "interact", "pressed": false},
+  {"frame": 330, "screenshot": "a_lendo"},
+  {"frame": 420, "screenshot": "b_lendo_depois"},
+  {"frame": 430, "quit": true}
+]

@@ -1,0 +1,17 @@
+[
+  { "frame": 10, "screenshot": "f26_01_menu_t0" },
+  { "frame": 190, "screenshot": "f26_02_menu_t3s" },
+  { "frame": 200, "scene": "res://scenes/dev/parallax_test.tscn" },
+  { "frame": 260, "screenshot": "f26_03_camadas_antes" },
+  { "frame": 265, "action": "move_right", "pressed": true },
+  { "frame": 505, "action": "move_right", "pressed": false },
+  { "frame": 545, "screenshot": "f26_04_camadas_depois" },
+  { "frame": 560, "scene": "res://scenes/dev/secret_test.tscn" },
+  { "frame": 600, "action": "flashlight", "pressed": true },
+  { "frame": 602, "action": "flashlight", "pressed": false },
+  { "frame": 620, "screenshot": "f26_05_janela_inicio" },
+  { "frame": 625, "action": "move_right", "pressed": true },
+  { "frame": 960, "action": "move_right", "pressed": false },
+  { "frame": 1000, "screenshot": "f26_06_janela_depois" },
+  { "frame": 1020, "quit": true }
+]

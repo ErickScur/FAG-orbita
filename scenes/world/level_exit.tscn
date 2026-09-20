@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://c0rbitalevelexit"]
+
+[ext_resource type="Script" path="res://scenes/world/level_exit.gd" id="1_level_exit"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_level_exit"]
+size = Vector2(16, 44)
+
+[node name="LevelExit" type="Area2D" groups=["level_exit"]]
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+script = ExtResource("1_level_exit")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -24)
+
+[node name="Light" type="PointLight2D" parent="."]
+position = Vector2(0, -24)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -22)
+shape = SubResource("RectangleShape2D_level_exit")

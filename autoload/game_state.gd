@@ -20,6 +20,7 @@ var deaths: int = 0
 var play_time: float = 0.0
 var flags: Dictionary = {}
 var current_objective: String = ""
+var statuses: StatusEffects = StatusEffects.new()
 
 var _paused: bool = false
 var _dialogue_active: bool = false
@@ -46,6 +47,7 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
+	_tick_statuses(delta)
 	if not is_in_level():
 		return
 	play_time += delta
@@ -70,11 +72,35 @@ func new_game() -> void:
 	flags = {}
 	current_objective = ""
 	_died_emitted = false
+	clear_statuses()
 	_reset_reactor_runtime()
 	EventBus.integrity_changed.emit(integrity, integrity_max)
 	EventBus.charge_changed.emit(charge, charge_max)
 	EventBus.reactor_changed.emit(reactor_percent)
 	EventBus.reactor_critical.emit(_critical)
+
+
+func apply_status(status_id: StringName, duration: float = -1.0) -> bool:
+	var fresh: bool = statuses.apply(status_id, duration)
+	if not statuses.has(status_id):
+		return false
+	EventBus.status_applied.emit(status_id, statuses.remaining(status_id))
+	return fresh
+
+
+func clear_status(status_id: StringName) -> void:
+	if not statuses.clear(status_id):
+		return
+	EventBus.status_cleared.emit(status_id)
+
+
+func clear_statuses() -> void:
+	for status_id: StringName in statuses.clear_all():
+		EventBus.status_cleared.emit(status_id)
+
+
+func has_status(status_id: StringName) -> bool:
+	return statuses.has(status_id)
 
 
 func is_timer_frozen() -> bool:
@@ -146,8 +172,16 @@ func repair(amount: int) -> void:
 
 
 func add_charge(value: float) -> void:
+	if value <= 0.0 or statuses.blocks_charge_gain():
+		return
+	charge = clampf(charge + value, 0.0, charge_max)
+	EventBus.charge_changed.emit(charge, charge_max)
+
+
+func expand_charge_max(value: float) -> void:
 	if value <= 0.0:
 		return
+	charge_max += value
 	charge = clampf(charge + value, 0.0, charge_max)
 	EventBus.charge_changed.emit(charge, charge_max)
 
@@ -205,6 +239,52 @@ func register_pickup(kind: StringName, item_id: StringName) -> bool:
 	return true
 
 
+func has_secret(secret_id: StringName) -> bool:
+	if secret_id == &"":
+		return false
+	return bool(flags.get(RunStats.SECRET_PREFIX + String(secret_id), false))
+
+
+func register_secret(secret_id: StringName) -> bool:
+	if secret_id == &"" or has_secret(secret_id):
+		return false
+	flags[RunStats.SECRET_PREFIX + String(secret_id)] = true
+	return true
+
+
+func secrets_found() -> int:
+	return RunStats.secrets_found(self)
+
+
+func unlock_ability(ability_id: StringName) -> bool:
+	if ability_id == &"" or abilities.has(ability_id):
+		return false
+	abilities.append(ability_id)
+	EventBus.ability_unlocked.emit(ability_id)
+	return true
+
+
+func has_ability(ability_id: StringName) -> bool:
+	return abilities.has(ability_id)
+
+
+func get_stats() -> Dictionary:
+	return {
+		"time": play_time,
+		"time_text": RunStats.format_time(play_time),
+		"logs": logs_collected.size(),
+		"logs_total": Balance.LOGS_TOTAL,
+		"research": research_collected.size(),
+		"research_total": Balance.RESEARCH_TOTAL,
+		"deaths": deaths,
+		"secrets": RunStats.secrets_found(self),
+		"secrets_total": Balance.SECRETS_TOTAL,
+		"sectors": sectors_restored.size(),
+		"rows": RunStats.summary_rows(self),
+		"lines": RunStats.summary_lines(self),
+	}
+
+
 func to_dict() -> Dictionary:
 	var energy: Dictionary = {}
 	for terminal_id: Variant in energy_states:
@@ -254,6 +334,7 @@ func from_dict(data: Dictionary) -> void:
 	flags = Dictionary(data.get("flags", {})).duplicate(true)
 	current_objective = String(data.get("current_objective", ""))
 	_died_emitted = integrity <= 0
+	clear_statuses()
 	_reset_reactor_runtime()
 	_game_over_sent = reactor_percent <= 0.0
 	EventBus.integrity_changed.emit(integrity, integrity_max)
@@ -299,6 +380,13 @@ func _reset_reactor_runtime() -> void:
 	_alarm_left = 0.0
 	_game_over_sent = false
 	_last_display = ReactorClock.display_percent(reactor_percent)
+
+
+func _tick_statuses(delta: float) -> void:
+	if _paused or statuses.is_empty():
+		return
+	for status_id: StringName in statuses.tick(delta):
+		EventBus.status_cleared.emit(status_id)
 
 
 func _tick_reactor(delta: float) -> void:
@@ -353,6 +441,7 @@ func _on_player_died() -> void:
 
 
 func _on_player_respawned() -> void:
+	clear_statuses()
 	revive()
 
 

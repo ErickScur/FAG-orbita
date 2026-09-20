@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://c0rbitadistterminal"]
+
+[ext_resource type="Script" path="res://scenes/world/distribution_terminal.gd" id="1_dist_terminal"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dist_terminal"]
+size = Vector2(28, 30)
+
+[node name="DistributionTerminal" type="Area2D" groups=["distribution_terminal"]]
+collision_layer = 8
+collision_mask = 0
+monitoring = false
+script = ExtResource("1_dist_terminal")
+prompt_text = "ACESSAR TERMINAL"
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -16)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -15)
+shape = SubResource("RectangleShape2D_dist_terminal")

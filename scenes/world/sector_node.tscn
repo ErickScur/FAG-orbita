@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0rbitasectornode"]
+
+[ext_resource type="PackedScene" uid="uid://c0rbitadistterminal" path="res://scenes/world/distribution_terminal.tscn" id="1_sector_node"]
+
+[node name="SectorNode" instance=ExtResource("1_sector_node")]
+prompt_text = "RELIGAR NÓ DO SETOR"
+role = &"sector_node"

@@ -1,0 +1,46 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0rbitaspaceprlx"]
+
+[ext_resource type="Script" path="res://scenes/world/space_parallax.gd" id="1_parallax"]
+
+[node name="SpaceParallax" type="CanvasLayer"]
+layer = -1
+script = ExtResource("1_parallax")
+
+[node name="Void" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.019608, 0.031373, 0.047059, 1)
+
+[node name="Far" type="Parallax2D" parent="."]
+scroll_scale = Vector2(0.1, 0.1)
+follow_viewport = false
+repeat_size = Vector2(384, 216)
+autoscroll = Vector2(-1, 0)
+repeat_times = 4
+
+[node name="FarSprite" type="Sprite2D" parent="Far"]
+centered = false
+
+[node name="Mid" type="Parallax2D" parent="."]
+scroll_scale = Vector2(0.25, 0.25)
+follow_viewport = false
+repeat_size = Vector2(384, 216)
+autoscroll = Vector2(-3, 0)
+repeat_times = 4
+
+[node name="MidSprite" type="Sprite2D" parent="Mid"]
+centered = false
+
+[node name="Near" type="Parallax2D" parent="."]
+scroll_scale = Vector2(0.5, 0.5)
+follow_viewport = false
+repeat_size = Vector2(384, 216)
+autoscroll = Vector2(-6, 0)
+repeat_times = 4
+
+[node name="NearSprite" type="Sprite2D" parent="Near"]
+centered = false

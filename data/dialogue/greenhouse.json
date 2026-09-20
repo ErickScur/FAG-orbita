@@ -79,6 +79,83 @@
         { "speaker": "orbita", "text": "Backup restaurado. Perdi um pouco de estabilidade no processo." },
         { "speaker": "orbita", "text": "Vamos chamar isso de manutenção preventiva mal executada." }
       ]
+    },
+    "gh_rule_reminder": {
+      "mode": "ambient",
+      "once": true,
+      "lines": [
+        { "speaker": "orbita", "text": "Dois circuitos para cinco sistemas. Alguma coisa vai ficar no escuro." }
+      ]
+    },
+    "gh_bark_heating_on": {
+      "mode": "ambient",
+      "once": false,
+      "lines": [
+        { "speaker": "orbita", "text": "O módulo esquentou. Os esporos gostaram disso mais do que eu." }
+      ]
+    },
+    "gh_bark_heating_off": {
+      "mode": "ambient",
+      "once": false,
+      "lines": [
+        { "speaker": "orbita", "text": "Módulo frio. Os esporos encolheram e o elevador parou." }
+      ]
+    },
+    "gh_bark_corridor_on": {
+      "mode": "ambient",
+      "once": false,
+      "lines": [
+        { "speaker": "orbita", "text": "Corredor aceso. Agora dá para ver onde fica o poço." }
+      ]
+    },
+    "gh_bark_corridor_off": {
+      "mode": "ambient",
+      "once": false,
+      "lines": [
+        { "speaker": "orbita", "text": "O corredor ficou escuro. Vou precisar da lanterna." }
+      ]
+    },
+    "gh_bark_grow_on": {
+      "mode": "ambient",
+      "once": false,
+      "lines": [
+        { "speaker": "orbita", "text": "A trepadeira cresceu até a passarela. Uma escada que respira." }
+      ]
+    },
+    "gh_bark_grow_off": {
+      "mode": "ambient",
+      "once": false,
+      "lines": [
+        { "speaker": "orbita", "text": "A trepadeira murchou. A passarela voltou a ficar longe." }
+      ]
+    },
+    "gh_bark_lift_on": {
+      "mode": "ambient",
+      "once": false,
+      "lines": [
+        { "speaker": "orbita", "text": "Elevador de carga em movimento. Rangendo, mas em movimento." }
+      ]
+    },
+    "gh_bark_lift_off": {
+      "mode": "ambient",
+      "once": false,
+      "lines": [
+        { "speaker": "orbita", "text": "Elevador parado. Onde ele estiver, fica." }
+      ]
+    },
+    "gh_bark_node_door_on": {
+      "mode": "ambient",
+      "once": false,
+      "lines": [
+        { "speaker": "orbita", "text": "A porta do Nó destravou. O setor está a um passo de voltar." }
+      ]
+    },
+    "gh_bark_node_door_off": {
+      "mode": "ambient",
+      "once": false,
+      "lines": [
+        { "speaker": "orbita", "text": "A porta do Nó fechou. O caminho de volta é o mesmo." }
+      ]
     }
   }
 }

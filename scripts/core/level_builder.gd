@@ -282,7 +282,7 @@ static func default_item_id(
 ) -> StringName:
 	if params.has("id"):
 		return StringName(params["id"])
-	return StringName("%s_%s_%d_%d" % [level_id, kind, cell.x, cell.y])
+	return PickupRules.default_item_id(level_id, kind, cell)
 
 
 static func camera_rect(parsed: Dictionary) -> Rect2i:

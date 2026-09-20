@@ -1,0 +1,41 @@
+{
+  "id": "core_hub",
+  "title": "NÚCLEO CENTRAL - DISTRIBUIÇÃO",
+  "budget": 1,
+  "goal_text": "Abrir a porta do Setor Habitacional",
+  "goal_done_text": "Porta do Setor Habitacional aberta",
+  "goal_systems": ["door_habitat"],
+  "initial": ["lights_core"],
+  "systems": [
+    {
+      "id": "lights_core",
+      "name": "ILUMINAÇÃO DO NÚCLEO",
+      "tag": "VISÃO",
+      "description": "Acende as lâmpadas de teto do Núcleo.",
+      "effect_off": "O Núcleo apaga. Só a lanterna do chassi enxerga.",
+      "bark_on": "core_bark_lights_on",
+      "bark_off": "core_bark_lights_off",
+      "cost": 1,
+      "requires": [],
+      "locked": false,
+      "effects": [
+        { "target": "group:core_lights", "action": "power" }
+      ]
+    },
+    {
+      "id": "door_habitat",
+      "name": "PORTA DO SETOR HABITACIONAL",
+      "tag": "META",
+      "description": "Destrava a comporta para o corredor habitacional.",
+      "effect_off": "A comporta trava e o corredor fica inacessível.",
+      "bark_on": "core_bark_door_on",
+      "bark_off": "core_bark_door_off",
+      "cost": 1,
+      "requires": [],
+      "locked": false,
+      "effects": [
+        { "target": "id:door_habitat", "action": "power" }
+      ]
+    }
+  ]
+}

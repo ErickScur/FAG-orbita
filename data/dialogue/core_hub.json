@@ -5,92 +5,217 @@
       "once": true,
       "objective": "obj_calibrate",
       "lines": [
-        { "speaker": "orbita", "text": "Sistema de manutenção ÓRBITA... online.", "sfx": "power_on" },
-        { "speaker": "orbita", "text": "Bom dia, ARTEMIS. Relógio interno: inconsistente." },
-        { "speaker": "orbita", "text": "Estimativa mais provável: a tripulação saiu há algumas horas. Devem estar no turno de descanso." },
-        { "speaker": "orbita", "text": "Sem braços, sem pernas, sem sensores externos. Procurando um corpo disponível..." },
-        { "speaker": "orbita", "text": "Chassi de manutenção MU-7, parado na doca. Enferrujado, mas simpático." },
-        { "speaker": "orbita", "text": "Transferência concluída. Iniciando calibração do chassi." }
+        {
+          "speaker": "orbita",
+          "text": "Sistema de manutenção ÓRBITA... online.",
+          "sfx": "power_on"
+        },
+        {
+          "speaker": "orbita",
+          "text": "Bom dia, ARTEMIS. Relógio interno: inconsistente."
+        },
+        {
+          "speaker": "orbita",
+          "text": "Estimativa mais provável: a tripulação saiu há algumas horas. Devem estar no turno de descanso."
+        },
+        {
+          "speaker": "orbita",
+          "text": "Sem braços, sem pernas, sem sensores externos. Procurando um corpo disponível..."
+        },
+        {
+          "speaker": "orbita",
+          "text": "Chassi de manutenção MU-7, parado na doca. Enferrujado, mas simpático."
+        },
+        {
+          "speaker": "orbita",
+          "text": "Transferência concluída. Iniciando calibração do chassi."
+        }
       ]
     },
     "core_calib_move": {
       "mode": "ambient",
       "once": true,
       "lines": [
-        { "speaker": "orbita", "text": "Atuadores das pernas respondendo. Um pouco rangentes. Anotado para a próxima revisão." }
+        {
+          "speaker": "orbita",
+          "text": "Atuadores das pernas respondendo. Um pouco rangentes. Anotado para a próxima revisão."
+        }
       ]
     },
     "core_calib_jump": {
       "mode": "ambient",
       "once": true,
       "lines": [
-        { "speaker": "orbita", "text": "Salto dentro do esperado. Segurar o impulso rende mais altura." },
-        { "speaker": "orbita", "text": "A Engenharia vai gostar do relatório." }
+        {
+          "speaker": "orbita",
+          "text": "Salto dentro do esperado. Segurar o impulso rende mais altura."
+        },
+        {
+          "speaker": "orbita",
+          "text": "A Engenharia vai gostar do relatório."
+        }
       ]
     },
     "core_log_hint": {
       "mode": "ambient",
       "once": true,
-      "objective": "obj_read_log",
       "lines": [
-        { "speaker": "orbita", "text": "Terminal de registros com energia residual. Ler os registros do turno faz parte da rotina." }
+        {
+          "speaker": "orbita",
+          "text": "Terminal de registros com energia residual. Ler os registros do turno faz parte da rotina."
+        }
       ]
     },
     "core_alarm": {
       "mode": "blocking",
       "once": true,
-      "objective": "obj_open_habitat",
-      "set_flags": ["reactor_online"],
+      "set_flags": [
+        "reactor_online"
+      ],
       "lines": [
-        { "speaker": "system", "text": "ALERTA: REATOR PRINCIPAL EM DEGRADAÇÃO. ESTABILIDADE 100% E CAINDO.", "sfx": "reactor_alarm" },
-        { "speaker": "orbita", "text": "Ah. Isso é... inconveniente." },
-        { "speaker": "orbita", "text": "Se a estabilidade chegar a zero, a ARTEMIS perde órbita." },
-        { "speaker": "orbita", "text": "Com a tripulação fora, isso seria bem constrangedor." },
-        { "speaker": "orbita", "text": "Nada que manutenção preventiva não resolva. Vou religar os setores, um por um." },
-        { "speaker": "orbita", "text": "E deixar tudo pronto para quando todos voltarem." }
+        {
+          "speaker": "system",
+          "text": "ALERTA: REATOR PRINCIPAL EM DEGRADAÇÃO. ESTABILIDADE 100% E CAINDO.",
+          "sfx": "reactor_alarm"
+        },
+        {
+          "speaker": "orbita",
+          "text": "Ah. Isso é... inconveniente."
+        },
+        {
+          "speaker": "orbita",
+          "text": "Se a estabilidade chegar a zero, a ARTEMIS perde órbita."
+        },
+        {
+          "speaker": "orbita",
+          "text": "Com a tripulação fora, isso seria bem constrangedor."
+        },
+        {
+          "speaker": "orbita",
+          "text": "Nada que manutenção preventiva não resolva. Vou religar os setores, um por um."
+        },
+        {
+          "speaker": "orbita",
+          "text": "E deixar tudo pronto para quando todos voltarem."
+        }
       ]
     },
     "core_terminal_first": {
       "mode": "blocking",
       "once": true,
       "lines": [
-        { "speaker": "orbita", "text": "Terminal de Distribuição. Energia disponível: 1 unidade. Sistemas conectados: 2." },
-        { "speaker": "orbita", "text": "Para ligar a porta, preciso desligar a iluminação. Energia não se cria, se escolhe." }
+        {
+          "speaker": "orbita",
+          "text": "Terminal de Distribuição. Energia disponível: 1 unidade. Sistemas conectados: 2."
+        },
+        {
+          "speaker": "orbita",
+          "text": "Para ligar a porta, preciso desligar a iluminação. Energia não se cria, se escolhe."
+        }
       ]
     },
     "core_lights_off": {
       "mode": "ambient",
       "once": true,
-      "objective": "obj_reach_greenhouse",
       "lines": [
-        { "speaker": "orbita", "text": "Iluminação do Núcleo desligada. Ficou... silencioso. Silencioso e escuro." }
+        {
+          "speaker": "orbita",
+          "text": "Iluminação do Núcleo desligada. Ficou... silencioso. Silencioso e escuro."
+        }
       ]
     },
     "core_flashlight_hint": {
       "mode": "ambient",
       "once": true,
       "lines": [
-        { "speaker": "orbita", "text": "Lanterna do chassi disponível. Ela consome Carga, então vou usar com moderação." },
-        { "speaker": "orbita", "text": "Eu sempre uso tudo com moderação." }
+        {
+          "speaker": "orbita",
+          "text": "Lanterna do chassi disponível. Ela consome Carga, então vou usar com moderação."
+        },
+        {
+          "speaker": "orbita",
+          "text": "Eu sempre uso tudo com moderação."
+        }
       ]
     },
     "hab_body": {
       "mode": "blocking",
       "once": true,
       "lines": [
-        { "speaker": "orbita", "text": "Anomalia biológica no corredor habitacional." },
-        { "speaker": "orbita", "text": "Traje de tripulante. Ocupado." },
-        { "speaker": "orbita", "text": "Classificação: pendente. A equipe médica cuida disso quando voltar do turno." },
-        { "speaker": "orbita", "text": "Vou contornar com cuidado." }
+        {
+          "speaker": "orbita",
+          "text": "Anomalia biológica no corredor habitacional."
+        },
+        {
+          "speaker": "orbita",
+          "text": "Traje de tripulante. Ocupado."
+        },
+        {
+          "speaker": "orbita",
+          "text": "Classificação: pendente. A equipe médica cuida disso quando voltar do turno."
+        },
+        {
+          "speaker": "orbita",
+          "text": "Vou contornar com cuidado."
+        }
       ]
     },
     "hab_first_sr3": {
       "mode": "ambient",
       "once": true,
       "lines": [
-        { "speaker": "orbita", "text": "Unidade SR-3! Olá, colega." },
-        { "speaker": "orbita", "text": "...Ela não respondeu. A segurança deve ter me marcado como intruso." },
-        { "speaker": "orbita", "text": "Melhor pular por cima do que discutir." }
+        {
+          "speaker": "orbita",
+          "text": "Unidade SR-3! Olá, colega."
+        },
+        {
+          "speaker": "orbita",
+          "text": "...Ela não respondeu. A segurança deve ter me marcado como intruso."
+        },
+        {
+          "speaker": "orbita",
+          "text": "Melhor pular por cima do que discutir."
+        }
+      ]
+    },
+    "core_bark_lights_on": {
+      "mode": "ambient",
+      "once": false,
+      "lines": [
+        {
+          "speaker": "orbita",
+          "text": "Luzes do Núcleo de volta. Assim dá para trabalhar direito."
+        }
+      ]
+    },
+    "core_bark_lights_off": {
+      "mode": "ambient",
+      "once": false,
+      "lines": [
+        {
+          "speaker": "orbita",
+          "text": "O Núcleo ficou escuro. Vou precisar da lanterna."
+        }
+      ]
+    },
+    "core_bark_door_on": {
+      "mode": "ambient",
+      "once": false,
+      "lines": [
+        {
+          "speaker": "orbita",
+          "text": "A porta do Setor Habitacional destravou. Caminho livre."
+        }
+      ]
+    },
+    "core_bark_door_off": {
+      "mode": "ambient",
+      "once": false,
+      "lines": [
+        {
+          "speaker": "orbita",
+          "text": "A porta do Setor Habitacional travou de novo. Energia é escolha."
+        }
       ]
     }
   }

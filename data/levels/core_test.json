@@ -1,0 +1,30 @@
+{
+  "id": "core_test",
+  "name": "Bancada do Núcleo",
+  "tileset": "res://assets/tiles/core_tileset.tres",
+  "ambient_color": "#191d26",
+  "floor_sfx": "step_metal",
+  "reactor_online": false,
+  "objective": "obj_open_habitat",
+  "terminals": ["core_hub"],
+  "entities": {
+    "4,5": {
+      "id": "core_lamp_left",
+      "terminal_id": "core_hub",
+      "system_id": "lights_core",
+      "group": "core_lights"
+    },
+    "19,5": {
+      "id": "core_lamp_right",
+      "terminal_id": "core_hub",
+      "system_id": "lights_core",
+      "group": "core_lights"
+    },
+    "7,12": { "id": "core_console", "terminal": "core_hub" },
+    "14,12": {
+      "id": "door_habitat",
+      "terminal_id": "core_hub",
+      "system_id": "door_habitat"
+    }
+  }
+}

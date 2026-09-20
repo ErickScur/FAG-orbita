@@ -23,6 +23,7 @@ var _blipped_chars: int = 0
 var _ambient_timer: float = 0.0
 var _started_frame: int = -1
 var _blocking_active: bool = false
+var _paused_world: bool = false
 var _box: CanvasLayer = null
 
 
@@ -90,6 +91,7 @@ func open_log(log_id: StringName) -> void:
 	if not _logs.has(log_id):
 		push_warning("DialogueManager: log desconhecido '%s'" % log_id)
 		return
+	GameState.register_pickup(PickupRules.KIND_LOG, log_id)
 	if _is_queued(KIND_LOG, log_id):
 		return
 	_queue.append({"kind": KIND_LOG, "id": log_id})
@@ -116,6 +118,18 @@ func skip() -> void:
 	_update_box_progress()
 	if not _is_blocking():
 		_ambient_timer = _ambient_hold(int(_typed_chars))
+
+
+func clear() -> void:
+	_queue.clear()
+	if not _current.is_empty():
+		_finish_current()
+	_queue.clear()
+	if _blocking_active:
+		_blocking_active = false
+		_pause_world(false)
+		EventBus.dialogue_finished.emit()
+	_pause_world(false)
 
 
 func is_active() -> bool:
@@ -201,11 +215,36 @@ func _mount_box() -> void:
 
 
 func _start_or_interrupt(blocking: bool) -> void:
+	if blocking:
+		_promote_blocking()
 	if _current.is_empty():
 		_start_next()
 		return
 	if blocking and not _is_blocking():
 		_finish_current()
+
+
+func _promote_blocking() -> void:
+	var blocking_entries: Array = []
+	var ambient_entries: Array = []
+	for entry: Dictionary in _queue:
+		if entry["kind"] == KIND_LOG or _entry_is_blocking(entry):
+			blocking_entries.append(entry)
+		else:
+			ambient_entries.append(entry)
+	if blocking_entries.is_empty():
+		return
+	_queue = blocking_entries
+	for entry: Dictionary in ambient_entries:
+		_queue.append(entry)
+
+
+func _entry_is_blocking(entry: Dictionary) -> bool:
+	var id: StringName = entry["id"]
+	if not _sequences.has(id):
+		return true
+	var data: Dictionary = _sequences[id]
+	return String(data.get("mode", "blocking")) != "ambient"
 
 
 func _is_queued(kind: StringName, id: StringName) -> bool:
@@ -231,6 +270,7 @@ func _start_next() -> void:
 	_started_frame = Engine.get_process_frames()
 	if _is_blocking() and not _blocking_active:
 		_blocking_active = true
+		_pause_world(true)
 		EventBus.dialogue_started.emit()
 	if _current_kind == KIND_LOG:
 		AudioManager.play_sfx(&"tape_hiss")
@@ -310,6 +350,7 @@ func _finish_current() -> void:
 	if _queue.is_empty() or not _next_is_blocking():
 		if _blocking_active:
 			_blocking_active = false
+			_pause_world(false)
 			EventBus.dialogue_finished.emit()
 	if not _queue.is_empty():
 		_start_next()
@@ -339,7 +380,20 @@ func _apply_effects(data: Dictionary) -> void:
 	var ability: String = String(data.get("unlock_ability", ""))
 	if ability.is_empty():
 		return
-	var ability_id: StringName = StringName(ability)
-	if not GameState.abilities.has(ability_id):
-		GameState.abilities.append(ability_id)
-	EventBus.ability_unlocked.emit(ability_id)
+	GameState.unlock_ability(StringName(ability))
+
+
+func _pause_world(active: bool) -> void:
+	var tree: SceneTree = get_tree()
+	if tree == null:
+		return
+	if active:
+		if tree.paused:
+			return
+		_paused_world = true
+		tree.paused = true
+		return
+	if not _paused_world:
+		return
+	_paused_world = false
+	tree.paused = false

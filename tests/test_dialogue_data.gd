@@ -3,7 +3,7 @@ extends TestCase
 const DIALOGUE_DIR: String = "res://data/dialogue/"
 const LOGS_DIR: String = "res://data/logs/"
 const OBJECTIVES_PATH: String = "res://data/objectives.json"
-const DEMO_LOGS: int = 6
+const DEMO_LOGS: int = 7
 const MIN_LOG_LINES: int = 3
 
 var _content: Dictionary = {}
@@ -59,7 +59,7 @@ func test_objectives_exist() -> void:
 		assert_true(table.has(objective), "objetivo desconhecido '%s' em '%s'" % [objective, key])
 
 
-func test_demo_has_six_logs() -> void:
+func test_demo_has_seven_logs() -> void:
 	var logs: Dictionary = _content["logs"]
 	assert_eq(logs.size(), DEMO_LOGS, "total de logs da demo")
 	for key: Variant in logs:
