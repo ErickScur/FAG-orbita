@@ -1,0 +1,11 @@
+[
+ {"frame": 40, "screenshot": "01_antes_da_porta"},
+ {"frame": 45, "action": "move_right", "pressed": true},
+ {"frame": 120, "screenshot": "02_atravessando"},
+ {"frame": 240, "screenshot": "03_do_outro_lado"},
+ {"frame": 245, "action": "move_right", "pressed": false},
+ {"frame": 250, "action": "jump", "pressed": true},
+ {"frame": 262, "action": "jump", "pressed": false},
+ {"frame": 275, "screenshot": "04_pulo_junto_ao_batente"},
+ {"frame": 300, "quit": true}
+]

@@ -1,0 +1,6 @@
+[
+ {"frame": 60, "screenshot": "01_trio_porta_fechada"},
+ {"frame": 155, "screenshot": "02_porta_abrindo"},
+ {"frame": 175, "screenshot": "03_porta_aberta"},
+ {"frame": 185, "quit": true}
+]

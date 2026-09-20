@@ -4,11 +4,11 @@ extends Area2D
 const LIGHT_TEXTURE: String = "res://assets/fx/light_radial.png"
 const SHEET_PATH: String = "res://assets/sprites/world/door_sheet.png"
 const FRAME_SIZE: Vector2i = Vector2i(32, 48)
-const FRAME_OPEN: int = 4
+const FRAME_OPEN: int = 5
 const PLAYER_MASK: int = 2
 const LIGHT_COLOR: Color = Color("8fe3b0")
 const LIGHT_RADIUS: float = 80.0
-const LIGHT_ENERGY: float = 1.1
+const LIGHT_ENERGY: float = 0.7
 
 @export var target: String = ""
 

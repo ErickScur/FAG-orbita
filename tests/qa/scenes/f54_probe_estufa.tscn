@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0rbitaf54pb02"]
+
+[ext_resource type="Script" path="res://tests/qa/scenes/f54_door_probe.gd" id="1_f54probe"]
+
+[node name="F54ProbeEstufa" type="Node2D"]
+script = ExtResource("1_f54probe")
+level_scene = "res://scenes/levels/greenhouse.tscn"
+spawn_tile = Vector2i(16, 11)
+terminal_id = &"greenhouse"
+energy_state = Array[StringName]([&"node_door"])
+silenced_sequences = Array[StringName]([&"gh_enter", &"gh_node_room", &"tut_climb", &"core_wake", &"core_terminal_first", &"core_alarm", &"hab_body", &"hab_first_sr3", &"tut_move", &"tut_pause", &"tut_jump", &"tut_drop", &"tut_interact", &"tut_chassis", &"tut_flashlight"])
+powered_entities = Array[StringName]([&"gh_node_lamp"])

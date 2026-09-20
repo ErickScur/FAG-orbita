@@ -1,9 +1,12 @@
-[gd_scene load_steps=3 format=3 uid="uid://c0rbitadoor"]
+[gd_scene load_steps=4 format=3 uid="uid://c0rbitadoor"]
 
 [ext_resource type="Script" path="res://scenes/world/door.gd" id="1_door"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_door"]
 size = Vector2(16, 48)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bulkhead"]
+size = Vector2(16, 16)
 
 [node name="Door" type="AnimatableBody2D" groups=["powered", "door"]]
 collision_layer = 1
@@ -17,3 +20,8 @@ position = Vector2(0, -24)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -24)
 shape = SubResource("RectangleShape2D_door")
+
+[node name="BulkheadShape" type="CollisionShape2D" parent="."]
+position = Vector2(0, -48)
+shape = SubResource("RectangleShape2D_bulkhead")
+disabled = true

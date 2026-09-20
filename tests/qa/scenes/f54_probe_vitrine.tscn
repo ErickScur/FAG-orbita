@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0rbitaf54pb04"]
+
+[ext_resource type="Script" path="res://tests/qa/scenes/f54_door_probe.gd" id="1_f54probe"]
+
+[node name="F54ProbeVitrine" type="Node2D"]
+script = ExtResource("1_f54probe")
+level_scene = "res://scenes/levels/core_hub.tscn"
+spawn_tile = Vector2i(66, 11)
+energy_state = Array[StringName]([&"lights_core"])
+silenced_sequences = Array[StringName]([&"core_wake", &"core_terminal_first", &"core_alarm", &"hab_body", &"hab_first_sr3", &"tut_move", &"tut_pause", &"tut_jump", &"tut_drop", &"tut_interact", &"tut_chassis", &"tut_flashlight"])
+portal_tile = Vector2i(58, 11)
