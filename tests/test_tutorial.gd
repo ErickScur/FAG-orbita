@@ -176,3 +176,25 @@ func _meta(level_id: String) -> Dictionary:
 		return {}
 	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(path))
 	return parsed if parsed is Dictionary else {}
+
+
+func test_cards_that_do_not_share_a_key_with_dialogue_are_never_blocked() -> void:
+	var table: Dictionary = TutorialData.load_all()
+	var advance: Array[StringName] = DialogueManager.ADVANCE_ACTIONS
+	for tutorial_id: StringName in [&"tut_climb", &"tut_flashlight", &"tut_drop", &"tut_move"]:
+		var actions: Array[StringName] = TutorialData.actions_of(tutorial_id, table)
+		assert_false(
+			TutorialData.shares_action_with(actions, advance),
+			"cartão '%s' não pode depender de tecla que o diálogo consome" % tutorial_id
+		)
+
+
+func test_cards_that_share_a_key_with_dialogue_stay_guarded() -> void:
+	var table: Dictionary = TutorialData.load_all()
+	var advance: Array[StringName] = DialogueManager.ADVANCE_ACTIONS
+	for tutorial_id: StringName in [&"tut_jump", &"tut_interact", &"tut_terminal"]:
+		var actions: Array[StringName] = TutorialData.actions_of(tutorial_id, table)
+		assert_true(
+			TutorialData.shares_action_with(actions, advance),
+			"cartão '%s' divide tecla com o diálogo e precisa da guarda" % tutorial_id
+		)

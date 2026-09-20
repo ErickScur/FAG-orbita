@@ -190,3 +190,23 @@ func _on_log_closed(log_id: StringName) -> void:
 
 func _on_ability(ability_id: StringName) -> void:
 	_abilities.append(ability_id)
+
+
+func test_dialogue_started_by_a_log_effect_survives_the_log_closing() -> void:
+	if _manager == null:
+		return
+	EventBus.ability_unlocked.connect(_play_claws)
+	_manager.call("open_log", &"log_gh_02")
+	var guard: int = 0
+	while _manager.call("is_active") and _closed.is_empty() and guard < 200:
+		_manager.call("advance")
+		guard += 1
+	EventBus.ability_unlocked.disconnect(_play_claws)
+	assert_eq(_closed.size(), 1, "o log fechou")
+	assert_true(_manager.call("is_active"), "a fala disparada pelo log continua na tela")
+	assert_eq(String(_manager.call("current_speaker")), "orbita", "é a fala das garras")
+	assert_eq(_finished, 1, "gh_claws é ambiente, então o mundo volta a andar")
+
+
+func _play_claws(_ability_id: StringName) -> void:
+	_manager.call("play", &"gh_claws")

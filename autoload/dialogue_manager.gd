@@ -347,6 +347,12 @@ func _finish_current() -> void:
 	_apply_effects(finished)
 	if finished_kind == KIND_LOG:
 		EventBus.log_closed.emit(finished_id)
+	if not _current.is_empty():
+		if _blocking_active and not _is_blocking():
+			_blocking_active = false
+			_pause_world(false)
+			EventBus.dialogue_finished.emit()
+		return
 	if _queue.is_empty() or not _next_is_blocking():
 		if _blocking_active:
 			_blocking_active = false

@@ -47,6 +47,13 @@ static func actions_of(tutorial_id: StringName, table: Dictionary) -> Array[Stri
 	return result
 
 
+static func shares_action_with(actions: Array[StringName], other: Array[StringName]) -> bool:
+	for action: StringName in actions:
+		if other.has(action):
+			return true
+	return false
+
+
 static func flag_name(tutorial_id: StringName) -> String:
 	return String(tutorial_id)
 

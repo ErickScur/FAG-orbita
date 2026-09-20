@@ -38,11 +38,14 @@ func _process(delta: float) -> void:
 			_dismiss()
 		return
 	_card.modulate.a = minf(_card.modulate.a + delta / Balance.TUTORIAL_CARD_FADE, 1.0)
-	var advancing_dialogue: bool = _dialogue_was_active
+	var dialogue_touched_input: bool = _dialogue_was_active or DialogueManager.is_active()
 	_dialogue_was_active = DialogueManager.is_active()
-	if advancing_dialogue:
+	var actions: Array[StringName] = TutorialData.actions_of(_current, _catalog)
+	if dialogue_touched_input and TutorialData.shares_action_with(
+		actions, DialogueManager.ADVANCE_ACTIONS
+	):
 		return
-	if _pressed_any(TutorialData.actions_of(_current, _catalog)):
+	if _pressed_any(actions):
 		_complete()
 
 
