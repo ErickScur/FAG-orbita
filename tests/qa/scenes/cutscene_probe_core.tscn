@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0rbitacutprobecore"]
+
+[ext_resource type="Script" path="res://tests/qa/scenes/cutscene_probe.gd" id="1_cutprobe"]
+
+[node name="CutsceneProbeCore" type="Node2D"]
+script = ExtResource("1_cutprobe")
+level_scene = "res://scenes/levels/core_hub.tscn"
+spawn_tile = Vector2i(74, 11)
+sector_id = &"core_hub"
+trigger_frame = 40
+silenced_sequences = Array[StringName]([&"core_wake"])

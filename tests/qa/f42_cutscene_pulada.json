@@ -1,0 +1,12 @@
+[
+  {"frame": 20, "screenshot": "f42s_00_antes"},
+  {"frame": 180, "screenshot": "f42s_01_em_curso"},
+  {"frame": 190, "action": "jump", "pressed": true},
+  {"frame": 194, "action": "jump", "pressed": false},
+  {"frame": 198, "screenshot": "f42s_02_controle_de_volta"},
+  {"frame": 206, "screenshot": "f42s_03_parado"},
+  {"frame": 220, "screenshot": "f42s_04_ainda_parado"},
+  {"frame": 300, "screenshot": "f42s_05_estado_final"},
+  {"frame": 600, "screenshot": "f42s_06_estado_final_tarde"},
+  {"frame": 640, "quit": true}
+]

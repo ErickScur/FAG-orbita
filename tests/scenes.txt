@@ -69,3 +69,6 @@ res://scenes/world/level_exit.tscn
 res://scenes/levels/core_hub.tscn
 res://scenes/levels/greenhouse.tscn
 res://tests/qa/scenes/chassis_probe.tscn
+res://scenes/fx/sector_cutscene.tscn
+res://tests/qa/scenes/cutscene_probe_core.tscn
+res://tests/qa/scenes/cutscene_probe_greenhouse.tscn

@@ -25,6 +25,7 @@ var statuses: StatusEffects = StatusEffects.new()
 var _paused: bool = false
 var _dialogue_active: bool = false
 var _log_open: bool = false
+var _cutscene_active: bool = false
 var _died_emitted: bool = false
 var _critical: bool = false
 var _alarm_left: float = 0.0
@@ -40,6 +41,8 @@ func _ready() -> void:
 	EventBus.log_opened.connect(_on_log_opened)
 	EventBus.log_closed.connect(_on_log_closed)
 	EventBus.sector_restored.connect(_on_sector_restored)
+	EventBus.sector_cutscene_started.connect(_on_cutscene_started)
+	EventBus.sector_cutscene_finished.connect(_on_cutscene_finished)
 	EventBus.collectible_picked.connect(_on_collectible_picked)
 	EventBus.player_died.connect(_on_player_died)
 	EventBus.player_respawned.connect(_on_player_respawned)
@@ -72,6 +75,7 @@ func new_game() -> void:
 	flags = {}
 	current_objective = ""
 	_died_emitted = false
+	_cutscene_active = false
 	clear_statuses()
 	_reset_reactor_runtime()
 	EventBus.integrity_changed.emit(integrity, integrity_max)
@@ -104,7 +108,7 @@ func has_status(status_id: StringName) -> bool:
 
 
 func is_timer_frozen() -> bool:
-	if _paused or _dialogue_active or _log_open or Settings.no_timer:
+	if _paused or _dialogue_active or _log_open or _cutscene_active or Settings.no_timer:
 		return true
 	return _dialogue_blocks_timer()
 
@@ -417,6 +421,14 @@ func _after_reactor_change(force: bool) -> void:
 		return
 	_game_over_sent = true
 	EventBus.game_over.emit(&"reactor")
+
+
+func _on_cutscene_started(_sector_id: StringName) -> void:
+	_cutscene_active = true
+
+
+func _on_cutscene_finished(_sector_id: StringName) -> void:
+	_cutscene_active = false
 
 
 func _on_sector_restored(_sector_id: StringName) -> void:

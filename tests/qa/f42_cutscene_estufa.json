@@ -1,0 +1,20 @@
+[
+  {"frame": 25, "screenshot": "f42g_00_antes"},
+  {"frame": 70, "screenshot": "f42g_01_no_religado"},
+  {"frame": 140, "screenshot": "f42g_02_descendo"},
+  {"frame": 240, "screenshot": "f42g_03_meio"},
+  {"frame": 340, "screenshot": "f42g_04_mais_abaixo"},
+  {"frame": 440, "screenshot": "f42g_05_inicio_da_fase"},
+  {"frame": 600, "screenshot": "f42g_06_voltando"},
+  {"frame": 660, "screenshot": "f42g_07_fala_de_encerramento"},
+  {"frame": 700, "action": "interact", "pressed": true},
+  {"frame": 704, "action": "interact", "pressed": false},
+  {"frame": 740, "action": "interact", "pressed": true},
+  {"frame": 744, "action": "interact", "pressed": false},
+  {"frame": 780, "action": "interact", "pressed": true},
+  {"frame": 784, "action": "interact", "pressed": false},
+  {"frame": 820, "action": "interact", "pressed": true},
+  {"frame": 824, "action": "interact", "pressed": false},
+  {"frame": 900, "screenshot": "f42g_08_fim_da_demo"},
+  {"frame": 940, "quit": true}
+]

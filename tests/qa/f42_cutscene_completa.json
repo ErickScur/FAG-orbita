@@ -1,0 +1,14 @@
+[
+  {"frame": 20, "screenshot": "f42_00_antes"},
+  {"frame": 60, "screenshot": "f42_01_no_religado"},
+  {"frame": 120, "screenshot": "f42_02_partiu"},
+  {"frame": 180, "screenshot": "f42_03_primeiras_luzes"},
+  {"frame": 240, "screenshot": "f42_04_meio"},
+  {"frame": 300, "screenshot": "f42_05_mais_longe"},
+  {"frame": 360, "screenshot": "f42_06_quase_la"},
+  {"frame": 415, "screenshot": "f42_07_inicio_da_fase"},
+  {"frame": 480, "screenshot": "f42_08_voltando"},
+  {"frame": 545, "screenshot": "f42_09_controle_de_volta"},
+  {"frame": 600, "screenshot": "f42_10_estado_final"},
+  {"frame": 640, "quit": true}
+]

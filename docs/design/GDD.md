@@ -547,6 +547,7 @@ Toda vez que a dificuldade sobe demais, o jogador ganha um upgrade que faz o con
 | AJ-029 | 2026-09-20 | GDD-P · GDD-2.8 | Fala ambiente da ÓRBITA some mais rápido: `DIALOGUE_READ_CPS` 15,0 → 28,0, o que leva uma linha típica de **7,7 s para 5,1 s** na tela (medido quadro a quadro). Fora do tutorial a ÓRBITA para de narrar o efeito de cada sistema: as dez falas de comentário do Terminal da Estufa, mais as falas dos esporos, da trepadeira, dos vãos do corredor e o lembrete da regra de energia, são apagadas. A Estufa vai de 20 para 5 sequências | Playtest: "todos os dialogos de Orbita estao ficando muito tempo" e "é um jogo de puzzle, precisamos dar menos informações" |
 | AJ-030 | 2026-09-20 | GDD-P · GDD-2.9 | **A escuridão passa a ser real.** O ambiente das fases vai de luma 0,44 para **0,068**, o tileset placeholder sobe de 0,26 para **0,62** (a compensação estava invertida: o ambiente era claro para salvar um tileset escuro), o raio das lâmpadas cai de 160 para 96 px — o que **cria** o trecho escuro do Núcleo, antes inexistente porque as lâmpadas se tocavam — e a textura radial da luz troca a queda `(1-d)²` por um platô, subindo o alfa médio de 0,167 para 0,419. A lanterna ganha duas energias: `SENSOR_ENERGY` 0,7 com o facho desligado e `FLASHLIGHT_ENERGY` 1,5 com ele aceso. Medido: longe do jogador e sem lanterna, nenhum pixel do cenário passa de 0,06 de luma | Playtest: "quando fica escuro, nao fica escura realmente, nao precisa da lanterna, da pra ver tudo tranquilamente" |
 | AJ-031 | 2026-09-20 | GDD-P | Fala ambiente da ÓRBITA encurta de novo: `DIALOGUE_CPS` 40→55, `DIALOGUE_READ_CPS` 28→45 e `DIALOGUE_AMBIENT_MIN_TIME` 2,0→1,6. A fala das garras, que é a mais reclamada, também perdeu a parte que **explicava a mecânica** ("paredes marcadas agora são caminho") e ficou só com o gesto ("Obrigada, doutora"), coerente com o princípio de não explicar fora do tutorial. Medido nas capturas: a caixa ficava **7,70 s** na versão original, **5,10 s** depois do [AJ-029](#gdd-ajustes) e agora **2,43 s** | Playtest, duas vezes: "o dialogo dele agradecendo a doutora depois de instalar as garras ainda esta demorando muito para sair da tela" |
+| AJ-032 | 2026-09-20 | GDD-2.5 · GDD-P | **Cutscene de religamento do setor.** Ao religar o Nó, a câmera solta do MU-7, percorre a fase acendendo o que estava sem energia na passagem — lâmpadas, portas, plantas — e volta. Pulável a qualquer momento, com garantia de que pular deixa o mundo no mesmo estado do trajeto completo. O percurso é **derivado da própria fase** (início na câmera do religamento, fim no ponto de nascimento, paradas nos nós sem energia ordenadas pela projeção no eixo), então fase nova ganha cutscene sem precisar de dado novo. Durante a cutscene o timer do reator congela, como na leitura de log. **Exceção consciente ao GDD-2.5:** aqui tudo acende ao mesmo tempo, o que a regra de energia proíbe — mas só depois de o puzzle estar resolvido, e é a ficção do setor voltando | Pedido do humano: "no final das fases ter uma cutscene mostrando oq acontece quando liga a energia (camera move e mostra a fase que vc passou, com por exemplo, luzes ligando, portas abrindo, plantas crescendo)" |
 | AJ-021 | 2026-09-19 | GDD-P | Amplitude e velocidade da flutuação dos coletáveis | O GDD pedia itens "flutuando" sem número |
 | AJ-020 | 2026-09-19 | GDD-P | Velocidade de digitação do diálogo, tempo mínimo de fala ambiente, cores e fade das luzes | Números de apresentação que o GDD descrevia em palavras ("legenda", "luz fria") |
 | AJ-019 | 2026-09-19 | GDD-P | Ritmo do alarme do reator, duração do aviso do HUD, frequência do pulso crítico e do bipe de integridade baixa | Números de feedback do HUD/áudio que o GDD descrevia só em palavras |
@@ -586,6 +587,16 @@ Toda vez que a dificuldade sobe demais, o jogador ganha um upgrade que faz o con
 | `DIALOGUE_CPS` | 55.0 | car/s | AJ-020 |
 | `DIALOGUE_READ_CPS` | 45.0 | car/s | AJ-029 |
 | `DIALOGUE_AMBIENT_MIN_TIME` | 1.6 | s | AJ-020 |
+| `CUTSCENE_CAMERA_SPEED` | 220.0 | px/s | AJ-032 |
+| `CUTSCENE_TRAVEL_MIN_TIME` | 3.0 | s | AJ-032 |
+| `CUTSCENE_TRAVEL_MAX_TIME` | 7.0 | s | AJ-032 |
+| `CUTSCENE_HOLD_START_TIME` | 0.8 | s | AJ-032 |
+| `CUTSCENE_HOLD_END_TIME` | 1.0 | s | AJ-032 |
+| `CUTSCENE_RETURN_TIME` | 1.2 | s | AJ-032 |
+| `CUTSCENE_WAYPOINT_SPACING` | 96.0 | px | AJ-032 |
+| `CUTSCENE_WAYPOINT_LIMIT` | 8 | un. | AJ-032 |
+| `CUTSCENE_SKIP_ARM_TIME` | 0.4 | s | AJ-032 |
+| `CUTSCENE_REVEAL_HALF_SIZE` | Vector2(144, 88) | px | AJ-032 |
 | `FLASHLIGHT_ENERGY` | 1.5 | energia | AJ-030 |
 | `SENSOR_ENERGY` | 0.7 | energia | AJ-030 |
 | `BRIEFING_CPS` | 60.0 | car./s | AJ-025 |

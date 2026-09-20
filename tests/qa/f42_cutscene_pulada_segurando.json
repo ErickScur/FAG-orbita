@@ -1,0 +1,11 @@
+[
+  {"frame": 180, "screenshot": "f42h_00_em_curso"},
+  {"frame": 190, "action": "jump", "pressed": true},
+  {"frame": 200, "screenshot": "f42h_01_tecla_presa"},
+  {"frame": 216, "screenshot": "f42h_02_controle_de_volta"},
+  {"frame": 226, "screenshot": "f42h_03_parado"},
+  {"frame": 230, "action": "jump", "pressed": false},
+  {"frame": 240, "screenshot": "f42h_04_depois_de_soltar"},
+  {"frame": 300, "screenshot": "f42h_05_estado_final"},
+  {"frame": 340, "quit": true}
+]

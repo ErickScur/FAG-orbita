@@ -7,6 +7,9 @@ const DEFAULT_TILESET: String = "res://assets/tiles/core_tileset.tres"
 const PARALLAX_SCENE: String = "res://scenes/world/space_parallax.tscn"
 const VIGNETTE_SCENE: String = "res://scenes/fx/vignette.tscn"
 const MOTES_SCENE: String = "res://scenes/world/ambient_motes.tscn"
+const CUTSCENE_SCENE: String = "res://scenes/fx/sector_cutscene.tscn"
+const HUD_GROUP: StringName = &"hud"
+const RESTORED_META: String = "ambient_restored"
 
 @export var level_id: String = ""
 
@@ -46,6 +49,7 @@ func _ready() -> void:
 	_mount_motes()
 	_mount_hud()
 	_apply_atmosphere()
+	_mount_cutscene()
 	_apply_progress()
 
 
@@ -53,6 +57,12 @@ func spawn_position() -> Vector2:
 	var dock: Node2D = _checkpoint_dock()
 	if dock != null:
 		return dock.global_position
+	return LevelParser.cell_to_position(
+		_parsed.get("spawn", Vector2i.ZERO), LevelParser.ANCHOR_FEET, Balance.TILE_SIZE
+	)
+
+
+func start_position() -> Vector2:
 	return LevelParser.cell_to_position(
 		_parsed.get("spawn", Vector2i.ZERO), LevelParser.ANCHOR_FEET, Balance.TILE_SIZE
 	)
@@ -172,7 +182,21 @@ func _mount_hud() -> void:
 	if not ResourceLoader.exists(HUD_SCENE):
 		push_warning("level_base: HUD ainda não implementado (F15)")
 		return
-	add_child(load(HUD_SCENE).instantiate())
+	var hud: Node = load(HUD_SCENE).instantiate()
+	hud.add_to_group(HUD_GROUP)
+	add_child(hud)
+
+
+func _mount_cutscene() -> void:
+	if not ResourceLoader.exists(CUTSCENE_SCENE):
+		push_warning("level_base: cutscene de setor ausente em %s" % CUTSCENE_SCENE)
+		return
+	var instance: Node = load(CUTSCENE_SCENE).instantiate()
+	add_child(instance)
+	if instance.has_method(&"configure"):
+		instance.call(
+			&"configure", camera_rect(), start_position(), _ambient, meta_color(RESTORED_META)
+		)
 
 
 func _apply_atmosphere() -> void:
