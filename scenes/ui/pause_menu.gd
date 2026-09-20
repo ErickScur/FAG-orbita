@@ -43,6 +43,9 @@ func _notification(what: int) -> void:
 		return
 	if is_open or not is_inside_tree():
 		return
+	var qa: Node = get_tree().root.get_node_or_null("QACapture")
+	if qa != null and bool(qa.get("is_active")):
+		return
 	if can_pause():
 		open()
 

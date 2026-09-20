@@ -1,0 +1,20 @@
+[
+  {
+    "frame": 20,
+    "action": "map",
+    "pressed": true
+  },
+  {
+    "frame": 21,
+    "action": "map",
+    "pressed": false
+  },
+  {
+    "frame": 24,
+    "screenshot": "f12_01_idle"
+  },
+  {
+    "frame": 28,
+    "quit": true
+  }
+]

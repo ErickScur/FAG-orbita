@@ -1,0 +1,45 @@
+[
+  {
+    "frame": 20,
+    "action": "move_right",
+    "pressed": true
+  },
+  {
+    "frame": 210,
+    "action": "move_right",
+    "pressed": false
+  },
+  {
+    "frame": 245,
+    "action": "move_down",
+    "pressed": true
+  },
+  {
+    "frame": 250,
+    "action": "jump",
+    "pressed": true
+  },
+  {
+    "frame": 251,
+    "action": "jump",
+    "pressed": false
+  },
+  {
+    "frame": 285,
+    "action": "map",
+    "pressed": true
+  },
+  {
+    "frame": 286,
+    "action": "map",
+    "pressed": false
+  },
+  {
+    "frame": 289,
+    "screenshot": "f12_10_desceu_pela_oneway"
+  },
+  {
+    "frame": 293,
+    "quit": true
+  }
+]

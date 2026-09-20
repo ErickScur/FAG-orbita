@@ -13,7 +13,7 @@ const LOG_FILE: String = "qa_log.txt"
 const TAIL_FRAMES: int = 30
 const SAFETY_FRAMES: int = 3600
 
-var _active: bool = false
+var is_active: bool = false
 var _events: Array[Dictionary] = []
 var _next_event: int = 0
 var _frame: int = 0
@@ -32,7 +32,7 @@ func _ready() -> void:
 	var arguments: PackedStringArray = OS.get_cmdline_user_args()
 	if not arguments.has(FLAG_ENABLE):
 		return
-	_active = true
+	is_active = true
 	var scene_path: String = ""
 	var script_path: String = ""
 	var new_game: bool = false
@@ -67,7 +67,7 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-	if not _active or _finishing:
+	if not is_active or _finishing:
 		return
 	if not _scene_opened:
 		_scene_opened = true
@@ -129,7 +129,7 @@ func _capture(shot_name: String) -> void:
 	if shot_name.is_empty():
 		return
 	var frame_index: int = _frame
-	await RenderingServer.frame_post_draw
+	RenderingServer.force_draw(false)
 	var viewport := get_viewport()
 	if viewport == null:
 		return

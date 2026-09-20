@@ -1,0 +1,30 @@
+[
+  {
+    "frame": 30,
+    "action": "jump",
+    "pressed": true
+  },
+  {
+    "frame": 31,
+    "action": "jump",
+    "pressed": false
+  },
+  {
+    "frame": 40,
+    "action": "map",
+    "pressed": true
+  },
+  {
+    "frame": 41,
+    "action": "map",
+    "pressed": false
+  },
+  {
+    "frame": 44,
+    "screenshot": "f12_02_apice_curto_f40"
+  },
+  {
+    "frame": 48,
+    "quit": true
+  }
+]

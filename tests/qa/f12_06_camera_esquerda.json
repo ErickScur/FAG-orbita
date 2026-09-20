@@ -1,0 +1,35 @@
+[
+  {
+    "frame": 20,
+    "action": "move_right",
+    "pressed": true
+  },
+  {
+    "frame": 160,
+    "action": "move_right",
+    "pressed": false
+  },
+  {
+    "frame": 170,
+    "action": "move_left",
+    "pressed": true
+  },
+  {
+    "frame": 240,
+    "action": "map",
+    "pressed": true
+  },
+  {
+    "frame": 241,
+    "action": "map",
+    "pressed": false
+  },
+  {
+    "frame": 244,
+    "screenshot": "f12_06_camera_antecipa_esquerda"
+  },
+  {
+    "frame": 248,
+    "quit": true
+  }
+]

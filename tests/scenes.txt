@@ -16,3 +16,5 @@ res://scenes/ui/demo_end.tscn
 res://scenes/ui/save_toast.tscn
 res://tests/qa/scenes/end_probe.tscn
 res://tests/qa/scenes/save_probe.tscn
+res://scenes/player/mu7.tscn
+res://tests/qa/scenes/mu7_sandbox.tscn

@@ -1,0 +1,40 @@
+[
+  {
+    "frame": 20,
+    "action": "move_left",
+    "pressed": true
+  },
+  {
+    "frame": 60,
+    "action": "jump",
+    "pressed": true
+  },
+  {
+    "frame": 85,
+    "action": "move_left",
+    "pressed": false
+  },
+  {
+    "frame": 100,
+    "action": "jump",
+    "pressed": false
+  },
+  {
+    "frame": 120,
+    "action": "map",
+    "pressed": true
+  },
+  {
+    "frame": 121,
+    "action": "map",
+    "pressed": false
+  },
+  {
+    "frame": 124,
+    "screenshot": "f12_08_degrau2_pulo_longo_sobe"
+  },
+  {
+    "frame": 128,
+    "quit": true
+  }
+]

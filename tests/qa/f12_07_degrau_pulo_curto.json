@@ -1,0 +1,35 @@
+[
+  {
+    "frame": 20,
+    "action": "move_left",
+    "pressed": true
+  },
+  {
+    "frame": 60,
+    "action": "jump",
+    "pressed": true
+  },
+  {
+    "frame": 61,
+    "action": "jump",
+    "pressed": false
+  },
+  {
+    "frame": 71,
+    "action": "map",
+    "pressed": true
+  },
+  {
+    "frame": 72,
+    "action": "map",
+    "pressed": false
+  },
+  {
+    "frame": 75,
+    "screenshot": "f12_07_degrau2_pulo_curto_falha"
+  },
+  {
+    "frame": 79,
+    "quit": true
+  }
+]

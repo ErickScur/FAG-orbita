@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0rbitamu7sandbox"]
+
+[ext_resource type="Script" path="res://tests/qa/scenes/mu7_sandbox.gd" id="1_sandbox"]
+
+[node name="Mu7Sandbox" type="Node2D"]
+script = ExtResource("1_sandbox")

@@ -1,0 +1,33 @@
+[gd_scene load_steps=3 format=3 uid="uid://c0rbitamu7body"]
+
+[ext_resource type="Script" path="res://scenes/player/mu7.gd" id="1_mu7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mu7"]
+size = Vector2(14, 24)
+
+[node name="MU7" type="CharacterBody2D" groups=["player"]]
+collision_layer = 2
+collision_mask = 65
+floor_snap_length = 4.0
+script = ExtResource("1_mu7")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -12)
+shape = SubResource("RectangleShape2D_mu7")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -16)
+
+[node name="OneWayProbe" type="RayCast2D" parent="."]
+target_position = Vector2(0, 4)
+collision_mask = 64
+
+[node name="OneWayClearance" type="RayCast2D" parent="."]
+target_position = Vector2(0, -24)
+collision_mask = 64
+
+[node name="Camera2D" type="Camera2D" parent="."]
+process_callback = 0
+position_smoothing_enabled = true
+position_smoothing_speed = 5.0
+limit_smoothed = true

@@ -1,0 +1,30 @@
+[
+  {
+    "frame": 20,
+    "action": "move_right",
+    "pressed": true
+  },
+  {
+    "frame": 210,
+    "action": "move_right",
+    "pressed": false
+  },
+  {
+    "frame": 235,
+    "action": "map",
+    "pressed": true
+  },
+  {
+    "frame": 236,
+    "action": "map",
+    "pressed": false
+  },
+  {
+    "frame": 239,
+    "screenshot": "f12_09_sobre_plataforma_oneway"
+  },
+  {
+    "frame": 243,
+    "quit": true
+  }
+]

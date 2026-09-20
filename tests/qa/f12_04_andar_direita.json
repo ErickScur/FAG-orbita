@@ -1,0 +1,25 @@
+[
+  {
+    "frame": 20,
+    "action": "move_right",
+    "pressed": true
+  },
+  {
+    "frame": 60,
+    "action": "map",
+    "pressed": true
+  },
+  {
+    "frame": 61,
+    "action": "map",
+    "pressed": false
+  },
+  {
+    "frame": 64,
+    "screenshot": "f12_04_andando_direita"
+  },
+  {
+    "frame": 68,
+    "quit": true
+  }
+]

@@ -1,0 +1,25 @@
+[
+  {
+    "frame": 30,
+    "action": "jump",
+    "pressed": true
+  },
+  {
+    "frame": 47,
+    "action": "map",
+    "pressed": true
+  },
+  {
+    "frame": 48,
+    "action": "map",
+    "pressed": false
+  },
+  {
+    "frame": 51,
+    "screenshot": "f12_03_apice_longo_f47"
+  },
+  {
+    "frame": 55,
+    "quit": true
+  }
+]

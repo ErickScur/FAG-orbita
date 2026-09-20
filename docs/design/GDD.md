@@ -535,7 +535,8 @@ Toda vez que a dificuldade sobe demais, o jogador ganha um upgrade que faz o con
 | `INTERACT_RANGE` | 20 | px | AJ-006 |
 | `DEATH_DELAY` | 1.2 | s | AJ-006 |
 | `SCENE_FADE_TIME` | 0.4 | s | AJ-006 |
-| `LOADING_MIN_TIME` | 1.6 | s | AJ-017 |
+| `LOADING_MIN_TIME` | 1.6 | s | AJ-018 | 2026-09-19 | GDD-P | Constantes de sensação do plataforma (aceleração/desaceleração no chão e no ar, corte do pulo, velocidade terminal, descida de plataforma fina, deslocamento e velocidade da antecipação da câmera) | Necessárias para o movimento do MU-7 ter peso; o GDD só definia velocidade, gravidade e altura de pulo |
+| AJ-017 |
 | `SPLASH_TIME` | 2.5 | s | AJ-006 |
 | `MUSIC_FADE_TIME` | 1.5 | s | AJ-006 |
 | `CAMERA_SMOOTHING` | 5.0 | fator | AJ-006 |
@@ -552,6 +553,14 @@ Toda vez que a dificuldade sobe demais, o jogador ganha um upgrade que faz o con
 | `STATUS_EXPOSURE_GRACE` | 0.3 | s | AJ-006 |
 | `PLATFORM_SPEED` | 40 | px/s | AJ-006 |
 | `PLANT_GROW_TIME` | 2.0 | s | AJ-006 |
+| `CAMERA_LOOK_AHEAD_SPEED` | 4.0 | fator | AJ-018 |
+| `CAMERA_OFFSET_Y` | -16.0 | px | AJ-018 |
+| `JUMP_CUT_MULTIPLIER` | 0.5 | fator | AJ-018 |
+| `MAX_FALL_SPEED` | 400.0 | px/s | AJ-018 |
+| `WALK_ACCEL` | 900.0 | px/s² | AJ-018 |
+| `WALK_DECEL` | 1200.0 | px/s² | AJ-018 |
+| `AIR_ACCEL_RATIO` | 0.7 | fator | AJ-018 |
+| `DROP_THROUGH_TIME` | 0.2 | s | AJ-018 |
 | `SR3_SPEED` | 40 | px/s | AJ-012 |
 | `SR3_KNOCKBACK_X` | 120 | px/s | AJ-012 |
 | `SR3_KNOCKBACK_Y` | 120 | px/s | AJ-012 |
