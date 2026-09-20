@@ -308,10 +308,15 @@ func _resolve_sfx_path(base_name: String) -> String:
 
 
 func _resolve_music_path(id: StringName) -> String:
-	var final_path: String = String(MUSIC.get(id, ""))
-	if not final_path.is_empty() and ResourceLoader.exists(final_path):
-		return final_path
-	var base_name: String = final_path.get_file().get_basename()
+	var declared: String = String(MUSIC.get(id, ""))
+	if declared.is_empty():
+		return ""
+	var base_name: String = declared.get_file().get_basename()
+	var directory: String = declared.get_base_dir() + "/"
+	for extension: String in EXTENSIONS:
+		var final_path: String = directory + base_name + extension
+		if ResourceLoader.exists(final_path):
+			return final_path
 	for extension: String in EXTENSIONS:
 		var placeholder: String = PLACEHOLDER_MUSIC_DIR + base_name + extension
 		if ResourceLoader.exists(placeholder):

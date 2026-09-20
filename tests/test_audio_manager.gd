@@ -104,3 +104,21 @@ func test_missing_sfx_does_not_break() -> void:
 
 func test_sfx_pool_size() -> void:
 	assert_eq(AudioManager.SFX_POOL_SIZE, 8, "pool de SFX")
+
+
+func test_phase_tracks_use_the_final_files_not_the_placeholder() -> void:
+	for id: StringName in [&"core", &"greenhouse"]:
+		var path: String = String(AudioManager.call("_resolve_music_path", id))
+		assert_false(path.is_empty(), "faixa '%s' resolve para algum arquivo" % id)
+		assert_false(
+			path.begins_with("res://assets/placeholder/"),
+			"faixa '%s' precisa usar o arquivo definitivo, veio '%s'" % [id, path]
+		)
+
+
+func test_music_resolution_accepts_any_supported_extension() -> void:
+	var path: String = String(AudioManager.call("_resolve_music_path", &"core"))
+	assert_true(
+		path.ends_with(".ogg") or path.ends_with(".mp3") or path.ends_with(".wav"),
+		"a resolução não pode exigir uma extensão só, veio '%s'" % path
+	)
