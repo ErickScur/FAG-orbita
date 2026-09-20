@@ -270,16 +270,51 @@ func test_core_hub_never_powers_everything() -> void:
 	_assert_never_all_on(String(CORE_HUB))
 
 
-func test_greenhouse_is_five_two() -> void:
+func test_greenhouse_is_six_two() -> void:
 	var grid: EnergyGrid = _load(String(GREENHOUSE))
 	assert_not_null(grid, "estufa existe")
 	if grid == null:
 		return
 	assert_eq(grid.budget, 2, "duas unidades de energia")
-	assert_eq(grid.system_ids().size(), 5, "cinco sistemas")
+	assert_eq(grid.system_ids().size(), 6, "seis sistemas")
 	assert_eq(grid.used(), 2, "começa com aquecimento e corredor")
 	assert_true(grid.is_powered(&"heating"), "aquecimento inicial")
 	assert_true(grid.is_powered(&"corridor_light"), "corredor inicial")
+
+
+func test_greenhouse_canopy_requires_the_bed() -> void:
+	var grid: EnergyGrid = _load(String(GREENHOUSE))
+	if grid == null:
+		return
+	grid.set_state([])
+	assert_eq(
+		grid.can_power(&"canopy_light"),
+		EnergyGrid.Result.MISSING_DEPENDENCY,
+		"a copa exige o canteiro"
+	)
+	grid.power_on(&"grow_light")
+	assert_eq(grid.can_power(&"canopy_light"), EnergyGrid.Result.OK, "com o canteiro ligado, liga")
+	grid.power_on(&"canopy_light")
+	assert_eq(grid.used(), 2, "a cadeia consome as duas unidades")
+	assert_eq(
+		grid.can_power(&"node_door"), EnergyGrid.Result.NO_BUDGET, "não sobra para a porta do Nó"
+	)
+	var fallen: Array[StringName] = grid.power_off(&"grow_light")
+	assert_eq(fallen.size(), 2, "o canteiro derruba a copa em cascata")
+	assert_false(grid.is_powered(&"canopy_light"), "copa caiu junto")
+
+
+func test_greenhouse_has_two_chains_and_one_free_goal() -> void:
+	var grid: EnergyGrid = _load(String(GREENHOUSE))
+	if grid == null:
+		return
+	assert_eq(
+		_names(grid.dependents_of(&"grow_light")), _names([&"canopy_light"]), "cadeia botânica"
+	)
+	assert_eq(
+		_names(grid.dependents_of(&"heating")), _names([&"lift_platform"]), "cadeia industrial"
+	)
+	assert_true(grid.requires_of(&"node_door").is_empty(), "a meta nunca depende de nada")
 
 
 func test_greenhouse_route_plant() -> void:
@@ -287,10 +322,13 @@ func test_greenhouse_route_plant() -> void:
 	if grid == null:
 		return
 	_step(grid, &"heating", "desliga o aquecimento e encolhe os esporos")
-	_step(grid, &"grow_light", "liga a luz de crescimento")
-	assert_true(grid.is_powered(&"grow_light"), "planta virou plataforma")
+	_step(grid, &"grow_light", "liga a luz do canteiro")
+	assert_true(grid.is_powered(&"grow_light"), "trepadeira virou plataforma")
 	assert_true(grid.is_powered(&"corridor_light"), "corredor ainda aceso")
-	_step(grid, &"corridor_light", "apaga o corredor no console B")
+	_step(grid, &"corridor_light", "apaga o corredor no console da galeria")
+	_step(grid, &"canopy_light", "liga a copa em cima do canteiro")
+	assert_eq(grid.used(), 2, "a cadeia botânica ocupa as duas unidades")
+	_step(grid, &"canopy_light", "desliga a copa no console do Nó")
 	_step(grid, &"node_door", "abre a porta do Nó")
 	assert_true(grid.is_powered(&"node_door"), "porta do Nó aberta")
 	assert_eq(grid.used(), 2, "2/2 em uso")

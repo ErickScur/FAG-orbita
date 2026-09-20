@@ -20,3 +20,6 @@ shape = SubResource("RectangleShape2D_magwall")
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]
 occluder = SubResource("OccluderPolygon2D_magwall")
+
+[node name="Glow" type="PointLight2D" parent="."]
+blend_mode = 0

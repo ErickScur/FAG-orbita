@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0rbitaghpb11"]
+
+[ext_resource type="Script" path="res://tests/qa/scenes/gh_probe.gd" id="1_ghprobe"]
+
+[node name="GhProbeShaft" type="Node2D"]
+script = ExtResource("1_ghprobe")
+spawn_tile = Vector2i(44, 61)
+energy_state = Array[StringName]([&"heating", &"lift_platform"])

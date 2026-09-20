@@ -1,0 +1,18 @@
+[
+ {"frame": 50, "screenshot": "01_poco_do_elevador_na_base"},
+ {"frame": 480, "screenshot": "02_elevador_encostando_no_piso"},
+ {"frame": 560, "screenshot": "03_subindo_o_poco"},
+ {"frame": 640, "screenshot": "04_passando_pelo_viveiro"},
+ {"frame": 700, "screenshot": "05_chegada_a_galeria"},
+ {"frame": 712, "action": "move_left", "pressed": true},
+ {"frame": 760, "action": "move_left", "pressed": false},
+ {"frame": 800, "screenshot": "06_saindo_do_elevador_na_galeria"},
+ {"frame": 840, "scene": "res://tests/qa/scenes/gh_probe_gondola.tscn"},
+ {"frame": 910, "screenshot": "07_gondola_na_galeria"},
+ {"frame": 920, "action": "move_left", "pressed": true},
+ {"frame": 965, "action": "move_left", "pressed": false},
+ {"frame": 1380, "screenshot": "08_embarque_na_gondola"},
+ {"frame": 1500, "screenshot": "09_gondola_subindo"},
+ {"frame": 1630, "screenshot": "10_gondola_na_copa"},
+ {"frame": 1690, "quit": true}
+]

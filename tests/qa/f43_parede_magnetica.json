@@ -1,0 +1,18 @@
+[
+ {"frame": 40, "screenshot": "01_parede_no_escuro_sem_lanterna"},
+ {"frame": 50, "action": "move_right", "pressed": true},
+ {"frame": 105, "action": "move_right", "pressed": false},
+ {"frame": 125, "screenshot": "02_encostado_na_parede_sem_lanterna"},
+ {"frame": 135, "action": "move_up", "pressed": true},
+ {"frame": 160, "action": "move_up", "pressed": true},
+ {"frame": 190, "action": "move_up", "pressed": true},
+ {"frame": 220, "action": "move_up", "pressed": true},
+ {"frame": 250, "action": "move_up", "pressed": true},
+ {"frame": 260, "screenshot": "03_escalando_no_escuro"},
+ {"frame": 270, "action": "flashlight", "pressed": true},
+ {"frame": 273, "action": "flashlight", "pressed": false},
+ {"frame": 280, "action": "move_up", "pressed": true},
+ {"frame": 300, "screenshot": "04_escalando_com_lanterna"},
+ {"frame": 310, "action": "move_up", "pressed": false},
+ {"frame": 350, "quit": true}
+]

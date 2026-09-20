@@ -50,7 +50,9 @@ func configure(params: Dictionary) -> void:
 	system_id = StringName(String(params.get("system_id", system_id)))
 	if params.has("path"):
 		path_tiles = points_from(params["path"])
-	if params.has("speed"):
+	if bool(params.get("freight", false)):
+		speed = Balance.FREIGHT_LIFT_SPEED
+	elif params.has("speed"):
 		speed = float(params["speed"])
 	if params.has("wait"):
 		wait_time = float(params["wait"])

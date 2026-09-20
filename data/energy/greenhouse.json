@@ -4,61 +4,112 @@
   "budget": 2,
   "goal_text": "Abrir a Porta do Nó do Setor e religar o Nó",
   "goal_done_text": "Porta do Nó do Setor aberta. Falta religar o Nó",
-  "goal_systems": ["node_door"],
-  "initial": ["heating", "corridor_light"],
+  "goal_systems": [
+    "node_door"
+  ],
+  "initial": [
+    "heating",
+    "corridor_light"
+  ],
   "systems": [
     {
       "id": "heating",
       "name": "AQUECIMENTO DO MÓDULO",
       "tag": "PERIGO",
-      "description": "Aquece o módulo. O calor expande o enxame de esporos.",
-      "effect_off": "O módulo esfria: os esporos encolhem e o elevador para.",
+      "description": "Aquece o módulo. O calor expande os enxames de esporos.",
+      "effect_off": "O módulo esfria: os esporos encolhem e a linha de carga cai.",
       "cost": 1,
       "requires": [],
       "locked": false,
       "effects": [
-        { "target": "group:gh_spores", "action": "power" },
-        { "target": "group:gh_heat_vents", "action": "power" }
+        {
+          "target": "group:gh_spores",
+          "action": "power"
+        },
+        {
+          "target": "group:gh_heat_vents",
+          "action": "power"
+        }
       ]
     },
     {
       "id": "corridor_light",
       "name": "ILUMINAÇÃO DO CORREDOR",
       "tag": "VISÃO",
-      "description": "Acende o corredor inferior e mostra o poço.",
-      "effect_off": "O corredor apaga. O poço só aparece sob a lanterna.",
+      "description": "Acende o corredor de serviço e mostra os poços do piso.",
+      "effect_off": "O corredor apaga. Os poços só aparecem sob a lanterna.",
       "cost": 1,
       "requires": [],
       "locked": false,
       "effects": [
-        { "target": "group:gh_corridor_lamps", "action": "power" }
+        {
+          "target": "group:gh_corridor_lamps",
+          "action": "power"
+        }
       ]
     },
     {
       "id": "grow_light",
-      "name": "LUZ DE CRESCIMENTO",
+      "name": "LUZ DE CRESCIMENTO - CANTEIRO",
       "tag": "ROTA",
-      "description": "A trepadeira cresce e vira plataforma até a passarela.",
-      "effect_off": "A trepadeira murcha e a passarela fica fora de alcance.",
+      "description": "A trepadeira do canteiro cresce e vira plataforma.",
+      "effect_off": "A luz do canteiro apaga e a linha da copa cai junto.",
       "cost": 1,
       "requires": [],
       "locked": false,
       "effects": [
-        { "target": "group:gh_grow_lamps", "action": "power" },
-        { "target": "id:gh_plant_1", "action": "power" }
+        {
+          "target": "group:gh_grow_lamps",
+          "action": "power"
+        },
+        {
+          "target": "id:gh_plant_1",
+          "action": "power"
+        }
+      ]
+    },
+    {
+      "id": "canopy_light",
+      "name": "LUZ DE CRESCIMENTO - COPA",
+      "tag": "ROTA",
+      "description": "Puxa da linha do canteiro. A trepadeira alta alcança a copa.",
+      "effect_off": "A trepadeira alta murcha e a copa fica fora de alcance.",
+      "cost": 1,
+      "requires": [
+        "grow_light"
+      ],
+      "locked": false,
+      "effects": [
+        {
+          "target": "group:gh_canopy_lamps",
+          "action": "power"
+        },
+        {
+          "target": "id:gh_plant_2",
+          "action": "power"
+        }
       ]
     },
     {
       "id": "lift_platform",
-      "name": "PLATAFORMA DE CARGA",
+      "name": "LINHA DE CARGA",
       "tag": "ROTA",
-      "description": "O elevador de carga sobe até a passarela alta.",
-      "effect_off": "O elevador para onde estiver e a subida se fecha.",
+      "description": "Puxa da linha do aquecimento. Move o elevador e a gôndola.",
+      "effect_off": "O elevador e a gôndola param onde estiverem.",
       "cost": 1,
-      "requires": ["heating"],
+      "requires": [
+        "heating"
+      ],
       "locked": false,
       "effects": [
-        { "target": "id:gh_lift", "action": "power" }
+        {
+          "target": "id:gh_lift",
+          "action": "power"
+        },
+        {
+          "target": "id:gh_gondola",
+          "action": "power"
+        }
       ]
     },
     {
@@ -71,7 +122,10 @@
       "requires": [],
       "locked": false,
       "effects": [
-        { "target": "id:gh_node_door", "action": "power" }
+        {
+          "target": "id:gh_node_door",
+          "action": "power"
+        }
       ]
     }
   ]
