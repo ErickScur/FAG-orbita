@@ -1,0 +1,13 @@
+[
+  {"frame": 20, "screenshot": "b01_idle"},
+  {"frame": 25, "action": "move_right", "pressed": true},
+  {"frame": 80, "action": "move_right", "pressed": false},
+  {"frame": 100, "action": "interact", "pressed": true},
+  {"frame": 102, "action": "interact", "pressed": false},
+  {"frame": 103, "screenshot": "b02_interact_a"},
+  {"frame": 108, "screenshot": "b03_interact_b"},
+  {"frame": 114, "screenshot": "b04_interact_c"},
+  {"frame": 120, "screenshot": "b05_interact_d"},
+  {"frame": 126, "screenshot": "b06_interact_e"},
+  {"frame": 160, "quit": true}
+]

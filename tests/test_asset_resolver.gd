@@ -35,7 +35,7 @@ func test_texture_follows_the_contract_with_or_without_final_art() -> void:
 
 
 func test_texture_falls_back_to_placeholder_when_final_is_missing() -> void:
-	var without_final: String = "res://assets/sprites/enemies/sr3_sheet.png"
+	var without_final: String = "res://assets/sprites/fx/spore.png"
 	assert_true(
 		AssetResolver.is_placeholder(without_final),
 		"asset ainda sem arte final resolve para o espelho de placeholder"

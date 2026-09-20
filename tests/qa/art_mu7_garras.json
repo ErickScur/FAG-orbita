@@ -1,0 +1,16 @@
+[
+  {"frame": 20, "action": "move_right", "pressed": true},
+  {"frame": 160, "action": "move_right", "pressed": false},
+  {"frame": 165, "action": "move_right", "pressed": true},
+  {"frame": 180, "screenshot": "c01_grudado"},
+  {"frame": 185, "action": "move_up", "pressed": true},
+  {"frame": 210, "screenshot": "c02_climb_a"},
+  {"frame": 216, "screenshot": "c03_climb_b"},
+  {"frame": 222, "screenshot": "c04_climb_c"},
+  {"frame": 228, "screenshot": "c05_climb_d"},
+  {"frame": 234, "screenshot": "c06_climb_e"},
+  {"frame": 260, "screenshot": "c07_climb_alto"},
+  {"frame": 300, "action": "move_up", "pressed": false},
+  {"frame": 310, "screenshot": "c08_parado_na_parede"},
+  {"frame": 340, "quit": true}
+]

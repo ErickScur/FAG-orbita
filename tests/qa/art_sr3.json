@@ -1,0 +1,14 @@
+[
+  {"frame": 30, "screenshot": "e01_patrulha_a"},
+  {"frame": 40, "screenshot": "e02_patrulha_b"},
+  {"frame": 50, "screenshot": "e03_patrulha_c"},
+  {"frame": 60, "screenshot": "e04_patrulha_d"},
+  {"frame": 100, "screenshot": "e05_patrulha_longe"},
+  {"frame": 262, "screenshot": "e06_shutdown_a"},
+  {"frame": 268, "screenshot": "e07_shutdown_b"},
+  {"frame": 274, "screenshot": "e08_shutdown_c"},
+  {"frame": 290, "screenshot": "e09_off"},
+  {"frame": 320, "screenshot": "e10_off_b"},
+  {"frame": 520, "screenshot": "e11_acordou"},
+  {"frame": 560, "quit": true}
+]

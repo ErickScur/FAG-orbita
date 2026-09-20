@@ -1,0 +1,17 @@
+[
+  {"frame": 20, "screenshot": "d01_idle"},
+  {"frame": 25, "action": "move_right", "pressed": true},
+  {"frame": 96, "screenshot": "d02_hurt_a"},
+  {"frame": 100, "screenshot": "d03_hurt_b"},
+  {"frame": 104, "screenshot": "d04_hurt_c"},
+  {"frame": 110, "screenshot": "d05_hurt_d"},
+  {"frame": 240, "screenshot": "d06_antes_do_poco"},
+  {"frame": 268, "screenshot": "d07_death_a"},
+  {"frame": 280, "screenshot": "d08_death_b"},
+  {"frame": 292, "screenshot": "d09_death_c"},
+  {"frame": 304, "screenshot": "d10_death_d"},
+  {"frame": 316, "screenshot": "d11_death_e"},
+  {"frame": 330, "action": "move_right", "pressed": false},
+  {"frame": 400, "screenshot": "d12_depois"},
+  {"frame": 420, "quit": true}
+]

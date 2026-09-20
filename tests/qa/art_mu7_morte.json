@@ -1,0 +1,92 @@
+[
+ {
+  "frame": 25,
+  "action": "move_right",
+  "pressed": true
+ },
+ {
+  "frame": 210,
+  "action": "move_right",
+  "pressed": false
+ },
+ {
+  "frame": 1100,
+  "screenshot": "u1100"
+ },
+ {
+  "frame": 1106,
+  "screenshot": "u1106"
+ },
+ {
+  "frame": 1112,
+  "screenshot": "u1112"
+ },
+ {
+  "frame": 1118,
+  "screenshot": "u1118"
+ },
+ {
+  "frame": 1124,
+  "screenshot": "u1124"
+ },
+ {
+  "frame": 1130,
+  "screenshot": "u1130"
+ },
+ {
+  "frame": 1136,
+  "screenshot": "u1136"
+ },
+ {
+  "frame": 1142,
+  "screenshot": "u1142"
+ },
+ {
+  "frame": 1148,
+  "screenshot": "u1148"
+ },
+ {
+  "frame": 1154,
+  "screenshot": "u1154"
+ },
+ {
+  "frame": 1160,
+  "screenshot": "u1160"
+ },
+ {
+  "frame": 1166,
+  "screenshot": "u1166"
+ },
+ {
+  "frame": 1172,
+  "screenshot": "u1172"
+ },
+ {
+  "frame": 1178,
+  "screenshot": "u1178"
+ },
+ {
+  "frame": 1184,
+  "screenshot": "u1184"
+ },
+ {
+  "frame": 1190,
+  "screenshot": "u1190"
+ },
+ {
+  "frame": 1196,
+  "screenshot": "u1196"
+ },
+ {
+  "frame": 1202,
+  "screenshot": "u1202"
+ },
+ {
+  "frame": 1208,
+  "screenshot": "u1208"
+ },
+ {
+  "frame": 1260,
+  "quit": true
+ }
+]
