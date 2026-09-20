@@ -220,6 +220,15 @@ func set_objective(id: StringName) -> void:
 	EventBus.objective_changed.emit(text)
 
 
+func register_entry_checkpoint(scene_path: String, dock_id: String) -> bool:
+	if scene_path.is_empty() or dock_id.is_empty():
+		return false
+	if String(checkpoint.get("scene", "")) == scene_path:
+		return false
+	checkpoint = {"scene": scene_path, "dock_id": dock_id}
+	return true
+
+
 func is_reactor_critical() -> bool:
 	return _critical
 

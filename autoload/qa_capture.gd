@@ -106,11 +106,27 @@ func _run_event(event: Dictionary) -> void:
 			_log("frame %d cena %s" % [_frame, scene_path])
 		else:
 			_log("frame %d ERRO cena inexistente %s" % [_frame, scene_path])
+	if event.has("call"):
+		_run_call(String(event.get("call", "")), event.get("args", []))
 	if event.has("screenshot"):
 		_capture(String(event.get("screenshot", "")))
 	if bool(event.get("quit", false)):
 		_log("frame %d quit" % _frame)
 		_finish()
+
+
+func _run_call(target: String, arguments: Variant) -> void:
+	var parts: PackedStringArray = target.rsplit(".", true, 1)
+	if parts.size() != 2 or parts[0].is_empty() or parts[1].is_empty():
+		_log("frame %d ERRO chamada inválida %s" % [_frame, target])
+		return
+	var node: Node = get_tree().root.get_node_or_null(NodePath(parts[0]))
+	if node == null or not node.has_method(parts[1]):
+		_log("frame %d ERRO chamada inexistente %s" % [_frame, target])
+		return
+	var list: Array = arguments if arguments is Array else []
+	node.callv(parts[1], list)
+	_log("frame %d call %s%s" % [_frame, target, str(list)])
 
 
 func _inject(action: StringName, pressed: bool) -> void:

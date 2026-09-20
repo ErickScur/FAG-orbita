@@ -1,0 +1,8 @@
+[
+  {"frame": 40, "screenshot": "f53_05_menu_continuar"},
+  {"frame": 54, "action": "ui_accept", "pressed": true},
+  {"frame": 58, "action": "ui_accept", "pressed": false},
+  {"frame": 220, "screenshot": "f53_06_carregando_estufa"},
+  {"frame": 2400, "screenshot": "f53_07_continuou_na_estufa"},
+  {"frame": 2500, "quit": true}
+]

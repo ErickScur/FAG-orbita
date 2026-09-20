@@ -9,6 +9,7 @@ const VIGNETTE_SCENE: String = "res://scenes/fx/vignette.tscn"
 const MOTES_SCENE: String = "res://scenes/world/ambient_motes.tscn"
 const CUTSCENE_SCENE: String = "res://scenes/fx/sector_cutscene.tscn"
 const HUD_GROUP: StringName = &"hud"
+const DOCK_GROUP: StringName = &"backup_dock"
 const RESTORED_META: String = "ambient_restored"
 
 @export var level_id: String = ""
@@ -51,6 +52,7 @@ func _ready() -> void:
 	_apply_atmosphere()
 	_mount_cutscene()
 	_apply_progress()
+	_register_entry_checkpoint()
 
 
 func spawn_position() -> Vector2:
@@ -217,6 +219,30 @@ func _apply_progress() -> void:
 	var enter_dialogue: String = String(_meta.get("on_enter_dialogue", ""))
 	if not enter_dialogue.is_empty():
 		DialogueManager.play(StringName(enter_dialogue))
+
+
+func _register_entry_checkpoint() -> void:
+	var dock: BackupDock = _entry_dock()
+	if dock == null:
+		return
+	if not GameState.register_entry_checkpoint(scene_file_path, String(dock.dock_id)):
+		return
+	SaveManager.save_game()
+
+
+func _entry_dock() -> BackupDock:
+	var origin: Vector2 = start_position()
+	var best: BackupDock = null
+	var best_distance: float = 0.0
+	for node: Node in get_tree().get_nodes_in_group(DOCK_GROUP):
+		var dock := node as BackupDock
+		if dock == null or not is_ancestor_of(dock):
+			continue
+		var distance: float = dock.global_position.distance_squared_to(origin)
+		if best == null or distance < best_distance:
+			best = dock
+			best_distance = distance
+	return best
 
 
 func _checkpoint_dock() -> Node2D:

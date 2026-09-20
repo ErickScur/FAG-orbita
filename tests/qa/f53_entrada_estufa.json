@@ -1,0 +1,18 @@
+[
+  {"frame": 20, "screenshot": "f53_01_entrada_estufa"},
+  {"frame": 40, "action": "ui_accept", "pressed": true},
+  {"frame": 44, "action": "ui_accept", "pressed": false},
+  {"frame": 60, "action": "ui_accept", "pressed": true},
+  {"frame": 64, "action": "ui_accept", "pressed": false},
+  {"frame": 80, "action": "ui_accept", "pressed": true},
+  {"frame": 84, "action": "ui_accept", "pressed": false},
+  {"frame": 100, "action": "ui_accept", "pressed": true},
+  {"frame": 104, "action": "ui_accept", "pressed": false},
+  {"frame": 120, "action": "ui_accept", "pressed": true},
+  {"frame": 124, "action": "ui_accept", "pressed": false},
+  {"frame": 150, "screenshot": "f53_02_parado_sem_andar"},
+  {"frame": 160, "call": "GameState.apply_damage", "args": [999]},
+  {"frame": 200, "screenshot": "f53_03_chassi_perdido"},
+  {"frame": 400, "screenshot": "f53_04_renasceu_na_estufa"},
+  {"frame": 440, "quit": true}
+]

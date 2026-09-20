@@ -14,6 +14,19 @@ script = ExtResource("1_menu")
 new_game_question = "O backup atual será apagado. Iniciar um novo sistema?"
 corrupted_message = "BACKUP CORROMPIDO"
 
+[node name="Backdrop" type="TextureRect" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 6
+
 [node name="SpaceParallax" parent="." instance=ExtResource("2_parallax")]
 
 [node name="Logo" type="TextureRect" parent="."]

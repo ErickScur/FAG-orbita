@@ -6,10 +6,12 @@ const FALLBACK_LEVEL: String = "res://tests/qa/scenes/loading_target.tscn"
 const OPTIONS_SCENE: String = "res://scenes/ui/options_menu.tscn"
 const CONFIRM_SCENE: String = "res://scenes/ui/confirm_dialog.tscn"
 const LOGO_PATH: String = "res://assets/ui/logo.png"
+const BACKDROP_PATH: String = "res://assets/backgrounds/menu_backdrop.png"
 
 @export var new_game_question: String = ""
 @export var corrupted_message: String = ""
 
+@onready var backdrop: TextureRect = %Backdrop
 @onready var logo_image: TextureRect = %Logo
 @onready var logo_text: Label = %LogoText
 @onready var continue_button: Button = %ContinueButton
@@ -22,6 +24,7 @@ const LOGO_PATH: String = "res://assets/ui/logo.png"
 
 
 func _ready() -> void:
+	_apply_backdrop()
 	_apply_logo()
 	AudioManager.play_music(&"menu")
 	continue_button.disabled = not SaveManager.has_save()
@@ -155,6 +158,17 @@ func _hide_toast() -> void:
 
 func _play_move() -> void:
 	AudioManager.play_sfx(&"ui_move")
+
+
+func _apply_backdrop() -> void:
+	var texture: Texture2D = AssetResolver.texture(BACKDROP_PATH)
+	if texture == null:
+		return
+	backdrop.texture = texture
+	backdrop.visible = true
+	var parallax: Node = get_node_or_null("SpaceParallax")
+	if parallax != null:
+		parallax.queue_free()
 
 
 func _apply_logo() -> void:
