@@ -156,6 +156,8 @@ const DEATH_ZONE_MARGIN_TILES: int = 8
 const DEATH_ZONE_DEPTH_TILES: int = 4
 const DEATH_ZONE_OFFSET_TILES: int = 2
 const RESERVED_PARAMS: Array[String] = ["id", "group"]
+const OCCLUDERS_NODE: String = "Occluders"
+const OCCLUDER_LIGHT_MASK: int = 1
 
 
 static func entity_chars() -> String:
@@ -185,6 +187,93 @@ static func build_tiles(parsed: Dictionary, solid: TileMapLayer, background: Til
 		solid.set_cell(cell, SOURCE_ID, LevelParser.atlas_coords_for_mask(mask))
 	for cell: Vector2i in parsed.get("one_ways", []) as Array:
 		solid.set_cell(cell, SOURCE_ID, ONE_WAY_TILE)
+	build_occluders(parsed, solid)
+
+
+static func build_occluders(parsed: Dictionary, solid: TileMapLayer) -> void:
+	if solid == null:
+		return
+	var previous: Node = solid.get_node_or_null(NodePath(OCCLUDERS_NODE))
+	if previous != null:
+		solid.remove_child(previous)
+		previous.queue_free()
+	var holder := Node2D.new()
+	holder.name = OCCLUDERS_NODE
+	solid.add_child(holder)
+	var tile: int = Balance.TILE_SIZE
+	for loop: PackedVector2Array in silhouette_loops(parsed.get("solids", {})):
+		var polygon := OccluderPolygon2D.new()
+		var scaled := PackedVector2Array()
+		for point: Vector2 in loop:
+			scaled.append(point * float(tile))
+		polygon.polygon = scaled
+		polygon.cull_mode = OccluderPolygon2D.CULL_COUNTER_CLOCKWISE
+		var node := LightOccluder2D.new()
+		node.occluder = polygon
+		node.occluder_light_mask = OCCLUDER_LIGHT_MASK
+		holder.add_child(node)
+
+
+static func silhouette_loops(solids: Dictionary) -> Array[PackedVector2Array]:
+	var outgoing: Dictionary = {}
+	for key: Variant in solids:
+		var cell: Vector2i = key
+		var top_left := cell
+		var top_right := cell + Vector2i(1, 0)
+		var bottom_right := cell + Vector2i(1, 1)
+		var bottom_left := cell + Vector2i(0, 1)
+		if not solids.has(cell + Vector2i.UP):
+			_push_edge(outgoing, top_left, top_right)
+		if not solids.has(cell + Vector2i.RIGHT):
+			_push_edge(outgoing, top_right, bottom_right)
+		if not solids.has(cell + Vector2i.DOWN):
+			_push_edge(outgoing, bottom_right, bottom_left)
+		if not solids.has(cell + Vector2i.LEFT):
+			_push_edge(outgoing, bottom_left, top_left)
+	var loops: Array[PackedVector2Array] = []
+	for key: Variant in outgoing.keys():
+		while not (outgoing[key] as Array).is_empty():
+			var loop: PackedVector2Array = _trace_loop(outgoing, key)
+			if loop.size() >= 3:
+				loops.append(loop)
+	return loops
+
+
+static func _push_edge(outgoing: Dictionary, from: Vector2i, to: Vector2i) -> void:
+	if not outgoing.has(from):
+		outgoing[from] = []
+	(outgoing[from] as Array).append(to)
+
+
+static func _trace_loop(outgoing: Dictionary, start: Vector2i) -> PackedVector2Array:
+	var points: Array[Vector2i] = []
+	var current: Vector2i = start
+	while true:
+		var ends: Array = outgoing.get(current, [])
+		if ends.is_empty():
+			break
+		var next: Vector2i = ends.pop_back()
+		points.append(current)
+		current = next
+		if current == start:
+			break
+	return _simplify(points)
+
+
+static func _simplify(points: Array[Vector2i]) -> PackedVector2Array:
+	var result := PackedVector2Array()
+	var count: int = points.size()
+	if count < 3:
+		return result
+	for index: int in range(count):
+		var previous: Vector2i = points[(index - 1 + count) % count]
+		var current: Vector2i = points[index]
+		var next: Vector2i = points[(index + 1) % count]
+		var before: Vector2i = current - previous
+		var after: Vector2i = next - current
+		if before.x * after.y - before.y * after.x != 0:
+			result.append(Vector2(current))
+	return result
 
 
 static func build_entities(

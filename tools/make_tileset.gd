@@ -57,9 +57,6 @@ func _write_tileset(texture_path: String, output_path: String) -> bool:
 	tile_set.add_physics_layer()
 	tile_set.set_physics_layer_collision_layer(1, ONE_WAY_LAYER)
 	tile_set.set_physics_layer_collision_mask(1, 0)
-	tile_set.add_occlusion_layer()
-	tile_set.set_occlusion_layer_light_mask(0, 1)
-	var occluder: OccluderPolygon2D = _occluder()
 	var source := TileSetAtlasSource.new()
 	source.texture = texture
 	source.texture_region_size = Vector2i(TILE_SIZE, TILE_SIZE)
@@ -70,8 +67,6 @@ func _write_tileset(texture_path: String, output_path: String) -> bool:
 		var data: TileData = source.get_tile_data(coords, 0)
 		data.add_collision_polygon(0)
 		data.set_collision_polygon_points(0, 0, _square())
-		if mask != FULL_MASK:
-			data.set_occluder(0, occluder)
 	for coords: Vector2i in EXTRA_TILES:
 		source.create_tile(coords)
 		if coords != ONE_WAY_TILE:
@@ -101,11 +96,9 @@ func _normalize_ids(output_path: String) -> bool:
 	var ext_use := RegEx.new()
 	ext_use.compile("ExtResource\\(\"[^\"]+\"\\)")
 	text = ext_use.sub(text, "ExtResource(\"tiles\")", true)
-	for pattern: String in ["OccluderPolygon2D_[A-Za-z0-9]+", "TileSetAtlasSource_[A-Za-z0-9]+"]:
-		var regex := RegEx.new()
-		regex.compile(pattern)
-		var stable: String = "occluder_square" if pattern.begins_with("Occluder") else "atlas_source"
-		text = regex.sub(text, stable, true)
+	var atlas_ids := RegEx.new()
+	atlas_ids.compile("TileSetAtlasSource_[A-Za-z0-9]+")
+	text = atlas_ids.sub(text, "atlas_source", true)
 	var file := FileAccess.open(output_path, FileAccess.WRITE)
 	if file == null:
 		push_error("make_tileset: não foi possível reescrever %s" % output_path)
@@ -120,9 +113,3 @@ func _square() -> PackedVector2Array:
 	return PackedVector2Array(
 		[Vector2(-half, -half), Vector2(half, -half), Vector2(half, half), Vector2(-half, half)]
 	)
-
-
-func _occluder() -> OccluderPolygon2D:
-	var occluder := OccluderPolygon2D.new()
-	occluder.polygon = _square()
-	return occluder

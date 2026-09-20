@@ -73,5 +73,6 @@ Professor: Jeferson Eduardo Guido — disciplina de Desenvolvimento de Jogos.
 | m5x7 (fonte da UI) | Daniel Linssen | livre, crédito solicitado — https://managore.itch.io/m5x7 |
 | Plataforma móvel | Kenney — *Pixel Platformer: Industrial Expansion* | CC0 — https://kenney.nl/assets |
 | Partículas | Kenney — *Particle Pack* | CC0 — https://kenney.nl/assets |
+| Efeitos sonoros | Kenney — *Sci-Fi Sounds* | CC0 — https://kenney.nl/assets |
 | MU-7, SR-3, terminais, porta, planta, objetos, tilesets, fundo de espaço, logo | gerados com Gemini / Nano Banana Pro | uso próprio do projeto |
 | Trilhas do Núcleo Central e da Estufa | geradas por IA | uso próprio do projeto |

@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0rbitashprobe10"]
+
+[ext_resource type="Script" path="res://tests/qa/scenes/shadow_probe.gd" id="1_shprobe"]
+
+[node name="ShadowProbeGhCorridor" type="Node2D"]
+script = ExtResource("1_shprobe")
+spawn_tile = Vector2i(16, 21)
+energy_state = Array[StringName]([&"corridor_light", &"grow_light"])
+disable_shadows = false

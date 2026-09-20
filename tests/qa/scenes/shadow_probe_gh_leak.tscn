@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0rbitashpleak"]
+
+[ext_resource type="Script" path="res://tests/qa/scenes/shadow_probe.gd" id="1_shprobe"]
+
+[node name="ShadowProbeGhLeak" type="Node2D"]
+script = ExtResource("1_shprobe")
+spawn_tile = Vector2i(11, 11)
+energy_state = Array[StringName]([&"corridor_light"])

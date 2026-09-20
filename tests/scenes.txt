@@ -74,3 +74,4 @@ res://tests/qa/scenes/cutscene_probe_core.tscn
 res://tests/qa/scenes/cutscene_probe_greenhouse.tscn
 res://tests/qa/scenes/music_probe.tscn
 res://tests/qa/scenes/parallax_seam.tscn
+res://tests/qa/scenes/pickup_lineup.tscn

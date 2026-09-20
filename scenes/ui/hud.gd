@@ -52,6 +52,8 @@ var _reactor_state_id: StringName = HudModel.REACTOR_STATE_NONE
 @onready var _reactor: VBoxContainer = %Reactor
 @onready var _reactor_label: Label = %ReactorLabel
 @onready var _reactor_bar: ProgressBar = %ReactorBar
+@onready var _charge_border: NinePatchRect = %ChargeBorder
+@onready var _reactor_border: NinePatchRect = %ReactorBorder
 @onready var _reactor_state: Label = %ReactorState
 @onready var _objective: VBoxContainer = %Objective
 @onready var _objective_text: Label = %ObjectiveText
@@ -68,6 +70,7 @@ func _ready() -> void:
 	_integrity_label.text = HudModel.text_for(&"integrity_label", _texts)
 	_objective_label.text = HudModel.text_for(&"objective_label", _texts)
 	_build_cells()
+	_build_bar_frames()
 	_beep_timer.wait_time = Balance.LOW_INTEGRITY_BEEP_INTERVAL
 	_beep_timer.timeout.connect(_on_beep_timeout)
 	_connect_events()
@@ -92,6 +95,22 @@ func _update_reactor_visibility() -> void:
 	if _reactor.visible == _reactor_should_show():
 		return
 	_on_reactor_changed(GameState.reactor_percent)
+
+
+func _build_bar_frames() -> void:
+	var sheet: Texture2D = AssetResolver.texture(HUD_SHEET)
+	if sheet == null:
+		push_warning("HUD: sprite sheet ausente em %s" % HUD_SHEET)
+		return
+	_charge_border.texture = sheet
+	_charge_border.region_rect = _frame_region(HudModel.FRAME_CHARGE)
+	_reactor_border.texture = sheet
+	_reactor_border.region_rect = _frame_region(HudModel.FRAME_REACTOR)
+
+
+func _frame_region(index: int) -> Rect2:
+	var cell: Vector2i = HudModel.atlas_cell(index, ATLAS_COLUMNS)
+	return Rect2(Vector2(cell * ATLAS_FRAME), Vector2(ATLAS_FRAME))
 
 
 func _build_cells() -> void:

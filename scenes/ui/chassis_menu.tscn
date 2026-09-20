@@ -202,6 +202,13 @@ theme_override_colors/font_color = Color(0.541176, 0.607843, 0.658824, 1)
 text = "FRAGMENTOS DE LOG"
 vertical_alignment = 1
 
+[node name="LogsIcon" type="TextureRect" parent="Root/Center/Panel/Body/Columns/Right/LogsRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+mouse_filter = 2
+stretch_mode = 4
+
 [node name="LogsValue" type="Label" parent="Root/Center/Panel/Body/Columns/Right/LogsRow"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -225,6 +232,13 @@ mouse_filter = 2
 theme_override_colors/font_color = Color(0.541176, 0.607843, 0.658824, 1)
 text = "DADOS DE PESQUISA"
 vertical_alignment = 1
+
+[node name="ResearchIcon" type="TextureRect" parent="Root/Center/Panel/Body/Columns/Right/ResearchRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+mouse_filter = 2
+stretch_mode = 4
 
 [node name="ResearchValue" type="Label" parent="Root/Center/Panel/Body/Columns/Right/ResearchRow"]
 unique_name_in_owner = true

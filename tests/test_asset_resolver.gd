@@ -4,7 +4,8 @@ const MU7: String = "res://assets/sprites/mu7/mu7_sheet.png"
 const CORE_TILES: String = "res://assets/tiles/core_tiles.png"
 const LOGO: String = "res://assets/ui/logo.png"
 const LIGHT: String = "res://assets/fx/light_radial.png"
-const CONFIRM: String = "res://assets/audio/sfx/ui_confirm.ogg"
+const PENDING_SFX: String = "res://assets/audio/sfx/steam_hiss.ogg"
+const NEVER: String = "res://assets/sprites/_sem_arte/fixture.png"
 
 
 func test_placeholder_path_mirrors_the_final_path() -> void:
@@ -34,16 +35,25 @@ func test_texture_follows_the_contract_with_or_without_final_art() -> void:
 	assert_eq(texture.get_size(), Vector2(192, 320), "contrato 6x10 de 32x32")
 
 
-func test_texture_falls_back_to_placeholder_when_final_is_missing() -> void:
-	var without_final: String = "res://assets/sprites/npc/botanico_sheet.png"
-	assert_true(
-		AssetResolver.is_placeholder(without_final),
-		"asset ainda sem arte final resolve para o espelho de placeholder"
-	)
+func test_mirror_of_a_delivered_asset_still_resolves_as_placeholder() -> void:
+	var mirror: String = AssetResolver.placeholder_path(MU7)
+	assert_true(AssetResolver.has(mirror), "o espelho do MU-7 existe")
+	assert_true(AssetResolver.is_placeholder(mirror), "o espelho resolve como placeholder")
 	assert_false(
 		AssetResolver.is_placeholder(MU7),
 		"asset com arte final entregue resolve para o caminho definitivo"
 	)
+
+
+func test_asset_without_final_and_without_mirror_does_not_resolve() -> void:
+	assert_eq(
+		AssetResolver.placeholder_path(NEVER),
+		"res://assets/placeholder/sprites/_sem_arte/fixture.png",
+		"espelho calculado mesmo sem arquivo nenhum"
+	)
+	assert_false(AssetResolver.has(NEVER), "sem definitivo e sem espelho não resolve")
+	assert_false(AssetResolver.is_placeholder(NEVER), "nada a resolver não é placeholder")
+	assert_null(AssetResolver.texture(NEVER), "textura inexistente é nula")
 
 
 func test_tiles_follow_the_contract() -> void:
@@ -75,11 +85,11 @@ func test_missing_asset_returns_null() -> void:
 
 
 func test_audio_falls_back_to_placeholder_wav() -> void:
-	var stream: AudioStream = AssetResolver.audio(CONFIRM)
-	assert_not_null(stream, "efeito de confirmação")
+	var stream: AudioStream = AssetResolver.audio(PENDING_SFX)
+	assert_not_null(stream, "efeito ainda sem som definitivo")
 	assert_true(stream.get_length() > 0.0, "áudio audível")
 	assert_eq(
-		AssetResolver.resolve_audio(CONFIRM),
-		"res://assets/placeholder/audio/sfx/ui_confirm.wav",
+		AssetResolver.resolve_audio(PENDING_SFX),
+		"res://assets/placeholder/audio/sfx/steam_hiss.wav",
 		"caminho do placeholder"
 	)

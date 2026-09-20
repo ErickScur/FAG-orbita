@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0rbitapickuplineup"]
+
+[ext_resource type="Script" path="res://tests/qa/scenes/pickup_lineup.gd" id="1_lineup"]
+
+[node name="PickupLineup" type="Node2D"]
+script = ExtResource("1_lineup")

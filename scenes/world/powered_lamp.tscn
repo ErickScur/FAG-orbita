@@ -10,4 +10,5 @@ script = ExtResource("1_lamp")
 [node name="Light" type="PointLight2D" parent="."]
 blend_mode = 0
 shadow_enabled = true
-shadow_filter = 1
+shadow_filter = 2
+shadow_filter_smooth = 1.5

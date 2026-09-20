@@ -6,6 +6,7 @@
 size = Vector2(16, 16)
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_magwall"]
+cull_mode = 2
 polygon = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 
 [node name="MagneticWall" type="StaticBody2D" groups=["magnetic"]]

@@ -281,30 +281,40 @@ func _next_sfx_player() -> AudioStreamPlayer:
 func _streams_for(sfx_name: StringName) -> Array:
 	if _sfx_cache.has(sfx_name):
 		return _sfx_cache[sfx_name]
-	var streams: Array = []
-	var direct: String = _resolve_sfx_path(String(sfx_name))
-	if not direct.is_empty():
-		streams.append(load(direct))
-	else:
-		for index: int in range(1, SFX_VARIANTS + 1):
-			var variant: String = _resolve_sfx_path("%s_%d" % [sfx_name, index])
-			if variant.is_empty():
-				break
-			streams.append(load(variant))
+	var streams: Array = _load_sfx_group(SFX_DIR, String(sfx_name))
+	if streams.is_empty():
+		streams = _load_sfx_group(PLACEHOLDER_SFX_DIR, String(sfx_name))
 	_sfx_cache[sfx_name] = streams
 	return streams
 
 
-func _resolve_sfx_path(base_name: String) -> String:
+func _load_sfx_group(directory: String, base_name: String) -> Array:
+	var streams: Array = []
+	var direct: String = _sfx_path_in(directory, base_name)
+	if not direct.is_empty():
+		streams.append(load(direct))
+		return streams
+	for index: int in range(1, SFX_VARIANTS + 1):
+		var variant: String = _sfx_path_in(directory, "%s_%d" % [base_name, index])
+		if variant.is_empty():
+			break
+		streams.append(load(variant))
+	return streams
+
+
+func _sfx_path_in(directory: String, base_name: String) -> String:
 	for extension: String in EXTENSIONS:
-		var final_path: String = SFX_DIR + base_name + extension
-		if ResourceLoader.exists(final_path):
-			return final_path
-	for extension: String in EXTENSIONS:
-		var placeholder: String = PLACEHOLDER_SFX_DIR + base_name + extension
-		if ResourceLoader.exists(placeholder):
-			return placeholder
+		var candidate: String = directory + base_name + extension
+		if ResourceLoader.exists(candidate):
+			return candidate
 	return ""
+
+
+func _resolve_sfx_path(base_name: String) -> String:
+	var final_path: String = _sfx_path_in(SFX_DIR, base_name)
+	if not final_path.is_empty():
+		return final_path
+	return _sfx_path_in(PLACEHOLDER_SFX_DIR, base_name)
 
 
 func _resolve_music_path(id: StringName) -> String:

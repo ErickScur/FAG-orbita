@@ -1,6 +1,7 @@
 extends SceneTree
 
 const KEY_TOLERANCE: float = 0.30
+const KEY_TOLERANCE_ENCLOSED: float = 0.18
 const ROW_GAP: int = 8
 const COLUMN_GAP: int = 6
 
@@ -69,22 +70,43 @@ func _arg(args: PackedStringArray, name: String, fallback: String) -> String:
 	return fallback
 
 
-func _strip_key(image: Image, key: Color) -> void:
-	for y: int in range(image.get_height()):
-		for x: int in range(image.get_width()):
-			var pixel: Color = image.get_pixel(x, y)
-			var distance: float = (
-				absf(pixel.r - key.r) + absf(pixel.g - key.g) + absf(pixel.b - key.b)
-			)
-			if distance <= KEY_TOLERANCE or _is_key_family(pixel):
-				image.set_pixel(x, y, Color(0, 0, 0, 0))
-
-
-func _is_key_family(pixel: Color) -> bool:
+func _matches_key(pixel: Color, key: Color, tolerance: float) -> bool:
 	if pixel.a < 0.1:
 		return true
-	var magenta: float = minf(pixel.r, pixel.b)
-	return magenta > 0.35 and pixel.g < magenta * 0.75
+	return (
+		absf(pixel.r - key.r) + absf(pixel.g - key.g) + absf(pixel.b - key.b) <= tolerance
+	)
+
+
+func _strip_key(image: Image, key: Color) -> void:
+	var width: int = image.get_width()
+	var height: int = image.get_height()
+	var pending: Array[Vector2i] = []
+	var seen: Dictionary = {}
+	for x: int in range(width):
+		pending.append(Vector2i(x, 0))
+		pending.append(Vector2i(x, height - 1))
+	for y: int in range(height):
+		pending.append(Vector2i(0, y))
+		pending.append(Vector2i(width - 1, y))
+	while not pending.is_empty():
+		var here: Vector2i = pending.pop_back()
+		if here.x < 0 or here.y < 0 or here.x >= width or here.y >= height:
+			continue
+		if seen.has(here):
+			continue
+		seen[here] = true
+		if not _matches_key(image.get_pixel(here.x, here.y), key, KEY_TOLERANCE):
+			continue
+		image.set_pixel(here.x, here.y, Color(0, 0, 0, 0))
+		pending.append(Vector2i(here.x + 1, here.y))
+		pending.append(Vector2i(here.x - 1, here.y))
+		pending.append(Vector2i(here.x, here.y + 1))
+		pending.append(Vector2i(here.x, here.y - 1))
+	for y: int in range(height):
+		for x: int in range(width):
+			if _matches_key(image.get_pixel(x, y), key, KEY_TOLERANCE_ENCLOSED):
+				image.set_pixel(x, y, Color(0, 0, 0, 0))
 
 
 func _row_has_content(image: Image, y: int) -> bool:

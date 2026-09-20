@@ -1,0 +1,7 @@
+[
+  {"frame": 30, "screenshot": "01_sem_lanterna"},
+  {"frame": 40, "action": "flashlight", "pressed": true},
+  {"frame": 42, "action": "flashlight", "pressed": false},
+  {"frame": 80, "screenshot": "02_com_lanterna"},
+  {"frame": 90, "quit": true}
+]

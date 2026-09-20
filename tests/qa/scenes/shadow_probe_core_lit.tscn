@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0rbitashprobe03"]
+
+[ext_resource type="Script" path="res://tests/qa/scenes/shadow_probe.gd" id="1_shprobe"]
+
+[node name="ShadowProbeCoreLit" type="Node2D"]
+script = ExtResource("1_shprobe")
+level_scene = "res://scenes/levels/core_hub.tscn"
+spawn_tile = Vector2i(16, 11)
+terminal_id = &"core"
+silenced_sequences = Array[StringName]([&"core_enter"])
+energy_state = Array[StringName]([&"lights_core"])

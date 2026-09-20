@@ -1,0 +1,9 @@
+[
+  {"frame": 20, "screenshot": "f51_01_linha_clara"},
+  {"frame": 60, "screenshot": "f51_02_primeira_celula"},
+  {"frame": 120, "screenshot": "f51_03_primeiro_dado"},
+  {"frame": 180, "screenshot": "f51_04_linha_escura"},
+  {"frame": 200, "screenshot": "f51_05_linha_escura_b"},
+  {"frame": 270, "screenshot": "f51_06_docas"},
+  {"frame": 290, "quit": true}
+]

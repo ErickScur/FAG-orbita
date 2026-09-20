@@ -1,6 +1,9 @@
 extends CanvasLayer
 
 const TEXTS_PATH: String = "res://data/ui/chassis_menu.json"
+const HUD_SHEET: String = "res://assets/ui/hud_sheet.png"
+const HUD_FRAME: Vector2i = Vector2i(16, 16)
+const HUD_COLUMNS: int = 8
 const ABILITY_PREFIX: String = "ability_"
 const GAMEPLAY_GROUP: StringName = &"gameplay"
 const ROW_HEIGHT: float = 16.0
@@ -22,8 +25,10 @@ var _texts: Dictionary = {}
 @onready var _charge_label: Label = %ChargeLabel
 @onready var _charge_value: Label = %ChargeValue
 @onready var _logs_label: Label = %LogsLabel
+@onready var _logs_icon: TextureRect = %LogsIcon
 @onready var _logs_value: Label = %LogsValue
 @onready var _research_label: Label = %ResearchLabel
+@onready var _research_icon: TextureRect = %ResearchIcon
 @onready var _research_value: Label = %ResearchValue
 @onready var _abilities_title: Label = %AbilitiesTitle
 @onready var _abilities: VBoxContainer = %Abilities
@@ -41,6 +46,7 @@ func _ready() -> void:
 	is_open = false
 	_texts = HudModel.load_texts(TEXTS_PATH)
 	_apply_static_texts()
+	_apply_counter_icons()
 
 
 func _input(event: InputEvent) -> void:
@@ -119,6 +125,16 @@ func _apply_static_texts() -> void:
 	_sectors_label.text = _text(&"sectors_label")
 	_sectors_value.text = _text(&"sectors_value")
 	_footer.text = _text(&"footer")
+
+
+func _apply_counter_icons() -> void:
+	_logs_icon.texture = _counter_icon(HudModel.ICON_LOG)
+	_research_icon.texture = _counter_icon(HudModel.ICON_RESEARCH)
+
+
+func _counter_icon(index: int) -> Texture2D:
+	var cell: Vector2i = HudModel.atlas_cell(index, HUD_COLUMNS)
+	return AssetResolver.atlas(HUD_SHEET, HUD_FRAME, cell.x, cell.y)
 
 
 func _refresh() -> void:
