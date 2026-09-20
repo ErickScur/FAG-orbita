@@ -1,0 +1,10 @@
+[
+  {"frame": 60, "screenshot": "a_inicial"},
+  {"frame": 70, "action": "ui_down", "pressed": true},
+  {"frame": 72, "action": "ui_down", "pressed": false},
+  {"frame": 90, "screenshot": "b_apos_down"},
+  {"frame": 100, "action": "ui_down", "pressed": true},
+  {"frame": 102, "action": "ui_down", "pressed": false},
+  {"frame": 120, "screenshot": "c_apos_down2"},
+  {"frame": 130, "quit": true}
+]

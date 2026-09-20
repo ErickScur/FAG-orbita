@@ -1,0 +1,17 @@
+[
+  {"frame": 200, "screenshot": "01_menu"},
+  {"frame": 220, "action": "ui_down", "pressed": true},
+  {"frame": 222, "action": "ui_down", "pressed": false},
+  {"frame": 250, "screenshot": "02_foco_novo_sistema"},
+  {"frame": 270, "action": "ui_accept", "pressed": true},
+  {"frame": 272, "action": "ui_accept", "pressed": false},
+  {"frame": 300, "screenshot": "03_confirmacao"},
+  {"frame": 320, "action": "ui_left", "pressed": true},
+  {"frame": 322, "action": "ui_left", "pressed": false},
+  {"frame": 340, "action": "ui_accept", "pressed": true},
+  {"frame": 342, "action": "ui_accept", "pressed": false},
+  {"frame": 400, "screenshot": "04_apos_confirmar"},
+  {"frame": 520, "screenshot": "05_fase_carregada"},
+  {"frame": 640, "screenshot": "06_jogo_rodando"},
+  {"frame": 660, "quit": true}
+]
