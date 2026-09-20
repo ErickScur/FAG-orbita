@@ -5,7 +5,7 @@
   "ambient_color": "#191d26",
   "floor_sfx": "step_soil",
   "reactor_online": false,
-  "objective": "obj_restore_gh",
+  "objective": "obj_greenhouse",
   "terminals": ["greenhouse"],
   "entities": {
     "3,5": {

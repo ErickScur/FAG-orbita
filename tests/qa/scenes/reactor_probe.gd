@@ -17,7 +17,7 @@ func _ready() -> void:
 	Settings.difficulty = &"normal"
 	Settings.no_timer = false
 	GameState.new_game()
-	GameState.set_objective(&"obj_restore_gh")
+	GameState.set_objective(&"obj_greenhouse")
 	GameState.set_reactor_online(true)
 	GameState.change_reactor(start_percent - GameState.reactor_percent)
 	Engine.time_scale = maxf(1.0, time_scale)

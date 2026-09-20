@@ -189,8 +189,8 @@ func test_set_objective_emits_text() -> void:
 	var handler: Callable = func(text: String) -> void:
 		texts.append(text)
 	EventBus.objective_changed.connect(handler)
-	_state.set_objective(&"obj_restore_gh")
-	_state.set_objective(&"obj_restore_gh")
+	_state.set_objective(&"obj_greenhouse")
+	_state.set_objective(&"obj_greenhouse")
 	_state.set_objective(&"obj_inexistente")
 	EventBus.objective_changed.disconnect(handler)
 	assert_eq(texts.size(), 1, "emite uma vez por objetivo novo")

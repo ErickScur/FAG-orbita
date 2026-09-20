@@ -364,9 +364,9 @@ Toda vez que a dificuldade sobe demais, o jogador ganha um upgrade que faz o con
 
 ```
 +----------------------------------------------------------------+
-| [||||] INTEGRIDADE                 REATOR 74%                  |
-| [======----] CARGA            [############------]             |
-|  (ícones de status)                (só quando há aviso)        |
+| [||||] INTEGRIDADE     REATOR 74%             OBJETIVO:        |
+| [======----] CARGA    [##########]     Religar o Nó do Setor   |
+|  (ícones de status)   (só quando há aviso)         da Estufa   |
 |                                                                |
 |                          (gameplay)                            |
 |                                                                |
@@ -380,7 +380,8 @@ Toda vez que a dificuldade sobe demais, o jogador ganha um upgrade que faz o con
 | Superior esquerdo | Integridade em 4 células (célula vazia fica vermelha piscando); Carga azul abaixo, com marcação do custo da próxima habilidade; ícones de status com contador regressivo |
 | Topo centro | Estabilidade do Reator em % + barra, em duas linhas. Uma terceira linha aparece **só quando há aviso**, nesta ordem de prioridade: `CRÍTICO` em vermelho abaixo de 25% (que também pulsa e toca alarme diegético) · `SEM TIMER` em ciano quando a opção está ligada · `TIMER PARADO` em ciano durante leitura de log ou fala travante. No estado normal a linha fica oculta ([AJ-023](#gdd-ajustes)) |
 | Inferior direito | Contadores de Fragmentos de Log e Dados de Pesquisa **em uma única linha apagada**, com o ícone repetindo a silhueta do item que se pega do chão ([AJ-023](#gdd-ajustes)) |
-| Centro inferior | Prompt de interação contextual (`[E] ACESSAR TERMINAL`) |
+| Superior direito | **Um** objetivo por fase, com o rótulo `OBJETIVO:` acima do texto, alinhado à direita. Ele é definido quando a fase carrega e **não muda até a fase terminar** ([AJ-026](#gdd-ajustes)) |
+| Centro inferior | Prompt de interação contextual (`[E] ACESSAR TERMINAL`) e, na fase tutorial, o cartão de tecla da vez ([AJ-025](#gdd-ajustes)) |
 | Legendas | Falas da ÓRBITA e logs da Helena na parte de baixo, com o nome de quem fala. Sempre legendado |
 
 <a id="gdd-2-8-telas"></a>
@@ -540,6 +541,7 @@ Toda vez que a dificuldade sobe demais, o jogador ganha um upgrade que faz o con
 | AJ-023 | 2026-09-20 | GDD-2.8 | HUD reorganizado para legibilidade: integridade ganha o rótulo `INTEGRIDADE`; o título do reator encurta de `ESTABILIDADE DO REATOR: nn%` para `REATOR nn%`; a terceira linha do reator deixa de ser permanente e só aparece como aviso (`TIMER PARADO` ou `CRÍTICO`); os dois contadores viram uma linha só, apagada, com o ícone repetindo a silhueta do item no chão; a primeira coleta de cada tipo mostra nome e função do item | Playtest humano: "tem muita informação visual na tela/hud. fica confuso oq é integridade, logs, dados, oq são essas coisas azuis no chao e as laranjas". Em 384 px não cabem ao mesmo tempo o título longo do reator centrado e um rótulo à direita das células |
 | AJ-024 | 2026-09-20 | GDD-2.6.3 · GDD-P | A demo passa a ter **4 logs** e **4 dados** em vez de 7 e 12 espalhados: `LOGS_TOTAL` 24→4 e `RESEARCH_TOTAL` 12→4. Os logs são fundidos aos pares (`log_hab_02` entra em `log_hab_01`; `log_gh_03`+`log_gh_04` viram `log_gh_02`, que mantém o desbloqueio das garras) e crescem para 10–11 linhas cada. As falas ambientes de tutorial da ÓRBITA (`core_calib_move`, `core_calib_jump`, `core_log_hint`, `core_flashlight_hint`) são apagadas e viram cartões de tecla | Playtest humano: "muito dialogo e pouca gameplay... desbloquear fragmentos maiores da historia (menos fragmentos, com mais conteudo, só que mais dificil de encontra-los). Talvez Orbita esteja falando muito". Contador que fecha dentro da demo (4/4) também é mais legível que um 3/24 que nunca completa |
 | AJ-025 | 2026-09-20 | GDD-2.7-F0 · GDD-2.8 · GDD-P | O Núcleo Central deixa de ser "uma sala que ensina por diálogo" e vira **tutorial explícito**: uma tela de briefing (boot do MU-7) entre o menu e a fase, e cartões de tecla no jogo (`tut_move`, `tut_pause`, `tut_jump`, `tut_drop`, `tut_interact`, `tut_flashlight`, `tut_terminal`, e `tut_climb` na Estufa), cada um seguido de um obstáculo que obriga a usar o controle recém-ensinado. O terminal do Núcleo passa de 2 para **3 sistemas / 1 energia** (soma `lift_core`, elevador opcional para um Dado de Pesquisa), substituindo o AJ-010 na parte do tutorial | Playtest humano: "O tutorial em si, nao está um tutorial, tá só uma fase sem entender muito" e "deveria ser mais voltado para puzzles". Ensinar por fala ambiente não funcionou: o jogador lê a fala e mesmo assim não sabe qual tecla apertar |
+| AJ-026 | 2026-09-20 | GDD-2.8 | **Um objetivo por fase**, fixo, no canto superior direito com o rótulo `OBJETIVO:`. Os 11 objetivos intermediários (`obj_calibrate`, `obj_read_log`, `obj_gh_*`, …) foram removidos junto com todos os pontos que os trocavam — gatilhos de mapa, falas e scripts de fase. Restam `obj_core_hub` e `obj_greenhouse`. O bloco do reator estreitou de 176 px para 80 px para abrir espaço à direita | Playtest humano: "só deveria ter um objetivo por fase, e nao ficar mudando ele. colocar ele mais pra cima na tela". A orientação passo a passo não se perde: os controles são ensinados pelos cartões de tecla do [AJ-025](#gdd-ajustes) e a meta de cada puzzle está escrita na linha `META` do próprio Terminal de Distribuição — verificado por captura nos dois terminais antes da remoção |
 | AJ-021 | 2026-09-19 | GDD-P | Amplitude e velocidade da flutuação dos coletáveis | O GDD pedia itens "flutuando" sem número |
 | AJ-020 | 2026-09-19 | GDD-P | Velocidade de digitação do diálogo, tempo mínimo de fala ambiente, cores e fade das luzes | Números de apresentação que o GDD descrevia em palavras ("legenda", "luz fria") |
 | AJ-019 | 2026-09-19 | GDD-P | Ritmo do alarme do reator, duração do aviso do HUD, frequência do pulso crítico e do bipe de integridade baixa | Números de feedback do HUD/áudio que o GDD descrevia só em palavras |

@@ -7,7 +7,7 @@
   "floor_sfx": "step_metal",
   "reactor_online": false,
   "terminals": ["core_hub"],
-  "objective": "obj_calibrate",
+  "objective": "obj_core_hub",
   "entities": {
     "4,1": { "id": "lamp_left", "terminal_id": "core_hub", "system_id": "lights_core" },
     "15,1": { "id": "lamp_mid", "terminal_id": "core_hub", "system_id": "lights_core" },
@@ -33,6 +33,6 @@
   },
   "triggers": [
     { "id": "trg_test_move", "rect": [10, 4, 6, 4], "dialogue": "core_calib_move" },
-    { "id": "trg_test_log", "rect": [22, 4, 8, 4], "objective": "obj_read_log" }
+    { "id": "trg_test_log", "rect": [22, 4, 8, 4] }
   ]
 }

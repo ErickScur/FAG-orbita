@@ -1,10 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://c0rbitacorehub"]
+[gd_scene load_steps=2 format=3 uid="uid://c0rbitacorehub"]
 
 [ext_resource type="PackedScene" uid="uid://c0rbitalevelbase" path="res://scenes/levels/level_base.tscn" id="1_base"]
-[ext_resource type="Script" path="res://scenes/levels/core_hub.gd" id="2_narrative"]
 
 [node name="CoreHub" instance=ExtResource("1_base")]
 level_id = "core_hub"
-
-[node name="Narrative" type="Node" parent="."]
-script = ExtResource("2_narrative")

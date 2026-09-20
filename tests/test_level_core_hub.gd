@@ -143,9 +143,6 @@ func test_objective_and_dialogue_ids_exist() -> void:
 		var dialogue: String = String(data.get("dialogue", ""))
 		if not dialogue.is_empty():
 			assert_true(sequences.has(StringName(dialogue)), "fala '%s'" % dialogue)
-		var objective: String = String(data.get("objective", ""))
-		if not objective.is_empty():
-			assert_true(objectives.has(StringName(objective)), "objetivo '%s'" % objective)
 
 
 func test_log_ids_exist() -> void:
@@ -159,14 +156,12 @@ func test_log_ids_exist() -> void:
 				assert_true(logs.has(StringName(candidate)), "log '%s'" % candidate)
 
 
-func test_objectives_never_repeat_along_the_route() -> void:
-	var seen: Array[String] = []
+func test_no_trigger_changes_the_objective() -> void:
 	for value: Variant in _meta.get("triggers", []) as Array:
-		var objective: String = String((value as Dictionary).get("objective", ""))
-		if objective.is_empty():
-			continue
-		assert_false(seen.has(objective), "objetivo '%s' repetido" % objective)
-		seen.append(objective)
+		var trigger: Dictionary = value
+		assert_false(
+			trigger.has("objective"), "gatilho '%s' troca o objetivo" % trigger.get("id", "?")
+		)
 
 
 func test_triggers_fit_inside_the_map() -> void:

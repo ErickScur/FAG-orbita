@@ -4,6 +4,7 @@
   "reactor_frozen": "TIMER PARADO",
   "reactor_no_timer": "SEM TIMER",
   "integrity_label": "INTEGRIDADE",
+  "objective_label": "OBJETIVO:",
   "charge_label": "CARGA",
   "counter_logs": "LOGS %d/%d",
   "counter_research": "DADOS %d/%d",

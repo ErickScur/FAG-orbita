@@ -53,7 +53,9 @@ var _reactor_state_id: StringName = HudModel.REACTOR_STATE_NONE
 @onready var _reactor_label: Label = %ReactorLabel
 @onready var _reactor_bar: ProgressBar = %ReactorBar
 @onready var _reactor_state: Label = %ReactorState
-@onready var _objective: Label = %Objective
+@onready var _objective: VBoxContainer = %Objective
+@onready var _objective_text: Label = %ObjectiveText
+@onready var _objective_label: Label = %ObjectiveLabel
 @onready var _logs_label: Label = %LogsLabel
 @onready var _logs_icon: TextureRect = %LogsIcon
 @onready var _data_label: Label = %DataLabel
@@ -68,6 +70,7 @@ func _ready() -> void:
 	_texts = HudModel.load_texts()
 	_charge_label.text = HudModel.text_for(&"charge_label", _texts)
 	_integrity_label.text = HudModel.text_for(&"integrity_label", _texts)
+	_objective_label.text = HudModel.text_for(&"objective_label", _texts)
 	_build_cells()
 	_build_counter_icons()
 	_beep_timer.wait_time = Balance.LOW_INTEGRITY_BEEP_INTERVAL
@@ -144,7 +147,7 @@ func _sync_with_state() -> void:
 	_critical = GameState.is_reactor_critical()
 	_on_reactor_changed(GameState.reactor_percent)
 	_refresh_counters()
-	_objective.text = GameState.current_objective
+	_set_objective_text(GameState.current_objective)
 	_cost_mark.visible = GameState.abilities.has(&"dash")
 
 
@@ -466,10 +469,15 @@ func _on_log_closed(_log_id: StringName) -> void:
 
 
 func _on_objective_changed(text: String) -> void:
-	_objective.text = text
+	_set_objective_text(text)
 	if text.is_empty():
 		return
 	_toast(HudModel.text_for(&"toast_objective", _texts))
+
+
+func _set_objective_text(text: String) -> void:
+	_objective_text.text = text
+	_objective.visible = not text.is_empty()
 
 
 func _on_ability_unlocked(ability_id: StringName) -> void:

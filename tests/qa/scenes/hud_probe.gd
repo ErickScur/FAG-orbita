@@ -21,7 +21,7 @@ func _ready() -> void:
 	Settings.difficulty = &"normal"
 	Settings.no_timer = false
 	GameState.new_game()
-	GameState.set_objective(&"obj_calibrate")
+	GameState.set_objective(&"obj_core_hub")
 	_spawn_hud()
 
 
@@ -40,7 +40,7 @@ func _process(_delta: float) -> void:
 		194:
 			GameState.register_pickup(&"log", &"log_core_01")
 		234:
-			GameState.set_objective(&"obj_restore_gh")
+			GameState.set_objective(&"obj_greenhouse")
 		274:
 			GameState.change_reactor(CRITICAL_TARGET - GameState.reactor_percent)
 		324:

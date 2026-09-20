@@ -3,7 +3,6 @@
     "core_wake": {
       "mode": "blocking",
       "once": true,
-      "objective": "obj_calibrate",
       "lines": [
         {
           "speaker": "orbita",

@@ -5,7 +5,7 @@
   "ambient_color": "#191d26",
   "floor_sfx": "step_metal",
   "reactor_online": false,
-  "objective": "obj_open_habitat",
+  "objective": "obj_core_hub",
   "terminals": ["core_hub"],
   "entities": {
     "4,5": {

@@ -7,7 +7,7 @@
   "floor_sfx": "step_metal",
   "music": "core",
   "reactor_online": false,
-  "objective": "obj_calibrate",
+  "objective": "obj_core_hub",
   "on_enter_dialogue": "core_wake",
   "terminals": [
     "core_hub"
@@ -140,14 +140,12 @@
       "id": "core_t_log",
       "rect": [31, 7, 3, 5],
       "tutorial": "tut_interact",
-      "objective": "obj_read_log",
       "once": true
     },
     {
       "id": "core_t_dark",
       "rect": [39, 7, 3, 5],
       "tutorial": "tut_flashlight",
-      "objective": "obj_open_habitat",
       "once": true
     },
     {
@@ -161,7 +159,6 @@
       "id": "core_t_alarm",
       "rect": [61, 7, 2, 5],
       "dialogue": "core_alarm",
-      "objective": "obj_reach_greenhouse",
       "once": true
     },
     {

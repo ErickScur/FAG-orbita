@@ -141,9 +141,9 @@ layout_mode = 1
 anchors_preset = 0
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -88.0
+offset_left = -40.0
 offset_top = 2.0
-offset_right = 88.0
+offset_right = 40.0
 offset_bottom = 42.0
 grow_horizontal = 2
 mouse_filter = 2
@@ -179,17 +179,34 @@ theme_override_font_sizes/font_size = 16
 text = "CRÍTICO"
 horizontal_alignment = 1
 
-[node name="Objective" type="Label" parent="Root"]
+[node name="Objective" type="VBoxContainer" parent="Root"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 0
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -158.0
-offset_top = 42.0
-offset_right = -6.0
-offset_bottom = 90.0
+offset_left = -140.0
+offset_top = 2.0
+offset_right = -4.0
+offset_bottom = 74.0
 grow_horizontal = 0
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="ObjectiveLabel" type="Label" parent="Root/Objective"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.541176, 0.607843, 0.658824, 1)
+theme_override_font_sizes/font_size = 16
+text = "OBJETIVO:"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="ObjectiveText" type="Label" parent="Root/Objective"]
+unique_name_in_owner = true
+layout_mode = 2
 mouse_filter = 2
 theme_override_colors/font_color = Color(0.372549, 0.831373, 0.784314, 1)
 theme_override_font_sizes/font_size = 16

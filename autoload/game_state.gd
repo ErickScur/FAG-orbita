@@ -216,13 +216,6 @@ func set_objective(id: StringName) -> void:
 	EventBus.objective_changed.emit(text)
 
 
-func clear_objective() -> void:
-	if current_objective.is_empty():
-		return
-	current_objective = ""
-	EventBus.objective_changed.emit(current_objective)
-
-
 func is_reactor_critical() -> bool:
 	return _critical
 
