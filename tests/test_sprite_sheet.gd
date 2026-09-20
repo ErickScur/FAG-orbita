@@ -56,3 +56,19 @@ func test_build_frames_without_texture_is_safe() -> void:
 	var frames: SpriteFrames = SpriteSheet.build_frames(null, FRAME_SIZE, [])
 	assert_not_null(frames, "recurso criado")
 	assert_eq(frames.get_animation_names().size(), 0, "sem animações")
+
+
+func test_assigning_frames_selects_an_animation_without_playing_it() -> void:
+	var texture: Texture2D = AssetResolver.texture(SHEET_PATH)
+	if texture == null:
+		fail("textura ausente")
+		return
+	var rows: Array[Dictionary] = [
+		{"name": &"walk", "row": 1, "frames": 6, "fps": 10.0, "loop": true},
+	]
+	var frames: SpriteFrames = SpriteSheet.build_frames(texture, FRAME_SIZE, rows)
+	var sprite := AnimatedSprite2D.new()
+	sprite.sprite_frames = frames
+	assert_true(frames.has_animation(sprite.animation), "a folha já escolhe uma animação")
+	assert_false(sprite.is_playing(), "escolher não é tocar")
+	sprite.free()

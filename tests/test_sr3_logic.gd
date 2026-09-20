@@ -71,3 +71,31 @@ func test_animation_follows_the_shutdown_timeline() -> void:
 	)
 	assert_eq(Sr3Logic.animation_for(total - 1.0, total, 0.4), Sr3Logic.ANIM_OFF, "desligada")
 	assert_eq(Sr3Logic.animation_for(0.0, total, 0.4), Sr3Logic.ANIM_WALK, "voltou a patrulhar")
+
+
+func test_animation_restarts_when_the_sheet_only_selected_it() -> void:
+	assert_true(
+		Sr3Logic.should_restart_animation(&"walk", &"walk", false, true),
+		"animação escolhida pela folha mas parada precisa tocar"
+	)
+
+
+func test_animation_keeps_running_without_restarting() -> void:
+	assert_false(
+		Sr3Logic.should_restart_animation(&"walk", &"walk", true, true),
+		"animação em andamento não reinicia"
+	)
+
+
+func test_animation_changes_when_the_target_is_another_one() -> void:
+	assert_true(
+		Sr3Logic.should_restart_animation(&"walk", &"shutdown", true, false),
+		"troca de animação sempre toca"
+	)
+
+
+func test_finished_single_shot_animation_stays_finished() -> void:
+	assert_false(
+		Sr3Logic.should_restart_animation(&"shutdown", &"shutdown", false, false),
+		"dobra terminada não recomeça"
+	)

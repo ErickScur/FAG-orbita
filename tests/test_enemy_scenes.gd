@@ -36,6 +36,7 @@ func test_sr3_probes_see_the_floor_and_the_walls() -> void:
 	var node: Node = _instantiate(SR3_SCENE)
 	if node == null:
 		return
+	var body: CharacterBody2D = node
 	var floor_probe: RayCast2D = node.get_node_or_null("FloorProbe")
 	var wall_probe: RayCast2D = node.get_node_or_null("WallProbe")
 	assert_not_null(floor_probe, "sonda de chão")
@@ -43,12 +44,33 @@ func test_sr3_probes_see_the_floor_and_the_walls() -> void:
 	if floor_probe != null:
 		assert_eq(
 			floor_probe.collision_mask,
-			LAYER_WORLD | LAYER_ONE_WAY,
-			"sonda de chão vê mundo e plataforma fina"
+			body.collision_mask,
+			"sonda de chão só enxerga o que o corpo pisa"
 		)
+		assert_eq(floor_probe.collision_mask & LAYER_ONE_WAY, 0, "plataforma fina não é chão")
 		assert_true(floor_probe.target_position.y > 0.0, "sonda de chão aponta para baixo")
 	if wall_probe != null:
 		assert_eq(wall_probe.collision_mask, LAYER_WORLD, "sonda de parede vê o mundo")
+	node.free()
+
+
+func test_sr3_walks_its_animation_as_soon_as_it_enters_the_scene() -> void:
+	var node: Node = _instantiate(SR3_SCENE)
+	if node == null:
+		return
+	var root: Node = _root()
+	if root == null:
+		fail("árvore indisponível")
+		node.free()
+		return
+	root.add_child(node)
+	var sprite: AnimatedSprite2D = node.get_node_or_null("AnimatedSprite2D")
+	assert_not_null(sprite, "sprite animado")
+	if sprite != null:
+		assert_not_null(sprite.sprite_frames, "folha montada")
+		assert_eq(sprite.animation, Sr3Logic.ANIM_WALK, "animação de caminhada")
+		assert_true(sprite.is_playing(), "caminhada tocando desde o início")
+	root.remove_child(node)
 	node.free()
 
 
@@ -98,3 +120,8 @@ func _instantiate(path: String) -> Node:
 		fail("cena inválida: %s" % path)
 		return null
 	return scene.instantiate()
+
+
+func _root() -> Node:
+	var loop: SceneTree = Engine.get_main_loop() as SceneTree
+	return loop.root if loop != null else null

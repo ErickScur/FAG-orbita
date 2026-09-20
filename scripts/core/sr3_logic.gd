@@ -40,6 +40,14 @@ static func woke_up(before: float, after: float) -> bool:
 	return before > 0.0 and after <= 0.0
 
 
+static func should_restart_animation(
+	current: StringName, target: StringName, playing: bool, loops: bool
+) -> bool:
+	if current != target:
+		return true
+	return loops and not playing
+
+
 static func animation_for(remaining: float, total: float, folding_time: float) -> StringName:
 	if remaining <= 0.0:
 		return ANIM_WALK

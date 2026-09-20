@@ -40,13 +40,25 @@ func _process(_delta: float) -> void:
 		_sr3.shutdown(Balance.BEAM_SHUTDOWN_TIME)
 	if _status == null:
 		return
-	_status.text = "INTEGRIDADE %d/%d\nSR3 %s  X %d  DIR %d\nMU7 X %d" % [
+	_status.text = "INTEGRIDADE %d/%d\nSR3 %s  X %d  DIR %d\n%s\nMU7 X %d" % [
 		GameState.integrity,
 		GameState.integrity_max,
 		"DESLIGADA" if _sr3 != null and _sr3.is_shut_down() else "PATRULHANDO",
 		roundi(_sr3.global_position.x) if _sr3 != null else 0,
 		_sr3.dir if _sr3 != null else 0,
+		_animation_status(),
 		roundi(player.global_position.x) if player != null else 0,
+	]
+
+
+func _animation_status() -> String:
+	if _sr3 == null:
+		return "SEM SR3"
+	var sprite: AnimatedSprite2D = _sr3.get_node_or_null("AnimatedSprite2D")
+	if sprite == null or sprite.sprite_frames == null:
+		return "SEM FOLHA"
+	return "%s Q%d TOCA %s" % [
+		String(sprite.animation), sprite.frame, "SIM" if sprite.is_playing() else "NAO"
 	]
 
 

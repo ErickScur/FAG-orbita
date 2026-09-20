@@ -1,0 +1,8 @@
+[
+  {"frame": 60, "screenshot": "g1_f060"},
+  {"frame": 66, "screenshot": "g2_f066"},
+  {"frame": 72, "screenshot": "g3_f072"},
+  {"frame": 90, "screenshot": "g4_f090"},
+  {"frame": 150, "screenshot": "g5_f150"},
+  {"frame": 160, "quit": true}
+]

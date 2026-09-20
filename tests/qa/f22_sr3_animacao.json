@@ -1,0 +1,12 @@
+[
+  {"frame": 40, "screenshot": "s1_anda_a"},
+  {"frame": 46, "screenshot": "s2_anda_b"},
+  {"frame": 52, "screenshot": "s3_anda_c"},
+  {"frame": 264, "screenshot": "s4_dobra_a"},
+  {"frame": 270, "screenshot": "s5_dobra_b"},
+  {"frame": 300, "screenshot": "s6_off"},
+  {"frame": 360, "screenshot": "s7_off_b"},
+  {"frame": 540, "screenshot": "s8_acordou_a"},
+  {"frame": 546, "screenshot": "s9_acordou_b"},
+  {"frame": 560, "quit": true}
+]

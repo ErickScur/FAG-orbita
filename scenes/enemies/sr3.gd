@@ -149,8 +149,12 @@ func _setup_light() -> void:
 
 
 func _play(anim: StringName) -> void:
-	if _sprite.sprite_frames == null or not _sprite.sprite_frames.has_animation(anim):
+	var frames: SpriteFrames = _sprite.sprite_frames
+	if frames == null or not frames.has_animation(anim):
 		return
-	if _sprite.animation == anim:
+	var restart: bool = Sr3Logic.should_restart_animation(
+		_sprite.animation, anim, _sprite.is_playing(), frames.get_animation_loop(anim)
+	)
+	if not restart:
 		return
 	_sprite.play(anim)

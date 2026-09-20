@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0rbitasr3pb02"]
+
+[ext_resource type="Script" path="res://tests/qa/scenes/sr3_probe.gd" id="1_sr3probe"]
+
+[node name="Sr3ProbeCanopy" type="Node2D"]
+script = ExtResource("1_sr3probe")
+spawn_tile = Vector2i(21, 21)
