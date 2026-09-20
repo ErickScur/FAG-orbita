@@ -546,6 +546,7 @@ Toda vez que a dificuldade sobe demais, o jogador ganha um upgrade que faz o con
 | AJ-028 | 2026-09-20 | GDD-2.8 | **Terminal do chassi**: uma tela de diagnóstico aberta por tecla passa a guardar a estabilidade do reator, os contadores de Log e Dado, os valores exatos de Integridade e Carga, e as habilidades. O HUD em jogo fica só com integridade, carga, status, objetivo e prompt. O bloco do reator **reaparece no HUD em estado crítico** — esconder um cronômetro que está matando o jogador seria injusto. O espaço do mapa da estação fica desenhado e bloqueado (`??` / `SEM ENERGIA`), para a entrega final | Playtest: "da pra dar uma diminuida nas informações visuais da tela... um menu/inventario, onde podemos ver a porcentagem do reator, os logs/dados coletados (tirar da tela talvez)" |
 | AJ-029 | 2026-09-20 | GDD-P · GDD-2.8 | Fala ambiente da ÓRBITA some mais rápido: `DIALOGUE_READ_CPS` 15,0 → 28,0, o que leva uma linha típica de **7,7 s para 5,1 s** na tela (medido quadro a quadro). Fora do tutorial a ÓRBITA para de narrar o efeito de cada sistema: as dez falas de comentário do Terminal da Estufa, mais as falas dos esporos, da trepadeira, dos vãos do corredor e o lembrete da regra de energia, são apagadas. A Estufa vai de 20 para 5 sequências | Playtest: "todos os dialogos de Orbita estao ficando muito tempo" e "é um jogo de puzzle, precisamos dar menos informações" |
 | AJ-030 | 2026-09-20 | GDD-P · GDD-2.9 | **A escuridão passa a ser real.** O ambiente das fases vai de luma 0,44 para **0,068**, o tileset placeholder sobe de 0,26 para **0,62** (a compensação estava invertida: o ambiente era claro para salvar um tileset escuro), o raio das lâmpadas cai de 160 para 96 px — o que **cria** o trecho escuro do Núcleo, antes inexistente porque as lâmpadas se tocavam — e a textura radial da luz troca a queda `(1-d)²` por um platô, subindo o alfa médio de 0,167 para 0,419. A lanterna ganha duas energias: `SENSOR_ENERGY` 0,7 com o facho desligado e `FLASHLIGHT_ENERGY` 1,5 com ele aceso. Medido: longe do jogador e sem lanterna, nenhum pixel do cenário passa de 0,06 de luma | Playtest: "quando fica escuro, nao fica escura realmente, nao precisa da lanterna, da pra ver tudo tranquilamente" |
+| AJ-031 | 2026-09-20 | GDD-P | Fala ambiente da ÓRBITA encurta de novo: `DIALOGUE_CPS` 40→55, `DIALOGUE_READ_CPS` 28→45 e `DIALOGUE_AMBIENT_MIN_TIME` 2,0→1,6. A fala das garras, que é a mais reclamada, também perdeu a parte que **explicava a mecânica** ("paredes marcadas agora são caminho") e ficou só com o gesto ("Obrigada, doutora"), coerente com o princípio de não explicar fora do tutorial. Medido nas capturas: a caixa ficava **7,70 s** na versão original, **5,10 s** depois do [AJ-029](#gdd-ajustes) e agora **2,43 s** | Playtest, duas vezes: "o dialogo dele agradecendo a doutora depois de instalar as garras ainda esta demorando muito para sair da tela" |
 | AJ-021 | 2026-09-19 | GDD-P | Amplitude e velocidade da flutuação dos coletáveis | O GDD pedia itens "flutuando" sem número |
 | AJ-020 | 2026-09-19 | GDD-P | Velocidade de digitação do diálogo, tempo mínimo de fala ambiente, cores e fade das luzes | Números de apresentação que o GDD descrevia em palavras ("legenda", "luz fria") |
 | AJ-019 | 2026-09-19 | GDD-P | Ritmo do alarme do reator, duração do aviso do HUD, frequência do pulso crítico e do bipe de integridade baixa | Números de feedback do HUD/áudio que o GDD descrevia só em palavras |
@@ -582,9 +583,9 @@ Toda vez que a dificuldade sobe demais, o jogador ganha um upgrade que faz o con
 | `LIGHT_FADE_TIME` | 0.15 | s | AJ-020 |
 | `LAMP_COLOR` | bfe6ff | cor | AJ-020 |
 | `FLASHLIGHT_COLOR` | cfeaf2 | cor | AJ-020 |
-| `DIALOGUE_CPS` | 40.0 | car/s | AJ-020 |
-| `DIALOGUE_READ_CPS` | 28.0 | car/s | AJ-029 |
-| `DIALOGUE_AMBIENT_MIN_TIME` | 2.0 | s | AJ-020 |
+| `DIALOGUE_CPS` | 55.0 | car/s | AJ-020 |
+| `DIALOGUE_READ_CPS` | 45.0 | car/s | AJ-029 |
+| `DIALOGUE_AMBIENT_MIN_TIME` | 1.6 | s | AJ-020 |
 | `FLASHLIGHT_ENERGY` | 1.5 | energia | AJ-030 |
 | `SENSOR_ENERGY` | 0.7 | energia | AJ-030 |
 | `BRIEFING_CPS` | 60.0 | car./s | AJ-025 |

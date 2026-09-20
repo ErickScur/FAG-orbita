@@ -4,8 +4,8 @@ const DEMO_SEQUENCES: int = 15
 const DEMO_LOGS: int = 4
 const DEMO_SPEAKERS: int = 3
 const TYPICAL_LINE_CHARS: int = 84
-const AMBIENT_HOLD_MIN: float = 2.5
-const AMBIENT_HOLD_MAX: float = 3.5
+const AMBIENT_HOLD_MIN: float = 1.5
+const AMBIENT_HOLD_MAX: float = 2.5
 const GREENHOUSE_KEPT: Array[StringName] = [
 	&"gh_enter", &"gh_node_room", &"gh_claws", &"gh_restored", &"first_death"
 ]
