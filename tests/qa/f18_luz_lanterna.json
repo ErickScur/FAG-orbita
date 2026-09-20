@@ -1,0 +1,20 @@
+[
+  {"frame": 30, "screenshot": "f18_01_lampadas_ligadas"},
+  {"frame": 40, "action": "interact", "pressed": true},
+  {"frame": 42, "action": "interact", "pressed": false},
+  {"frame": 70, "screenshot": "f18_02_escuro"},
+  {"frame": 80, "action": "flashlight", "pressed": true},
+  {"frame": 82, "action": "flashlight", "pressed": false},
+  {"frame": 100, "screenshot": "f18_03_lanterna_on"},
+  {"frame": 105, "action": "move_right", "pressed": true},
+  {"frame": 220, "action": "move_right", "pressed": false},
+  {"frame": 240, "screenshot": "f18_04_sombras_movem"},
+  {"frame": 570, "screenshot": "f18_05_apagou_sozinha"},
+  {"frame": 580, "action": "flashlight", "pressed": true},
+  {"frame": 582, "action": "flashlight", "pressed": false},
+  {"frame": 600, "screenshot": "f18_06_nao_liga"},
+  {"frame": 610, "action": "interact", "pressed": true},
+  {"frame": 612, "action": "interact", "pressed": false},
+  {"frame": 640, "screenshot": "f18_07_lampadas_religadas"},
+  {"frame": 670, "quit": true}
+]

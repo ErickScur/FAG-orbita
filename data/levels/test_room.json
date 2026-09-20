@@ -1,0 +1,38 @@
+{
+  "id": "test_room",
+  "name": "Sala de teste",
+  "tileset": "res://assets/tiles/core_tileset.tres",
+  "ambient_color": "#191d26",
+  "music": "core",
+  "floor_sfx": "step_metal",
+  "reactor_online": false,
+  "terminals": ["core_hub"],
+  "objective": "obj_calibrate",
+  "entities": {
+    "4,1": { "id": "lamp_left", "terminal_id": "core_hub", "system_id": "lights_core" },
+    "15,1": { "id": "lamp_mid", "terminal_id": "core_hub", "system_id": "lights_core" },
+    "26,1": { "id": "lamp_right", "terminal_id": "core_hub", "system_id": "lights_core" },
+    "12,2": { "id": "test_cell" },
+    "21,2": { "id": "test_research" },
+    "26,2": { "id": "test_capacitor" },
+    "3,4": { "id": "log_hab_01" },
+    "28,4": { "id": "test_kit" },
+    "16,5": { "terminal_id": "core_hub", "system_id": "heater_core" },
+    "17,5": { "terminal_id": "core_hub", "system_id": "heater_core" },
+    "7,6": { "id": "test_plant", "terminal_id": "core_hub", "system_id": "grow_light" },
+    "16,6": { "id": "test_lift", "path": [[0, 0], [0, -3]], "speed": 30 },
+    "28,6": { "id": "test_wall" },
+    "30,6": { "id": "test_secret" },
+    "4,8": { "id": "dock_test" },
+    "8,8": { "id": "prop_suit", "frame": 0 },
+    "12,8": { "id": "test_sr3" },
+    "18,8": { "id": "test_terminal", "terminal": "core_hub" },
+    "23,8": { "id": "door_habitat", "terminal_id": "core_hub", "system_id": "door_habitat" },
+    "26,8": { "id": "log_core_01" },
+    "29,8": { "id": "test_exit", "target": "res://scenes/levels/test_room.tscn" }
+  },
+  "triggers": [
+    { "id": "trg_test_move", "rect": [10, 4, 6, 4], "dialogue": "core_calib_move" },
+    { "id": "trg_test_log", "rect": [22, 4, 8, 4], "objective": "obj_read_log" }
+  ]
+}

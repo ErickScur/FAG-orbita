@@ -25,6 +25,7 @@ const REACTOR_SECTOR_BONUS: float = 15.0
 const REACTOR_LOG_BONUS: float = 0.5
 const REACTOR_DEATH_PENALTY: float = 3.0
 const REACTOR_CRITICAL: float = 25.0
+const REACTOR_ALARM_INTERVAL: float = 4.0
 const RESPAWN_INTEGRITY_RATIO: float = 0.5
 const SR3_CONTACT_DAMAGE: int = 10
 const SPORE_DPS: float = 5.0
@@ -78,6 +79,9 @@ const BEAM_RANGE: float = 32.0
 const LAMP_RADIUS: float = 96.0
 const LAMP_ENERGY: float = 0.9
 const AMBIENT_DARK: Color = Color("191d26")
+const LIGHT_FADE_TIME: float = 0.15
+const LAMP_COLOR: Color = Color("bfe6ff")
+const FLASHLIGHT_COLOR: Color = Color("cfeaf2")
 const PLATFORM_WAIT: float = 0.6
 const SECRET_WALL_FADE_TIME: float = 0.3
 const SECRET_WALL_ALPHA: float = 0.25
@@ -94,6 +98,12 @@ const FREEZE_JUMP_MULT: float = 0.7
 const DISCHARGE_TIME: float = 3.0
 const OVERLOAD_TIME: float = 10.0
 const OVERLOAD_SPEED_MULT: float = 1.3
+const DIALOGUE_CPS: float = 40.0
+const DIALOGUE_READ_CPS: float = 15.0
+const DIALOGUE_AMBIENT_MIN_TIME: float = 2.0
+const HUD_TOAST_TIME: float = 2.0
+const HUD_PULSE_HZ: float = 2.0
+const LOW_INTEGRITY_BEEP_INTERVAL: float = 1.5
 
 
 static func difficulty_damage_multiplier(difficulty: StringName) -> float:

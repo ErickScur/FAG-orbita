@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0rbitapoweredlamp"]
+
+[ext_resource type="Script" path="res://scenes/world/powered_lamp.gd" id="1_lamp"]
+
+[node name="PoweredLamp" type="Node2D" groups=["powered"]]
+script = ExtResource("1_lamp")
+
+[node name="Light" type="PointLight2D" parent="."]
+blend_mode = 0
+shadow_enabled = true
+shadow_filter = 1

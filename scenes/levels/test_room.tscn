@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0rbitatestroom"]
+
+[ext_resource type="PackedScene" uid="uid://c0rbitalevelbase" path="res://scenes/levels/level_base.tscn" id="1_base"]
+
+[node name="TestRoom" instance=ExtResource("1_base")]
+level_id = "test_room"

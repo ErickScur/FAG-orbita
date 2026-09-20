@@ -1,0 +1,39 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0rbitadialoguetest"]
+
+[ext_resource type="Script" path="res://scenes/dev/dialogue_test.gd" id="1_test"]
+
+[node name="DialogueTest" type="Node2D"]
+script = ExtResource("1_test")
+
+[node name="Fundo" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="Cor" type="ColorRect" parent="Fundo"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0627451, 0.0862745, 0.109804, 1)
+
+[node name="Info" type="CanvasLayer" parent="."]
+layer = 5
+
+[node name="Titulo" type="Label" parent="Info"]
+unique_name_in_owner = true
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 240.0
+offset_bottom = 26.0
+theme_override_font_sizes/font_size = 16
+text = "TESTE DE DIÁLOGO"
+
+[node name="Ajuda" type="Label" parent="Info"]
+unique_name_in_owner = true
+offset_left = 8.0
+offset_top = 26.0
+offset_right = 376.0
+offset_bottom = 44.0
+theme_override_colors/font_color = Color(0.552941, 0.65098, 0.686275, 1)
+theme_override_font_sizes/font_size = 16
+text = "SHIFT bark · Q log · F fila"

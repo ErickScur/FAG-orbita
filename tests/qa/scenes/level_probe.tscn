@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0rbitalevelprobe"]
+
+[ext_resource type="Script" path="res://tests/qa/scenes/level_probe.gd" id="1_probe"]
+
+[node name="LevelProbe" type="Node2D"]
+script = ExtResource("1_probe")

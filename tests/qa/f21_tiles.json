@@ -1,0 +1,8 @@
+[
+  { "frame": 12, "screenshot": "f21_05_tiles_claro" },
+  { "frame": 20, "action": "move_right", "pressed": true },
+  { "frame": 120, "screenshot": "f21_06_tiles_meio" },
+  { "frame": 260, "screenshot": "f21_07_tiles_direita" },
+  { "frame": 300, "action": "move_right", "pressed": false },
+  { "frame": 320, "quit": true }
+]

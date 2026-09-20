@@ -1,0 +1,50 @@
+[
+  {
+    "frame": 6,
+    "screenshot": "f14_01_start"
+  },
+  {
+    "frame": 40,
+    "screenshot": "f14_02_caindo"
+  },
+  {
+    "frame": 90,
+    "screenshot": "f14_03_critico"
+  },
+  {
+    "frame": 100,
+    "action": "pause",
+    "pressed": true
+  },
+  {
+    "frame": 102,
+    "action": "pause",
+    "pressed": false
+  },
+  {
+    "frame": 120,
+    "screenshot": "f14_04_pausado_a"
+  },
+  {
+    "frame": 300,
+    "screenshot": "f14_05_pausado_b"
+  },
+  {
+    "frame": 306,
+    "action": "pause",
+    "pressed": true
+  },
+  {
+    "frame": 308,
+    "action": "pause",
+    "pressed": false
+  },
+  {
+    "frame": 400,
+    "screenshot": "f14_06_voltou_a_cair"
+  },
+  {
+    "frame": 410,
+    "quit": true
+  }
+]

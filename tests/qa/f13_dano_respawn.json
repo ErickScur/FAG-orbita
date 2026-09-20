@@ -1,0 +1,18 @@
+[
+  {"frame": 20, "screenshot": "f13_01_inicio_na_doca"},
+  {"frame": 80, "screenshot": "f13_02_doca_recarrega_carga"},
+  {"frame": 105, "action": "move_right", "pressed": true},
+  {"frame": 184, "screenshot": "f13_03_knockback"},
+  {"frame": 192, "screenshot": "f13_04_piscando"},
+  {"frame": 220, "screenshot": "f13_05_invencivel_sem_dano"},
+  {"frame": 270, "action": "move_right", "pressed": false},
+  {"frame": 290, "screenshot": "f13_06_dps_entrada"},
+  {"frame": 410, "screenshot": "f13_07_dps_dois_segundos"},
+  {"frame": 430, "action": "move_right", "pressed": true},
+  {"frame": 520, "screenshot": "f13_08_queda"},
+  {"frame": 530, "action": "move_right", "pressed": false},
+  {"frame": 580, "screenshot": "f13_09_chassi_perdido"},
+  {"frame": 760, "screenshot": "f13_10_respawn_na_doca"},
+  {"frame": 940, "screenshot": "f13_11_doca_reparando"},
+  {"frame": 980, "quit": true}
+]

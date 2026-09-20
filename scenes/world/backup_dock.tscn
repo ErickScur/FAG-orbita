@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://c0rbitabackupdock"]
+
+[ext_resource type="Script" path="res://scenes/world/backup_dock.gd" id="1_dock"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dock"]
+size = Vector2(24, 40)
+
+[node name="BackupDock" type="Node2D"]
+script = ExtResource("1_dock")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -24)
+
+[node name="ChargeZone" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ChargeZone"]
+position = Vector2(0, -20)
+shape = SubResource("RectangleShape2D_dock")

@@ -1,0 +1,283 @@
+[gd_scene load_steps=5 format=3 uid="uid://c0rbitahud"]
+
+[ext_resource type="Script" path="res://scenes/ui/hud.gd" id="1_hud"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_reactor_bg"]
+bg_color = Color(0.0392157, 0.0705882, 0.0862745, 0.831373)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.184314, 0.309804, 0.352941, 1)
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_reactor_fill"]
+bg_color = Color(0.843137, 0.890196, 0.909804, 1)
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_prompt"]
+content_margin_left = 4.0
+content_margin_top = 1.0
+content_margin_right = 4.0
+content_margin_bottom = 1.0
+bg_color = Color(0.0392157, 0.0666667, 0.0901961, 0.878431)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.207843, 0.435294, 0.435294, 1)
+anti_aliasing = false
+
+[node name="HUD" type="CanvasLayer"]
+process_mode = 1
+layer = 10
+script = ExtResource("1_hud")
+
+[node name="Root" type="Control" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Vitals" type="VBoxContainer" parent="Root"]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 4.0
+offset_top = 2.0
+offset_right = 132.0
+offset_bottom = 56.0
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="Cells" type="HBoxContainer" parent="Root/Vitals"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 1
+
+[node name="ChargeRow" type="HBoxContainer" parent="Root/Vitals"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 4
+alignment = 1
+
+[node name="ChargeFrame" type="Control" parent="Root/Vitals/ChargeRow"]
+custom_minimum_size = Vector2(72, 6)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+
+[node name="ChargeBar" type="ProgressBar" parent="Root/Vitals/ChargeRow/ChargeFrame"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+max_value = 100.0
+value = 100.0
+show_percentage = false
+
+[node name="CostMark" type="ColorRect" parent="Root/Vitals/ChargeRow/ChargeFrame"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+offset_left = 14.0
+offset_right = 15.0
+offset_bottom = 6.0
+mouse_filter = 2
+color = Color(0.843137, 0.890196, 0.909804, 1)
+
+[node name="ChargeLabel" type="Label" parent="Root/Vitals/ChargeRow"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.372549, 0.831373, 0.784314, 1)
+theme_override_font_sizes/font_size = 16
+text = "CARGA"
+vertical_alignment = 1
+
+[node name="Statuses" type="HBoxContainer" parent="Root/Vitals"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 3
+
+[node name="Reactor" type="VBoxContainer" parent="Root"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 0
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -88.0
+offset_top = 2.0
+offset_right = 88.0
+offset_bottom = 42.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_constants/separation = 1
+
+[node name="ReactorLabel" type="Label" parent="Root/Reactor"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.843137, 0.890196, 0.909804, 1)
+theme_override_font_sizes/font_size = 16
+text = "ESTABILIDADE DO REATOR: 100%"
+horizontal_alignment = 1
+
+[node name="ReactorBar" type="ProgressBar" parent="Root/Reactor"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_reactor_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_reactor_fill")
+max_value = 100.0
+value = 100.0
+show_percentage = false
+
+[node name="ReactorState" type="Label" parent="Root/Reactor"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.541176, 0.607843, 0.658824, 1)
+theme_override_font_sizes/font_size = 16
+text = "descendo"
+horizontal_alignment = 1
+
+[node name="Objective" type="Label" parent="Root"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 0
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -158.0
+offset_top = 42.0
+offset_right = -6.0
+offset_bottom = 90.0
+grow_horizontal = 0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.372549, 0.831373, 0.784314, 1)
+theme_override_font_sizes/font_size = 16
+horizontal_alignment = 2
+autowrap_mode = 3
+
+[node name="Counters" type="VBoxContainer" parent="Root"]
+layout_mode = 1
+anchors_preset = 0
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -108.0
+offset_top = -36.0
+offset_right = -4.0
+offset_bottom = -2.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="LogsRow" type="HBoxContainer" parent="Root/Counters"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 3
+alignment = 2
+
+[node name="LogsIcon" type="TextureRect" parent="Root/Counters/LogsRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+mouse_filter = 2
+stretch_mode = 3
+
+[node name="LogsLabel" type="Label" parent="Root/Counters/LogsRow"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.843137, 0.890196, 0.909804, 1)
+theme_override_font_sizes/font_size = 16
+text = "LOGS 00/24"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="DataRow" type="HBoxContainer" parent="Root/Counters"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 3
+alignment = 2
+
+[node name="DataIcon" type="TextureRect" parent="Root/Counters/DataRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+mouse_filter = 2
+stretch_mode = 3
+
+[node name="DataLabel" type="Label" parent="Root/Counters/DataRow"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.843137, 0.890196, 0.909804, 1)
+theme_override_font_sizes/font_size = 16
+text = "DADOS 00/12"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="PromptRow" type="HBoxContainer" parent="Root"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 0
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -96.0
+offset_top = -36.0
+offset_right = 96.0
+offset_bottom = -18.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Prompt" type="Label" parent="Root/PromptRow"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.498039, 0.839216, 0.784314, 1)
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_prompt")
+text = "[E] ACESSAR TERMINAL"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Toasts" type="VBoxContainer" parent="Root"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 0
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -120.0
+offset_top = 92.0
+offset_right = 120.0
+offset_bottom = 146.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_constants/separation = 1
+alignment = 1
+
+[node name="BeepTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 1.5

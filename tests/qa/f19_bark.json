@@ -1,0 +1,7 @@
+[
+  { "frame": 20, "action": "move_right", "pressed": true },
+  { "frame": 140, "action": "move_right", "pressed": false },
+  { "frame": 160, "screenshot": "f19_11_bark_visivel" },
+  { "frame": 640, "screenshot": "f19_12_bark_sumiu" },
+  { "frame": 660, "quit": true }
+]

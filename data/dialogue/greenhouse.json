@@ -1,0 +1,84 @@
+{
+  "sequences": {
+    "gh_enter": {
+      "mode": "blocking",
+      "once": true,
+      "objective": "obj_find_terminal_gh",
+      "lines": [
+        { "speaker": "orbita", "text": "Estufa hidropônica, setor B. Umidade alta, temperatura amena." },
+        { "speaker": "orbita", "text": "Que lugar bonito. Continua crescendo sozinho há... bem, há algum tempo." },
+        { "speaker": "orbita", "text": "Os simuladores climáticos estão presos num ciclo: primavera, verão, inverno, primavera." },
+        { "speaker": "orbita", "text": "Alguém esqueceu de desligar." }
+      ]
+    },
+    "gh_spores": {
+      "mode": "ambient",
+      "once": true,
+      "lines": [
+        { "speaker": "orbita", "text": "Partículas orgânicas em suspensão. Esporos, reagindo ao calor do módulo." },
+        { "speaker": "orbita", "text": "Contato corrói o chassi e impede a recarga." }
+      ]
+    },
+    "gh_terminal_first": {
+      "mode": "blocking",
+      "once": true,
+      "objective": "obj_reach_node",
+      "lines": [
+        { "speaker": "orbita", "text": "Terminal da Estufa. Duas unidades de energia. Cinco sistemas pedindo energia." },
+        { "speaker": "orbita", "text": "Aquecimento e iluminação do corredor estão consumindo tudo." },
+        { "speaker": "orbita", "text": "Não existe combinação que ligue tudo." },
+        { "speaker": "orbita", "text": "Existe a combinação que abre o caminho que eu escolher." }
+      ]
+    },
+    "gh_plant_grown": {
+      "mode": "ambient",
+      "once": true,
+      "lines": [
+        { "speaker": "orbita", "text": "Luz de crescimento ativa. A cultura respondeu em segundos." },
+        { "speaker": "orbita", "text": "Adaptada para... outro tipo de solo. Anotado." }
+      ]
+    },
+    "gh_dark_corridor": {
+      "mode": "ambient",
+      "once": true,
+      "lines": [
+        { "speaker": "orbita", "text": "Corredor sem iluminação. Existe um poço ali embaixo. Vou lembrar disso." }
+      ]
+    },
+    "gh_node_room": {
+      "mode": "ambient",
+      "once": true,
+      "objective": "obj_restore_gh",
+      "lines": [
+        { "speaker": "orbita", "text": "Nó de Energia da Estufa. Se ele voltar, a estabilidade do reator sobe junto." }
+      ]
+    },
+    "gh_restored": {
+      "mode": "blocking",
+      "once": true,
+      "objective": "obj_demo_exit",
+      "lines": [
+        { "speaker": "orbita", "text": "Estufa religada. Estabilidade subindo.", "sfx": "sector_restored" },
+        { "speaker": "orbita", "text": "Viu, ARTEMIS? Um setor de cada vez." },
+        { "speaker": "orbita", "text": "Quando a tripulação voltar, vai estar tudo aceso." },
+        { "speaker": "orbita", "text": "Eles nem vão perceber que houve um problema." }
+      ]
+    },
+    "gh_claws": {
+      "mode": "ambient",
+      "once": true,
+      "lines": [
+        { "speaker": "orbita", "text": "Garras magnéticas integradas. Paredes marcadas agora são caminho." },
+        { "speaker": "orbita", "text": "Obrigada, doutora." }
+      ]
+    },
+    "first_death": {
+      "mode": "ambient",
+      "once": true,
+      "lines": [
+        { "speaker": "orbita", "text": "Backup restaurado. Perdi um pouco de estabilidade no processo." },
+        { "speaker": "orbita", "text": "Vamos chamar isso de manutenção preventiva mal executada." }
+      ]
+    }
+  }
+}

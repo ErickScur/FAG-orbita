@@ -1,0 +1,27 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0rbitalevelbase"]
+
+[ext_resource type="Script" path="res://scenes/levels/level_base.gd" id="1_level"]
+
+[node name="Level" type="Node2D" groups=["level"]]
+script = ExtResource("1_level")
+
+[node name="Background" type="TileMapLayer" parent="."]
+z_index = -10
+
+[node name="Solid" type="TileMapLayer" parent="."]
+
+[node name="Parallax" type="Node2D" parent="."]
+
+[node name="Entities" type="Node2D" parent="."]
+
+[node name="Triggers" type="Node2D" parent="."]
+
+[node name="DeathZone" type="Area2D" parent="."]
+collision_layer = 16
+collision_mask = 2
+monitorable = false
+
+[node name="EnergyNetwork" type="Node" parent="." groups=["energy_network"]]
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+color = Color(0.098039, 0.113725, 0.14902, 1)

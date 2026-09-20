@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0rbitalightsbx"]
+
+[ext_resource type="Script" path="res://tests/qa/scenes/light_sandbox.gd" id="1_light"]
+
+[node name="LightSandbox" type="Node2D"]
+script = ExtResource("1_light")

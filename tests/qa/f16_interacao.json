@@ -1,0 +1,21 @@
+[
+  {"frame": 20, "screenshot": "f16_01_sem_prompt"},
+  {"frame": 25, "action": "move_right", "pressed": true},
+  {"frame": 80, "action": "move_right", "pressed": false},
+  {"frame": 95, "screenshot": "f16_02_prompt_terminal"},
+  {"frame": 100, "action": "interact", "pressed": true},
+  {"frame": 102, "action": "interact", "pressed": false},
+  {"frame": 118, "screenshot": "f16_03_interagiu"},
+  {"frame": 130, "action": "move_right", "pressed": true},
+  {"frame": 178, "action": "move_right", "pressed": false},
+  {"frame": 195, "screenshot": "f16_04_prompt_log"},
+  {"frame": 205, "action": "jump", "pressed": true},
+  {"frame": 216, "action": "jump", "pressed": false},
+  {"frame": 208, "action": "interact", "pressed": true},
+  {"frame": 210, "action": "interact", "pressed": false},
+  {"frame": 211, "screenshot": "f16_05_no_ar"},
+  {"frame": 280, "action": "move_right", "pressed": true},
+  {"frame": 350, "action": "move_right", "pressed": false},
+  {"frame": 370, "screenshot": "f16_06_desabilitado"},
+  {"frame": 400, "quit": true}
+]

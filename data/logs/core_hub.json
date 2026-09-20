@@ -1,0 +1,37 @@
+{
+  "logs": [
+    {
+      "id": "log_core_01",
+      "sector": "core_hub",
+      "author": "helena",
+      "title": "LOG DE MANUTENÇÃO 114",
+      "subtitle": "ENGENHARIA CHEFE",
+      "unlock_ability": "",
+      "lines": [
+        "Log de manutenção cento e catorze. Helena Vasquez, engenharia chefe.",
+        "Se alguém estiver ouvindo isso e não for eu, comece pelo Terminal de Distribuição.",
+        "Ele é o seu melhor amigo aqui.",
+        "A ARTEMIS sempre teve mais sistemas do que energia. Sempre.",
+        "Ligar uma coisa significa desligar outra.",
+        "Escolha o que você precisa agora, não o que você gostaria de ter.",
+        "Foi assim que a gente chegou até aqui."
+      ]
+    },
+    {
+      "id": "log_hab_01",
+      "sector": "core_hub",
+      "author": "helena",
+      "title": "LOG PESSOAL 07",
+      "subtitle": "DRA. HELENA VASQUEZ",
+      "unlock_ability": "",
+      "lines": [
+        "Log pessoal. Sete.",
+        "Os sensores do habitacional estão dando leitura estranha desde terça.",
+        "Temperatura certa, pressão certa, e mesmo assim o painel acende amarelo.",
+        "A ÓRBITA diz que é calibração. Ela é muito educada para dizer que eu estou cansada.",
+        "Pedi um diagnóstico completo para quando o turno esvaziar.",
+        "Depois eu vejo isso com calma."
+      ]
+    }
+  ]
+}

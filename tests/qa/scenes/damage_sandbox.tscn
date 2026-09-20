@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0rbitadamagesbx"]
+
+[ext_resource type="Script" path="res://tests/qa/scenes/damage_sandbox.gd" id="1_damage"]
+
+[node name="DamageSandbox" type="Node2D"]
+script = ExtResource("1_damage")

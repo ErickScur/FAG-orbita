@@ -4,6 +4,7 @@ extends CharacterBody2D
 enum State { IDLE, WALK, JUMP, FALL, LAND, ACTION }
 
 const SHEET_PATH: String = "res://assets/sprites/mu7/mu7_sheet.png"
+const LIGHT_TEXTURE: String = "res://assets/fx/light_radial.png"
 const FRAME_SIZE: Vector2i = Vector2i(32, 32)
 const ANIMATION_ROWS: Array[Dictionary] = [
 	{"name": &"idle", "row": 0, "frames": 4, "fps": 4.0, "loop": true},
@@ -27,6 +28,7 @@ const STATE_ANIMATIONS: Dictionary = {
 const ONE_WAY_BIT: int = 7
 const STEP_FRAMES: Array[int] = [1, 4]
 const DROP_NUDGE: float = 1.0
+const BLINK_INTERVAL: float = 0.1
 
 @export var floor_sfx: StringName = &"step_metal"
 
@@ -35,20 +37,36 @@ var facing: int = 1
 var _state: State = State.IDLE
 var _action_animation: StringName = &""
 var _locked: bool = false
+var _dead: bool = false
 var _drop_timer: float = 0.0
+var _hurt_timer: float = 0.0
+var _invincible_left: float = 0.0
+var _blink_timer: float = 0.0
+var _damage_accumulator: float = 0.0
 var _look_ahead: float = 0.0
 var _camera_limits: Rect2i = Rect2i()
 var _has_camera_limits: bool = false
+var _flashlight_on: bool = false
+var _light_tween: Tween = null
+var _joypad: bool = false
+var _interaction_target: Interactable = null
+var _interaction_prompt: String = ""
 var _jump_assist: JumpAssist = JumpAssist.new(Balance.COYOTE_TIME, Balance.JUMP_BUFFER)
 
 @onready var _sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var _camera: Camera2D = $Camera2D
 @onready var _one_way_probe: RayCast2D = $OneWayProbe
 @onready var _one_way_clearance: RayCast2D = $OneWayClearance
+@onready var _hurtbox: Area2D = $Hurtbox
+@onready var _sensor: Area2D = $InteractionSensor
+@onready var _sensor_shape: CollisionShape2D = $InteractionSensor/CollisionShape2D
+@onready var _flashlight: PointLight2D = $Flashlight
 
 
 func _ready() -> void:
 	_build_animations()
+	_setup_sensor()
+	_setup_flashlight()
 	_camera.offset = Vector2.ZERO
 	_camera.position.y = Balance.CAMERA_OFFSET_Y
 	_camera.position_smoothing_speed = Balance.CAMERA_SMOOTHING
@@ -59,15 +77,29 @@ func _ready() -> void:
 	_sprite.frame_changed.connect(_on_frame_changed)
 	EventBus.dialogue_started.connect(_on_dialogue_started)
 	EventBus.dialogue_finished.connect(_on_dialogue_finished)
+	EventBus.player_died.connect(_on_player_died)
+	EventBus.player_respawned.connect(_on_player_respawned)
 	_play(&"idle")
 
 
+func _input(event: InputEvent) -> void:
+	var joypad: bool = event is InputEventJoypadButton or event is InputEventJoypadMotion
+	if not joypad and not (event is InputEventKey):
+		return
+	if joypad == _joypad:
+		return
+	_joypad = joypad
+	_interaction_prompt = ""
+
+
 func _physics_process(delta: float) -> void:
+	_update_timers(delta)
 	_update_drop_through(delta)
-	if not _locked and Input.is_action_just_pressed(&"move_down"):
+	if not _movement_blocked() and Input.is_action_just_pressed(&"move_down"):
 		_try_drop_through()
-	var axis: float = 0.0 if _locked else Input.get_axis(&"move_left", &"move_right")
-	_apply_horizontal(axis, delta)
+	var axis: float = 0.0 if _movement_blocked() else Input.get_axis(&"move_left", &"move_right")
+	if _hurt_timer <= 0.0:
+		_apply_horizontal(axis, delta)
 	_apply_gravity(delta)
 	_handle_jump(delta)
 	var was_on_floor: bool = is_on_floor()
@@ -77,6 +109,9 @@ func _physics_process(delta: float) -> void:
 	_update_facing(axis)
 	_update_state(axis)
 	_update_look_ahead(axis, delta)
+	_process_hurtbox(delta)
+	_update_flashlight(delta)
+	_update_interaction()
 
 
 func set_input_locked(locked: bool) -> void:
@@ -89,6 +124,18 @@ func set_input_locked(locked: bool) -> void:
 
 func is_input_locked() -> bool:
 	return _locked
+
+
+func is_invincible() -> bool:
+	return _invincible_left > 0.0
+
+
+func is_flashlight_on() -> bool:
+	return _flashlight_on
+
+
+func interaction_target() -> Interactable:
+	return _interaction_target
 
 
 func set_camera_limits(rect_px: Rect2i) -> void:
@@ -124,6 +171,25 @@ func _build_animations() -> void:
 	_sprite.sprite_frames = SpriteSheet.build_frames(texture, FRAME_SIZE, ANIMATION_ROWS)
 
 
+func _setup_sensor() -> void:
+	var shape: Shape2D = _sensor_shape.shape
+	if shape is CircleShape2D:
+		(shape as CircleShape2D).radius = Balance.INTERACT_RANGE
+
+
+func _setup_flashlight() -> void:
+	_flashlight.texture = AssetResolver.texture(LIGHT_TEXTURE)
+	if _flashlight.texture == null:
+		push_warning("MU7: textura de luz ausente em %s" % LIGHT_TEXTURE)
+	_flashlight.color = Balance.FLASHLIGHT_COLOR
+	_flashlight.blend_mode = Light2D.BLEND_MODE_ADD
+	_flashlight.shadow_enabled = true
+	_flashlight.shadow_filter = Light2D.SHADOW_FILTER_PCF5
+	_flashlight.texture_scale = LightMath.scale_for_radius(
+		Balance.VISION_RADIUS_OFF, LightMath.TEXTURE_SIZE
+	)
+
+
 func _apply_camera_limits() -> void:
 	_camera.limit_left = _camera_limits.position.x
 	_camera.limit_top = _camera_limits.position.y
@@ -146,7 +212,7 @@ func _apply_gravity(delta: float) -> void:
 
 func _handle_jump(delta: float) -> void:
 	_jump_assist.update(delta, is_on_floor())
-	if _locked:
+	if _movement_blocked():
 		return
 	var pressed: bool = Input.is_action_just_pressed(&"jump")
 	if pressed and _try_drop_through():
@@ -187,6 +253,150 @@ func _update_drop_through(delta: float) -> void:
 	set_collision_mask_value(ONE_WAY_BIT, true)
 
 
+func _update_timers(delta: float) -> void:
+	if _hurt_timer > 0.0:
+		_hurt_timer = maxf(0.0, _hurt_timer - delta)
+	if _invincible_left <= 0.0:
+		return
+	_invincible_left = maxf(0.0, _invincible_left - delta)
+	_blink_timer += delta
+	if _invincible_left <= 0.0:
+		_blink_timer = 0.0
+		_sprite.visible = true
+		return
+	_sprite.visible = fmod(_blink_timer, BLINK_INTERVAL * 2.0) < BLINK_INTERVAL
+
+
+func _movement_blocked() -> bool:
+	return _locked or _dead or _hurt_timer > 0.0
+
+
+func _process_hurtbox(delta: float) -> void:
+	if _dead:
+		_damage_accumulator = 0.0
+		return
+	var per_second: float = 0.0
+	for area: Area2D in _hurtbox.get_overlapping_areas():
+		if not (area is DamageArea):
+			continue
+		var source: DamageArea = area
+		if source.hurts_over_time():
+			per_second += source.damage_per_second
+		if not source.hurts_on_contact() or _invincible_left > 0.0:
+			continue
+		GameState.apply_damage(source.contact_damage)
+		source.notify_status()
+		_start_hurt(source.global_position, source.knockback)
+	if per_second <= 0.0:
+		_damage_accumulator = 0.0
+		return
+	var dealt: Vector2 = Vitals.accumulate(_damage_accumulator, per_second, delta)
+	_damage_accumulator = dealt.y
+	if dealt.x > 0.0:
+		GameState.apply_damage(int(dealt.x))
+
+
+func _start_hurt(source: Vector2, push: bool) -> void:
+	_invincible_left = Balance.INVULNERABLE_TIME
+	_blink_timer = 0.0
+	AudioManager.play_sfx(&"damage")
+	if _dead:
+		return
+	play_action(&"hurt")
+	if not push:
+		return
+	var direction: float = signf(global_position.x - source.x)
+	if is_zero_approx(direction):
+		direction = -float(facing)
+	velocity = Vector2(direction * Balance.KNOCKBACK_SPEED, -Balance.KNOCKBACK_SPEED)
+	_hurt_timer = Balance.SR3_KNOCKBACK_LOCK
+	_jump_assist.cancel()
+
+
+func _update_flashlight(delta: float) -> void:
+	if not _locked and not _dead and Input.is_action_just_pressed(&"flashlight"):
+		_toggle_flashlight()
+	if not _flashlight_on:
+		return
+	var cost: float = LightMath.drain_for(delta, Balance.FLASHLIGHT_DRAIN)
+	if not GameState.spend_charge(cost):
+		_set_flashlight(false)
+
+
+func _toggle_flashlight() -> void:
+	if _flashlight_on:
+		_set_flashlight(false)
+		return
+	if not LightMath.can_enable(GameState.charge, Balance.FLASHLIGHT_DRAIN):
+		AudioManager.play_sfx(&"ui_back")
+		return
+	_set_flashlight(true)
+
+
+func _set_flashlight(on: bool) -> void:
+	if _flashlight_on == on:
+		return
+	_flashlight_on = on
+	AudioManager.play_sfx(&"flashlight")
+	var radius: float = Balance.VISION_RADIUS_ON if on else Balance.VISION_RADIUS_OFF
+	if _light_tween != null and _light_tween.is_valid():
+		_light_tween.kill()
+	_light_tween = create_tween()
+	_light_tween.tween_property(
+		_flashlight,
+		"texture_scale",
+		LightMath.scale_for_radius(radius, LightMath.TEXTURE_SIZE),
+		Balance.LIGHT_FADE_TIME
+	)
+	EventBus.flashlight_toggled.emit(on)
+
+
+func _update_interaction() -> void:
+	var target: Interactable = null
+	if not _interaction_blocked():
+		target = _pick_interaction_target()
+	_interaction_target = target
+	var prompt: String = ""
+	if target != null:
+		prompt = InteractionRules.prompt(InteractionRules.glyph(_joypad), target.prompt_text)
+	if prompt != _interaction_prompt:
+		_interaction_prompt = prompt
+		if prompt.is_empty():
+			EventBus.interaction_cleared.emit()
+		else:
+			EventBus.interaction_available.emit(prompt)
+	if target == null or not is_on_floor():
+		return
+	if not Input.is_action_just_pressed(&"interact"):
+		return
+	play_action(&"interact")
+	AudioManager.play_sfx(&"interact")
+	target.interact(self)
+
+
+func _pick_interaction_target() -> Interactable:
+	var candidates: Array[Interactable] = []
+	var positions := PackedVector2Array()
+	var enabled := PackedInt32Array()
+	var priorities := PackedInt32Array()
+	for area: Area2D in _sensor.get_overlapping_areas():
+		if not (area is Interactable):
+			continue
+		var candidate: Interactable = area
+		candidates.append(candidate)
+		positions.append(candidate.global_position)
+		enabled.append(1 if candidate.enabled else 0)
+		priorities.append(candidate.interaction_priority)
+	var index: int = InteractionRules.pick_index(positions, enabled, priorities, global_position)
+	if index < 0:
+		return null
+	return candidates[index]
+
+
+func _interaction_blocked() -> bool:
+	return _locked or _dead or _hurt_timer > 0.0 or DialogueManager.freezes_timer()
+
+
 func _land() -> void:
 	AudioManager.play_sfx(&"land")
 	_set_state(State.LAND)
@@ -200,7 +410,7 @@ func _update_facing(axis: float) -> void:
 
 
 func _update_state(axis: float) -> void:
-	if _state == State.ACTION:
+	if _dead or _state == State.ACTION:
 		return
 	if _state == State.LAND and is_on_floor():
 		return
@@ -235,6 +445,8 @@ func _play(anim: StringName) -> void:
 
 
 func _on_animation_finished() -> void:
+	if _dead:
+		return
 	if _state != State.LAND and _state != State.ACTION:
 		return
 	_state = State.IDLE
@@ -256,3 +468,64 @@ func _on_dialogue_started() -> void:
 
 func _on_dialogue_finished() -> void:
 	set_input_locked(false)
+
+
+func _on_player_died() -> void:
+	if _dead:
+		return
+	_dead = true
+	set_input_locked(true)
+	velocity = Vector2.ZERO
+	_hurt_timer = 0.0
+	_invincible_left = 0.0
+	_blink_timer = 0.0
+	_damage_accumulator = 0.0
+	_sprite.visible = true
+	_set_flashlight(false)
+	play_action(&"death")
+
+
+func _on_player_respawned() -> void:
+	var spawn: Variant = _respawn_position()
+	if spawn != null:
+		global_position = spawn
+	_dead = false
+	_locked = false
+	velocity = Vector2.ZERO
+	_hurt_timer = 0.0
+	_damage_accumulator = 0.0
+	_invincible_left = Balance.INVULNERABLE_TIME
+	_blink_timer = 0.0
+	_look_ahead = 0.0
+	_jump_assist.cancel()
+	_state = State.ACTION
+	_set_state(State.IDLE)
+	_camera.position.x = 0.0
+	snap_camera()
+	AudioManager.play_sfx(&"respawn")
+
+
+func _respawn_position() -> Variant:
+	var dock: BackupDock = _find_checkpoint_dock()
+	if dock != null:
+		return dock.spawn_position()
+	for node: Node in get_tree().get_nodes_in_group(&"level"):
+		if node.has_method("spawn_position"):
+			return node.call("spawn_position")
+	return null
+
+
+func _find_checkpoint_dock() -> BackupDock:
+	var wanted: String = String(GameState.checkpoint.get("dock_id", ""))
+	var fallback: BackupDock = null
+	for node: Node in get_tree().get_nodes_in_group(&"backup_dock"):
+		if not (node is BackupDock):
+			continue
+		var dock: BackupDock = node
+		if fallback == null:
+			fallback = dock
+		if String(dock.dock_id) == wanted:
+			return dock
+	if wanted.is_empty():
+		return null
+	return fallback

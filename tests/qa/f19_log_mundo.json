@@ -1,0 +1,9 @@
+[
+  { "frame": 20, "action": "move_right", "pressed": true },
+  { "frame": 238, "action": "move_right", "pressed": false },
+  { "frame": 660, "screenshot": "f19_13_prompt_ler" },
+  { "frame": 670, "action": "interact", "pressed": true },
+  { "frame": 672, "action": "interact", "pressed": false },
+  { "frame": 720, "screenshot": "f19_14_log_no_mundo" },
+  { "frame": 740, "quit": true }
+]

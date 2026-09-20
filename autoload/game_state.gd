@@ -2,6 +2,7 @@ extends Node
 
 const SAVE_VERSION: int = 1
 const LEVELS_PREFIX: String = "res://scenes/levels/"
+const LEVEL_GROUP: StringName = &"level"
 
 var reactor_percent: float = Balance.REACTOR_START
 var integrity: int = Balance.INTEGRITY_MAX
@@ -24,6 +25,11 @@ var _paused: bool = false
 var _dialogue_active: bool = false
 var _log_open: bool = false
 var _died_emitted: bool = false
+var _critical: bool = false
+var _alarm_left: float = 0.0
+var _game_over_sent: bool = false
+var _last_display: int = -1
+var _objectives: Dictionary = {}
 
 
 func _ready() -> void:
@@ -32,16 +38,18 @@ func _ready() -> void:
 	EventBus.dialogue_finished.connect(_on_dialogue_finished)
 	EventBus.log_opened.connect(_on_log_opened)
 	EventBus.log_closed.connect(_on_log_closed)
+	EventBus.sector_restored.connect(_on_sector_restored)
+	EventBus.collectible_picked.connect(_on_collectible_picked)
+	EventBus.player_died.connect(_on_player_died)
+	EventBus.player_respawned.connect(_on_player_respawned)
 	new_game()
 
 
 func _process(delta: float) -> void:
-	var scene: Node = get_tree().current_scene
-	if scene == null:
-		return
-	if not scene.scene_file_path.begins_with(LEVELS_PREFIX):
+	if not is_in_level():
 		return
 	play_time += delta
+	_tick_reactor(delta)
 
 
 func new_game() -> void:
@@ -62,13 +70,45 @@ func new_game() -> void:
 	flags = {}
 	current_objective = ""
 	_died_emitted = false
+	_reset_reactor_runtime()
 	EventBus.integrity_changed.emit(integrity, integrity_max)
 	EventBus.charge_changed.emit(charge, charge_max)
 	EventBus.reactor_changed.emit(reactor_percent)
+	EventBus.reactor_critical.emit(_critical)
 
 
 func is_timer_frozen() -> bool:
-	return _paused or _dialogue_active or _log_open or Settings.no_timer
+	if _paused or _dialogue_active or _log_open or Settings.no_timer:
+		return true
+	return _dialogue_blocks_timer()
+
+
+func is_reactor_online() -> bool:
+	return bool(flags.get("reactor_online", false))
+
+
+func set_reactor_online(online: bool) -> void:
+	if is_reactor_online() == online:
+		return
+	flags["reactor_online"] = online
+	_alarm_left = 0.0
+	EventBus.reactor_changed.emit(reactor_percent)
+
+
+func is_in_level() -> bool:
+	var tree: SceneTree = get_tree()
+	if tree == null:
+		return false
+	var scene: Node = tree.current_scene
+	if scene == null:
+		return false
+	if scene.is_in_group(LEVEL_GROUP):
+		return true
+	return scene.scene_file_path.begins_with(LEVELS_PREFIX)
+
+
+func is_reactor_running() -> bool:
+	return is_reactor_online() and is_in_level() and not is_timer_frozen()
 
 
 func is_dead() -> bool:
@@ -76,7 +116,7 @@ func is_dead() -> bool:
 
 
 func apply_damage(amount: int) -> void:
-	var scaled: int = roundi(amount * Settings.damage_multiplier())
+	var scaled: int = Vitals.scale_damage(amount, Settings.damage_multiplier())
 	if scaled <= 0 or integrity <= 0:
 		return
 	integrity = clampi(integrity - scaled, 0, integrity_max)
@@ -84,7 +124,16 @@ func apply_damage(amount: int) -> void:
 	EventBus.integrity_changed.emit(integrity, integrity_max)
 	if integrity == 0 and not _died_emitted:
 		_died_emitted = true
+		deaths += 1
 		EventBus.player_died.emit()
+
+
+func revive() -> void:
+	integrity = Vitals.respawn_integrity(integrity_max, Balance.RESPAWN_INTEGRITY_RATIO)
+	charge = Vitals.respawn_charge(charge_max, Balance.RESPAWN_CHARGE_RATIO)
+	_died_emitted = false
+	EventBus.integrity_changed.emit(integrity, integrity_max)
+	EventBus.charge_changed.emit(charge, charge_max)
 
 
 func repair(amount: int) -> void:
@@ -114,15 +163,34 @@ func spend_charge(value: float) -> bool:
 
 
 func change_reactor(amount: float) -> void:
-	var updated: float = clampf(reactor_percent + amount, 0.0, Balance.REACTOR_START)
-	if is_equal_approx(updated, reactor_percent):
-		return
-	reactor_percent = updated
-	EventBus.reactor_changed.emit(reactor_percent)
+	reactor_percent = ReactorClock.apply_delta(reactor_percent, amount, Balance.REACTOR_START)
+	_after_reactor_change(true)
 
 
 func reactor_multiplier() -> float:
 	return Settings.reactor_decay_multiplier()
+
+
+func set_objective(id: StringName) -> void:
+	var text: String = Objectives.text_for(id, _objective_table())
+	if text.is_empty():
+		push_warning("GameState: objetivo desconhecido '%s'" % id)
+		return
+	if text == current_objective:
+		return
+	current_objective = text
+	EventBus.objective_changed.emit(text)
+
+
+func clear_objective() -> void:
+	if current_objective.is_empty():
+		return
+	current_objective = ""
+	EventBus.objective_changed.emit(current_objective)
+
+
+func is_reactor_critical() -> bool:
+	return _critical
 
 
 func register_pickup(kind: StringName, item_id: StringName) -> bool:
@@ -186,9 +254,13 @@ func from_dict(data: Dictionary) -> void:
 	flags = Dictionary(data.get("flags", {})).duplicate(true)
 	current_objective = String(data.get("current_objective", ""))
 	_died_emitted = integrity <= 0
+	_reset_reactor_runtime()
+	_game_over_sent = reactor_percent <= 0.0
 	EventBus.integrity_changed.emit(integrity, integrity_max)
 	EventBus.charge_changed.emit(charge, charge_max)
 	EventBus.reactor_changed.emit(reactor_percent)
+	EventBus.reactor_critical.emit(_critical)
+	EventBus.objective_changed.emit(current_objective)
 
 
 func _names_to_strings(values: Array) -> Array:
@@ -204,6 +276,84 @@ func _strings_to_names(values: Variant) -> Array[StringName]:
 		for value: Variant in values:
 			result.append(StringName(value))
 	return result
+
+
+func _objective_table() -> Dictionary:
+	if _objectives.is_empty():
+		_objectives = Objectives.load_all()
+	return _objectives
+
+
+func _dialogue_blocks_timer() -> bool:
+	if not is_instance_valid(DialogueManager):
+		return false
+	if DialogueManager.has_method("freezes_timer"):
+		return bool(DialogueManager.call("freezes_timer"))
+	if DialogueManager.has_method("is_active"):
+		return bool(DialogueManager.call("is_active"))
+	return false
+
+
+func _reset_reactor_runtime() -> void:
+	_critical = ReactorClock.is_critical(reactor_percent, Balance.REACTOR_CRITICAL)
+	_alarm_left = 0.0
+	_game_over_sent = false
+	_last_display = ReactorClock.display_percent(reactor_percent)
+
+
+func _tick_reactor(delta: float) -> void:
+	if not is_reactor_running():
+		return
+	reactor_percent = ReactorClock.step(
+		reactor_percent, delta, Balance.REACTOR_DECAY_INTERVAL, reactor_multiplier()
+	)
+	_update_alarm(delta)
+	_after_reactor_change(false)
+
+
+func _update_alarm(delta: float) -> void:
+	if not _critical:
+		_alarm_left = 0.0
+		return
+	_alarm_left -= delta
+	if _alarm_left > 0.0:
+		return
+	_alarm_left = Balance.REACTOR_ALARM_INTERVAL
+	AudioManager.play_sfx(&"reactor_alarm")
+
+
+func _after_reactor_change(force: bool) -> void:
+	var display: int = ReactorClock.display_percent(reactor_percent)
+	if force or display != _last_display:
+		_last_display = display
+		EventBus.reactor_changed.emit(reactor_percent)
+	var critical: bool = ReactorClock.is_critical(reactor_percent, Balance.REACTOR_CRITICAL)
+	if critical != _critical:
+		_critical = critical
+		_alarm_left = 0.0
+		EventBus.reactor_critical.emit(critical)
+	if reactor_percent > 0.0 or _game_over_sent:
+		return
+	_game_over_sent = true
+	EventBus.game_over.emit(&"reactor")
+
+
+func _on_sector_restored(_sector_id: StringName) -> void:
+	change_reactor(Balance.REACTOR_SECTOR_BONUS)
+
+
+func _on_collectible_picked(kind: StringName, _item_id: StringName) -> void:
+	if kind != &"log":
+		return
+	change_reactor(Balance.REACTOR_LOG_BONUS)
+
+
+func _on_player_died() -> void:
+	change_reactor(-Balance.REACTOR_DEATH_PENALTY)
+
+
+func _on_player_respawned() -> void:
+	revive()
 
 
 func _on_game_paused(paused: bool) -> void:

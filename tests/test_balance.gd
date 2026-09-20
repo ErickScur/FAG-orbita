@@ -75,6 +75,7 @@ const EXPECTED: Dictionary = {
 	"BEAM_RANGE": 32.0,
 	"LAMP_RADIUS": 96.0,
 	"LAMP_ENERGY": 0.9,
+	"LIGHT_FADE_TIME": 0.15,
 	"PLATFORM_WAIT": 0.6,
 	"SECRET_WALL_FADE_TIME": 0.3,
 	"SECRET_WALL_ALPHA": 0.25,
@@ -91,6 +92,9 @@ const EXPECTED: Dictionary = {
 	"DISCHARGE_TIME": 3.0,
 	"OVERLOAD_TIME": 10.0,
 	"OVERLOAD_SPEED_MULT": 1.3,
+	"DIALOGUE_CPS": 40.0,
+	"DIALOGUE_READ_CPS": 15.0,
+	"DIALOGUE_AMBIENT_MIN_TIME": 2.0,
 }
 
 
@@ -104,6 +108,11 @@ func test_constants_match_gdd() -> void:
 
 func test_ambient_dark_color() -> void:
 	assert_eq(Balance.AMBIENT_DARK, Color("191d26"), "AMBIENT_DARK")
+
+
+func test_light_colors() -> void:
+	assert_eq(Balance.LAMP_COLOR, Color("bfe6ff"), "LAMP_COLOR")
+	assert_eq(Balance.FLASHLIGHT_COLOR, Color("cfeaf2"), "FLASHLIGHT_COLOR")
 
 
 func test_difficulty_dictionaries() -> void:

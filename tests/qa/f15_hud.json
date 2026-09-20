@@ -1,0 +1,14 @@
+[
+  {"frame": 10, "screenshot": "f15_01_inicial"},
+  {"frame": 40, "screenshot": "f15_02_reator"},
+  {"frame": 70, "screenshot": "f15_03_dano"},
+  {"frame": 100, "screenshot": "f15_04_status"},
+  {"frame": 130, "screenshot": "f15_04b_status_contagem"},
+  {"frame": 160, "screenshot": "f15_05_prompt"},
+  {"frame": 200, "screenshot": "f15_06_toast_log"},
+  {"frame": 240, "screenshot": "f15_07_objetivo"},
+  {"frame": 280, "screenshot": "f15_08_critico"},
+  {"frame": 284, "screenshot": "f15_08b_critico_pulso"},
+  {"frame": 330, "screenshot": "f15_09_sem_prompt"},
+  {"frame": 340, "quit": true}
+]

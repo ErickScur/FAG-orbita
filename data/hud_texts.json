@@ -1,0 +1,15 @@
+{
+  "reactor_title": "ESTABILIDADE DO REATOR: %d%%",
+  "reactor_falling": "descendo",
+  "reactor_frozen": "congelado",
+  "reactor_no_timer": "SEM TIMER",
+  "charge_label": "CARGA",
+  "counter_logs": "LOGS %02d/%02d",
+  "counter_research": "DADOS %02d/%02d",
+  "toast_log": "FRAGMENTO DE LOG %02d/%02d",
+  "toast_research": "DADO DE PESQUISA %02d/%02d",
+  "toast_objective": "OBJETIVO ATUALIZADO",
+  "toast_charge": "+%d CARGA",
+  "toast_integrity": "+%d INTEGRIDADE",
+  "toast_capacity": "CAPACIDADE MÁXIMA +%d"
+}

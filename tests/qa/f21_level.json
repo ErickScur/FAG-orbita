@@ -1,0 +1,9 @@
+[
+  { "frame": 12, "screenshot": "f21_01_sala" },
+  { "frame": 20, "action": "move_right", "pressed": true },
+  { "frame": 150, "screenshot": "f21_02_bark_andando" },
+  { "frame": 260, "screenshot": "f21_03_entidades" },
+  { "frame": 400, "action": "move_right", "pressed": false },
+  { "frame": 430, "screenshot": "f21_04_camera_limite" },
+  { "frame": 440, "quit": true }
+]

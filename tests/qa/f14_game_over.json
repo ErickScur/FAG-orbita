@@ -1,0 +1,5 @@
+[
+  {"frame": 6, "screenshot": "f14_07_quase_zero"},
+  {"frame": 200, "screenshot": "f14_08_game_over"},
+  {"frame": 210, "quit": true}
+]

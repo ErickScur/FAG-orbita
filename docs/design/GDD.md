@@ -535,7 +535,10 @@ Toda vez que a dificuldade sobe demais, o jogador ganha um upgrade que faz o con
 | `INTERACT_RANGE` | 20 | px | AJ-006 |
 | `DEATH_DELAY` | 1.2 | s | AJ-006 |
 | `SCENE_FADE_TIME` | 0.4 | s | AJ-006 |
-| `LOADING_MIN_TIME` | 1.6 | s | AJ-018 | 2026-09-19 | GDD-P | Constantes de sensação do plataforma (aceleração/desaceleração no chão e no ar, corte do pulo, velocidade terminal, descida de plataforma fina, deslocamento e velocidade da antecipação da câmera) | Necessárias para o movimento do MU-7 ter peso; o GDD só definia velocidade, gravidade e altura de pulo |
+| `LOADING_MIN_TIME` | 1.6 | s | AJ-017 |
+| AJ-020 | 2026-09-19 | GDD-P | Velocidade de digitação do diálogo, tempo mínimo de fala ambiente, cores e fade das luzes | Números de apresentação que o GDD descrevia em palavras ("legenda", "luz fria") |
+| AJ-019 | 2026-09-19 | GDD-P | Ritmo do alarme do reator, duração do aviso do HUD, frequência do pulso crítico e do bipe de integridade baixa | Números de feedback do HUD/áudio que o GDD descrevia só em palavras |
+| AJ-018 | 2026-09-19 | GDD-P | Constantes de sensação do plataforma (aceleração/desaceleração no chão e no ar, corte do pulo, velocidade terminal, descida de plataforma fina, deslocamento e velocidade da antecipação da câmera) | Necessárias para o movimento do MU-7 ter peso; o GDD só definia velocidade, gravidade e altura de pulo |
 | AJ-017 |
 | `SPLASH_TIME` | 2.5 | s | AJ-006 |
 | `MUSIC_FADE_TIME` | 1.5 | s | AJ-006 |
@@ -561,6 +564,16 @@ Toda vez que a dificuldade sobe demais, o jogador ganha um upgrade que faz o con
 | `WALK_DECEL` | 1200.0 | px/s² | AJ-018 |
 | `AIR_ACCEL_RATIO` | 0.7 | fator | AJ-018 |
 | `DROP_THROUGH_TIME` | 0.2 | s | AJ-018 |
+| `REACTOR_ALARM_INTERVAL` | 4.0 | s | AJ-019 |
+| `HUD_TOAST_TIME` | 2.0 | s | AJ-019 |
+| `HUD_PULSE_HZ` | 2.0 | Hz | AJ-019 |
+| `LOW_INTEGRITY_BEEP_INTERVAL` | 1.5 | s | AJ-019 |
+| `LIGHT_FADE_TIME` | 0.15 | s | AJ-020 |
+| `LAMP_COLOR` | bfe6ff | cor | AJ-020 |
+| `FLASHLIGHT_COLOR` | cfeaf2 | cor | AJ-020 |
+| `DIALOGUE_CPS` | 40.0 | car/s | AJ-020 |
+| `DIALOGUE_READ_CPS` | 15.0 | car/s | AJ-020 |
+| `DIALOGUE_AMBIENT_MIN_TIME` | 2.0 | s | AJ-020 |
 | `SR3_SPEED` | 40 | px/s | AJ-012 |
 | `SR3_KNOCKBACK_X` | 120 | px/s | AJ-012 |
 | `SR3_KNOCKBACK_Y` | 120 | px/s | AJ-012 |

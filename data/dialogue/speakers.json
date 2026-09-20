@@ -1,0 +1,7 @@
+{
+  "speakers": {
+    "orbita": { "name": "ÓRBITA", "color": "#7fe3f0", "degraded": false },
+    "helena": { "name": "DRA. HELENA VASQUEZ", "color": "#f0c27f", "degraded": true },
+    "system": { "name": "ARTEMIS", "color": "#c8c8c8", "degraded": false }
+  }
+}
