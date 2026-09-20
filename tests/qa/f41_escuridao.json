@@ -1,0 +1,16 @@
+[
+  {"frame": 40, "screenshot": "f41_01_nucleo_escuro_sem_lanterna"},
+  {"frame": 50, "action": "flashlight", "pressed": true},
+  {"frame": 52, "action": "flashlight", "pressed": false},
+  {"frame": 80, "screenshot": "f41_02_nucleo_escuro_com_lanterna"},
+  {"frame": 90, "scene": "res://tests/qa/scenes/dark_probe_greenhouse.tscn"},
+  {"frame": 140, "screenshot": "f41_03_estufa_escura_sem_lanterna"},
+  {"frame": 150, "action": "flashlight", "pressed": true},
+  {"frame": 152, "action": "flashlight", "pressed": false},
+  {"frame": 180, "screenshot": "f41_04_estufa_escura_com_lanterna"},
+  {"frame": 190, "scene": "res://tests/qa/scenes/dark_probe_core_lit.tscn"},
+  {"frame": 240, "screenshot": "f41_05_nucleo_iluminado"},
+  {"frame": 250, "scene": "res://tests/qa/scenes/dark_probe_greenhouse_lit.tscn"},
+  {"frame": 300, "screenshot": "f41_06_estufa_iluminada"},
+  {"frame": 330, "quit": true}
+]

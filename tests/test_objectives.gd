@@ -24,12 +24,12 @@ func test_load_all_has_demo_ids() -> void:
 func test_text_for_known() -> void:
 	assert_eq(
 		Objectives.text_for(&"obj_greenhouse", _table),
-		"Religar o Nó do Setor da Estufa",
+		"Religar o Nó da Estufa",
 		"texto com acentos"
 	)
 	assert_eq(
 		Objectives.text_for(&"obj_core_hub", _table),
-		"Atravessar o Núcleo Central e chegar à Estufa",
+		"Chegar à Estufa",
 		"objetivo do Núcleo"
 	)
 

@@ -3,6 +3,11 @@ extends CanvasLayer
 signal closed()
 
 const ROW_HEIGHT: float = 17.0
+const ROW_HEIGHT_MUTE: float = 19.0
+const LIST_SEPARATION: int = 1
+const LIST_SEPARATION_MUTE: int = 2
+const MESSAGE_HEIGHT: float = 26.0
+const MESSAGE_HEIGHT_MUTE: float = 13.0
 const LAMP_SIZE: Vector2 = Vector2(8.0, 8.0)
 const CELL_SIZE: Vector2 = Vector2(6.0, 10.0)
 const TAG_WIDTH: float = 46.0
@@ -48,6 +53,7 @@ var _costs: Array[Label] = []
 var _states: Array[Label] = []
 var _cells: Array[ColorRect] = []
 var _trap: FocusTrap = FocusTrap.new()
+var _verbose: bool = false
 var _selected: int = -1
 var _message_left: float = 0.0
 var _opened_frame: int = -1
@@ -108,6 +114,8 @@ func open(terminal_id: StringName, network: EnergyNetwork) -> void:
 		close()
 		return
 	_title.text = _grid.title
+	_verbose = _grid.verbose
+	_apply_mode()
 	_build_rows()
 	_refresh()
 	_opened_frame = Engine.get_process_frames()
@@ -147,6 +155,16 @@ func system_rows() -> Array[Button]:
 	return _rows.duplicate()
 
 
+func _apply_mode() -> void:
+	_description.visible = _verbose
+	_message.custom_minimum_size = Vector2(
+		0.0, MESSAGE_HEIGHT if _verbose else MESSAGE_HEIGHT_MUTE
+	)
+	_list.add_theme_constant_override(
+		&"separation", LIST_SEPARATION if _verbose else LIST_SEPARATION_MUTE
+	)
+
+
 func _build_rows() -> void:
 	for child: Node in _list.get_children():
 		_list.remove_child(child)
@@ -166,7 +184,7 @@ func _build_rows() -> void:
 func _make_row(index: int) -> Button:
 	var button := Button.new()
 	button.name = "Row%d" % index
-	button.custom_minimum_size = Vector2(0.0, ROW_HEIGHT)
+	button.custom_minimum_size = Vector2(0.0, ROW_HEIGHT if _verbose else ROW_HEIGHT_MUTE)
 	button.focus_mode = Control.FOCUS_ALL
 	button.pressed.connect(_on_row_pressed.bind(index))
 	button.focus_entered.connect(_on_row_focused.bind(index))
@@ -185,6 +203,7 @@ func _make_row(index: int) -> Button:
 	tag.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	tag.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	tag.clip_text = true
+	tag.visible = _verbose
 	var title := Label.new()
 	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	title.size_flags_vertical = Control.SIZE_SHRINK_CENTER
@@ -267,7 +286,7 @@ func _refresh_row(index: int) -> void:
 	_names[index].add_theme_color_override(&"font_color", tint)
 	_costs[index].add_theme_color_override(&"font_color", tint)
 	_states[index].add_theme_color_override(&"font_color", tint)
-	var goal: bool = _grid.goal_systems().has(system_id)
+	var goal: bool = _verbose and _grid.goal_systems().has(system_id)
 	_tags[index].add_theme_color_override(
 		&"font_color", COLOR_GOAL if goal and not locked else tint
 	)
@@ -275,16 +294,18 @@ func _refresh_row(index: int) -> void:
 
 func _refresh_goal() -> void:
 	var text: String = _grid.goal_line()
-	if text.is_empty():
-		_goal.text = ""
-		return
 	var done: bool = _grid.goal_met()
+	if text.is_empty() or (not _verbose and not done):
+		_goal.text = ""
+		_goal.visible = false
+		return
+	_goal.visible = true
 	_goal.text = (TEXT_GOAL_DONE if done else TEXT_GOAL) % text
 	_goal.add_theme_color_override(&"font_color", COLOR_ON if done else COLOR_GOAL)
 
 
 func _refresh_description() -> void:
-	if _selected < 0 or _selected >= _ids.size():
+	if not _verbose or _selected < 0 or _selected >= _ids.size():
 		_description.text = ""
 		return
 	var system_id: StringName = _ids[_selected]
@@ -301,7 +322,7 @@ func _refresh_description() -> void:
 
 
 func _refresh_hint() -> void:
-	if _selected < 0 or _selected >= _ids.size():
+	if not _verbose or _selected < 0 or _selected >= _ids.size():
 		_message.text = ""
 		return
 	var names: String = _candidate_names(_ids[_selected])
@@ -351,7 +372,7 @@ func _report(system_id: StringName, outcome: Dictionary) -> void:
 func _failure_text(system_id: StringName, code: int) -> String:
 	match code:
 		EnergyGrid.Result.NO_BUDGET:
-			var names: String = _candidate_names(system_id)
+			var names: String = _candidate_names(system_id) if _verbose else ""
 			return TEXT_NO_BUDGET if names.is_empty() else TEXT_NO_BUDGET_LIST % names
 		EnergyGrid.Result.MISSING_DEPENDENCY:
 			return TEXT_REQUIRES % _grid.system_name(_grid.missing_requirement(system_id))

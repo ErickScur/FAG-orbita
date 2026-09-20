@@ -15,6 +15,7 @@ const TUTORIAL_ORDER: Array[String] = [
 	"tut_jump",
 	"tut_drop",
 	"tut_interact",
+	"tut_chassis",
 	"tut_flashlight",
 	"tut_terminal",
 ]

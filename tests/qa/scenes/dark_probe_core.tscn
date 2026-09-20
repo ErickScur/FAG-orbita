@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0rbitadarkprobecore"]
+
+[ext_resource type="Script" path="res://tests/qa/scenes/dark_probe.gd" id="1_darkprobe"]
+
+[node name="DarkProbeCore" type="Node2D"]
+script = ExtResource("1_darkprobe")
+level_scene = "res://scenes/levels/core_hub.tscn"
+spawn_tile = Vector2i(43, 11)
+start_charge = 60.0
+silenced_sequences = Array[StringName]([&"core_wake"])
+terminal_id = &"core_hub"
+unpowered_systems = Array[StringName]([&"lights_core"])

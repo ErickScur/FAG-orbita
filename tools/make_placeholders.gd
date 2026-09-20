@@ -4,6 +4,7 @@ const MANIFEST_PATH: String = "res://tools/placeholders.json"
 const ASSETS_ROOT: String = "res://assets/"
 const PLACEHOLDER_ROOT: String = "res://assets/placeholder/"
 const TRANSPARENT: Color = Color(0.0, 0.0, 0.0, 0.0)
+const RADIAL_PLATEAU: float = 0.25
 const GLYPHS: Dictionary = {
 	"O": ["01110", "10001", "10001", "10001", "10001", "10001", "01110"],
 	"R": ["11110", "10001", "10001", "11110", "10100", "10010", "10001"],
@@ -611,62 +612,63 @@ func _draw_hud_icon(
 func _draw_tile(
 	image: Image, origin: Vector2i, size: Vector2i, palette: Dictionary, col: int, row: int
 ) -> void:
-	var base: Color = palette.get("base", Color.BLACK)
 	var secondary: Color = palette.get("secondary", Color.GRAY)
+	var body: Color = palette.get("tile", secondary)
+	var back: Color = palette.get("tile_back", _shade(body, -0.55))
 	var accent: Color = palette.get("accent", Color.CYAN)
 	var danger: Color = palette.get("danger", Color.YELLOW)
 	var outline: Color = palette.get("outline", Color.BLACK)
 	var index: int = row * 8 + col
 	if index < 16:
-		_fill_rect(image, origin.x, origin.y, size.x, size.y, secondary)
-		_fill_rect(image, origin.x + 2, origin.y + 2, size.x - 4, size.y - 4, _shade(secondary, -0.38))
-		var edge: Color = _shade(secondary.lerp(accent, 0.3), 0.22)
+		_fill_rect(image, origin.x, origin.y, size.x, size.y, _shade(body, 0.12))
+		_fill_rect(image, origin.x + 2, origin.y + 2, size.x - 4, size.y - 4, body)
+		var edge: Color = _shade(body.lerp(accent, 0.22), 0.3)
 		if index & 1 == 0:
 			_fill_rect(image, origin.x, origin.y, size.x, 2, edge)
 		if index & 2 == 0:
 			_fill_rect(image, origin.x + size.x - 2, origin.y, 2, size.y, edge)
 		if index & 4 == 0:
-			_fill_rect(image, origin.x, origin.y + size.y - 2, size.x, 2, _shade(secondary, -0.6))
+			_fill_rect(image, origin.x, origin.y + size.y - 2, size.x, 2, _shade(body, -0.42))
 		if index & 8 == 0:
 			_fill_rect(image, origin.x, origin.y, 2, size.y, edge)
-		_put(image, origin.x + 5, origin.y + 8, _shade(secondary, 0.5))
-		_put(image, origin.x + 10, origin.y + 11, _shade(secondary, -0.55))
-		_put(image, origin.x + 8, origin.y + 5, _shade(secondary, -0.55))
+		_put(image, origin.x + 5, origin.y + 8, _shade(body, 0.4))
+		_put(image, origin.x + 10, origin.y + 11, _shade(body, -0.4))
+		_put(image, origin.x + 8, origin.y + 5, _shade(body, -0.4))
 		return
 	match index:
 		16:
-			_fill_rect(image, origin.x, origin.y + 2, size.x, 4, _shade(secondary, 0.1))
-			_stroke_rect(image, origin.x, origin.y + 2, size.x, 4, outline)
+			_fill_rect(image, origin.x, origin.y + 2, size.x, 4, _shade(body, 0.34))
+			_stroke_rect(image, origin.x, origin.y + 2, size.x, 4, _shade(body, -0.5))
 			for slot: int in range(2, size.x - 2, 4):
-				_fill_rect(image, origin.x + slot, origin.y + 3, 2, 2, _shade(secondary, -0.3))
+				_fill_rect(image, origin.x + slot, origin.y + 3, 2, 2, _shade(body, -0.22))
 		17:
-			_fill_rect(image, origin.x, origin.y, size.x, size.y, base)
-			_stroke_rect(image, origin.x, origin.y, size.x, size.y, _shade(base, 0.12))
-			_put(image, origin.x + 4, origin.y + 4, _shade(base, 0.3))
-			_put(image, origin.x + 11, origin.y + 9, _shade(base, 0.3))
+			_fill_rect(image, origin.x, origin.y, size.x, size.y, back)
+			_stroke_rect(image, origin.x, origin.y, size.x, size.y, _shade(back, -0.22))
+			_put(image, origin.x + 4, origin.y + 4, _shade(back, 0.22))
+			_put(image, origin.x + 11, origin.y + 9, _shade(back, 0.22))
 		18:
-			_stroke_rect(image, origin.x, origin.y, size.x, size.y, secondary)
-			_stroke_rect(image, origin.x + 1, origin.y + 1, size.x - 2, size.y - 2, _shade(secondary, 0.25))
+			_stroke_rect(image, origin.x, origin.y, size.x, size.y, _shade(body, 0.1))
+			_stroke_rect(image, origin.x + 1, origin.y + 1, size.x - 2, size.y - 2, _shade(body, -0.3))
 		19:
-			_fill_rect(image, origin.x, origin.y, size.x, size.y, _shade(base, 0.08))
+			_fill_rect(image, origin.x, origin.y, size.x, size.y, back)
 			for bar: int in range(1, size.x - 1, 3):
-				_fill_rect(image, origin.x + bar, origin.y + 1, 1, size.y - 2, _shade(secondary, 0.2))
+				_fill_rect(image, origin.x + bar, origin.y + 1, 1, size.y - 2, _shade(body, 0.15))
 			_stroke_rect(image, origin.x, origin.y, size.x, size.y, outline)
 		20:
-			_fill_rect(image, origin.x, origin.y + 5, size.x, 6, _shade(secondary, -0.1))
-			_fill_rect(image, origin.x, origin.y + 6, size.x, 2, _shade(secondary, 0.3))
+			_fill_rect(image, origin.x, origin.y + 5, size.x, 6, _shade(body, -0.2))
+			_fill_rect(image, origin.x, origin.y + 6, size.x, 2, _shade(body, 0.3))
 		21:
-			_fill_rect(image, origin.x + 5, origin.y, 6, size.y, _shade(secondary, -0.1))
-			_fill_rect(image, origin.x + 6, origin.y, 2, size.y, _shade(secondary, 0.3))
+			_fill_rect(image, origin.x + 5, origin.y, 6, size.y, _shade(body, -0.2))
+			_fill_rect(image, origin.x + 6, origin.y, 2, size.y, _shade(body, 0.3))
 		22:
-			_fill_rect(image, origin.x + 4, origin.y, 8, 4, secondary)
+			_fill_rect(image, origin.x + 4, origin.y, 8, 4, _shade(body, -0.1))
 			_fill_rect(image, origin.x + 3, origin.y + 4, 10, 2, accent)
-			_fill_rect(image, origin.x + 5, origin.y + 6, 6, 2, _shade(accent, 0.3))
+			_fill_rect(image, origin.x + 5, origin.y + 6, 6, 2, _shade(accent, 0.35))
 		23:
-			_fill_rect(image, origin.x, origin.y, size.x, size.y, _shade(outline, 0.1))
+			_fill_rect(image, origin.x, origin.y, size.x, size.y, _shade(back, -0.2))
 			_diagonal_stripes(image, origin, size, danger, 6, 3)
 		24:
-			_fill_rect(image, origin.x, origin.y, size.x, size.y, _shade(secondary, -0.25))
+			_fill_rect(image, origin.x, origin.y, size.x, size.y, _shade(body, -0.35))
 			_stroke_rect(image, origin.x, origin.y, size.x, size.y, outline)
 			_diagonal_stripes(image, origin, size, Color("#E8C15A"), 5, 2)
 		_:
@@ -773,8 +775,8 @@ func _draw_radial(image: Image, origin: Vector2i, size: Vector2i) -> void:
 			var dx: float = (float(x) + 0.5 - cx) / radius
 			var dy: float = (float(y) + 0.5 - cy) / radius
 			var distance: float = sqrt(dx * dx + dy * dy)
-			var alpha: float = clampf(1.0 - distance, 0.0, 1.0)
-			alpha = alpha * alpha
+			var fade: float = clampf((1.0 - distance) / (1.0 - RADIAL_PLATEAU), 0.0, 1.0)
+			var alpha: float = fade * fade * (3.0 - 2.0 * fade)
 			_put(image, origin.x + x, origin.y + y, Color(1.0, 1.0, 1.0, alpha))
 
 

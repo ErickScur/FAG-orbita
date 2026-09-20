@@ -15,6 +15,7 @@ var budget: int = 0
 var goal_text: String = ""
 var goal_done_text: String = ""
 var intro_bark: StringName = &""
+var verbose: bool = false
 var systems: Array[Dictionary] = []
 
 var _goal: Array[StringName] = []
@@ -32,6 +33,7 @@ static func from_dict(data: Dictionary) -> EnergyGrid:
 	grid.goal_text = String(data.get("goal_text", ""))
 	grid.goal_done_text = String(data.get("goal_done_text", ""))
 	grid.intro_bark = StringName(String(data.get("intro_bark", "")))
+	grid.verbose = bool(data.get("verbose", false))
 	for value: Variant in data.get("goal_systems", []) as Array:
 		var goal_id := StringName(String(value))
 		if not grid._goal.has(goal_id):

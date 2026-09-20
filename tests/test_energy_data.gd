@@ -159,7 +159,7 @@ func test_greenhouse_trade_lists_every_option() -> void:
 func test_goal_systems_always_narrate_the_switch() -> void:
 	for file_name: String in _files():
 		var grid: EnergyGrid = _load(file_name.get_basename())
-		if grid == null:
+		if grid == null or not grid.verbose:
 			continue
 		for system_id: StringName in grid.goal_systems():
 			for powered: bool in [true, false]:
@@ -167,6 +167,40 @@ func test_goal_systems_always_narrate_the_switch() -> void:
 					grid.bark_of(system_id, powered),
 					&"",
 					"'%s': meta '%s' sem fala" % [file_name, system_id]
+				)
+
+
+func test_tutorial_is_the_only_verbose_terminal() -> void:
+	var tutorial: EnergyGrid = _load(String(CORE_HUB))
+	assert_not_null(tutorial, "tutorial existe")
+	if tutorial != null:
+		assert_true(tutorial.verbose, "o terminal do tutorial explica cada sistema")
+	for file_name: String in _files():
+		if file_name.get_basename() == String(CORE_HUB):
+			continue
+		var grid: EnergyGrid = _load(file_name.get_basename())
+		if grid == null:
+			continue
+		assert_false(
+			grid.verbose,
+			"'%s': fora do tutorial o terminal é mudo" % file_name
+		)
+
+
+func test_mute_terminals_say_nothing_beyond_state() -> void:
+	for file_name: String in _files():
+		var grid: EnergyGrid = _load(file_name.get_basename())
+		if grid == null or grid.verbose:
+			continue
+		assert_eq(
+			String(grid.intro_bark), "", "'%s': terminal mudo não abre com fala" % file_name
+		)
+		for system_id: StringName in grid.system_ids():
+			for powered: bool in [true, false]:
+				assert_eq(
+					String(grid.bark_of(system_id, powered)),
+					"",
+					"'%s': sistema '%s' fala fora do tutorial" % [file_name, system_id]
 				)
 
 

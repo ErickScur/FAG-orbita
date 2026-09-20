@@ -12,6 +12,7 @@ const REQUIRED_IDS: Array[String] = [
 	"tut_jump",
 	"tut_drop",
 	"tut_interact",
+	"tut_chassis",
 	"tut_flashlight",
 	"tut_terminal",
 	"tut_climb",
@@ -45,6 +46,7 @@ func test_every_card_completes_with_the_key_it_shows() -> void:
 		&"tut_jump": [&"jump"],
 		&"tut_drop": [&"move_down"],
 		&"tut_interact": [&"interact"],
+		&"tut_chassis": [&"map"],
 		&"tut_flashlight": [&"flashlight"],
 		&"tut_terminal": [&"interact"],
 		&"tut_climb": [&"move_up"],
@@ -181,7 +183,9 @@ func _meta(level_id: String) -> Dictionary:
 func test_cards_that_do_not_share_a_key_with_dialogue_are_never_blocked() -> void:
 	var table: Dictionary = TutorialData.load_all()
 	var advance: Array[StringName] = DialogueManager.ADVANCE_ACTIONS
-	for tutorial_id: StringName in [&"tut_climb", &"tut_flashlight", &"tut_drop", &"tut_move"]:
+	for tutorial_id: StringName in [
+		&"tut_climb", &"tut_flashlight", &"tut_drop", &"tut_move", &"tut_chassis"
+	]:
 		var actions: Array[StringName] = TutorialData.actions_of(tutorial_id, table)
 		assert_false(
 			TutorialData.shares_action_with(actions, advance),
@@ -198,3 +202,32 @@ func test_cards_that_share_a_key_with_dialogue_stay_guarded() -> void:
 			TutorialData.shares_action_with(actions, advance),
 			"cartão '%s' divide tecla com o diálogo e precisa da guarda" % tutorial_id
 		)
+
+
+func test_the_chassis_card_uses_the_map_action() -> void:
+	var table: Dictionary = TutorialData.load_all()
+	var actions: Array[StringName] = TutorialData.actions_of(&"tut_chassis", table)
+	assert_eq(_names(actions), PackedStringArray(["map"]), "o cartão do chassi usa 'map'")
+	assert_true(InputMap.has_action(&"map"), "a ação 'map' existe no Input Map")
+	var entry: Dictionary = TutorialData.entry(&"tut_chassis", table)
+	assert_eq(String(entry["key"]), "[TAB]", "a tecla anunciada é TAB")
+	assert_eq(_map_key_name(), "Tab", "a ação 'map' está mesmo em TAB")
+
+
+func test_the_chassis_card_has_a_trigger_in_the_core_hub() -> void:
+	var meta: Dictionary = _meta("core_hub")
+	var found: bool = false
+	for value: Variant in meta.get("triggers", []) as Array:
+		if String((value as Dictionary).get("tutorial", "")) == "tut_chassis":
+			found = true
+	assert_true(found, "o Núcleo Central ensina o terminal do chassi")
+
+
+func _map_key_name() -> String:
+	for event: InputEvent in InputMap.action_get_events(&"map"):
+		var key := event as InputEventKey
+		if key == null:
+			continue
+		var code: int = key.physical_keycode if key.physical_keycode != 0 else key.keycode
+		return OS.get_keycode_string(code)
+	return ""

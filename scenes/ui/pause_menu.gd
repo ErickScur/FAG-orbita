@@ -12,6 +12,7 @@ const CONTROL_ROWS: Array[Dictionary] = [
 	{"label": "INTERAGIR", "actions": [&"interact"]},
 	{"label": "LANTERNA", "actions": [&"flashlight"]},
 	{"label": "GARRAS", "actions": [&"move_up"]},
+	{"label": "CHASSI", "actions": [&"map"]},
 	{"label": "PAUSA", "actions": [&"pause"]},
 ]
 const KEY_NAMES: Dictionary = {
@@ -96,6 +97,8 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func can_pause() -> bool:
 	if not is_inside_tree():
+		return false
+	if get_tree().paused:
 		return false
 	if SceneManager.is_transitioning():
 		return false

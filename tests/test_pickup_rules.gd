@@ -4,6 +4,8 @@ const FULL_CHARGE: float = 100.0
 const LOW_CHARGE: float = 60.0
 const FULL_INTEGRITY: int = 100
 const LOW_INTEGRITY: int = 60
+const HUD_TEXTS: String = "res://data/hud_texts.json"
+const LEAKY_WORDS: PackedStringArray = ["opcional", "opcionais"]
 
 
 func test_cell_blocked_when_charge_is_full() -> void:
@@ -113,3 +115,20 @@ func test_level_builder_uses_the_same_default_id() -> void:
 func test_bob_constants_exist_in_balance() -> void:
 	assert_true(Balance.PICKUP_BOB_AMPLITUDE > 0.0, "PICKUP_BOB_AMPLITUDE")
 	assert_true(Balance.PICKUP_BOB_SPEED > 0.0, "PICKUP_BOB_SPEED")
+
+
+func test_first_pickup_hints_do_not_say_the_pickup_is_skippable() -> void:
+	var raw: String = FileAccess.get_file_as_string(HUD_TEXTS)
+	var parsed: Variant = JSON.parse_string(raw)
+	assert_true(parsed is Dictionary, "hud_texts.json carregou")
+	if not (parsed is Dictionary):
+		return
+	var table: Dictionary = parsed
+	for kind: StringName in PickupRules.KINDS:
+		var hint: String = String(table.get(String(PickupRules.first_hint_id(kind)), ""))
+		assert_false(hint.is_empty(), "explicação de %s existe" % kind)
+		for word: String in LEAKY_WORDS:
+			assert_false(
+				hint.to_lower().contains(word),
+				"explicação de %s não entrega que a coleta é dispensável" % kind
+			)

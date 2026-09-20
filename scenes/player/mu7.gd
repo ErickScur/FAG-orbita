@@ -394,6 +394,7 @@ func _setup_flashlight() -> void:
 	if _flashlight.texture == null:
 		push_warning("MU7: textura de luz ausente em %s" % LIGHT_TEXTURE)
 	_flashlight.color = Balance.FLASHLIGHT_COLOR
+	_flashlight.energy = Balance.SENSOR_ENERGY
 	_flashlight.blend_mode = Light2D.BLEND_MODE_ADD
 	_flashlight.shadow_enabled = true
 	_flashlight.shadow_filter = Light2D.SHADOW_FILTER_PCF5
@@ -554,10 +555,17 @@ func _set_flashlight(on: bool) -> void:
 	if _light_tween != null and _light_tween.is_valid():
 		_light_tween.kill()
 	_light_tween = create_tween()
+	_light_tween.set_parallel(true)
 	_light_tween.tween_property(
 		_flashlight,
 		"texture_scale",
 		LightMath.scale_for_radius(radius, LightMath.TEXTURE_SIZE),
+		Balance.LIGHT_FADE_TIME
+	)
+	_light_tween.tween_property(
+		_flashlight,
+		"energy",
+		Balance.FLASHLIGHT_ENERGY if on else Balance.SENSOR_ENERGY,
 		Balance.LIGHT_FADE_TIME
 	)
 	EventBus.flashlight_toggled.emit(on)

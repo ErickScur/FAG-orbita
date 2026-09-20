@@ -1,0 +1,21 @@
+{
+  "title": "TERMINAL DO CHASSI MU-7",
+  "footer": "[TAB] FECHAR",
+  "reactor_label": "ESTABILIDADE DO REATOR",
+  "reactor_value": "%d%%",
+  "reactor_offline": "SEM LEITURA",
+  "integrity_label": "INTEGRIDADE",
+  "charge_label": "CARGA",
+  "value_pair": "%d/%d",
+  "logs_label": "FRAGMENTOS DE LOG",
+  "research_label": "DADOS DE PESQUISA",
+  "abilities_title": "HABILIDADES",
+  "abilities_empty": "NENHUMA INSTALADA",
+  "ability_magnetic_claws": "GARRAS MAGNÉTICAS",
+  "ability_dash": "PROPULSOR DE IMPULSO",
+  "locked_title": "AGUARDANDO ENERGIA",
+  "map_label": "MAPA DA ESTAÇÃO",
+  "map_value": "SEM ENERGIA",
+  "sectors_label": "SETORES VISITADOS",
+  "sectors_value": "??"
+}

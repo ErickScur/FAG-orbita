@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0rbitadarkprobegh"]
+
+[ext_resource type="Script" path="res://tests/qa/scenes/dark_probe.gd" id="1_darkprobe"]
+
+[node name="DarkProbeGreenhouse" type="Node2D"]
+script = ExtResource("1_darkprobe")
+level_scene = "res://scenes/levels/greenhouse.tscn"
+spawn_tile = Vector2i(10, 17)
+start_charge = 60.0
+silenced_sequences = Array[StringName]([&"gh_enter"])

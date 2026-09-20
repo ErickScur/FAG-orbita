@@ -2,7 +2,7 @@
   "id": "core_test",
   "name": "Bancada do Núcleo",
   "tileset": "res://assets/tiles/core_tileset.tres",
-  "ambient_color": "#191d26",
+  "ambient_color": "#0d1219",
   "floor_sfx": "step_metal",
   "reactor_online": false,
   "objective": "obj_core_hub",

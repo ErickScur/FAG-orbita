@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://c0rbitahud"]
+[gd_scene load_steps=6 format=3 uid="uid://c0rbitahud"]
 
 [ext_resource type="Script" path="res://scenes/ui/hud.gd" id="1_hud"]
+[ext_resource type="PackedScene" uid="uid://c0rbitachassis" path="res://scenes/ui/chassis_menu.tscn" id="2_chassis"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_reactor_bg"]
 bg_color = Color(0.0392157, 0.0705882, 0.0862745, 0.831373)
@@ -188,7 +189,7 @@ anchor_right = 1.0
 offset_left = -140.0
 offset_top = 2.0
 offset_right = -4.0
-offset_bottom = 74.0
+offset_bottom = 38.0
 grow_horizontal = 0
 mouse_filter = 2
 theme_override_constants/separation = 0
@@ -197,9 +198,9 @@ theme_override_constants/separation = 0
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 16)
 layout_mode = 2
+theme_type_variation = &"ObjectiveLabel"
 mouse_filter = 2
-theme_override_colors/font_color = Color(0.541176, 0.607843, 0.658824, 1)
-theme_override_font_sizes/font_size = 16
+theme_override_colors/font_color = Color(0.286275, 0.333333, 0.376471, 1)
 text = "OBJETIVO:"
 horizontal_alignment = 2
 vertical_alignment = 1
@@ -207,65 +208,11 @@ vertical_alignment = 1
 [node name="ObjectiveText" type="Label" parent="Root/Objective"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_type_variation = &"ObjectiveLabel"
 mouse_filter = 2
-theme_override_colors/font_color = Color(0.372549, 0.831373, 0.784314, 1)
-theme_override_font_sizes/font_size = 16
+theme_override_colors/font_color = Color(0.588235, 0.694118, 0.729412, 1)
 horizontal_alignment = 2
 autowrap_mode = 3
-
-[node name="Counters" type="HBoxContainer" parent="Root"]
-layout_mode = 1
-anchors_preset = 0
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -176.0
-offset_top = -18.0
-offset_right = -4.0
-offset_bottom = -2.0
-grow_horizontal = 0
-grow_vertical = 0
-mouse_filter = 2
-theme_override_constants/separation = 3
-alignment = 2
-
-[node name="LogsIcon" type="TextureRect" parent="Root/Counters"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(16, 16)
-layout_mode = 2
-mouse_filter = 2
-stretch_mode = 3
-
-[node name="LogsLabel" type="Label" parent="Root/Counters"]
-unique_name_in_owner = true
-layout_mode = 2
-mouse_filter = 2
-theme_override_colors/font_color = Color(0.541176, 0.607843, 0.658824, 1)
-theme_override_font_sizes/font_size = 16
-text = "LOGS 0/4"
-vertical_alignment = 1
-
-[node name="CountersGap" type="Control" parent="Root/Counters"]
-custom_minimum_size = Vector2(6, 0)
-layout_mode = 2
-mouse_filter = 2
-
-[node name="DataIcon" type="TextureRect" parent="Root/Counters"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(16, 16)
-layout_mode = 2
-mouse_filter = 2
-stretch_mode = 3
-
-[node name="DataLabel" type="Label" parent="Root/Counters"]
-unique_name_in_owner = true
-layout_mode = 2
-mouse_filter = 2
-theme_override_colors/font_color = Color(0.541176, 0.607843, 0.658824, 1)
-theme_override_font_sizes/font_size = 16
-text = "DADOS 0/4"
-vertical_alignment = 1
 
 [node name="PromptRow" type="HBoxContainer" parent="Root"]
 unique_name_in_owner = true
@@ -315,3 +262,5 @@ alignment = 1
 [node name="BeepTimer" type="Timer" parent="."]
 unique_name_in_owner = true
 wait_time = 1.5
+
+[node name="ChassisMenu" parent="." instance=ExtResource("2_chassis")]

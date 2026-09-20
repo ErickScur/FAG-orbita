@@ -1,0 +1,328 @@
+[gd_scene load_steps=5 format=3 uid="uid://c0rbitachassis"]
+
+[ext_resource type="Script" path="res://scenes/ui/chassis_menu.gd" id="1_chassis"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.027451, 0.0509804, 0.0666667, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.207843, 0.435294, 0.435294, 1)
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar_bg"]
+bg_color = Color(0.0392157, 0.0705882, 0.0862745, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.184314, 0.309804, 0.352941, 1)
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar_fill"]
+bg_color = Color(0.843137, 0.890196, 0.909804, 1)
+anti_aliasing = false
+
+[node name="ChassisMenu" type="CanvasLayer" groups=["chassis_menu"]]
+process_mode = 3
+layer = 40
+visible = false
+script = ExtResource("1_chassis")
+
+[node name="Root" type="Control" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Dim" type="ColorRect" parent="Root"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.0117647, 0.0196078, 0.027451, 0.921569)
+
+[node name="Center" type="CenterContainer" parent="Root"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Panel" type="PanelContainer" parent="Root/Center"]
+custom_minimum_size = Vector2(344, 0)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="Body" type="VBoxContainer" parent="Root/Center/Panel"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 1
+
+[node name="Title" type="Label" parent="Root/Center/Panel/Body"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.372549, 0.831373, 0.784314, 1)
+text = "TERMINAL DO CHASSI MU-7"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ReactorRow" type="HBoxContainer" parent="Root/Center/Panel/Body"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 4
+
+[node name="ReactorLabel" type="Label" parent="Root/Center/Panel/Body/ReactorRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.541176, 0.607843, 0.658824, 1)
+text = "ESTABILIDADE DO REATOR"
+vertical_alignment = 1
+
+[node name="ReactorValue" type="Label" parent="Root/Center/Panel/Body/ReactorRow"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.843137, 0.890196, 0.909804, 1)
+text = "100%"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="ReactorBar" type="ProgressBar" parent="Root/Center/Panel/Body"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_bar_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_bar_fill")
+max_value = 100.0
+value = 100.0
+show_percentage = false
+
+[node name="GapA" type="Control" parent="Root/Center/Panel/Body"]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Columns" type="HBoxContainer" parent="Root/Center/Panel/Body"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 8
+
+[node name="Left" type="VBoxContainer" parent="Root/Center/Panel/Body/Columns"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_constants/separation = 1
+
+[node name="IntegrityRow" type="HBoxContainer" parent="Root/Center/Panel/Body/Columns/Left"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 4
+
+[node name="IntegrityLabel" type="Label" parent="Root/Center/Panel/Body/Columns/Left/IntegrityRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.541176, 0.607843, 0.658824, 1)
+text = "INTEGRIDADE"
+vertical_alignment = 1
+
+[node name="IntegrityValue" type="Label" parent="Root/Center/Panel/Body/Columns/Left/IntegrityRow"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.843137, 0.890196, 0.909804, 1)
+text = "100/100"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="ChargeRow" type="HBoxContainer" parent="Root/Center/Panel/Body/Columns/Left"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 4
+
+[node name="ChargeLabel" type="Label" parent="Root/Center/Panel/Body/Columns/Left/ChargeRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.541176, 0.607843, 0.658824, 1)
+text = "CARGA"
+vertical_alignment = 1
+
+[node name="ChargeValue" type="Label" parent="Root/Center/Panel/Body/Columns/Left/ChargeRow"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.843137, 0.890196, 0.909804, 1)
+text = "100/100"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Right" type="VBoxContainer" parent="Root/Center/Panel/Body/Columns"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_constants/separation = 1
+
+[node name="LogsRow" type="HBoxContainer" parent="Root/Center/Panel/Body/Columns/Right"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 4
+
+[node name="LogsLabel" type="Label" parent="Root/Center/Panel/Body/Columns/Right/LogsRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.541176, 0.607843, 0.658824, 1)
+text = "FRAGMENTOS DE LOG"
+vertical_alignment = 1
+
+[node name="LogsValue" type="Label" parent="Root/Center/Panel/Body/Columns/Right/LogsRow"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.843137, 0.890196, 0.909804, 1)
+text = "0/4"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="ResearchRow" type="HBoxContainer" parent="Root/Center/Panel/Body/Columns/Right"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 4
+
+[node name="ResearchLabel" type="Label" parent="Root/Center/Panel/Body/Columns/Right/ResearchRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.541176, 0.607843, 0.658824, 1)
+text = "DADOS DE PESQUISA"
+vertical_alignment = 1
+
+[node name="ResearchValue" type="Label" parent="Root/Center/Panel/Body/Columns/Right/ResearchRow"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.843137, 0.890196, 0.909804, 1)
+text = "0/4"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="GapB" type="Control" parent="Root/Center/Panel/Body"]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="AbilitiesTitle" type="Label" parent="Root/Center/Panel/Body"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.372549, 0.831373, 0.784314, 1)
+text = "HABILIDADES"
+vertical_alignment = 1
+
+[node name="Abilities" type="VBoxContainer" parent="Root/Center/Panel/Body"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 1
+
+[node name="GapC" type="Control" parent="Root/Center/Panel/Body"]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="LockedTitle" type="Label" parent="Root/Center/Panel/Body"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.309804, 0.356863, 0.4, 1)
+text = "AGUARDANDO ENERGIA"
+vertical_alignment = 1
+
+[node name="MapRow" type="HBoxContainer" parent="Root/Center/Panel/Body"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 4
+
+[node name="MapLabel" type="Label" parent="Root/Center/Panel/Body/MapRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.309804, 0.356863, 0.4, 1)
+text = "MAPA DA ESTAÇÃO"
+vertical_alignment = 1
+
+[node name="MapValue" type="Label" parent="Root/Center/Panel/Body/MapRow"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.309804, 0.356863, 0.4, 1)
+text = "SEM ENERGIA"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="SectorsRow" type="HBoxContainer" parent="Root/Center/Panel/Body"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 4
+
+[node name="SectorsLabel" type="Label" parent="Root/Center/Panel/Body/SectorsRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.309804, 0.356863, 0.4, 1)
+text = "SETORES VISITADOS"
+vertical_alignment = 1
+
+[node name="SectorsValue" type="Label" parent="Root/Center/Panel/Body/SectorsRow"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.309804, 0.356863, 0.4, 1)
+text = "??"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Footer" type="Label" parent="Root/Center/Panel/Body"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.541176, 0.607843, 0.658824, 1)
+text = "[TAB] FECHAR"
+horizontal_alignment = 1
+vertical_alignment = 1

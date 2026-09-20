@@ -2,8 +2,8 @@
   "id": "greenhouse",
   "name": "Estufa",
   "tileset": "res://assets/tiles/greenhouse_tileset.tres",
-  "ambient_color": "#5f7f55",
-  "ambient_restored": "#8fbf7f",
+  "ambient_color": "#0d1410",
+  "ambient_restored": "#3d5a36",
   "ambient_motes": "#a8d98a",
   "parallax": true,
   "floor_sfx": "step_soil",
@@ -18,22 +18,22 @@
     "12,4": {
       "id": "gh_lamp_node_floor_01",
       "color": "#e0b43c",
-      "radius": 150.0,
-      "energy": 1.5
+      "radius": 96.0,
+      "energy": 1.4
     },
     "26,4": {
       "id": "gh_lamp_node_floor_02",
       "color": "#e0b43c",
-      "radius": 150.0,
-      "energy": 1.5
+      "radius": 96.0,
+      "energy": 1.4
     },
     "5,5": {
       "id": "gh_node_lamp",
       "terminal_id": "greenhouse",
       "system_id": "node_door",
       "color": "#8fe3b0",
-      "radius": 150.0,
-      "energy": 1.7
+      "radius": 96.0,
+      "energy": 1.4
     },
     "2,7": {
       "id": "gh_photo",
@@ -65,8 +65,8 @@
       "terminal_id": "greenhouse",
       "system_id": "corridor_light",
       "color": "#b7e08a",
-      "radius": 150.0,
-      "energy": 1.6
+      "radius": 96.0,
+      "energy": 1.4
     },
     "31,12": {
       "id": "gh_corridor_lamp_02",
@@ -74,8 +74,8 @@
       "terminal_id": "greenhouse",
       "system_id": "corridor_light",
       "color": "#b7e08a",
-      "radius": 150.0,
-      "energy": 1.6
+      "radius": 96.0,
+      "energy": 1.4
     },
     "5,17": {
       "id": "data_gh_02"
@@ -131,8 +131,8 @@
       "terminal_id": "greenhouse",
       "system_id": "heating",
       "color": "#e0904a",
-      "radius": 140.0,
-      "energy": 1.5
+      "radius": 96.0,
+      "energy": 1.4
     },
     "21,32": {
       "id": "gh_grow_lamp_01",
@@ -140,8 +140,8 @@
       "terminal_id": "greenhouse",
       "system_id": "grow_light",
       "color": "#e58fb5",
-      "radius": 150.0,
-      "energy": 1.7
+      "radius": 96.0,
+      "energy": 1.4
     },
     "27,32": {
       "id": "gh_vent_02",
@@ -149,8 +149,8 @@
       "terminal_id": "greenhouse",
       "system_id": "heating",
       "color": "#e0904a",
-      "radius": 140.0,
-      "energy": 1.5
+      "radius": 96.0,
+      "energy": 1.4
     },
     "12,34": {
       "id": "gh_spore_01",
@@ -216,7 +216,6 @@
         2,
         5
       ],
-      "dialogue": "gh_spores",
       "once": true
     },
     {
@@ -227,7 +226,6 @@
         2,
         5
       ],
-      "dialogue": "gh_terminal_first",
       "once": true
     },
     {
@@ -258,7 +256,6 @@
         2,
         4
       ],
-      "dialogue": "gh_dark_corridor",
       "once": true
     },
     {

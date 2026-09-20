@@ -93,8 +93,10 @@ const EXPECTED: Dictionary = {
 	"OVERLOAD_TIME": 10.0,
 	"OVERLOAD_SPEED_MULT": 1.3,
 	"DIALOGUE_CPS": 40.0,
-	"DIALOGUE_READ_CPS": 15.0,
+	"DIALOGUE_READ_CPS": 28.0,
 	"DIALOGUE_AMBIENT_MIN_TIME": 2.0,
+	"FLASHLIGHT_ENERGY": 1.5,
+	"SENSOR_ENERGY": 0.7,
 	"BRIEFING_CPS": 60.0,
 	"TUTORIAL_CARD_HOLD": 0.6,
 	"TUTORIAL_CARD_FADE": 0.2,
@@ -150,7 +152,7 @@ func test_constants_match_gdd() -> void:
 
 
 func test_ambient_dark_color() -> void:
-	assert_eq(Balance.AMBIENT_DARK, Color("191d26"), "AMBIENT_DARK")
+	assert_eq(Balance.AMBIENT_DARK, Color("0d1219"), "AMBIENT_DARK")
 
 
 func test_polish_colors() -> void:

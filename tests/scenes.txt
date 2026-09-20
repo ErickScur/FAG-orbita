@@ -32,6 +32,7 @@ res://tests/qa/scenes/damage_sandbox.tscn
 res://tests/qa/scenes/interaction_sandbox.tscn
 res://tests/qa/scenes/light_sandbox.tscn
 res://scenes/ui/hud.tscn
+res://scenes/ui/chassis_menu.tscn
 res://scenes/ui/tutorial_card.tscn
 res://tests/qa/scenes/hud_probe.tscn
 res://tests/qa/scenes/reactor_probe.tscn
@@ -67,3 +68,4 @@ res://tests/qa/scenes/parallax_sandbox.tscn
 res://scenes/world/level_exit.tscn
 res://scenes/levels/core_hub.tscn
 res://scenes/levels/greenhouse.tscn
+res://tests/qa/scenes/chassis_probe.tscn

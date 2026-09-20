@@ -1,8 +1,31 @@
 extends TestCase
 
-const DEMO_SEQUENCES: int = 30
+const DEMO_SEQUENCES: int = 15
 const DEMO_LOGS: int = 4
 const DEMO_SPEAKERS: int = 3
+const TYPICAL_LINE_CHARS: int = 84
+const AMBIENT_HOLD_MIN: float = 2.5
+const AMBIENT_HOLD_MAX: float = 3.5
+const GREENHOUSE_KEPT: Array[StringName] = [
+	&"gh_enter", &"gh_node_room", &"gh_claws", &"gh_restored", &"first_death"
+]
+const GREENHOUSE_REMOVED: Array[StringName] = [
+	&"gh_spores",
+	&"gh_terminal_first",
+	&"gh_plant_grown",
+	&"gh_dark_corridor",
+	&"gh_rule_reminder",
+	&"gh_bark_heating_on",
+	&"gh_bark_heating_off",
+	&"gh_bark_corridor_on",
+	&"gh_bark_corridor_off",
+	&"gh_bark_grow_on",
+	&"gh_bark_grow_off",
+	&"gh_bark_lift_on",
+	&"gh_bark_lift_off",
+	&"gh_bark_node_door_on",
+	&"gh_bark_node_door_off",
+]
 
 var _manager: Node = null
 var _started: int = 0
@@ -53,6 +76,24 @@ func test_content_loaded() -> void:
 	)
 	assert_eq((_manager.call("log_ids") as Array).size(), DEMO_LOGS, "logs da demo")
 	assert_eq((_manager.call("speakers") as Dictionary).size(), DEMO_SPEAKERS, "falantes")
+
+
+func test_greenhouse_keeps_only_the_five_sequences() -> void:
+	if _manager == null:
+		return
+	var sequences: Dictionary = _manager.call("sequences")
+	for id: StringName in GREENHOUSE_KEPT:
+		assert_true(sequences.has(id), "fala da Estufa '%s' continua" % id)
+	for id: StringName in GREENHOUSE_REMOVED:
+		assert_false(sequences.has(id), "fala explicativa '%s' foi cortada" % id)
+
+
+func test_ambient_line_leaves_the_screen_in_reading_time() -> void:
+	if _manager == null:
+		return
+	var hold: float = _manager.call("_ambient_hold", TYPICAL_LINE_CHARS)
+	assert_true(hold >= AMBIENT_HOLD_MIN, "linha típica segura pelo menos %.1f s" % AMBIENT_HOLD_MIN)
+	assert_true(hold <= AMBIENT_HOLD_MAX, "linha típica sai antes de %.1f s" % AMBIENT_HOLD_MAX)
 
 
 func test_play_blocking_freezes_timer() -> void:

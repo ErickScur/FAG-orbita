@@ -12,8 +12,10 @@ func _init() -> void:
 	var frame_width: int = int(_arg(args, "--frame-width", "32"))
 	var frame_height: int = int(_arg(args, "--frame-height", "32"))
 	var columns: int = int(_arg(args, "--columns", "6"))
+	var fit: String = _arg(args, "--fit", "height")
 	if source.is_empty() or target.is_empty():
-		print("uso: --in=<png> --out=<png> [--frame-width=32] [--frame-height=32] [--columns=6]")
+		print("uso: --in=<png> --out=<png> [--frame-width=32] [--frame-height=32]"
+			+ " [--columns=6] [--fit=height|contain]")
 		quit(2)
 		return
 	var image: Image = Image.load_from_file(source)
@@ -34,13 +36,18 @@ func _init() -> void:
 		frames.append(boxes)
 		print("  linha y=", row.x, "..", row.y, " quadros: ", boxes.size())
 	var baseline: int = _tallest(frames)
+	var widest: int = _widest(frames)
+	var scale: float = float(frame_height) / float(baseline)
+	if fit == "contain":
+		scale = minf(scale, float(frame_width) / float(widest))
+	print("referencia linha 1: ", widest, "x", baseline, " escala: ", scale)
 	var sheet := Image.create(columns * frame_width, rows.size() * frame_height, false, Image.FORMAT_RGBA8)
 	sheet.fill(Color(0, 0, 0, 0))
 	for row_index: int in range(frames.size()):
 		var boxes: Array = frames[row_index]
 		for column_index: int in range(mini(boxes.size(), columns)):
 			var box: Rect2i = boxes[column_index]
-			var frame: Image = _extract(image, box, frame_width, frame_height, baseline)
+			var frame: Image = _extract(image, box, frame_width, frame_height, scale)
 			sheet.blit_rect(
 				frame,
 				Rect2i(Vector2i.ZERO, frame.get_size()),
@@ -160,9 +167,18 @@ func _tallest(frames: Array) -> int:
 	return tallest
 
 
-func _extract(image: Image, box: Rect2i, width: int, height: int, baseline: int) -> Image:
+func _widest(frames: Array) -> int:
+	if frames.is_empty():
+		return 1
+	var reference: Array = frames[0]
+	var widest: int = 1
+	for box: Rect2i in reference:
+		widest = maxi(widest, box.size.x)
+	return widest
+
+
+func _extract(image: Image, box: Rect2i, width: int, height: int, scale: float) -> Image:
 	var cut: Image = image.get_region(box)
-	var scale: float = float(height) / float(baseline)
 	var target_width: int = maxi(1, int(round(float(box.size.x) * scale)))
 	var target_height: int = maxi(1, int(round(float(box.size.y) * scale)))
 	cut.resize(target_width, target_height, Image.INTERPOLATE_LANCZOS)

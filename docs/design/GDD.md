@@ -364,22 +364,22 @@ Toda vez que a dificuldade sobe demais, o jogador ganha um upgrade que faz o con
 
 ```
 +----------------------------------------------------------------+
-| [||||] INTEGRIDADE     REATOR 74%             OBJETIVO:        |
-| [======----] CARGA    [##########]     Religar o Nó do Setor   |
-|  (ícones de status)   (só quando há aviso)         da Estufa   |
+| [||||] INTEGRIDADE                            OBJETIVO:        |
+| [======----] CARGA                    Religar o Nó da Estufa   |
+|  (ícones de status)                                            |
 |                                                                |
 |                          (gameplay)                            |
 |                                                                |
 |                                                                |
-|      [E] ACESSAR TERMINAL         LOGS 1/4   DADOS 0/4         |
+|                    [E] ACESSAR TERMINAL                        |
 +----------------------------------------------------------------+
 ```
 
 | Região | Conteúdo |
 |---|---|
 | Superior esquerdo | Integridade em 4 células (célula vazia fica vermelha piscando); Carga azul abaixo, com marcação do custo da próxima habilidade; ícones de status com contador regressivo |
-| Topo centro | Estabilidade do Reator em % + barra, em duas linhas. Uma terceira linha aparece **só quando há aviso**, nesta ordem de prioridade: `CRÍTICO` em vermelho abaixo de 25% (que também pulsa e toca alarme diegético) · `SEM TIMER` em ciano quando a opção está ligada · `TIMER PARADO` em ciano durante leitura de log ou fala travante. No estado normal a linha fica oculta ([AJ-023](#gdd-ajustes)) |
-| Inferior direito | Contadores de Fragmentos de Log e Dados de Pesquisa **em uma única linha apagada**, com o ícone repetindo a silhueta do item que se pega do chão ([AJ-023](#gdd-ajustes)) |
+| Topo centro | **Vazio em jogo normal.** O bloco do reator só aparece **em estado crítico** (abaixo de `REACTOR_CRITICAL`), em vermelho pulsante com `CRÍTICO`. Fora disso a estabilidade se lê no Terminal do Chassi ([AJ-028](#gdd-ajustes)) — esconder um cronômetro que está matando o jogador seria injusto, por isso a exceção |
+| Inferior direito | **Vazio.** Os contadores de Fragmento de Log e Dado de Pesquisa migraram para o Terminal do Chassi (`[TAB]`) e continuam na tela de FIM DA DEMO ([AJ-028](#gdd-ajustes)) |
 | Superior direito | **Um** objetivo por fase, com o rótulo `OBJETIVO:` acima do texto, alinhado à direita. Ele é definido quando a fase carrega e **não muda até a fase terminar** ([AJ-026](#gdd-ajustes)) |
 | Centro inferior | Prompt de interação contextual (`[E] ACESSAR TERMINAL`) e, na fase tutorial, o cartão de tecla da vez ([AJ-025](#gdd-ajustes)) |
 | Legendas | Falas da ÓRBITA e logs da Helena na parte de baixo, com o nome de quem fala. Sempre legendado |
@@ -542,6 +542,10 @@ Toda vez que a dificuldade sobe demais, o jogador ganha um upgrade que faz o con
 | AJ-024 | 2026-09-20 | GDD-2.6.3 · GDD-P | A demo passa a ter **4 logs** e **4 dados** em vez de 7 e 12 espalhados: `LOGS_TOTAL` 24→4 e `RESEARCH_TOTAL` 12→4. Os logs são fundidos aos pares (`log_hab_02` entra em `log_hab_01`; `log_gh_03`+`log_gh_04` viram `log_gh_02`, que mantém o desbloqueio das garras) e crescem para 10–11 linhas cada. As falas ambientes de tutorial da ÓRBITA (`core_calib_move`, `core_calib_jump`, `core_log_hint`, `core_flashlight_hint`) são apagadas e viram cartões de tecla | Playtest humano: "muito dialogo e pouca gameplay... desbloquear fragmentos maiores da historia (menos fragmentos, com mais conteudo, só que mais dificil de encontra-los). Talvez Orbita esteja falando muito". Contador que fecha dentro da demo (4/4) também é mais legível que um 3/24 que nunca completa |
 | AJ-025 | 2026-09-20 | GDD-2.7-F0 · GDD-2.8 · GDD-P | O Núcleo Central deixa de ser "uma sala que ensina por diálogo" e vira **tutorial explícito**: uma tela de briefing (boot do MU-7) entre o menu e a fase, e cartões de tecla no jogo (`tut_move`, `tut_pause`, `tut_jump`, `tut_drop`, `tut_interact`, `tut_flashlight`, `tut_terminal`, e `tut_climb` na Estufa), cada um seguido de um obstáculo que obriga a usar o controle recém-ensinado. O terminal do Núcleo passa de 2 para **3 sistemas / 1 energia** (soma `lift_core`, elevador opcional para um Dado de Pesquisa), substituindo o AJ-010 na parte do tutorial | Playtest humano: "O tutorial em si, nao está um tutorial, tá só uma fase sem entender muito" e "deveria ser mais voltado para puzzles". Ensinar por fala ambiente não funcionou: o jogador lê a fala e mesmo assim não sabe qual tecla apertar |
 | AJ-026 | 2026-09-20 | GDD-2.8 | **Um objetivo por fase**, fixo, no canto superior direito com o rótulo `OBJETIVO:`. Os 11 objetivos intermediários (`obj_calibrate`, `obj_read_log`, `obj_gh_*`, …) foram removidos junto com todos os pontos que os trocavam — gatilhos de mapa, falas e scripts de fase. Restam `obj_core_hub` e `obj_greenhouse`. O bloco do reator estreitou de 176 px para 80 px para abrir espaço à direita | Playtest humano: "só deveria ter um objetivo por fase, e nao ficar mudando ele. colocar ele mais pra cima na tela". A orientação passo a passo não se perde: os controles são ensinados pelos cartões de tecla do [AJ-025](#gdd-ajustes) e a meta de cada puzzle está escrita na linha `META` do próprio Terminal de Distribuição — verificado por captura nos dois terminais antes da remoção |
+| AJ-027 | 2026-09-20 | GDD-2.3 · GDD-2.7 | **A estação deixa de ser um corredor.** Os setores passam a ser ligados por portas de mão dupla, e não por saídas de sentido único: religar um setor abre caminho de volta, não fecha o anterior. A ARTEMIS vira um mapa que se reabre conforme a energia volta, com puzzles que atravessam setores. **Na demo entra só a mecânica**: a Estufa e o Núcleo Central ficam ligados nos dois sentidos, preservando estado (energia, coletados, checkpoint). Os caminhos alternativos e os puzzles entre setores ficam para a entrega final | Decisão do humano no playtest: "eu acho que nao deveria ser linear sabe? acho que as portas deveriam voltar tambem... na estufa dar pra voltar para o nucleo e tals. para depois termos possiveis caminhos, com puzzles e tals. mas acho que agora na demo vamos fazer so a mecanica de ir e voltar" |
+| AJ-028 | 2026-09-20 | GDD-2.8 | **Terminal do chassi**: uma tela de diagnóstico aberta por tecla passa a guardar a estabilidade do reator, os contadores de Log e Dado, os valores exatos de Integridade e Carga, e as habilidades. O HUD em jogo fica só com integridade, carga, status, objetivo e prompt. O bloco do reator **reaparece no HUD em estado crítico** — esconder um cronômetro que está matando o jogador seria injusto. O espaço do mapa da estação fica desenhado e bloqueado (`??` / `SEM ENERGIA`), para a entrega final | Playtest: "da pra dar uma diminuida nas informações visuais da tela... um menu/inventario, onde podemos ver a porcentagem do reator, os logs/dados coletados (tirar da tela talvez)" |
+| AJ-029 | 2026-09-20 | GDD-P · GDD-2.8 | Fala ambiente da ÓRBITA some mais rápido: `DIALOGUE_READ_CPS` 15,0 → 28,0, o que leva uma linha típica de **7,7 s para 5,1 s** na tela (medido quadro a quadro). Fora do tutorial a ÓRBITA para de narrar o efeito de cada sistema: as dez falas de comentário do Terminal da Estufa, mais as falas dos esporos, da trepadeira, dos vãos do corredor e o lembrete da regra de energia, são apagadas. A Estufa vai de 20 para 5 sequências | Playtest: "todos os dialogos de Orbita estao ficando muito tempo" e "é um jogo de puzzle, precisamos dar menos informações" |
+| AJ-030 | 2026-09-20 | GDD-P · GDD-2.9 | **A escuridão passa a ser real.** O ambiente das fases vai de luma 0,44 para **0,068**, o tileset placeholder sobe de 0,26 para **0,62** (a compensação estava invertida: o ambiente era claro para salvar um tileset escuro), o raio das lâmpadas cai de 160 para 96 px — o que **cria** o trecho escuro do Núcleo, antes inexistente porque as lâmpadas se tocavam — e a textura radial da luz troca a queda `(1-d)²` por um platô, subindo o alfa médio de 0,167 para 0,419. A lanterna ganha duas energias: `SENSOR_ENERGY` 0,7 com o facho desligado e `FLASHLIGHT_ENERGY` 1,5 com ele aceso. Medido: longe do jogador e sem lanterna, nenhum pixel do cenário passa de 0,06 de luma | Playtest: "quando fica escuro, nao fica escura realmente, nao precisa da lanterna, da pra ver tudo tranquilamente" |
 | AJ-021 | 2026-09-19 | GDD-P | Amplitude e velocidade da flutuação dos coletáveis | O GDD pedia itens "flutuando" sem número |
 | AJ-020 | 2026-09-19 | GDD-P | Velocidade de digitação do diálogo, tempo mínimo de fala ambiente, cores e fade das luzes | Números de apresentação que o GDD descrevia em palavras ("legenda", "luz fria") |
 | AJ-019 | 2026-09-19 | GDD-P | Ritmo do alarme do reator, duração do aviso do HUD, frequência do pulso crítico e do bipe de integridade baixa | Números de feedback do HUD/áudio que o GDD descrevia só em palavras |
@@ -579,8 +583,10 @@ Toda vez que a dificuldade sobe demais, o jogador ganha um upgrade que faz o con
 | `LAMP_COLOR` | bfe6ff | cor | AJ-020 |
 | `FLASHLIGHT_COLOR` | cfeaf2 | cor | AJ-020 |
 | `DIALOGUE_CPS` | 40.0 | car/s | AJ-020 |
-| `DIALOGUE_READ_CPS` | 15.0 | car/s | AJ-020 |
+| `DIALOGUE_READ_CPS` | 28.0 | car/s | AJ-029 |
 | `DIALOGUE_AMBIENT_MIN_TIME` | 2.0 | s | AJ-020 |
+| `FLASHLIGHT_ENERGY` | 1.5 | energia | AJ-030 |
+| `SENSOR_ENERGY` | 0.7 | energia | AJ-030 |
 | `BRIEFING_CPS` | 60.0 | car./s | AJ-025 |
 | `TUTORIAL_CARD_HOLD` | 0.6 | s | AJ-025 |
 | `TUTORIAL_CARD_FADE` | 0.2 | s | AJ-025 |
@@ -635,7 +641,7 @@ Toda vez que a dificuldade sobe demais, o jogador ganha um upgrade que faz o con
 | `BEAM_RANGE` | 32 | px | AJ-012 |
 | `LAMP_RADIUS` | 96 | px | AJ-012 |
 | `LAMP_ENERGY` | 0.9 | fator | AJ-012 |
-| `AMBIENT_DARK` | #191D26 | cor | AJ-012 |
+| `AMBIENT_DARK` | #0D1219 | cor | AJ-030 |
 | `PLATFORM_WAIT` | 0.6 | s | AJ-012 |
 | `SECRET_WALL_FADE_TIME` | 0.3 | s | AJ-012 |
 | `SECRET_WALL_ALPHA` | 0.25 | alfa | AJ-012 |

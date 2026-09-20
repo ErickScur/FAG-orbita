@@ -21,7 +21,7 @@
   "first_log": "FRAGMENTO DE LOG",
   "first_log_hint": "registro da tripulação, conta no placar",
   "first_research": "DADO DE PESQUISA",
-  "first_research_hint": "coleta opcional, conta no placar",
+  "first_research_hint": "pesquisa da tripulação, conta no placar",
   "first_capacitor": "NÚCLEO DE CAPACITOR",
-  "first_capacitor_hint": "aumenta a Carga máxima para sempre"
+  "first_capacitor_hint": "aumenta a Carga máxima do chassi"
 }

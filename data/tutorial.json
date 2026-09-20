@@ -29,6 +29,12 @@
     "hint": "",
     "actions": ["interact"]
   },
+  "tut_chassis": {
+    "key": "[TAB]",
+    "text": "TERMINAL DO CHASSI",
+    "hint": "reator, coleta e habilidades",
+    "actions": ["map"]
+  },
   "tut_flashlight": {
     "key": "[F]",
     "text": "LANTERNA",

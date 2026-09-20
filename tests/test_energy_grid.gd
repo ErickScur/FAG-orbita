@@ -20,6 +20,26 @@ func test_system_lookup_returns_data() -> void:
 	assert_true(grid.system(&"nada").is_empty(), "consulta inexistente devolve vazio")
 
 
+func test_verbose_is_declared_by_the_terminal() -> void:
+	var mute: EnergyGrid = _sample()
+	assert_false(mute.verbose, "terminal sem a chave nasce mudo")
+	var tutorial: EnergyGrid = EnergyGrid.from_dict(
+		{
+			"id": "tutorial",
+			"title": "TUTORIAL",
+			"budget": 1,
+			"verbose": true,
+			"goal_text": "Ligar o sistema B",
+			"goal_done_text": "Sistema B ligado",
+			"goal_systems": ["b"],
+			"initial": ["a"],
+			"systems": [_system("a", 1, []), _system("b", 1, [])],
+		}
+	)
+	assert_true(tutorial.verbose, "o tutorial declara que explica tudo")
+	assert_true(tutorial.validate().is_empty(), "terminal explicativo é válido")
+
+
 func test_power_on_without_budget() -> void:
 	var grid: EnergyGrid = _sample()
 	assert_eq(grid.can_power(&"node_door"), EnergyGrid.Result.NO_BUDGET, "sem orçamento")

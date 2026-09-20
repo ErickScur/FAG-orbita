@@ -2,7 +2,7 @@
   "id": "core_hub",
   "name": "Núcleo Central",
   "tileset": "res://assets/tiles/core_tileset.tres",
-  "ambient_color": "#5a757f",
+  "ambient_color": "#0d1219",
   "parallax": true,
   "floor_sfx": "step_metal",
   "music": "core",
@@ -21,24 +21,24 @@
       "terminal_id": "core_hub",
       "system_id": "lights_core",
       "group": "core_lights",
-      "radius": 160.0,
-      "energy": 1.6
+      "radius": 96.0,
+      "energy": 1.4
     },
     "16,9": {
       "id": "core_lamp_step",
       "terminal_id": "core_hub",
       "system_id": "lights_core",
       "group": "core_lights",
-      "radius": 160.0,
-      "energy": 1.6
+      "radius": 96.0,
+      "energy": 1.4
     },
     "32,9": {
       "id": "core_lamp_log",
       "terminal_id": "core_hub",
       "system_id": "lights_core",
       "group": "core_lights",
-      "radius": 160.0,
-      "energy": 1.6
+      "radius": 96.0,
+      "energy": 1.4
     },
     "34,11": {
       "id": "log_core_01",
@@ -64,8 +64,8 @@
       "terminal_id": "core_hub",
       "system_id": "lights_core",
       "group": "core_lights",
-      "radius": 160.0,
-      "energy": 1.6
+      "radius": 96.0,
+      "energy": 1.4
     },
     "56,11": {
       "id": "core_console",
@@ -76,8 +76,8 @@
       "terminal_id": "core_hub",
       "system_id": "lights_core",
       "group": "core_lights",
-      "radius": 160.0,
-      "energy": 1.6
+      "radius": 96.0,
+      "energy": 1.4
     },
     "60,11": {
       "id": "door_habitat",
@@ -87,8 +87,8 @@
     "62,9": {
       "id": "hab_lamp_emergency",
       "color": "#e0b43c",
-      "radius": 128.0,
-      "energy": 1.8
+      "radius": 80.0,
+      "energy": 1.5
     },
     "63,11": {
       "id": "hab_dock_01"
@@ -141,6 +141,12 @@
       "rect": [31, 7, 3, 5],
       "tutorial": "tut_interact",
       "once": true
+    },
+    {
+      "id": "core_t_chassis",
+      "rect": [35, 7, 3, 5],
+      "tutorial": "tut_chassis",
+      "once": false
     },
     {
       "id": "core_t_dark",

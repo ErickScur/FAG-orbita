@@ -2,7 +2,7 @@
   "id": "energy_test",
   "name": "Bancada de energia",
   "tileset": "res://assets/tiles/greenhouse_tileset.tres",
-  "ambient_color": "#191d26",
+  "ambient_color": "#0d1219",
   "floor_sfx": "step_soil",
   "reactor_online": false,
   "objective": "obj_greenhouse",

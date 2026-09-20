@@ -56,10 +56,6 @@ var _reactor_state_id: StringName = HudModel.REACTOR_STATE_NONE
 @onready var _objective: VBoxContainer = %Objective
 @onready var _objective_text: Label = %ObjectiveText
 @onready var _objective_label: Label = %ObjectiveLabel
-@onready var _logs_label: Label = %LogsLabel
-@onready var _logs_icon: TextureRect = %LogsIcon
-@onready var _data_label: Label = %DataLabel
-@onready var _data_icon: TextureRect = %DataIcon
 @onready var _prompt_row: HBoxContainer = %PromptRow
 @onready var _prompt: Label = %Prompt
 @onready var _toasts: VBoxContainer = %Toasts
@@ -72,7 +68,6 @@ func _ready() -> void:
 	_integrity_label.text = HudModel.text_for(&"integrity_label", _texts)
 	_objective_label.text = HudModel.text_for(&"objective_label", _texts)
 	_build_cells()
-	_build_counter_icons()
 	_beep_timer.wait_time = Balance.LOW_INTEGRITY_BEEP_INTERVAL
 	_beep_timer.timeout.connect(_on_beep_timeout)
 	_connect_events()
@@ -89,8 +84,12 @@ func _process(delta: float) -> void:
 	_update_reactor_state_text()
 
 
+func _reactor_should_show() -> bool:
+	return GameState.is_reactor_online() and _critical
+
+
 func _update_reactor_visibility() -> void:
-	if _reactor.visible == GameState.is_reactor_online():
+	if _reactor.visible == _reactor_should_show():
 		return
 	_on_reactor_changed(GameState.reactor_percent)
 
@@ -106,11 +105,6 @@ func _build_cells() -> void:
 		cell.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
 		_cells_box.add_child(cell)
 		_cells.append(cell)
-
-
-func _build_counter_icons() -> void:
-	_logs_icon.texture = _icon(HudModel.ICON_LOG)
-	_data_icon.texture = _icon(HudModel.ICON_RESEARCH)
 
 
 func _icon(index: int) -> Texture2D:
@@ -146,7 +140,6 @@ func _sync_with_state() -> void:
 	_snap_charge_bar()
 	_critical = GameState.is_reactor_critical()
 	_on_reactor_changed(GameState.reactor_percent)
-	_refresh_counters()
 	_set_objective_text(GameState.current_objective)
 	_cost_mark.visible = GameState.abilities.has(&"dash")
 
@@ -340,7 +333,7 @@ func _remove_status(status_id: StringName) -> void:
 
 
 func _on_reactor_changed(percent: float) -> void:
-	_reactor.visible = GameState.is_reactor_online()
+	_reactor.visible = _reactor_should_show()
 	_reactor_bar.max_value = Balance.REACTOR_START
 	_reactor_bar.value = clampf(percent, 0.0, Balance.REACTOR_START)
 	_reactor_label.text = HudModel.format_single(
@@ -372,10 +365,10 @@ func _on_reactor_critical(active: bool) -> void:
 	_critical = active and not Settings.no_timer
 	if not _critical:
 		_reactor.modulate = NORMAL_COLOR
+	_on_reactor_changed(GameState.reactor_percent)
 
 
 func _on_collectible_picked(kind: StringName, _item_id: StringName) -> void:
-	_refresh_counters()
 	if _show_first_pickup_card(kind):
 		return
 	if kind == &"log":
@@ -418,19 +411,6 @@ func _show_first_pickup_card(kind: StringName) -> bool:
 	GameState.flags[flag] = true
 	_toast_card(title, HudModel.text_for(PickupRules.first_hint_id(kind), _texts))
 	return true
-
-
-func _refresh_counters() -> void:
-	_logs_label.text = HudModel.format_pair(
-		HudModel.text_for(&"counter_logs", _texts),
-		GameState.logs_collected.size(),
-		Balance.LOGS_TOTAL
-	)
-	_data_label.text = HudModel.format_pair(
-		HudModel.text_for(&"counter_research", _texts),
-		GameState.research_collected.size(),
-		Balance.RESEARCH_TOTAL
-	)
 
 
 func _on_interaction_available(prompt: String) -> void:

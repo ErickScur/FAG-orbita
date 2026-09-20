@@ -1,0 +1,21 @@
+[
+  {"frame": 60, "screenshot": "f44_01_hud_limpo"},
+  {"frame": 90, "action": "map", "pressed": true},
+  {"frame": 94, "action": "map", "pressed": false},
+  {"frame": 130, "screenshot": "f44_02_chassi_aberto"},
+  {"frame": 140, "action": "map", "pressed": true},
+  {"frame": 144, "action": "map", "pressed": false},
+  {"frame": 170, "screenshot": "f44_03_chassi_fechado"},
+  {"frame": 215, "screenshot": "f44_04_reator_critico"},
+  {"frame": 290, "screenshot": "f44_05_cartao_chassi"},
+  {"frame": 300, "action": "map", "pressed": true},
+  {"frame": 304, "action": "map", "pressed": false},
+  {"frame": 325, "screenshot": "f44_06_aberto_pelo_cartao"},
+  {"frame": 335, "action": "map", "pressed": true},
+  {"frame": 339, "action": "map", "pressed": false},
+  {"frame": 400, "screenshot": "f44_07_log_aberto"},
+  {"frame": 410, "action": "map", "pressed": true},
+  {"frame": 414, "action": "map", "pressed": false},
+  {"frame": 440, "screenshot": "f44_08_log_bloqueia_chassi"},
+  {"frame": 470, "quit": true}
+]

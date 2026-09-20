@@ -3,6 +3,8 @@
     "core": {
       "base": "#1B2B34",
       "secondary": "#2F4F5A",
+      "tile": "#8CA3B0",
+      "tile_back": "#6E8496",
       "accent": "#5FD4C8",
       "danger": "#E0B43C",
       "light": "#D7E3E8",
@@ -11,6 +13,8 @@
     "greenhouse": {
       "base": "#1E2A1C",
       "secondary": "#3F6B3A",
+      "tile": "#7DA267",
+      "tile_back": "#6C8A5E",
       "accent": "#E58FB4",
       "danger": "#B7D35A",
       "light": "#D7E8CF",

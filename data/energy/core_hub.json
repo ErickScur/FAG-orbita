@@ -2,6 +2,7 @@
   "id": "core_hub",
   "title": "NÚCLEO CENTRAL - DISTRIBUIÇÃO",
   "budget": 1,
+  "verbose": true,
   "goal_text": "Abrir a porta do Setor Habitacional",
   "goal_done_text": "Porta do Setor Habitacional aberta",
   "goal_systems": ["door_habitat"],
