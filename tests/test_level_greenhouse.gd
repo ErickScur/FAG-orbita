@@ -82,7 +82,8 @@ func test_single_spawn_and_the_expected_cast() -> void:
 
 func test_collectibles_match_the_feature_budget() -> void:
 	assert_eq(_count_symbol("D"), 2, "duas docas de backup")
-	assert_eq(_count_symbol("l") + _count_symbol("L"), 4, "quatro logs")
+	assert_eq(_count_symbol("L"), 2, "dois terminais de registro")
+	assert_eq(_count_symbol("l"), 0, "nenhum fragmento solto de log")
 	assert_eq(_count_symbol("r"), 3, "três dados de pesquisa")
 	assert_eq(_count_symbol("c"), 4, "quatro células de energia")
 	assert_eq(_count_symbol("k"), 2, "dois kits de solda")
@@ -159,7 +160,7 @@ func test_log_ids_exist_and_are_unique() -> void:
 		assert_true(logs.has(StringName(id)), "log '%s'" % id)
 		assert_false(seen.has(id), "log '%s' repetido" % id)
 		seen.append(id)
-	assert_eq(seen.size(), 4, "quatro logs da Estufa")
+	assert_eq(seen.size(), 2, "dois logs da Estufa")
 
 
 func test_objectives_never_repeat_along_the_route() -> void:
@@ -312,7 +313,7 @@ func test_floors_are_thick_enough_to_read_as_floors() -> void:
 func test_the_claws_gate_comes_before_the_magnetic_wall_exit() -> void:
 	var claw_log_row: int = -1
 	for key: Variant in _meta.get("entities", {}):
-		if String((_meta["entities"] as Dictionary)[key].get("id", "")) != "log_gh_03":
+		if String((_meta["entities"] as Dictionary)[key].get("id", "")) != "log_gh_02":
 			continue
 		claw_log_row = LevelParser.key_to_cell(String(key)).y
 	assert_true(claw_log_row > 0, "o log das garras está no mapa")
@@ -327,7 +328,7 @@ func test_the_claws_gate_comes_before_the_magnetic_wall_exit() -> void:
 		"o log (linha %d) fica abaixo do topo da parede (linha %d)" % [claw_log_row, wall_rows[0]]
 	)
 	assert_eq(
-		String(DialogueManager.logs()[&"log_gh_03"].get("unlock_ability", "")),
+		String(DialogueManager.logs()[&"log_gh_02"].get("unlock_ability", "")),
 		String(ClimbLogic.ABILITY_ID),
 		"o log libera as garras"
 	)
@@ -343,6 +344,92 @@ func test_scene_and_data_agree() -> void:
 	assert_true(
 		FileAccess.get_file_as_string("res://tests/scenes.txt").contains(SCENE_PATH),
 		"cena registrada no smoke"
+	)
+
+
+func test_the_first_log_hangs_off_the_lift_shaft() -> void:
+	var log_cell: Vector2i = _cell_of("log_gh_01")
+	assert_ne(log_cell, Vector2i(-1, -1), "log_gh_01 está no mapa")
+	if log_cell.x < 0:
+		return
+	var solids: Dictionary = _parsed.get("solids", {})
+	assert_false(solids.has(log_cell), "a célula do registro está livre")
+	assert_true(solids.has(log_cell + Vector2i.DOWN), "o registro tem piso embaixo")
+	var gap: int = 0
+	for column: int in range(log_cell.x - 1, 0, -1):
+		if solids.has(Vector2i(column, log_cell.y + 1)):
+			break
+		gap += 1
+	assert_true(gap >= 3, "o registro fica do outro lado de um vão de %d tiles" % gap)
+	var lift_cell: Vector2i = _cell_of("gh_lift")
+	assert_true(
+		lift_cell.x < log_cell.x and log_cell.x - lift_cell.x <= gap,
+		"o poço do elevador é o que serve o registro"
+	)
+
+
+func test_the_first_log_ledge_always_lets_you_leave() -> void:
+	var log_cell: Vector2i = _cell_of("log_gh_01")
+	if log_cell.x < 0:
+		return
+	var solids: Dictionary = _parsed.get("solids", {})
+	var height: int = int(_parsed.get("height", 0))
+	var column: int = log_cell.x - 1
+	var row: int = log_cell.y + 1
+	while row < height and not solids.has(Vector2i(column, row)):
+		row += 1
+	assert_true(row < height, "a coluna ao lado da saliência termina em chão firme")
+	assert_true(
+		row - log_cell.y >= 4,
+		"da saliência dá para cair de volta na Zona A (%d tiles)" % (row - log_cell.y)
+	)
+
+
+func test_the_first_log_is_never_on_the_walking_route() -> void:
+	var log_cell: Vector2i = _cell_of("log_gh_01")
+	for value: Variant in ROUTE_BASE + ROUTE_PLANT + ROUTE_LIFT + ROUTE_MIDDLE + ROUTE_NODE:
+		var step: Array = value
+		assert_ne(
+			Vector2i(int(step[0]), int(step[1])),
+			log_cell,
+			"o registro não pode estar num passo da rota principal"
+		)
+	assert_ne(log_cell, _parsed.get("spawn", Vector2i.ZERO), "nem em cima do spawn")
+
+
+func test_reaching_the_first_log_costs_a_system() -> void:
+	var grid: EnergyGrid = _grid()
+	if grid == null:
+		return
+	assert_true(
+		grid.requires_of(&"lift_platform").has(&"heating"), "o elevador exige o aquecimento"
+	)
+	assert_eq(
+		_ids(grid.shutdown_candidates(&"lift_platform")),
+		_ids([&"corridor_light"]),
+		"ligar o elevador obriga a apagar o corredor"
+	)
+	grid.power_off(&"corridor_light")
+	grid.power_on(&"lift_platform")
+	assert_true(grid.is_powered(&"lift_platform"), "o elevador leva ao registro")
+	assert_false(grid.is_powered(&"corridor_light"), "o corredor apagou por causa dele")
+	assert_true(grid.can_power(&"node_door") != EnergyGrid.Result.UNKNOWN_SYSTEM, "meta existe")
+
+
+func test_the_lift_docks_level_with_both_floors() -> void:
+	var lift_cell: Vector2i = _cell_of("gh_lift")
+	var points: PackedVector2Array = MovingPlatform.points_from(
+		_params_of("gh_lift").get("path", [])
+	)
+	assert_eq(points.size(), 2, "o elevador tem dois pontos de parada")
+	if points.size() != 2:
+		return
+	var origin: float = float(lift_cell.y) + 0.5
+	assert_almost_eq(
+		origin + points[0].y - 0.25, float(lift_cell.y + 1), 0.01, "embaixo fica rente ao piso"
+	)
+	assert_almost_eq(
+		origin + points[1].y - 0.25, 28.0, 0.01, "em cima fica rente ao piso da Zona B"
 	)
 
 
@@ -444,3 +531,26 @@ func _grid() -> EnergyGrid:
 	if not (raw is Dictionary):
 		return null
 	return EnergyGrid.from_dict(raw)
+
+
+func _cell_of(entity_id: String) -> Vector2i:
+	for key: Variant in _meta.get("entities", {}):
+		var params: Dictionary = (_meta["entities"] as Dictionary)[key]
+		if String(params.get("id", "")) == entity_id:
+			return LevelParser.key_to_cell(String(key))
+	return Vector2i(-1, -1)
+
+
+func _params_of(entity_id: String) -> Dictionary:
+	for key: Variant in _meta.get("entities", {}):
+		var params: Dictionary = (_meta["entities"] as Dictionary)[key]
+		if String(params.get("id", "")) == entity_id:
+			return params
+	return {}
+
+
+func _ids(values: Array) -> PackedStringArray:
+	var result := PackedStringArray()
+	for value: Variant in values:
+		result.append(String(value))
+	return result

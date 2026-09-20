@@ -178,4 +178,4 @@ static func header_for(entry: Dictionary) -> String:
 	var subtitle: String = String(entry.get("subtitle", ""))
 	if subtitle.is_empty():
 		return title
-	return "%s — %s" % [title, subtitle]
+	return "%s · %s" % [title, subtitle]

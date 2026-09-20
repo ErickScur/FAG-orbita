@@ -1,6 +1,7 @@
 extends Control
 
 const FIRST_LEVEL: String = "res://scenes/levels/core_hub.tscn"
+const BRIEFING_SCENE: String = "res://scenes/boot/briefing.tscn"
 const FALLBACK_LEVEL: String = "res://tests/qa/scenes/loading_target.tscn"
 const OPTIONS_SCENE: String = "res://scenes/ui/options_menu.tscn"
 const CONFIRM_SCENE: String = "res://scenes/ui/confirm_dialog.tscn"
@@ -100,7 +101,13 @@ func _on_new_game_answered(confirmed: bool) -> void:
 func _start_new_game() -> void:
 	SaveManager.delete_save()
 	GameState.new_game()
-	SceneManager.goto(_first_level())
+	SceneManager.goto(_new_game_destination())
+
+
+func _new_game_destination() -> String:
+	if ResourceLoader.exists(BRIEFING_SCENE):
+		return BRIEFING_SCENE
+	return _first_level()
 
 
 func _on_options() -> void:

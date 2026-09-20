@@ -4,6 +4,7 @@ extends Area2D
 @export var dialogue_id: StringName = &""
 @export var objective_id: StringName = &""
 @export var flag_id: StringName = &""
+@export var tutorial_id: StringName = &""
 @export var once: bool = true
 
 var _fired: bool = false
@@ -22,6 +23,8 @@ func _on_body_entered(body: Node2D) -> void:
 	_fired = once
 	if once and trigger_id != &"":
 		GameState.flags["trg_" + String(trigger_id)] = true
+	if tutorial_id != &"":
+		EventBus.tutorial_requested.emit(tutorial_id)
 	if dialogue_id != &"":
 		DialogueManager.play(dialogue_id)
 	if objective_id != &"" and GameState.has_method("set_objective"):

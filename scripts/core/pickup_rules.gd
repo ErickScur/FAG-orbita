@@ -16,6 +16,9 @@ const SHEET_ROWS: Dictionary = {
 	KIND_RESEARCH: 3,
 	KIND_CAPACITOR: 4,
 }
+const SEEN_FLAG_PREFIX: String = "seen_kind_"
+const FIRST_TEXT_PREFIX: String = "first_"
+const FIRST_HINT_SUFFIX: String = "_hint"
 const SFX_DEFAULT: StringName = &"pickup"
 const SFX_BY_KIND: Dictionary = {KIND_LOG: &"log_pickup"}
 const COUNTED_KINDS: Array[StringName] = [KIND_LOG, KIND_RESEARCH]
@@ -35,6 +38,18 @@ static func can_collect(
 	if kind == KIND_REPAIR_KIT:
 		return integrity < integrity_max
 	return true
+
+
+static func seen_flag(kind: StringName) -> String:
+	return SEEN_FLAG_PREFIX + String(kind)
+
+
+static func first_text_id(kind: StringName) -> StringName:
+	return StringName(FIRST_TEXT_PREFIX + String(kind))
+
+
+static func first_hint_id(kind: StringName) -> StringName:
+	return StringName(FIRST_TEXT_PREFIX + String(kind) + FIRST_HINT_SUFFIX)
 
 
 static func sheet_row(kind: StringName) -> int:

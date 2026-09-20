@@ -112,7 +112,6 @@ func test_every_bark_exists_in_dialogue() -> void:
 		for system_id: StringName in grid.system_ids():
 			for powered: bool in [true, false]:
 				var bark: StringName = grid.bark_of(system_id, powered)
-				assert_ne(bark, &"", "'%s': '%s' sem fala" % [file_name, system_id])
 				if bark == &"":
 					continue
 				assert_true(
@@ -157,16 +156,67 @@ func test_greenhouse_trade_lists_every_option() -> void:
 	)
 
 
-func test_core_hub_is_two_one() -> void:
+func test_goal_systems_always_narrate_the_switch() -> void:
+	for file_name: String in _files():
+		var grid: EnergyGrid = _load(file_name.get_basename())
+		if grid == null:
+			continue
+		for system_id: StringName in grid.goal_systems():
+			for powered: bool in [true, false]:
+				assert_ne(
+					grid.bark_of(system_id, powered),
+					&"",
+					"'%s': meta '%s' sem fala" % [file_name, system_id]
+				)
+
+
+func test_core_hub_is_three_one() -> void:
 	var grid: EnergyGrid = _load(String(CORE_HUB))
 	assert_not_null(grid, "tutorial existe")
 	if grid == null:
 		return
 	assert_eq(grid.budget, 1, "uma unidade de energia")
-	assert_eq(grid.system_ids().size(), 2, "dois sistemas")
+	assert_eq(grid.system_ids().size(), 3, "três sistemas")
 	assert_true(grid.is_powered(&"lights_core"), "começa com a luz acesa")
+	assert_false(grid.is_powered(&"lift_core"), "elevador começa parado")
 	assert_false(grid.is_powered(&"door_habitat"), "porta começa fechada")
 	assert_eq(grid.can_power(&"door_habitat"), EnergyGrid.Result.NO_BUDGET, "porta sem orçamento")
+	assert_eq(grid.can_power(&"lift_core"), EnergyGrid.Result.NO_BUDGET, "elevador sem orçamento")
+
+
+func test_core_hub_lift_is_an_optional_detour() -> void:
+	var grid: EnergyGrid = _load(String(CORE_HUB))
+	if grid == null:
+		return
+	_step(grid, &"lights_core", "apaga a luz para liberar a unidade")
+	_step(grid, &"lift_core", "liga o elevador de serviço")
+	assert_false(grid.goal_met(), "o elevador sozinho não abre a porta")
+	assert_eq(
+		grid.can_power(&"door_habitat"),
+		EnergyGrid.Result.NO_BUDGET,
+		"com o elevador ligado a porta não cabe"
+	)
+	_step(grid, &"lift_core", "desliga o elevador ao voltar ao terminal")
+	_step(grid, &"door_habitat", "abre a porta")
+	assert_true(grid.goal_met(), "meta cumprida depois do desvio")
+
+
+func test_core_hub_has_no_softlock() -> void:
+	var grid: EnergyGrid = _load(String(CORE_HUB))
+	if grid == null:
+		return
+	var ids: Array[StringName] = grid.system_ids()
+	var total: int = ids.size()
+	for mask: int in range(1 << total):
+		var wanted: Array[StringName] = []
+		for index: int in range(total):
+			if mask & (1 << index) != 0:
+				wanted.append(ids[index])
+		grid.set_state(wanted)
+		assert_true(
+			_can_reach(grid, &"door_habitat"),
+			"estado %s ainda permite abrir a porta" % ", ".join(_names(grid.powered()))
+		)
 
 
 func test_core_hub_lesson_light_or_door() -> void:

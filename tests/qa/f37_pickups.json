@@ -1,0 +1,14 @@
+[
+  {"frame": 10, "screenshot": "f37_p01_chao"},
+  {"frame": 20, "action": "move_right", "pressed": true},
+  {"frame": 75, "action": "move_right", "pressed": false},
+  {"frame": 90, "screenshot": "f37_p02_primeira_celula"},
+  {"frame": 105, "action": "move_right", "pressed": true},
+  {"frame": 175, "action": "move_right", "pressed": false},
+  {"frame": 190, "screenshot": "f37_p03_primeiro_kit"},
+  {"frame": 205, "action": "move_right", "pressed": true},
+  {"frame": 275, "action": "move_right", "pressed": false},
+  {"frame": 290, "screenshot": "f37_p04_primeiro_dado"},
+  {"frame": 360, "screenshot": "f37_p05_contadores"},
+  {"frame": 380, "quit": true}
+]

@@ -306,7 +306,7 @@ O **Núcleo Central** fica no meio; os setores são anéis e corredores saindo d
 
 | Fase | Nome | Clima | Duração | Dificuldade | Introduz | Upgrade |
 |---|---|---|---|---|---|---|
-| 0 | [Núcleo Central](#gdd-2-7-f0) | — | ~5 min | 1/10 | andar, pular, interagir, lanterna, ler log, terminal 2 sistemas/1 energia | — |
+| 0 | [Núcleo Central](#gdd-2-7-f0) | — | ~5 min | 1/10 | andar, pular, descer de plataforma, interagir, lanterna, ler log, terminal 3 sistemas/1 energia | — |
 | 1 | [Estufa](#gdd-2-7-f1) | Primavera | ~10 min | 3/10 | SR-3, Esporos, planta que cresce | Garras Magnéticas |
 | 2 | [Laboratório](#gdd-2-7-f2) | Verão | ~12 min | 5/10 | CX-2, Superaquecimento | Dissipador Térmico |
 | 3 | [Enfermaria](#gdd-2-7-f3) | Inverno | ~12 min | 6/10 | V-9, Congelamento, dilema da lanterna | Núcleo Aquecido |
@@ -316,7 +316,7 @@ O **Núcleo Central** fica no meio; os setores são anéis e corredores saindo d
 
 <a id="gdd-2-7-f0"></a>
 #### Fase 0 — Núcleo Central (tutorial)
-Sala pequena, fechada, iluminada. Sem inimigos, sem dano possível. Ensina andar, pular, interagir, lanterna, ler log. O primeiro Terminal de Distribuição tem **2 sistemas e 1 energia**, a regra do jogo na versão mais simples possível.
+Sala pequena, fechada, iluminada. Sem inimigos, sem dano possível. É um **tutorial explícito**: cada controle é ensinado por um cartão de tecla e seguido de um obstáculo que obriga a usá-lo ([AJ-025](#gdd-ajustes)). O primeiro Terminal de Distribuição tem **3 sistemas e 1 energia** — iluminação, elevador (opcional, leva a um Dado de Pesquisa) e a porta de saída —, ensinando que energia não é um estado, é uma sequência de escolhas.
 
 <a id="gdd-2-7-f1"></a>
 #### Fase 1 — Estufa (Primavera)
@@ -352,7 +352,7 @@ Toda vez que a dificuldade sobe demais, o jogador ganha um upgrade que faz o con
 **Como a dificuldade aumenta (3 eixos, nunca todos ao mesmo tempo):**
 1. **Densidade:** mais inimigos e mais tipos combinados no mesmo trecho.
 2. **Ambiente:** o clima passa a causar dano ativo (Primavera → Verão → Inverno → Vácuo).
-3. **Complexidade do puzzle:** de 2 sistemas / 1 energia (tutorial) até 6 sistemas / 3 energias com dependência em cadeia (Docas).
+3. **Complexidade do puzzle:** de 3 sistemas / 1 energia (tutorial) até 6 sistemas / 3 energias com dependência em cadeia (Docas).
 
 ---
 
@@ -364,22 +364,22 @@ Toda vez que a dificuldade sobe demais, o jogador ganha um upgrade que faz o con
 
 ```
 +----------------------------------------------------------------+
-| [||||] INTEGRIDADE          ESTABILIDADE DO REATOR: 74%        |
-| [======----] CARGA            [############------] descendo    |
-|  (ícones de status)                                            |
+| [||||] INTEGRIDADE                 REATOR 74%                  |
+| [======----] CARGA            [############------]             |
+|  (ícones de status)                (só quando há aviso)        |
 |                                                                |
 |                          (gameplay)                            |
 |                                                                |
-|                                                    LOGS 09/24  |
-|                            [E] ACESSAR TERMINAL    DADOS 04/12 |
+|                                                                |
+|      [E] ACESSAR TERMINAL         LOGS 1/4   DADOS 0/4         |
 +----------------------------------------------------------------+
 ```
 
 | Região | Conteúdo |
 |---|---|
 | Superior esquerdo | Integridade em 4 células (célula vazia fica vermelha piscando); Carga azul abaixo, com marcação do custo da próxima habilidade; ícones de status com contador regressivo |
-| Topo centro | Estabilidade do Reator em % + barra. Abaixo de 25% pulsa em vermelho e toca alarme diegético |
-| Inferior direito | Contadores de Fragmentos de Log (ex.: 09/24) e Dados de Pesquisa (04/12) |
+| Topo centro | Estabilidade do Reator em % + barra, em duas linhas. Uma terceira linha aparece **só quando há aviso**, nesta ordem de prioridade: `CRÍTICO` em vermelho abaixo de 25% (que também pulsa e toca alarme diegético) · `SEM TIMER` em ciano quando a opção está ligada · `TIMER PARADO` em ciano durante leitura de log ou fala travante. No estado normal a linha fica oculta ([AJ-023](#gdd-ajustes)) |
+| Inferior direito | Contadores de Fragmentos de Log e Dados de Pesquisa **em uma única linha apagada**, com o ícone repetindo a silhueta do item que se pega do chão ([AJ-023](#gdd-ajustes)) |
 | Centro inferior | Prompt de interação contextual (`[E] ACESSAR TERMINAL`) |
 | Legendas | Falas da ÓRBITA e logs da Helena na parte de baixo, com o nome de quem fala. Sempre legendado |
 
@@ -526,8 +526,8 @@ Toda vez que a dificuldade sobe demais, o jogador ganha um upgrade que faz o con
 | `ENERGY_CELL_CHARGE` | 40 | Carga | 2.6.3 |
 | `REPAIR_KIT_INTEGRITY` | 25 | pts | 2.6.3 |
 | `CAPACITOR_BONUS` | 25 | Carga máx. | 2.6.3 |
-| `LOGS_TOTAL` | 24 | un. | 2.6.3 |
-| `RESEARCH_TOTAL` | 12 | un. | 2.6.3 |
+| `LOGS_TOTAL` | 4 | un. | 2.6.3 |
+| `RESEARCH_TOTAL` | 4 | un. | 2.6.3 |
 | `DIFFICULTY_DAMAGE_MULT` | {easy: 0.5, normal: 1.0, hard: 1.5} | fator | AJ-003 |
 | `DIFFICULTY_REACTOR_MULT` | {easy: 0.5, normal: 1.0, hard: 1.5} | fator | AJ-003 |
 | `RESPAWN_CHARGE_RATIO` | 1.0 | fração | AJ-006 |
@@ -537,6 +537,9 @@ Toda vez que a dificuldade sobe demais, o jogador ganha um upgrade que faz o con
 | `SCENE_FADE_TIME` | 0.4 | s | AJ-006 |
 | `LOADING_MIN_TIME` | 1.6 | s | AJ-017 |
 | AJ-022 | 2026-09-20 | GDD-P | Constantes de apresentação do polimento visual (tremor de câmera, flash de dano, pulso de lâmpada, vinheta, esporos de ambiente, camadas de parallax, clarão ao religar setor, animações do HUD e cadência de cada animação do MU-7) | O GDD descrevia sensação ("pesado", "a luz é informação") sem números; a F35 precisou fixá-los |
+| AJ-023 | 2026-09-20 | GDD-2.8 | HUD reorganizado para legibilidade: integridade ganha o rótulo `INTEGRIDADE`; o título do reator encurta de `ESTABILIDADE DO REATOR: nn%` para `REATOR nn%`; a terceira linha do reator deixa de ser permanente e só aparece como aviso (`TIMER PARADO` ou `CRÍTICO`); os dois contadores viram uma linha só, apagada, com o ícone repetindo a silhueta do item no chão; a primeira coleta de cada tipo mostra nome e função do item | Playtest humano: "tem muita informação visual na tela/hud. fica confuso oq é integridade, logs, dados, oq são essas coisas azuis no chao e as laranjas". Em 384 px não cabem ao mesmo tempo o título longo do reator centrado e um rótulo à direita das células |
+| AJ-024 | 2026-09-20 | GDD-2.6.3 · GDD-P | A demo passa a ter **4 logs** e **4 dados** em vez de 7 e 12 espalhados: `LOGS_TOTAL` 24→4 e `RESEARCH_TOTAL` 12→4. Os logs são fundidos aos pares (`log_hab_02` entra em `log_hab_01`; `log_gh_03`+`log_gh_04` viram `log_gh_02`, que mantém o desbloqueio das garras) e crescem para 10–11 linhas cada. As falas ambientes de tutorial da ÓRBITA (`core_calib_move`, `core_calib_jump`, `core_log_hint`, `core_flashlight_hint`) são apagadas e viram cartões de tecla | Playtest humano: "muito dialogo e pouca gameplay... desbloquear fragmentos maiores da historia (menos fragmentos, com mais conteudo, só que mais dificil de encontra-los). Talvez Orbita esteja falando muito". Contador que fecha dentro da demo (4/4) também é mais legível que um 3/24 que nunca completa |
+| AJ-025 | 2026-09-20 | GDD-2.7-F0 · GDD-2.8 · GDD-P | O Núcleo Central deixa de ser "uma sala que ensina por diálogo" e vira **tutorial explícito**: uma tela de briefing (boot do MU-7) entre o menu e a fase, e cartões de tecla no jogo (`tut_move`, `tut_pause`, `tut_jump`, `tut_drop`, `tut_interact`, `tut_flashlight`, `tut_terminal`, e `tut_climb` na Estufa), cada um seguido de um obstáculo que obriga a usar o controle recém-ensinado. O terminal do Núcleo passa de 2 para **3 sistemas / 1 energia** (soma `lift_core`, elevador opcional para um Dado de Pesquisa), substituindo o AJ-010 na parte do tutorial | Playtest humano: "O tutorial em si, nao está um tutorial, tá só uma fase sem entender muito" e "deveria ser mais voltado para puzzles". Ensinar por fala ambiente não funcionou: o jogador lê a fala e mesmo assim não sabe qual tecla apertar |
 | AJ-021 | 2026-09-19 | GDD-P | Amplitude e velocidade da flutuação dos coletáveis | O GDD pedia itens "flutuando" sem número |
 | AJ-020 | 2026-09-19 | GDD-P | Velocidade de digitação do diálogo, tempo mínimo de fala ambiente, cores e fade das luzes | Números de apresentação que o GDD descrevia em palavras ("legenda", "luz fria") |
 | AJ-019 | 2026-09-19 | GDD-P | Ritmo do alarme do reator, duração do aviso do HUD, frequência do pulso crítico e do bipe de integridade baixa | Números de feedback do HUD/áudio que o GDD descrevia só em palavras |
@@ -576,6 +579,9 @@ Toda vez que a dificuldade sobe demais, o jogador ganha um upgrade que faz o con
 | `DIALOGUE_CPS` | 40.0 | car/s | AJ-020 |
 | `DIALOGUE_READ_CPS` | 15.0 | car/s | AJ-020 |
 | `DIALOGUE_AMBIENT_MIN_TIME` | 2.0 | s | AJ-020 |
+| `BRIEFING_CPS` | 60.0 | car./s | AJ-025 |
+| `TUTORIAL_CARD_HOLD` | 0.6 | s | AJ-025 |
+| `TUTORIAL_CARD_FADE` | 0.2 | s | AJ-025 |
 | `PICKUP_BOB_AMPLITUDE` | 2.0 | px | AJ-021 |
 | `PICKUP_BOB_SPEED` | 2.0 | ciclos/s | AJ-021 |
 | `SHAKE_TIME` | 0.25 | s | AJ-022 |

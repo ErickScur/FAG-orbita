@@ -18,9 +18,16 @@ const CHARGE_TOASTS: Dictionary = {
 	PickupRules.KIND_REPAIR_KIT: &"toast_integrity",
 	PickupRules.KIND_CAPACITOR: &"toast_capacity",
 }
-const CHARGE_FRAME_WIDTH: float = 72.0
+const CHARGE_FRAME_WIDTH: float = 60.0
+const CHARGE_SLOT_WIDTH: float = 68.0
 const TOAST_ROW_HEIGHT: float = 16.0
+const TOAST_HINT_COLOR: Color = Color(0.541176, 0.607843, 0.658824)
 const CELL_LOST_COLOR: Color = Color(1.0, 0.55, 0.45)
+const REACTOR_STATE_COLORS: Dictionary = {
+	HudModel.REACTOR_STATE_CRITICAL: Color(1.0, 0.360784, 0.360784),
+	HudModel.REACTOR_STATE_NO_TIMER: Color(0.372549, 0.831373, 0.784314),
+	HudModel.REACTOR_STATE_FROZEN: Color(0.372549, 0.831373, 0.784314),
+}
 
 var _texts: Dictionary = {}
 var _cells: Array[TextureRect] = []
@@ -33,11 +40,14 @@ var _flash_left: float = 0.0
 var _low_integrity: bool = false
 var _cell_states: Array[int] = []
 var _charge_target: float = 0.0
+var _reactor_state_id: StringName = HudModel.REACTOR_STATE_NONE
 
 @onready var _cells_box: HBoxContainer = %Cells
+@onready var _charge_frame: Control = %ChargeFrame
 @onready var _charge_bar: ProgressBar = %ChargeBar
 @onready var _cost_mark: ColorRect = %CostMark
 @onready var _charge_label: Label = %ChargeLabel
+@onready var _integrity_label: Label = %IntegrityLabel
 @onready var _status_box: HBoxContainer = %Statuses
 @onready var _reactor: VBoxContainer = %Reactor
 @onready var _reactor_label: Label = %ReactorLabel
@@ -57,6 +67,7 @@ var _charge_target: float = 0.0
 func _ready() -> void:
 	_texts = HudModel.load_texts()
 	_charge_label.text = HudModel.text_for(&"charge_label", _texts)
+	_integrity_label.text = HudModel.text_for(&"integrity_label", _texts)
 	_build_cells()
 	_build_counter_icons()
 	_beep_timer.wait_time = Balance.LOW_INTEGRITY_BEEP_INTERVAL
@@ -237,11 +248,12 @@ func _snap_charge_bar() -> void:
 
 
 func _resize_charge_frame(maximum: float) -> void:
-	var frame: Control = _charge_bar.get_parent()
-	var width: float = roundf(CHARGE_FRAME_WIDTH * maximum / Balance.CHARGE_MAX)
-	if is_equal_approx(frame.custom_minimum_size.x, width):
+	var width: float = minf(
+		roundf(CHARGE_FRAME_WIDTH * maximum / Balance.CHARGE_MAX), CHARGE_SLOT_WIDTH
+	)
+	if is_equal_approx(_charge_frame.size.x, width):
 		return
-	frame.custom_minimum_size.x = width
+	_charge_frame.size.x = width
 	_cost_mark.position.x = roundf(
 		width * HudModel.charge_ratio(Balance.DASH_COST, maximum)
 	)
@@ -336,15 +348,21 @@ func _on_reactor_changed(percent: float) -> void:
 
 func _update_reactor_state_text() -> void:
 	if not _reactor.visible:
+		_reactor_state.visible = false
 		return
-	var id: StringName = &"reactor_falling"
-	if Settings.no_timer:
-		id = &"reactor_no_timer"
-	elif GameState.is_timer_frozen():
-		id = &"reactor_frozen"
-	var text: String = HudModel.text_for(id, _texts)
-	if _reactor_state.text != text:
-		_reactor_state.text = text
+	var id: StringName = HudModel.reactor_state_id(
+		_critical, GameState.is_timer_frozen(), Settings.no_timer
+	)
+	_reactor_state.visible = id != HudModel.REACTOR_STATE_NONE
+	if id == _reactor_state_id:
+		return
+	_reactor_state_id = id
+	if not _reactor_state.visible:
+		return
+	_reactor_state.text = HudModel.text_for(id, _texts)
+	_reactor_state.add_theme_color_override(
+		"font_color", REACTOR_STATE_COLORS.get(id, NORMAL_COLOR)
+	)
 
 
 func _on_reactor_critical(active: bool) -> void:
@@ -355,6 +373,8 @@ func _on_reactor_critical(active: bool) -> void:
 
 func _on_collectible_picked(kind: StringName, _item_id: StringName) -> void:
 	_refresh_counters()
+	if _show_first_pickup_card(kind):
+		return
 	if kind == &"log":
 		_toast(
 			HudModel.format_pair(
@@ -381,6 +401,20 @@ func _on_collectible_picked(kind: StringName, _item_id: StringName) -> void:
 			PickupRules.amount_for(kind)
 		)
 	)
+
+
+func _show_first_pickup_card(kind: StringName) -> bool:
+	if not PickupRules.is_known(kind):
+		return false
+	var flag: String = PickupRules.seen_flag(kind)
+	if bool(GameState.flags.get(flag, false)):
+		return false
+	var title: String = HudModel.text_for(PickupRules.first_text_id(kind), _texts)
+	if title.is_empty():
+		return false
+	GameState.flags[flag] = true
+	_toast_card(title, HudModel.text_for(PickupRules.first_hint_id(kind), _texts))
+	return true
 
 
 func _refresh_counters() -> void:
@@ -451,32 +485,56 @@ func _on_game_paused(_paused: bool) -> void:
 func _toast(text: String) -> void:
 	if text.is_empty():
 		return
+	_push_toast([{"text": text, "color": TOAST_COLOR}])
+
+
+func _toast_card(title: String, hint: String) -> void:
+	if title.is_empty():
+		return
+	var rows: Array[Dictionary] = [{"text": title, "color": TOAST_COLOR}]
+	if not hint.is_empty():
+		rows.append({"text": hint, "color": TOAST_HINT_COLOR})
+	_push_toast(rows)
+
+
+func _push_toast(rows: Array[Dictionary]) -> void:
 	while _toasts.get_child_count() >= MAX_TOASTS:
 		var oldest: Node = _toasts.get_child(0)
 		_toasts.remove_child(oldest)
 		oldest.queue_free()
 	var holder := Control.new()
 	holder.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	holder.custom_minimum_size = Vector2(0.0, TOAST_ROW_HEIGHT)
-	var label := Label.new()
-	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	label.add_theme_font_size_override("font_size", TOAST_FONT_SIZE)
-	label.add_theme_color_override("font_color", TOAST_COLOR)
-	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	label.text = text
-	holder.add_child(label)
-	label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	holder.custom_minimum_size = Vector2(0.0, TOAST_ROW_HEIGHT * float(rows.size()))
+	var column := VBoxContainer.new()
+	column.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	column.add_theme_constant_override("separation", 0)
+	for row: Dictionary in rows:
+		column.add_child(_toast_label(String(row["text"]), row["color"]))
+	holder.add_child(column)
 	_toasts.add_child(holder)
-	label.position.y = Balance.HUD_TOAST_SLIDE
-	label.modulate.a = 0.0
+	column.size = Vector2(_toasts.size.x, holder.custom_minimum_size.y)
+	column.position = Vector2(0.0, Balance.HUD_TOAST_SLIDE)
+	column.modulate.a = 0.0
 	var tween: Tween = holder.create_tween()
 	tween.set_trans(Tween.TRANS_SINE)
 	tween.set_ease(Tween.EASE_OUT)
-	tween.tween_property(label, "position:y", 0.0, Balance.HUD_TOAST_SLIDE_TIME)
-	tween.parallel().tween_property(label, "modulate:a", 1.0, Balance.HUD_TOAST_SLIDE_TIME)
+	tween.tween_property(column, "position:y", 0.0, Balance.HUD_TOAST_SLIDE_TIME)
+	tween.parallel().tween_property(column, "modulate:a", 1.0, Balance.HUD_TOAST_SLIDE_TIME)
 	tween.tween_interval(Balance.HUD_TOAST_TIME * 0.6)
 	tween.tween_property(
-		label, "position:y", -Balance.HUD_TOAST_SLIDE, Balance.HUD_TOAST_TIME * 0.4
+		column, "position:y", -Balance.HUD_TOAST_SLIDE, Balance.HUD_TOAST_TIME * 0.4
 	)
-	tween.parallel().tween_property(label, "modulate:a", 0.0, Balance.HUD_TOAST_TIME * 0.4)
+	tween.parallel().tween_property(column, "modulate:a", 0.0, Balance.HUD_TOAST_TIME * 0.4)
 	tween.tween_callback(holder.queue_free)
+
+
+func _toast_label(text: String, color: Color) -> Label:
+	var label := Label.new()
+	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	label.custom_minimum_size = Vector2(0.0, TOAST_ROW_HEIGHT)
+	label.add_theme_font_size_override("font_size", TOAST_FONT_SIZE)
+	label.add_theme_color_override("font_color", color)
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	label.text = text
+	return label

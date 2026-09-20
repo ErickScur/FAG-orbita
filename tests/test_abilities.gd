@@ -51,13 +51,13 @@ func test_ability_survives_save_round_trip() -> void:
 func test_greenhouse_log_carries_the_ability() -> void:
 	var data: Dictionary = DialogueData.load_file(LOGS_PATH)
 	var logs: Dictionary = data.get("logs", {})
-	var entry: Variant = logs.get(&"log_gh_03", null)
+	var entry: Variant = logs.get(&"log_gh_02", null)
 	assert_not_null(entry, "log da Helena")
 	if entry is Dictionary:
 		assert_eq(
 			String((entry as Dictionary).get("unlock_ability", "")),
 			String(ClimbLogic.ABILITY_ID),
-			"log_gh_03 destrava as garras"
+			"log_gh_02 destrava as garras"
 		)
 
 

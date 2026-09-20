@@ -1,0 +1,406 @@
+[
+ {
+  "frame": 40,
+  "action": "move_right",
+  "pressed": true
+ },
+ {
+  "frame": 60,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 72,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 95,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 107,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 130,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 142,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 165,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 177,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 200,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 212,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 235,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 247,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 270,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 282,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 305,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 317,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 340,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 352,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 375,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 387,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 410,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 422,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 445,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 457,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 480,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 492,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 515,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 527,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 535,
+  "action": "move_right",
+  "pressed": false
+ },
+ {
+  "frame": 560,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 562,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 590,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 592,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 620,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 622,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 650,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 652,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 680,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 682,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 710,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 712,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 740,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 742,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 770,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 772,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 820,
+  "action": "interact",
+  "pressed": true
+ },
+ {
+  "frame": 822,
+  "action": "interact",
+  "pressed": false
+ },
+ {
+  "frame": 880,
+  "action": "ui_down",
+  "pressed": true
+ },
+ {
+  "frame": 882,
+  "action": "ui_down",
+  "pressed": false
+ },
+ {
+  "frame": 910,
+  "action": "interact",
+  "pressed": true
+ },
+ {
+  "frame": 912,
+  "action": "interact",
+  "pressed": false
+ },
+ {
+  "frame": 940,
+  "action": "ui_down",
+  "pressed": true
+ },
+ {
+  "frame": 942,
+  "action": "ui_down",
+  "pressed": false
+ },
+ {
+  "frame": 970,
+  "action": "ui_down",
+  "pressed": true
+ },
+ {
+  "frame": 972,
+  "action": "ui_down",
+  "pressed": false
+ },
+ {
+  "frame": 1000,
+  "action": "interact",
+  "pressed": true
+ },
+ {
+  "frame": 1002,
+  "action": "interact",
+  "pressed": false
+ },
+ {
+  "frame": 1060,
+  "action": "ui_cancel",
+  "pressed": true
+ },
+ {
+  "frame": 1062,
+  "action": "ui_cancel",
+  "pressed": false
+ },
+ {
+  "frame": 1090,
+  "action": "move_right",
+  "pressed": true
+ },
+ {
+  "frame": 1110,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 1122,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 1145,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 1157,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 1180,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 1192,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 1215,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 1227,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 1230,
+  "action": "move_right",
+  "pressed": false
+ },
+ {
+  "frame": 1300,
+  "screenshot": "03_esperando_o_elevador"
+ },
+ {
+  "frame": 1800,
+  "screenshot": "04_subindo"
+ },
+ {
+  "frame": 1845,
+  "action": "move_right",
+  "pressed": true
+ },
+ {
+  "frame": 1852,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 1866,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 1900,
+  "action": "move_right",
+  "pressed": false
+ },
+ {
+  "frame": 1925,
+  "screenshot": "05_na_saliencia"
+ },
+ {
+  "frame": 1990,
+  "screenshot": "06_elevador_foi_embora"
+ },
+ {
+  "frame": 2005,
+  "action": "interact",
+  "pressed": true
+ },
+ {
+  "frame": 2007,
+  "action": "interact",
+  "pressed": false
+ },
+ {
+  "frame": 2040,
+  "screenshot": "07_registro_aberto"
+ },
+ {
+  "frame": 2070,
+  "quit": true
+ }
+]

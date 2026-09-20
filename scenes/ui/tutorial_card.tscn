@@ -1,0 +1,87 @@
+[gd_scene load_steps=3 format=3 uid="uid://c0rbitatutcard"]
+
+[ext_resource type="Script" path="res://scenes/ui/tutorial_card.gd" id="1_card"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_card"]
+content_margin_left = 6.0
+content_margin_top = 2.0
+content_margin_right = 6.0
+content_margin_bottom = 2.0
+bg_color = Color(0.0392157, 0.0666667, 0.0901961, 0.878431)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.207843, 0.435294, 0.435294, 1)
+anti_aliasing = false
+
+[node name="TutorialCard" type="CanvasLayer"]
+layer = 9
+script = ExtResource("1_card")
+
+[node name="Root" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Slot" type="CenterContainer" parent="Root"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -76.0
+offset_bottom = -40.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+
+[node name="Card" type="PanelContainer" parent="Root/Slot"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_card")
+
+[node name="Rows" type="VBoxContainer" parent="Root/Slot/Card"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Line" type="HBoxContainer" parent="Root/Slot/Card/Rows"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="Key" type="Label" parent="Root/Slot/Card/Rows/Line"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.372549, 0.831373, 0.784314, 1)
+theme_override_font_sizes/font_size = 16
+text = "[E]"
+vertical_alignment = 1
+
+[node name="Action" type="Label" parent="Root/Slot/Card/Rows/Line"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.878431, 0.921569, 0.933333, 1)
+theme_override_font_sizes/font_size = 16
+text = "INTERAGIR"
+vertical_alignment = 1
+
+[node name="Hint" type="Label" parent="Root/Slot/Card/Rows"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.435294, 0.509804, 0.560784, 1)
+theme_override_font_sizes/font_size = 16
+horizontal_alignment = 1

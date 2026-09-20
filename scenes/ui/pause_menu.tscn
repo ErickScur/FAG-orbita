@@ -36,40 +36,66 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Main" type="PanelContainer" parent="Root/MainCenter"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(170, 0)
+[node name="MainRow" type="HBoxContainer" parent="Root/MainCenter"]
 layout_mode = 2
+theme_override_constants/separation = 4
 
-[node name="VBox" type="VBoxContainer" parent="Root/MainCenter/Main"]
+[node name="Main" type="PanelContainer" parent="Root/MainCenter/MainRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="VBox" type="VBoxContainer" parent="Root/MainCenter/MainRow/Main"]
 layout_mode = 2
 theme_override_constants/separation = 3
 
-[node name="Title" type="Label" parent="Root/MainCenter/Main/VBox"]
+[node name="Title" type="Label" parent="Root/MainCenter/MainRow/Main/VBox"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.372549, 0.831373, 0.784314, 1)
 text = "PAUSA"
 horizontal_alignment = 1
 
-[node name="ResumeButton" type="Button" parent="Root/MainCenter/Main/VBox"]
+[node name="ResumeButton" type="Button" parent="Root/MainCenter/MainRow/Main/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "RETOMAR"
 
-[node name="OptionsButton" type="Button" parent="Root/MainCenter/Main/VBox"]
+[node name="OptionsButton" type="Button" parent="Root/MainCenter/MainRow/Main/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "OPÇÕES"
 
-[node name="RestartButton" type="Button" parent="Root/MainCenter/Main/VBox"]
+[node name="RestartButton" type="Button" parent="Root/MainCenter/MainRow/Main/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "RECOMEÇAR"
 
-[node name="QuitButton" type="Button" parent="Root/MainCenter/Main/VBox"]
+[node name="QuitButton" type="Button" parent="Root/MainCenter/MainRow/Main/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "SAIR PARA O MENU"
+
+[node name="Controls" type="PanelContainer" parent="Root/MainCenter/MainRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="VBox" type="VBoxContainer" parent="Root/MainCenter/MainRow/Controls"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Title" type="Label" parent="Root/MainCenter/MainRow/Controls/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.372549, 0.831373, 0.784314, 1)
+text = "CONTROLES"
+horizontal_alignment = 1
+
+[node name="Rows" type="VBoxContainer" parent="Root/MainCenter/MainRow/Controls/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 0
 
 [node name="RestartCenter" type="CenterContainer" parent="Root"]
 layout_mode = 1

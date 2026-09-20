@@ -1,0 +1,533 @@
+[
+ {
+  "frame": 40,
+  "action": "move_right",
+  "pressed": true
+ },
+ {
+  "frame": 60,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 72,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 80,
+  "screenshot": "t0080"
+ },
+ {
+  "frame": 95,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 107,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 120,
+  "screenshot": "t0120"
+ },
+ {
+  "frame": 130,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 142,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 160,
+  "screenshot": "t0160"
+ },
+ {
+  "frame": 165,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 177,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 200,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 200,
+  "screenshot": "t0200"
+ },
+ {
+  "frame": 212,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 235,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 240,
+  "screenshot": "t0240"
+ },
+ {
+  "frame": 247,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 270,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 280,
+  "screenshot": "t0280"
+ },
+ {
+  "frame": 282,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 305,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 317,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 320,
+  "screenshot": "t0320"
+ },
+ {
+  "frame": 340,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 352,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 360,
+  "screenshot": "t0360"
+ },
+ {
+  "frame": 375,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 387,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 400,
+  "screenshot": "t0400"
+ },
+ {
+  "frame": 410,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 422,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 440,
+  "screenshot": "t0440"
+ },
+ {
+  "frame": 445,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 457,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 480,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 480,
+  "screenshot": "t0480"
+ },
+ {
+  "frame": 492,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 515,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 520,
+  "screenshot": "t0520"
+ },
+ {
+  "frame": 527,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 550,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 560,
+  "screenshot": "t0560"
+ },
+ {
+  "frame": 562,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 585,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 597,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 600,
+  "screenshot": "t0600"
+ },
+ {
+  "frame": 620,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 632,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 640,
+  "screenshot": "t0640"
+ },
+ {
+  "frame": 655,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 667,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 680,
+  "screenshot": "t0680"
+ },
+ {
+  "frame": 690,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 702,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 720,
+  "screenshot": "t0720"
+ },
+ {
+  "frame": 725,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 737,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 760,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 760,
+  "screenshot": "t0760"
+ },
+ {
+  "frame": 772,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 795,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 800,
+  "screenshot": "t0800"
+ },
+ {
+  "frame": 807,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 830,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 840,
+  "screenshot": "t0840"
+ },
+ {
+  "frame": 842,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 865,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 877,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 880,
+  "screenshot": "t0880"
+ },
+ {
+  "frame": 900,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 912,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 920,
+  "screenshot": "t0920"
+ },
+ {
+  "frame": 935,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 947,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 960,
+  "screenshot": "t0960"
+ },
+ {
+  "frame": 970,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 982,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 1000,
+  "screenshot": "t1000"
+ },
+ {
+  "frame": 1005,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 1017,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 1040,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 1040,
+  "screenshot": "t1040"
+ },
+ {
+  "frame": 1052,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 1075,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 1080,
+  "screenshot": "t1080"
+ },
+ {
+  "frame": 1087,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 1110,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 1120,
+  "screenshot": "t1120"
+ },
+ {
+  "frame": 1122,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 1145,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 1157,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 1160,
+  "screenshot": "t1160"
+ },
+ {
+  "frame": 1180,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 1192,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 1200,
+  "screenshot": "t1200"
+ },
+ {
+  "frame": 1215,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 1227,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 1240,
+  "screenshot": "t1240"
+ },
+ {
+  "frame": 1250,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 1262,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 1280,
+  "screenshot": "t1280"
+ },
+ {
+  "frame": 1285,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 1297,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 1320,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 1320,
+  "screenshot": "t1320"
+ },
+ {
+  "frame": 1332,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 1355,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 1360,
+  "screenshot": "t1360"
+ },
+ {
+  "frame": 1367,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 1390,
+  "action": "jump",
+  "pressed": true
+ },
+ {
+  "frame": 1402,
+  "action": "jump",
+  "pressed": false
+ },
+ {
+  "frame": 1420,
+  "quit": true
+ }
+]

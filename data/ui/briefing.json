@@ -1,0 +1,48 @@
+{
+  "header": "ARTEMIS // SISTEMA DE MANUTENÇÃO",
+  "blocks": [
+    {
+      "title": "REGISTRO DA ESTAÇÃO",
+      "fields": [
+        ["ARTEMIS", "ESTAÇÃO ORBITAL"],
+        ["IA RESIDENTE", "ÓRBITA"],
+        ["CHASSI DESIGNADO", "MU-7"],
+        ["TRIPULAÇÃO A BORDO", "0"],
+        ["ÚLTIMO REGISTRO", "HÁ 200 ANOS"]
+      ],
+      "lines": []
+    },
+    {
+      "title": "QUEM É VOCÊ",
+      "fields": [],
+      "lines": [
+        "Você é a ÓRBITA, a IA de manutenção da ARTEMIS.",
+        "Cuidava da estação inteira. Depois dormiu.",
+        "O único corpo que ainda responde é o MU-7, um chassi de manutenção enferrujado na doca."
+      ]
+    },
+    {
+      "title": "SITUAÇÃO",
+      "fields": [],
+      "lines": [
+        "O reator está morrendo.",
+        "Cada setor religado devolve estabilidade à órbita da estação."
+      ]
+    },
+    {
+      "title": "REGRA DE ENERGIA",
+      "fields": [],
+      "lines": [
+        "A energia é finita.",
+        "No Terminal de Distribuição, ligar um sistema sempre desliga outro."
+      ]
+    },
+    {
+      "title": "OBJETIVO",
+      "fields": [],
+      "lines": [
+        "Religar a ARTEMIS, setor por setor."
+      ]
+    }
+  ]
+}

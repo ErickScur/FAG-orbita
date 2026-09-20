@@ -1,5 +1,6 @@
 res://scenes/boot/splash.tscn
 res://scenes/boot/loading.tscn
+res://scenes/boot/briefing.tscn
 res://tests/qa/scenes/input_probe.tscn
 res://tests/qa/scenes/audio_probe.tscn
 res://scenes/fx/spark_burst.tscn
@@ -31,6 +32,7 @@ res://tests/qa/scenes/damage_sandbox.tscn
 res://tests/qa/scenes/interaction_sandbox.tscn
 res://tests/qa/scenes/light_sandbox.tscn
 res://scenes/ui/hud.tscn
+res://scenes/ui/tutorial_card.tscn
 res://tests/qa/scenes/hud_probe.tscn
 res://tests/qa/scenes/reactor_probe.tscn
 res://tests/qa/scenes/reactor_zero_probe.tscn
@@ -56,6 +58,7 @@ res://scenes/world/secret_wall.tscn
 res://scenes/dev/secret_test.tscn
 res://scenes/dev/parallax_test.tscn
 res://scenes/world/magnetic_wall.tscn
+res://scenes/world/tutorial_zone.tscn
 res://scenes/world/moving_platform.tscn
 res://scenes/world/grow_plant.tscn
 res://tests/qa/scenes/claw_sandbox.tscn

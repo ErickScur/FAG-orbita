@@ -1,0 +1,8 @@
+[
+  {"frame": 60, "screenshot": "f37_r01_normal"},
+  {"frame": 300, "screenshot": "f37_r02_critico"},
+  {"frame": 396, "screenshot": "f37_r03_normal_de_novo"},
+  {"frame": 430, "screenshot": "f37_r04_timer_parado"},
+  {"frame": 470, "screenshot": "f37_r05_voltou_ao_normal"},
+  {"frame": 490, "quit": true}
+]

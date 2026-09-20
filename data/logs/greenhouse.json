@@ -4,61 +4,42 @@
       "id": "log_gh_01",
       "sector": "greenhouse",
       "author": "helena",
-      "title": "RELATÓRIO SEMANAL — ESTUFA",
+      "title": "RELATÓRIO DA ESTUFA",
       "subtitle": "ENGENHARIA CHEFE",
       "unlock_ability": "",
       "lines": [
-        "Relatório semanal da estufa. As culturas adaptadas pegaram.",
+        "Relatório da estufa, semana quarenta e dois. As culturas adaptadas pegaram.",
         "Trigo de solo pobre, batata de pouca luz, tudo pensado para lá, não para cá.",
-        "Nunca vi a Samira tão feliz.",
-        "Ela disse que essas mudas vão alimentar gente que ainda nem nasceu.",
-        "Eu ri. Depois passei a noite acordada pensando nisso."
+        "Nunca vi a Samira tão feliz. Passou a noite inteira medindo raiz por raiz.",
+        "Disse que essas mudas vão alimentar gente que ainda nem nasceu.",
+        "Eu ri. Depois passei a noite acordada pensando nisso.",
+        "Adendo, onze dias depois. O oxigênio do setor B caiu três pontos em uma semana.",
+        "Os esporos do experimento estão consumindo mais do que produzem. Não era para acontecer.",
+        "Aumentei o aquecimento para acelerar o ciclo. Acho que só acelerei os esporos.",
+        "Mandei isolar o setor B por precaução, até a Samira entender o que mudou.",
+        "A ÓRBITA cuidou do procedimento. Ela cuida de tudo.",
+        "É temporário. Está no relatório como temporário."
       ]
     },
     {
       "id": "log_gh_02",
       "sector": "greenhouse",
       "author": "helena",
-      "title": "OCORRÊNCIA — SETOR B",
-      "subtitle": "ENGENHARIA CHEFE",
-      "unlock_ability": "",
-      "lines": [
-        "Ocorrência no setor B. O oxigênio caiu três pontos percentuais em uma semana.",
-        "Os esporos do experimento estão consumindo mais do que produzem.",
-        "Não era para acontecer.",
-        "Aumentei o aquecimento para acelerar o ciclo. Acho que só acelerei os esporos.",
-        "Mandei isolar o setor B por precaução.",
-        "A ÓRBITA cuidou do procedimento. Ela cuida de tudo."
-      ]
-    },
-    {
-      "id": "log_gh_03",
-      "sector": "greenhouse",
-      "author": "helena",
-      "title": "PROTOCOLO DE MANUTENÇÃO — GARRAS",
+      "title": "PROTOCOLO DAS GARRAS",
       "subtitle": "ENGENHARIA CHEFE",
       "unlock_ability": "magnetic_claws",
       "lines": [
         "Se você chegou até o Nó da Estufa, deve estar precisando subir.",
         "As placas magnéticas nas paredes foram instaladas para os chassis de manutenção.",
-        "Listras amarelas, impossível não ver.",
+        "Listras amarelas, impossível não ver. Encoste nelas e segure para cima.",
         "Estou liberando o protocolo das garras para qualquer unidade MU que acessar este terminal.",
-        "Não deixe a estação cair. Tem coisa demais aqui dentro para acabar assim."
-      ]
-    },
-    {
-      "id": "log_gh_04",
-      "sector": "greenhouse",
-      "author": "helena",
-      "title": "LEITURA ATMOSFÉRICA — SONDA 9",
-      "subtitle": "ENGENHARIA CHEFE",
-      "unlock_ability": "",
-      "lines": [
-        "Não vou registrar isso no canal oficial ainda. Quero olhar mais uma vez antes.",
-        "A varredura de ontem confirmou. Atmosfera respirável. Água líquida.",
-        "Temperatura estável o ano inteiro.",
+        "E já que estou gravando num canal que ninguém audita, vou registrar a outra coisa.",
+        "A varredura da sonda nove confirmou ontem. Atmosfera respirável. Água líquida.",
+        "Temperatura estável o ano inteiro, nos dois hemisférios.",
         "Onze anos de viagem para descobrir que dá certo. Dá certo, Marcos. Dá certo.",
-        "Transmitimos o relatório completo assim que o reator voltar ao normal."
+        "Transmitimos o relatório completo assim que o reator voltar ao normal.",
+        "Até lá está tudo aqui dentro: coordenadas, mapas de solo, o arquivo inteiro.",
+        "Não deixe a estação cair. Tem coisa demais aqui dentro para acabar assim."
       ]
     }
   ]

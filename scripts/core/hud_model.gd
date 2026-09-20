@@ -17,6 +17,10 @@ const STATUS_ICONS: Dictionary = {
 	&"overload": 9,
 }
 const MAX_STATUS_ICONS: int = 4
+const REACTOR_STATE_NONE: StringName = &""
+const REACTOR_STATE_CRITICAL: StringName = &"reactor_critical"
+const REACTOR_STATE_NO_TIMER: StringName = &"reactor_no_timer"
+const REACTOR_STATE_FROZEN: StringName = &"reactor_frozen"
 const STATE_FULL: int = Vitals.FULL_CELL
 const STATE_PARTIAL: int = Vitals.PARTIAL_CELL
 const STATE_EMPTY: int = Vitals.EMPTY_CELL
@@ -40,6 +44,16 @@ static func is_low_integrity(states: Array[int]) -> bool:
 		if state > STATE_EMPTY:
 			alive += 1
 	return alive <= 1
+
+
+static func reactor_state_id(critical: bool, frozen: bool, no_timer: bool) -> StringName:
+	if critical:
+		return REACTOR_STATE_CRITICAL
+	if no_timer:
+		return REACTOR_STATE_NO_TIMER
+	if frozen:
+		return REACTOR_STATE_FROZEN
+	return REACTOR_STATE_NONE
 
 
 static func atlas_cell(index: int, columns: int) -> Vector2i:

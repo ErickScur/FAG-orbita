@@ -23,6 +23,21 @@
       ]
     },
     {
+      "id": "lift_core",
+      "name": "ELEVADOR DE SERVIÇO",
+      "tag": "ACESSO",
+      "description": "Move a plataforma do poço até o nicho de arquivo.",
+      "effect_off": "A plataforma trava e o nicho de arquivo fica fora de alcance.",
+      "bark_on": "",
+      "bark_off": "",
+      "cost": 1,
+      "requires": [],
+      "locked": false,
+      "effects": [
+        { "target": "id:core_lift", "action": "power" }
+      ]
+    },
+    {
       "id": "door_habitat",
       "name": "PORTA DO SETOR HABITACIONAL",
       "tag": "META",

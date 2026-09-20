@@ -1,0 +1,8 @@
+[
+ {"frame": 40, "screenshot": "01_briefing"},
+ {"frame": 60, "action": "pause", "pressed": true},
+ {"frame": 62, "action": "pause", "pressed": false},
+ {"frame": 140, "screenshot": "02_carregando"},
+ {"frame": 400, "screenshot": "03_nucleo_spawn"},
+ {"frame": 430, "quit": true}
+]

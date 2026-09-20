@@ -63,9 +63,10 @@ func test_charge_ratio() -> void:
 func test_texts_table_has_hud_keys() -> void:
 	var required: Array[StringName] = [
 		&"reactor_title",
-		&"reactor_falling",
+		&"reactor_critical",
 		&"reactor_frozen",
 		&"reactor_no_timer",
+		&"integrity_label",
 		&"charge_label",
 		&"counter_logs",
 		&"counter_research",
@@ -80,4 +81,87 @@ func test_texts_table_has_hud_keys() -> void:
 
 func test_reactor_title_template_formats() -> void:
 	var template: String = HudModel.text_for(&"reactor_title", _texts)
-	assert_eq(template % 74, "ESTABILIDADE DO REATOR: 74%", "título formatado")
+	assert_eq(template % 74, "REATOR 74%", "título formatado")
+
+
+func test_reactor_state_is_hidden_when_nothing_to_say() -> void:
+	assert_eq(
+		HudModel.reactor_state_id(false, false, false),
+		HudModel.REACTOR_STATE_NONE,
+		"estado normal não mostra linha"
+	)
+
+
+func test_reactor_state_shows_frozen_timer() -> void:
+	assert_eq(
+		HudModel.reactor_state_id(false, true, false),
+		HudModel.REACTOR_STATE_FROZEN,
+		"leitura de log congela o timer"
+	)
+	assert_eq(
+		HudModel.text_for(HudModel.REACTOR_STATE_FROZEN, _texts),
+		"TIMER PARADO",
+		"texto do timer congelado"
+	)
+
+
+func test_reactor_state_shows_no_timer_mode() -> void:
+	assert_eq(
+		HudModel.reactor_state_id(false, true, true),
+		HudModel.REACTOR_STATE_NO_TIMER,
+		"modo sem timer tem texto próprio"
+	)
+	assert_eq(
+		HudModel.text_for(HudModel.REACTOR_STATE_NO_TIMER, _texts),
+		"SEM TIMER",
+		"texto do modo sem timer"
+	)
+
+
+func test_reactor_state_critical_wins_over_frozen() -> void:
+	assert_eq(
+		HudModel.reactor_state_id(true, false, false),
+		HudModel.REACTOR_STATE_CRITICAL,
+		"crítico sozinho"
+	)
+	assert_eq(
+		HudModel.reactor_state_id(true, true, true),
+		HudModel.REACTOR_STATE_CRITICAL,
+		"crítico tem prioridade"
+	)
+	assert_eq(
+		HudModel.text_for(HudModel.REACTOR_STATE_CRITICAL, _texts), "CRÍTICO", "texto crítico"
+	)
+
+
+func test_counters_fit_the_demo_totals() -> void:
+	var logs: String = HudModel.format_pair(
+		HudModel.text_for(&"counter_logs", _texts), 1, Balance.LOGS_TOTAL
+	)
+	var research: String = HudModel.format_pair(
+		HudModel.text_for(&"counter_research", _texts), 0, Balance.RESEARCH_TOTAL
+	)
+	assert_eq(logs, "LOGS 1/%d" % Balance.LOGS_TOTAL, "contador de logs lê do Balance")
+	assert_eq(research, "DADOS 0/%d" % Balance.RESEARCH_TOTAL, "contador de dados lê do Balance")
+
+
+func test_first_pickup_card_texts_exist() -> void:
+	for kind: StringName in PickupRules.KINDS:
+		var title: StringName = PickupRules.first_text_id(kind)
+		var hint: StringName = PickupRules.first_hint_id(kind)
+		assert_false(HudModel.text_for(title, _texts).is_empty(), "nome de %s" % kind)
+		assert_false(HudModel.text_for(hint, _texts).is_empty(), "explicação de %s" % kind)
+
+
+func test_first_pickup_ids_follow_the_kind() -> void:
+	assert_eq(PickupRules.first_text_id(&"cell"), &"first_cell", "id do nome")
+	assert_eq(PickupRules.first_hint_id(&"cell"), &"first_cell_hint", "id da explicação")
+	assert_eq(PickupRules.seen_flag(&"research"), "seen_kind_research", "flag de primeira coleta")
+
+
+func test_seen_flag_is_unique_per_kind() -> void:
+	var flags: Array[String] = []
+	for kind: StringName in PickupRules.KINDS:
+		var flag: String = PickupRules.seen_flag(kind)
+		assert_false(flags.has(flag), "flag repetida em %s" % kind)
+		flags.append(flag)

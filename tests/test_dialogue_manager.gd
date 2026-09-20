@@ -1,7 +1,7 @@
 extends TestCase
 
-const DEMO_SEQUENCES: int = 34
-const DEMO_LOGS: int = 7
+const DEMO_SEQUENCES: int = 30
+const DEMO_LOGS: int = 4
 const DEMO_SPEAKERS: int = 3
 
 var _manager: Node = null
@@ -71,7 +71,7 @@ func test_play_blocking_freezes_timer() -> void:
 func test_ambient_does_not_freeze_timer() -> void:
 	if _manager == null:
 		return
-	_manager.call("play", &"core_calib_move")
+	_manager.call("play", &"core_bark_lights_on")
 	assert_true(_manager.call("is_active"), "bark ativo")
 	assert_false(_manager.call("freezes_timer"), "bark não congela o timer")
 	assert_eq(_started, 0, "bark não emite dialogue_started")
@@ -95,11 +95,11 @@ func test_advance_walks_the_lines() -> void:
 func test_once_does_not_repeat() -> void:
 	if _manager == null:
 		return
-	_manager.call("play", &"core_calib_jump")
-	assert_true(_manager.call("has_played", &"core_calib_jump"), "marcada como vista")
+	_manager.call("play", &"core_lights_off")
+	assert_true(_manager.call("has_played", &"core_lights_off"), "marcada como vista")
 	while _manager.call("is_active"):
 		_manager.call("advance")
-	_manager.call("play", &"core_calib_jump")
+	_manager.call("play", &"core_lights_off")
 	assert_false(_manager.call("is_active"), "não repete")
 
 
@@ -128,7 +128,7 @@ func test_open_log_emits_signals_and_header() -> void:
 	assert_true(_manager.call("freezes_timer"), "log congela o timer")
 	assert_eq(
 		String(_manager.call("current_header")),
-		"LOG DE MANUTENÇÃO 114 — ENGENHARIA CHEFE",
+		"LOG DE MANUTENÇÃO 114 · ENGENHARIA CHEFE",
 		"cabeçalho da gravação"
 	)
 	assert_eq(String(_manager.call("current_speaker")), "helena", "falante do log")
@@ -140,7 +140,7 @@ func test_open_log_emits_signals_and_header() -> void:
 func test_log_unlocks_ability() -> void:
 	if _manager == null:
 		return
-	_manager.call("open_log", &"log_gh_03")
+	_manager.call("open_log", &"log_gh_02")
 	while _manager.call("is_active"):
 		_manager.call("advance")
 	assert_eq(_abilities.size(), 1, "ability_unlocked emitido")

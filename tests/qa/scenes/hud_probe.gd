@@ -45,6 +45,13 @@ func _process(_delta: float) -> void:
 			GameState.change_reactor(CRITICAL_TARGET - GameState.reactor_percent)
 		324:
 			EventBus.dialogue_started.emit()
+		364:
+			EventBus.dialogue_finished.emit()
+			GameState.change_reactor(Balance.REACTOR_START - GameState.reactor_percent)
+		404:
+			EventBus.log_opened.emit(&"log_core_01")
+		444:
+			EventBus.log_closed.emit(&"log_core_01")
 
 
 func _exit_tree() -> void:

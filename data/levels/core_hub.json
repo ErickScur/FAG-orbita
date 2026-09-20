@@ -24,7 +24,7 @@
       "radius": 160.0,
       "energy": 1.6
     },
-    "10,9": {
+    "16,9": {
       "id": "core_lamp_step",
       "terminal_id": "core_hub",
       "system_id": "lights_core",
@@ -32,7 +32,7 @@
       "radius": 160.0,
       "energy": 1.6
     },
-    "17,6": {
+    "32,9": {
       "id": "core_lamp_log",
       "terminal_id": "core_hub",
       "system_id": "lights_core",
@@ -40,25 +40,26 @@
       "radius": 160.0,
       "energy": 1.6
     },
-    "22,6": {
-      "id": "core_lamp_edge",
-      "terminal_id": "core_hub",
-      "system_id": "lights_core",
-      "group": "core_lights",
-      "radius": 160.0,
-      "energy": 1.6
-    },
-    "23,8": {
+    "34,11": {
       "id": "log_core_01",
       "prompt_text": "LER REGISTRO"
     },
-    "33,11": {
+    "37,11": {
       "id": "cell_core_01"
     },
-    "37,12": {
+    "47,5": {
       "id": "data_core_01"
     },
-    "48,9": {
+    "50,11": {
+      "id": "core_lift",
+      "terminal_id": "core_hub",
+      "system_id": "lift_core",
+      "path": [
+        [0, 0.75],
+        [0, -5.5]
+      ]
+    },
+    "54,9": {
       "id": "core_lamp_terminal",
       "terminal_id": "core_hub",
       "system_id": "lights_core",
@@ -66,7 +67,11 @@
       "radius": 160.0,
       "energy": 1.6
     },
-    "51,9": {
+    "56,11": {
+      "id": "core_console",
+      "terminal": "core_hub"
+    },
+    "58,9": {
       "id": "core_lamp_door",
       "terminal_id": "core_hub",
       "system_id": "lights_core",
@@ -74,41 +79,34 @@
       "radius": 160.0,
       "energy": 1.6
     },
-    "52,11": {
-      "id": "core_console",
-      "terminal": "core_hub"
-    },
-    "54,11": {
+    "60,11": {
       "id": "door_habitat",
       "terminal_id": "core_hub",
       "system_id": "door_habitat"
     },
-    "57,11": {
-      "id": "hab_dock_01"
-    },
-    "59,9": {
+    "62,9": {
       "id": "hab_lamp_emergency",
       "color": "#e0b43c",
       "radius": 128.0,
       "energy": 1.8
     },
-    "60,11": {
+    "63,11": {
+      "id": "hab_dock_01"
+    },
+    "65,11": {
       "id": "hab_suit",
       "log": "log_hab_01",
       "frame": 1,
       "prompt_text": "EXAMINAR TRAJE"
     },
-    "64,11": {
+    "70,11": {
       "id": "hab_sr3_01",
       "dir": -1
     },
-    "65,11": {
+    "72,11": {
       "id": "kit_hab_01"
     },
-    "68,10": {
-      "id": "log_hab_02"
-    },
-    "70,10": {
+    "76,11": {
       "id": "core_hub_exit",
       "target": "res://scenes/levels/greenhouse.tscn"
     }
@@ -116,80 +114,65 @@
   "triggers": [
     {
       "id": "core_t_move",
-      "rect": [
-        9,
-        7,
-        2,
-        5
-      ],
-      "dialogue": "core_calib_move",
-      "once": true
+      "rect": [3, 8, 6, 4],
+      "tutorial": "tut_move",
+      "once": false
+    },
+    {
+      "id": "core_t_pause",
+      "rect": [14, 8, 3, 4],
+      "tutorial": "tut_pause",
+      "once": false
+    },
+    {
+      "id": "core_t_jump",
+      "rect": [17, 8, 2, 4],
+      "tutorial": "tut_jump",
+      "once": false
+    },
+    {
+      "id": "core_t_drop",
+      "rect": [23, 8, 4, 2],
+      "tutorial": "tut_drop",
+      "once": false
     },
     {
       "id": "core_t_log",
-      "rect": [
-        20,
-        4,
-        2,
-        5
-      ],
+      "rect": [31, 7, 3, 5],
+      "tutorial": "tut_interact",
       "objective": "obj_read_log",
       "once": true
     },
     {
       "id": "core_t_dark",
-      "rect": [
-        31,
-        7,
-        2,
-        5
-      ],
-      "dialogue": "core_flashlight_hint",
+      "rect": [39, 7, 3, 5],
+      "tutorial": "tut_flashlight",
       "objective": "obj_open_habitat",
       "once": true
     },
     {
       "id": "core_t_terminal",
-      "rect": [
-        46,
-        7,
-        2,
-        5
-      ],
+      "rect": [52, 7, 3, 5],
+      "tutorial": "tut_terminal",
       "dialogue": "core_terminal_first",
       "once": true
     },
     {
       "id": "core_t_alarm",
-      "rect": [
-        55,
-        7,
-        2,
-        5
-      ],
+      "rect": [61, 7, 2, 5],
       "dialogue": "core_alarm",
       "objective": "obj_reach_greenhouse",
       "once": true
     },
     {
       "id": "core_t_body",
-      "rect": [
-        59,
-        7,
-        2,
-        5
-      ],
+      "rect": [64, 7, 2, 5],
       "dialogue": "hab_body",
       "once": true
     },
     {
       "id": "core_t_sr3",
-      "rect": [
-        61,
-        7,
-        2,
-        5
-      ],
+      "rect": [68, 7, 2, 5],
       "dialogue": "hab_first_sr3",
       "once": true
     }

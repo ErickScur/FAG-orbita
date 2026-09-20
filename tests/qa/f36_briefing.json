@@ -1,0 +1,21 @@
+[
+  {"frame": 30, "screenshot": "01_bloco1_digitando"},
+  {"frame": 110, "screenshot": "02_bloco1_ficha"},
+  {"frame": 120, "action": "jump", "pressed": true},
+  {"frame": 122, "action": "jump", "pressed": false},
+  {"frame": 200, "screenshot": "03_bloco2_quem_e_voce"},
+  {"frame": 210, "action": "jump", "pressed": true},
+  {"frame": 212, "action": "jump", "pressed": false},
+  {"frame": 270, "screenshot": "04_bloco3_situacao"},
+  {"frame": 280, "action": "interact", "pressed": true},
+  {"frame": 282, "action": "interact", "pressed": false},
+  {"frame": 340, "screenshot": "05_bloco4_energia"},
+  {"frame": 350, "action": "jump", "pressed": true},
+  {"frame": 352, "action": "jump", "pressed": false},
+  {"frame": 400, "screenshot": "06_bloco5_objetivo"},
+  {"frame": 410, "action": "jump", "pressed": true},
+  {"frame": 412, "action": "jump", "pressed": false},
+  {"frame": 470, "screenshot": "07_carregando"},
+  {"frame": 560, "screenshot": "08_nucleo_central"},
+  {"frame": 580, "quit": true}
+]

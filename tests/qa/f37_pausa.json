@@ -1,0 +1,17 @@
+[
+  {"frame": 40, "screenshot": "f37_c01_jogando"},
+  {"frame": 50, "action": "pause", "pressed": true},
+  {"frame": 52, "action": "pause", "pressed": false},
+  {"frame": 80, "screenshot": "f37_c02_pausa_com_controles"},
+  {"frame": 90, "action": "ui_down", "pressed": true},
+  {"frame": 92, "action": "ui_down", "pressed": false},
+  {"frame": 96, "action": "ui_down", "pressed": true},
+  {"frame": 98, "action": "ui_down", "pressed": false},
+  {"frame": 104, "action": "ui_down", "pressed": true},
+  {"frame": 106, "action": "ui_down", "pressed": false},
+  {"frame": 120, "screenshot": "f37_c03_foco_no_ultimo_botao"},
+  {"frame": 130, "action": "ui_accept", "pressed": true},
+  {"frame": 132, "action": "ui_accept", "pressed": false},
+  {"frame": 150, "screenshot": "f37_c04_painel_recomecar"},
+  {"frame": 170, "quit": true}
+]

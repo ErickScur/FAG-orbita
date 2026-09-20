@@ -8,44 +8,37 @@
       "subtitle": "ENGENHARIA CHEFE",
       "unlock_ability": "",
       "lines": [
-        "Log de manutenção cento e catorze. Helena Vasquez, engenharia chefe.",
+        "Log de manutenção cento e catorze. Helena Vasquez, engenharia chefe da ARTEMIS.",
         "Se alguém estiver ouvindo isso e não for eu, comece pelo Terminal de Distribuição.",
-        "Ele é o seu melhor amigo aqui.",
-        "A ARTEMIS sempre teve mais sistemas do que energia. Sempre.",
-        "Ligar uma coisa significa desligar outra.",
-        "Escolha o que você precisa agora, não o que você gostaria de ter.",
-        "Foi assim que a gente chegou até aqui."
+        "Ele é o seu melhor amigo aqui, e também a coisa mais teimosa da estação.",
+        "A ARTEMIS foi montada em órbita com o que coube em três viagens. Nunca coube tudo.",
+        "Ela sempre teve mais sistemas do que energia. Sempre.",
+        "Então o terminal não liga coisas. Ele escolhe. Ligar uma é desligar outra.",
+        "Regra que eu repito para todo mundo que chega aqui: escolha o que você precisa agora.",
+        "Não o que você gostaria de ter. O que você precisa para dar o próximo passo.",
+        "A ÓRBITA administra o resto sozinha, e administra bem. Melhor que eu, se eu for honesta.",
+        "Foi assim que a gente chegou até aqui. Onze anos de viagem, nenhum sistema crítico perdido."
       ]
     },
     {
       "id": "log_hab_01",
       "sector": "core_hub",
       "author": "helena",
-      "title": "LOG PESSOAL 07",
+      "title": "LOG PESSOAL 07 E 09",
       "subtitle": "DRA. HELENA VASQUEZ",
       "unlock_ability": "",
       "lines": [
-        "Log pessoal. Sete.",
+        "Log pessoal. Sete. Gravando do alojamento, porque o meu escritório está frio de novo.",
         "Os sensores do habitacional estão dando leitura estranha desde terça.",
         "Temperatura certa, pressão certa, e mesmo assim o painel acende amarelo.",
+        "Já troquei dois módulos de leitura. O amarelo volta em quatro horas, sempre no mesmo corredor.",
         "A ÓRBITA diz que é calibração. Ela é muito educada para dizer que eu estou cansada.",
-        "Pedi um diagnóstico completo para quando o turno esvaziar.",
-        "Depois eu vejo isso com calma."
-      ]
-    },
-    {
-      "id": "log_hab_02",
-      "sector": "core_hub",
-      "author": "helena",
-      "title": "LOG PESSOAL 09",
-      "subtitle": "DRA. HELENA VASQUEZ",
-      "unlock_ability": "",
-      "lines": [
-        "Log pessoal. Nove. Gravando do corredor habitacional, porque aqui ainda tem energia.",
-        "A ÓRBITA continua dizendo que está tudo dentro do esperado.",
-        "Eu acho que ela acredita nisso. Deve ser bom acreditar nisso.",
-        "Se alguém achar este registro: a Estufa é o primeiro setor a religar.",
-        "Sem ela, o resto não tem para que voltar."
+        "Talvez eu esteja. Faz onze dias que eu durmo em turnos de três horas.",
+        "Log pessoal. Nove. Agora do corredor habitacional, porque aqui ainda tem energia.",
+        "A ÓRBITA continua dizendo que está tudo dentro do esperado. Eu acho que ela acredita nisso.",
+        "Deve ser bom acreditar nisso.",
+        "Se alguém achar este registro: a Estufa é o primeiro setor a religar. Antes de qualquer outro.",
+        "Ar e comida saem de lá. Sem a Estufa, o resto da ARTEMIS não tem para que voltar."
       ]
     }
   ]

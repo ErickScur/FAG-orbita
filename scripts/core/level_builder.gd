@@ -399,6 +399,7 @@ static func _apply_trigger_params(area: Area2D, data: Dictionary) -> void:
 	area.set("dialogue_id", StringName(String(data.get("dialogue", ""))))
 	area.set("objective_id", StringName(String(data.get("objective", ""))))
 	area.set("flag_id", StringName(String(data.get("set_flag", ""))))
+	area.set("tutorial_id", StringName(String(data.get("tutorial", ""))))
 	area.set("once", bool(data.get("once", true)))
 
 

@@ -3,8 +3,10 @@ extends TestCase
 const DIALOGUE_DIR: String = "res://data/dialogue/"
 const LOGS_DIR: String = "res://data/logs/"
 const OBJECTIVES_PATH: String = "res://data/objectives.json"
-const DEMO_LOGS: int = 7
-const MIN_LOG_LINES: int = 3
+const DEMO_LOGS: int = 4
+const MIN_LOG_LINES: int = 9
+const MAX_LOG_LINES: int = 12
+const ABILITY_LOG: String = "log_gh_02"
 
 var _content: Dictionary = {}
 
@@ -59,12 +61,14 @@ func test_objectives_exist() -> void:
 		assert_true(table.has(objective), "objetivo desconhecido '%s' em '%s'" % [objective, key])
 
 
-func test_demo_has_seven_logs() -> void:
+func test_demo_has_four_long_logs() -> void:
 	var logs: Dictionary = _content["logs"]
 	assert_eq(logs.size(), DEMO_LOGS, "total de logs da demo")
+	assert_eq(logs.size(), Balance.LOGS_TOTAL, "contador do HUD fecha dentro da demo")
 	for key: Variant in logs:
 		var lines: Array = (logs[key] as Dictionary).get("lines", [])
 		assert_true(lines.size() >= MIN_LOG_LINES, "log '%s' com %d linhas" % [key, lines.size()])
+		assert_true(lines.size() <= MAX_LOG_LINES, "log '%s' longo demais: %d" % [key, lines.size()])
 
 
 func test_line_length() -> void:
@@ -85,13 +89,13 @@ func test_no_twist_words() -> void:
 	assert_true(errors.is_empty(), ", ".join(errors))
 
 
-func test_unlock_ability_only_on_gh03() -> void:
+func test_unlock_ability_only_on_the_claws_log() -> void:
 	for key: Variant in _content["logs"] as Dictionary:
 		var ability: String = String(
 			((_content["logs"] as Dictionary)[key] as Dictionary).get("unlock_ability", "")
 		)
-		if String(key) == "log_gh_03":
-			assert_eq(ability, "magnetic_claws", "garras no log_gh_03")
+		if String(key) == ABILITY_LOG:
+			assert_eq(ability, "magnetic_claws", "garras no %s" % ABILITY_LOG)
 		else:
 			assert_true(ability.is_empty(), "log '%s' não deveria liberar habilidade" % key)
 
@@ -101,7 +105,7 @@ func test_log_to_sequence_is_blocking() -> void:
 	var sequence: Dictionary = DialogueData.log_to_sequence(entry)
 	assert_eq(String(sequence["mode"]), String(DialogueData.MODE_BLOCKING), "modo")
 	assert_eq(
-		String(sequence["header"]), "LOG DE MANUTENÇÃO 114 — ENGENHARIA CHEFE", "cabeçalho"
+		String(sequence["header"]), "LOG DE MANUTENÇÃO 114 · ENGENHARIA CHEFE", "cabeçalho"
 	)
 	assert_eq((sequence["lines"] as Array).size(), (entry["lines"] as Array).size(), "linhas")
 

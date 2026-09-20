@@ -1,0 +1,236 @@
+[
+  {
+    "frame": 40,
+    "action": "interact",
+    "pressed": true
+  },
+  {
+    "frame": 42,
+    "action": "interact",
+    "pressed": false
+  },
+  {
+    "frame": 70,
+    "action": "interact",
+    "pressed": true
+  },
+  {
+    "frame": 72,
+    "action": "interact",
+    "pressed": false
+  },
+  {
+    "frame": 100,
+    "action": "interact",
+    "pressed": true
+  },
+  {
+    "frame": 102,
+    "action": "interact",
+    "pressed": false
+  },
+  {
+    "frame": 130,
+    "action": "interact",
+    "pressed": true
+  },
+  {
+    "frame": 132,
+    "action": "interact",
+    "pressed": false
+  },
+  {
+    "frame": 160,
+    "action": "interact",
+    "pressed": true
+  },
+  {
+    "frame": 162,
+    "action": "interact",
+    "pressed": false
+  },
+  {
+    "frame": 190,
+    "action": "interact",
+    "pressed": true
+  },
+  {
+    "frame": 192,
+    "action": "interact",
+    "pressed": false
+  },
+  {
+    "frame": 220,
+    "action": "interact",
+    "pressed": true
+  },
+  {
+    "frame": 222,
+    "action": "interact",
+    "pressed": false
+  },
+  {
+    "frame": 250,
+    "action": "interact",
+    "pressed": true
+  },
+  {
+    "frame": 252,
+    "action": "interact",
+    "pressed": false
+  },
+  {
+    "frame": 280,
+    "action": "interact",
+    "pressed": true
+  },
+  {
+    "frame": 282,
+    "action": "interact",
+    "pressed": false
+  },
+  {
+    "frame": 310,
+    "action": "interact",
+    "pressed": true
+  },
+  {
+    "frame": 312,
+    "action": "interact",
+    "pressed": false
+  },
+  {
+    "frame": 340,
+    "action": "interact",
+    "pressed": true
+  },
+  {
+    "frame": 342,
+    "action": "interact",
+    "pressed": false
+  },
+  {
+    "frame": 370,
+    "action": "interact",
+    "pressed": true
+  },
+  {
+    "frame": 372,
+    "action": "interact",
+    "pressed": false
+  },
+  {
+    "frame": 410,
+    "screenshot": "01_cartao_mover"
+  },
+  {
+    "frame": 420,
+    "action": "move_right",
+    "pressed": true
+  },
+  {
+    "frame": 440,
+    "action": "jump",
+    "pressed": true
+  },
+  {
+    "frame": 452,
+    "action": "jump",
+    "pressed": false
+  },
+  {
+    "frame": 480,
+    "action": "jump",
+    "pressed": true
+  },
+  {
+    "frame": 492,
+    "action": "jump",
+    "pressed": false
+  },
+  {
+    "frame": 520,
+    "action": "jump",
+    "pressed": true
+  },
+  {
+    "frame": 532,
+    "action": "jump",
+    "pressed": false
+  },
+  {
+    "frame": 560,
+    "action": "jump",
+    "pressed": true
+  },
+  {
+    "frame": 572,
+    "action": "jump",
+    "pressed": false
+  },
+  {
+    "frame": 600,
+    "action": "jump",
+    "pressed": true
+  },
+  {
+    "frame": 612,
+    "action": "jump",
+    "pressed": false
+  },
+  {
+    "frame": 655,
+    "screenshot": "02_cartao_descer_na_parede"
+  },
+  {
+    "frame": 690,
+    "action": "move_down",
+    "pressed": true
+  },
+  {
+    "frame": 700,
+    "action": "move_down",
+    "pressed": false
+  },
+  {
+    "frame": 712,
+    "screenshot": "03_descer_concluido"
+  },
+  {
+    "frame": 745,
+    "action": "move_right",
+    "pressed": false
+  },
+  {
+    "frame": 760,
+    "action": "move_right",
+    "pressed": true
+  },
+  {
+    "frame": 815,
+    "action": "move_right",
+    "pressed": false
+  },
+  {
+    "frame": 845,
+    "screenshot": "01_cartao_lanterna"
+  },
+  {
+    "frame": 865,
+    "action": "flashlight",
+    "pressed": true
+  },
+  {
+    "frame": 867,
+    "action": "flashlight",
+    "pressed": false
+  },
+  {
+    "frame": 895,
+    "screenshot": "02_lanterna_concluida"
+  },
+  {
+    "frame": 935,
+    "quit": true
+  }
+]

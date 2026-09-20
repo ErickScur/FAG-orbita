@@ -1,7 +1,7 @@
 {
-  "obj_calibrate": "Calibrar o chassi MU-7",
+  "obj_calibrate": "Testar os comandos do chassi MU-7",
   "obj_read_log": "Acessar o terminal de registros do Núcleo",
-  "obj_open_habitat": "Abrir a porta do Setor Habitacional no Terminal de Distribuição",
+  "obj_open_habitat": "Abrir a porta do Habitacional no Terminal de Distribuição",
   "obj_reach_greenhouse": "Atravessar o Setor Habitacional até a Estufa",
   "obj_find_terminal_gh": "Encontrar o Terminal de Distribuição da Estufa",
   "obj_gh_choose_route": "Escolher no Terminal: ELEVADOR DE CARGA ou LUZ DE CRESCIMENTO",

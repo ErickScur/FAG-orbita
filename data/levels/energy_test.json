@@ -50,7 +50,7 @@
       "terminal": "greenhouse",
       "role": "sector_node",
       "sector": "greenhouse",
-      "log_on_restore": "log_gh_03"
+      "log_on_restore": "log_gh_02"
     }
   }
 }

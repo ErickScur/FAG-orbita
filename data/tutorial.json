@@ -1,0 +1,50 @@
+{
+  "tut_move": {
+    "key": "[A] [D] ou [SETAS]",
+    "text": "MOVER",
+    "hint": "",
+    "actions": ["move_left", "move_right"]
+  },
+  "tut_pause": {
+    "key": "[ESC]",
+    "text": "PAUSA E OPÇÕES",
+    "hint": "",
+    "actions": ["pause"]
+  },
+  "tut_jump": {
+    "key": "[ESPAÇO]",
+    "text": "PULAR",
+    "hint": "segure para pular mais alto",
+    "actions": ["jump"]
+  },
+  "tut_drop": {
+    "key": "[BAIXO]",
+    "text": "DESCER DA PLATAFORMA",
+    "hint": "seta para baixo ou S",
+    "actions": ["move_down"]
+  },
+  "tut_interact": {
+    "key": "[E]",
+    "text": "INTERAGIR",
+    "hint": "",
+    "actions": ["interact"]
+  },
+  "tut_flashlight": {
+    "key": "[F]",
+    "text": "LANTERNA",
+    "hint": "acesa, gasta Carga",
+    "actions": ["flashlight"]
+  },
+  "tut_terminal": {
+    "key": "[E]",
+    "text": "TERMINAL DE DISTRIBUIÇÃO",
+    "hint": "1 energia, 3 sistemas",
+    "actions": ["interact"]
+  },
+  "tut_climb": {
+    "key": "[CIMA]",
+    "text": "ESCALAR A PAREDE AMARELA",
+    "hint": "encoste nela e segure",
+    "actions": ["move_up"]
+  }
+}

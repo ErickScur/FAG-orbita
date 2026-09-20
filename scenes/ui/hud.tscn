@@ -46,32 +46,56 @@ layout_mode = 1
 anchors_preset = 0
 offset_left = 4.0
 offset_top = 2.0
-offset_right = 132.0
+offset_right = 160.0
 offset_bottom = 56.0
 mouse_filter = 2
 theme_override_constants/separation = 0
 
-[node name="Cells" type="HBoxContainer" parent="Root/Vitals"]
-unique_name_in_owner = true
+[node name="IntegrityRow" type="HBoxContainer" parent="Root/Vitals"]
 custom_minimum_size = Vector2(0, 16)
 layout_mode = 2
 mouse_filter = 2
+theme_override_constants/separation = 4
+
+[node name="Cells" type="HBoxContainer" parent="Root/Vitals/IntegrityRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(68, 16)
+layout_mode = 2
+mouse_filter = 2
 theme_override_constants/separation = 1
+
+[node name="IntegrityLabel" type="Label" parent="Root/Vitals/IntegrityRow"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.372549, 0.831373, 0.784314, 1)
+theme_override_font_sizes/font_size = 16
+text = "INTEGRIDADE"
+vertical_alignment = 1
 
 [node name="ChargeRow" type="HBoxContainer" parent="Root/Vitals"]
 custom_minimum_size = Vector2(0, 16)
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 4
-alignment = 1
 
-[node name="ChargeFrame" type="Control" parent="Root/Vitals/ChargeRow"]
-custom_minimum_size = Vector2(72, 6)
+[node name="ChargeSlot" type="Control" parent="Root/Vitals/ChargeRow"]
+custom_minimum_size = Vector2(68, 16)
 layout_mode = 2
-size_flags_vertical = 4
 mouse_filter = 2
 
-[node name="ChargeBar" type="ProgressBar" parent="Root/Vitals/ChargeRow/ChargeFrame"]
+[node name="ChargeFrame" type="Control" parent="Root/Vitals/ChargeRow/ChargeSlot"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 0
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -3.0
+offset_right = 60.0
+offset_bottom = 3.0
+mouse_filter = 2
+
+[node name="ChargeBar" type="ProgressBar" parent="Root/Vitals/ChargeRow/ChargeSlot/ChargeFrame"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -84,12 +108,12 @@ max_value = 100.0
 value = 100.0
 show_percentage = false
 
-[node name="CostMark" type="ColorRect" parent="Root/Vitals/ChargeRow/ChargeFrame"]
+[node name="CostMark" type="ColorRect" parent="Root/Vitals/ChargeRow/ChargeSlot/ChargeFrame"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 0
-offset_left = 14.0
-offset_right = 15.0
+offset_left = 12.0
+offset_right = 13.0
 offset_bottom = 6.0
 mouse_filter = 2
 color = Color(0.843137, 0.890196, 0.909804, 1)
@@ -131,7 +155,7 @@ layout_mode = 2
 mouse_filter = 2
 theme_override_colors/font_color = Color(0.843137, 0.890196, 0.909804, 1)
 theme_override_font_sizes/font_size = 16
-text = "ESTABILIDADE DO REATOR: 100%"
+text = "REATOR 100%"
 horizontal_alignment = 1
 
 [node name="ReactorBar" type="ProgressBar" parent="Root/Reactor"]
@@ -147,11 +171,12 @@ show_percentage = false
 
 [node name="ReactorState" type="Label" parent="Root/Reactor"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 mouse_filter = 2
-theme_override_colors/font_color = Color(0.541176, 0.607843, 0.658824, 1)
+theme_override_colors/font_color = Color(1, 0.360784, 0.360784, 1)
 theme_override_font_sizes/font_size = 16
-text = "descendo"
+text = "CRÍTICO"
 horizontal_alignment = 1
 
 [node name="Objective" type="Label" parent="Root"]
@@ -171,66 +196,58 @@ theme_override_font_sizes/font_size = 16
 horizontal_alignment = 2
 autowrap_mode = 3
 
-[node name="Counters" type="VBoxContainer" parent="Root"]
+[node name="Counters" type="HBoxContainer" parent="Root"]
 layout_mode = 1
 anchors_preset = 0
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -108.0
-offset_top = -36.0
+offset_left = -176.0
+offset_top = -18.0
 offset_right = -4.0
 offset_bottom = -2.0
 grow_horizontal = 0
 grow_vertical = 0
 mouse_filter = 2
-theme_override_constants/separation = 0
-
-[node name="LogsRow" type="HBoxContainer" parent="Root/Counters"]
-layout_mode = 2
-mouse_filter = 2
 theme_override_constants/separation = 3
 alignment = 2
 
-[node name="LogsIcon" type="TextureRect" parent="Root/Counters/LogsRow"]
+[node name="LogsIcon" type="TextureRect" parent="Root/Counters"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 mouse_filter = 2
 stretch_mode = 3
 
-[node name="LogsLabel" type="Label" parent="Root/Counters/LogsRow"]
+[node name="LogsLabel" type="Label" parent="Root/Counters"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
-theme_override_colors/font_color = Color(0.843137, 0.890196, 0.909804, 1)
+theme_override_colors/font_color = Color(0.541176, 0.607843, 0.658824, 1)
 theme_override_font_sizes/font_size = 16
-text = "LOGS 00/24"
-horizontal_alignment = 2
+text = "LOGS 0/4"
 vertical_alignment = 1
 
-[node name="DataRow" type="HBoxContainer" parent="Root/Counters"]
+[node name="CountersGap" type="Control" parent="Root/Counters"]
+custom_minimum_size = Vector2(6, 0)
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/separation = 3
-alignment = 2
 
-[node name="DataIcon" type="TextureRect" parent="Root/Counters/DataRow"]
+[node name="DataIcon" type="TextureRect" parent="Root/Counters"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 mouse_filter = 2
 stretch_mode = 3
 
-[node name="DataLabel" type="Label" parent="Root/Counters/DataRow"]
+[node name="DataLabel" type="Label" parent="Root/Counters"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
-theme_override_colors/font_color = Color(0.843137, 0.890196, 0.909804, 1)
+theme_override_colors/font_color = Color(0.541176, 0.607843, 0.658824, 1)
 theme_override_font_sizes/font_size = 16
-text = "DADOS 00/12"
-horizontal_alignment = 2
+text = "DADOS 0/4"
 vertical_alignment = 1
 
 [node name="PromptRow" type="HBoxContainer" parent="Root"]
@@ -269,9 +286,9 @@ layout_mode = 1
 anchors_preset = 0
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -120.0
+offset_left = -176.0
 offset_top = 92.0
-offset_right = 120.0
+offset_right = 176.0
 offset_bottom = 146.0
 grow_horizontal = 2
 mouse_filter = 2

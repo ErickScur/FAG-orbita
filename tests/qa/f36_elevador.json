@@ -1,0 +1,422 @@
+[
+  {
+    "frame": 40,
+    "action": "interact",
+    "pressed": true
+  },
+  {
+    "frame": 42,
+    "action": "interact",
+    "pressed": false
+  },
+  {
+    "frame": 70,
+    "action": "interact",
+    "pressed": true
+  },
+  {
+    "frame": 72,
+    "action": "interact",
+    "pressed": false
+  },
+  {
+    "frame": 100,
+    "action": "interact",
+    "pressed": true
+  },
+  {
+    "frame": 102,
+    "action": "interact",
+    "pressed": false
+  },
+  {
+    "frame": 130,
+    "action": "interact",
+    "pressed": true
+  },
+  {
+    "frame": 132,
+    "action": "interact",
+    "pressed": false
+  },
+  {
+    "frame": 160,
+    "action": "interact",
+    "pressed": true
+  },
+  {
+    "frame": 162,
+    "action": "interact",
+    "pressed": false
+  },
+  {
+    "frame": 190,
+    "action": "interact",
+    "pressed": true
+  },
+  {
+    "frame": 192,
+    "action": "interact",
+    "pressed": false
+  },
+  {
+    "frame": 220,
+    "action": "interact",
+    "pressed": true
+  },
+  {
+    "frame": 222,
+    "action": "interact",
+    "pressed": false
+  },
+  {
+    "frame": 250,
+    "action": "interact",
+    "pressed": true
+  },
+  {
+    "frame": 252,
+    "action": "interact",
+    "pressed": false
+  },
+  {
+    "frame": 280,
+    "action": "interact",
+    "pressed": true
+  },
+  {
+    "frame": 282,
+    "action": "interact",
+    "pressed": false
+  },
+  {
+    "frame": 310,
+    "action": "interact",
+    "pressed": true
+  },
+  {
+    "frame": 312,
+    "action": "interact",
+    "pressed": false
+  },
+  {
+    "frame": 340,
+    "action": "interact",
+    "pressed": true
+  },
+  {
+    "frame": 342,
+    "action": "interact",
+    "pressed": false
+  },
+  {
+    "frame": 370,
+    "action": "interact",
+    "pressed": true
+  },
+  {
+    "frame": 372,
+    "action": "interact",
+    "pressed": false
+  },
+  {
+    "frame": 420,
+    "action": "move_right",
+    "pressed": true
+  },
+  {
+    "frame": 440,
+    "action": "jump",
+    "pressed": true
+  },
+  {
+    "frame": 452,
+    "action": "jump",
+    "pressed": false
+  },
+  {
+    "frame": 480,
+    "action": "jump",
+    "pressed": true
+  },
+  {
+    "frame": 492,
+    "action": "jump",
+    "pressed": false
+  },
+  {
+    "frame": 520,
+    "action": "jump",
+    "pressed": true
+  },
+  {
+    "frame": 532,
+    "action": "jump",
+    "pressed": false
+  },
+  {
+    "frame": 560,
+    "action": "jump",
+    "pressed": true
+  },
+  {
+    "frame": 572,
+    "action": "jump",
+    "pressed": false
+  },
+  {
+    "frame": 600,
+    "action": "jump",
+    "pressed": true
+  },
+  {
+    "frame": 612,
+    "action": "jump",
+    "pressed": false
+  },
+  {
+    "frame": 690,
+    "action": "move_down",
+    "pressed": true
+  },
+  {
+    "frame": 700,
+    "action": "move_down",
+    "pressed": false
+  },
+  {
+    "frame": 915,
+    "action": "move_right",
+    "pressed": false
+  },
+  {
+    "frame": 940,
+    "action": "interact",
+    "pressed": true
+  },
+  {
+    "frame": 942,
+    "action": "interact",
+    "pressed": false
+  },
+  {
+    "frame": 970,
+    "action": "interact",
+    "pressed": true
+  },
+  {
+    "frame": 972,
+    "action": "interact",
+    "pressed": false
+  },
+  {
+    "frame": 1000,
+    "action": "interact",
+    "pressed": true
+  },
+  {
+    "frame": 1002,
+    "action": "interact",
+    "pressed": false
+  },
+  {
+    "frame": 1030,
+    "action": "interact",
+    "pressed": true
+  },
+  {
+    "frame": 1032,
+    "action": "interact",
+    "pressed": false
+  },
+  {
+    "frame": 1060,
+    "action": "interact",
+    "pressed": true
+  },
+  {
+    "frame": 1062,
+    "action": "interact",
+    "pressed": false
+  },
+  {
+    "frame": 1090,
+    "action": "interact",
+    "pressed": true
+  },
+  {
+    "frame": 1092,
+    "action": "interact",
+    "pressed": false
+  },
+  {
+    "frame": 1120,
+    "action": "interact",
+    "pressed": true
+  },
+  {
+    "frame": 1122,
+    "action": "interact",
+    "pressed": false
+  },
+  {
+    "frame": 1150,
+    "action": "interact",
+    "pressed": true
+  },
+  {
+    "frame": 1152,
+    "action": "interact",
+    "pressed": false
+  },
+  {
+    "frame": 1180,
+    "action": "interact",
+    "pressed": true
+  },
+  {
+    "frame": 1182,
+    "action": "interact",
+    "pressed": false
+  },
+  {
+    "frame": 1210,
+    "action": "interact",
+    "pressed": true
+  },
+  {
+    "frame": 1212,
+    "action": "interact",
+    "pressed": false
+  },
+  {
+    "frame": 1250,
+    "action": "move_right",
+    "pressed": true
+  },
+  {
+    "frame": 1288,
+    "action": "move_right",
+    "pressed": false
+  },
+  {
+    "frame": 1310,
+    "action": "interact",
+    "pressed": true
+  },
+  {
+    "frame": 1312,
+    "action": "interact",
+    "pressed": false
+  },
+  {
+    "frame": 1340,
+    "screenshot": "01_terminal_aberto"
+  },
+  {
+    "frame": 1350,
+    "action": "interact",
+    "pressed": true
+  },
+  {
+    "frame": 1352,
+    "action": "interact",
+    "pressed": false
+  },
+  {
+    "frame": 1380,
+    "action": "ui_down",
+    "pressed": true
+  },
+  {
+    "frame": 1382,
+    "action": "ui_down",
+    "pressed": false
+  },
+  {
+    "frame": 1410,
+    "action": "interact",
+    "pressed": true
+  },
+  {
+    "frame": 1412,
+    "action": "interact",
+    "pressed": false
+  },
+  {
+    "frame": 1440,
+    "screenshot": "02_elevador_ligado"
+  },
+  {
+    "frame": 1460,
+    "action": "ui_cancel",
+    "pressed": true
+  },
+  {
+    "frame": 1462,
+    "action": "ui_cancel",
+    "pressed": false
+  },
+  {
+    "frame": 1490,
+    "action": "move_left",
+    "pressed": true
+  },
+  {
+    "frame": 1545,
+    "action": "move_left",
+    "pressed": false
+  },
+  {
+    "frame": 1570,
+    "screenshot": "03_no_poco"
+  },
+  {
+    "frame": 1650,
+    "action": "move_right",
+    "pressed": true
+  },
+  {
+    "frame": 1662,
+    "action": "move_right",
+    "pressed": false
+  },
+  {
+    "frame": 1900,
+    "screenshot": "04a_esperando_plataforma"
+  },
+  {
+    "frame": 2150,
+    "screenshot": "04b_subindo"
+  },
+  {
+    "frame": 2400,
+    "screenshot": "04c_subindo"
+  },
+  {
+    "frame": 2650,
+    "screenshot": "05_plataforma_no_topo"
+  },
+  {
+    "frame": 2670,
+    "action": "move_left",
+    "pressed": true
+  },
+  {
+    "frame": 2700,
+    "action": "move_left",
+    "pressed": false
+  },
+  {
+    "frame": 2730,
+    "screenshot": "06_no_nicho"
+  },
+  {
+    "frame": 2790,
+    "screenshot": "07_dado_coletado"
+  },
+  {
+    "frame": 2830,
+    "quit": true
+  }
+]

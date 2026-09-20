@@ -10,8 +10,16 @@
   {"frame": 322, "action": "ui_left", "pressed": false},
   {"frame": 340, "action": "ui_accept", "pressed": true},
   {"frame": 342, "action": "ui_accept", "pressed": false},
-  {"frame": 400, "screenshot": "04_apos_confirmar"},
-  {"frame": 520, "screenshot": "05_fase_carregada"},
-  {"frame": 640, "screenshot": "06_jogo_rodando"},
-  {"frame": 660, "quit": true}
+  {"frame": 420, "screenshot": "04_briefing_ficha"},
+  {"frame": 440, "action": "jump", "pressed": true},
+  {"frame": 442, "action": "jump", "pressed": false},
+  {"frame": 470, "action": "jump", "pressed": true},
+  {"frame": 472, "action": "jump", "pressed": false},
+  {"frame": 520, "screenshot": "05_briefing_quem_e_voce"},
+  {"frame": 540, "action": "pause", "pressed": true},
+  {"frame": 542, "action": "pause", "pressed": false},
+  {"frame": 620, "screenshot": "06_carregando"},
+  {"frame": 880, "screenshot": "07_fase_carregada"},
+  {"frame": 1000, "screenshot": "08_jogo_rodando"},
+  {"frame": 1030, "quit": true}
 ]

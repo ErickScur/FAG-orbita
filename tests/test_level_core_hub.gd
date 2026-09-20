@@ -7,7 +7,17 @@ const SCENE_PATH: String = "res://scenes/levels/core_hub.tscn"
 const MIN_HEIGHT: int = 14
 const MAX_STEP_TILES: int = 2
 const MAX_GAP_TILES: int = 3
+const MAIN_FLOOR_TOP: int = 9
 const TERMINAL_ID: StringName = &"core_hub"
+const TUTORIAL_ORDER: Array[String] = [
+	"tut_move",
+	"tut_pause",
+	"tut_jump",
+	"tut_drop",
+	"tut_interact",
+	"tut_flashlight",
+	"tut_terminal",
+]
 
 var _parsed: Dictionary = {}
 var _meta: Dictionary = {}
@@ -49,8 +59,42 @@ func test_tutorial_has_one_of_each_pickup() -> void:
 	assert_eq(_count_symbol("c"), 1, "uma célula de energia")
 	assert_eq(_count_symbol("k"), 1, "um kit de solda")
 	assert_eq(_count_symbol("r"), 1, "um dado de pesquisa")
-	assert_eq(_count_symbol("l"), 1, "um fragmento de log")
+	assert_eq(_count_symbol("l"), 0, "nenhum fragmento solto de log")
+	assert_eq(_count_symbol("L"), 1, "um terminal de registros")
+	assert_eq(_count_symbol("m"), 1, "um elevador de serviço")
 	assert_eq(_count_symbol("D"), 2, "duas docas de backup")
+
+
+func test_tutorial_cards_follow_the_teaching_order() -> void:
+	var catalog: Dictionary = TutorialData.load_all()
+	var seen: Array[String] = []
+	for value: Variant in _meta.get("triggers", []) as Array:
+		var tutorial: String = String((value as Dictionary).get("tutorial", ""))
+		if tutorial.is_empty():
+			continue
+		assert_true(
+			TutorialData.has(StringName(tutorial), catalog), "cartão '%s' existe" % tutorial
+		)
+		assert_false(seen.has(tutorial), "cartão '%s' repetido na fase" % tutorial)
+		seen.append(tutorial)
+	assert_eq(seen, TUTORIAL_ORDER, "a ordem dos cartões segue a progressão didática")
+
+
+func test_every_tutorial_card_sits_before_its_obstacle() -> void:
+	var columns: Dictionary = {}
+	for value: Variant in _meta.get("triggers", []) as Array:
+		var data: Dictionary = value
+		var tutorial: String = String(data.get("tutorial", ""))
+		if tutorial.is_empty():
+			continue
+		columns[tutorial] = int((data.get("rect", [0]) as Array)[0])
+	assert_true(int(columns["tut_jump"]) < _jump_block_column(), "o cartão vem antes do degrau")
+	assert_true(
+		int(columns["tut_drop"]) > _jump_block_column(), "o cartão de descer vem na passarela"
+	)
+	assert_true(
+		int(columns["tut_drop"]) < int(columns["tut_interact"]), "descer vem antes de interagir"
+	)
 
 
 func test_floor_is_continuous_and_climbable() -> void:
@@ -160,17 +204,58 @@ func test_terminals_and_systems_match_the_energy_file() -> void:
 		assert_true(grid.has_system(StringName(system)), "sistema '%s'" % system)
 
 
-func test_puzzle_is_two_systems_one_unit_and_solvable() -> void:
+func test_puzzle_is_three_systems_one_unit_and_solvable() -> void:
 	var grid: EnergyGrid = _grid()
 	if grid == null:
 		return
 	assert_eq(grid.budget, 1, "uma unidade de energia")
-	assert_eq(grid.system_ids().size(), 2, "dois sistemas")
+	assert_eq(grid.system_ids().size(), 3, "três sistemas")
 	assert_false(grid.goal_met(), "o puzzle não começa resolvido")
 	grid.power_off(&"lights_core")
 	assert_eq(grid.toggle(&"door_habitat")["result"], EnergyGrid.Result.OK, "porta liga")
 	assert_true(grid.goal_met(), "meta cumprida ao ligar a porta")
 	assert_false(grid.is_powered(&"lights_core"), "a luz fica desligada")
+
+
+func test_the_lift_serves_the_optional_research_data() -> void:
+	var grid: EnergyGrid = _grid()
+	if grid == null:
+		return
+	assert_true(grid.has_system(&"lift_core"), "o terminal tem o elevador")
+	var lift_cell: Vector2i = _cell_of("core_lift")
+	var data_cell: Vector2i = _cell_of("data_core_01")
+	assert_true(lift_cell.x >= 0, "o elevador está no mapa")
+	assert_true(data_cell.x >= 0, "o dado de pesquisa está no mapa")
+	assert_true(
+		data_cell.y < lift_cell.y - 3,
+		"o dado (%d) fica bem acima do elevador (%d)" % [data_cell.y, lift_cell.y]
+	)
+	var terminal_cell: Vector2i = _cell_of("core_console")
+	assert_true(
+		terminal_cell.x > lift_cell.x,
+		"o terminal fica depois do poço, então dá para voltar e trocar a energia"
+	)
+
+
+func test_the_lift_docks_level_with_the_floor_and_the_niche() -> void:
+	var lift_cell: Vector2i = _cell_of("core_lift")
+	var data_cell: Vector2i = _cell_of("data_core_01")
+	var points: PackedVector2Array = MovingPlatform.points_from(
+		_params_of("core_lift").get("path", [])
+	)
+	assert_eq(points.size(), 2, "o elevador tem dois pontos de parada")
+	if points.size() != 2 or lift_cell.x < 0 or data_cell.x < 0:
+		return
+	var origin: float = float(lift_cell.y) + 0.5
+	assert_almost_eq(
+		origin + points[0].y - 0.25, float(lift_cell.y + 1), 0.01, "embaixo fica rente ao piso"
+	)
+	var top: float = origin + points[1].y - 0.25
+	var niche_floor: float = float(data_cell.y + 1)
+	assert_true(
+		top <= niche_floor and top >= niche_floor - 0.5,
+		"em cima para no nível do nicho (%f contra %f)" % [top, niche_floor]
+	)
 
 
 func test_exit_falls_back_to_the_demo_end() -> void:
@@ -226,11 +311,26 @@ func _entity_cells() -> Dictionary:
 func _ground_row(column: int) -> int:
 	var solids: Dictionary = _parsed.get("solids", {})
 	var height: int = int(_parsed.get("height", 0))
-	for row: int in range(height):
+	for row: int in range(MAIN_FLOOR_TOP, height):
 		if solids.has(Vector2i(column, row)) and not solids.has(Vector2i(column, row - 1)):
-			if row > 1:
-				return row
+			return row
 	return -1
+
+
+func _jump_block_column() -> int:
+	var solids: Dictionary = _parsed.get("solids", {})
+	for column: int in range(int(_parsed.get("width", 0))):
+		if solids.has(Vector2i(column, 10)) and not solids.has(Vector2i(column, 9)):
+			return column
+	return -1
+
+
+func _cell_of(entity_id: String) -> Vector2i:
+	for key: Variant in _meta.get("entities", {}):
+		var params: Dictionary = (_meta["entities"] as Dictionary)[key]
+		if String(params.get("id", "")) == entity_id:
+			return LevelParser.key_to_cell(String(key))
+	return Vector2i(-1, -1)
 
 
 func _rect_has_open_cell(rect: Array) -> bool:
@@ -247,3 +347,11 @@ func _grid() -> EnergyGrid:
 	if not (raw is Dictionary):
 		return null
 	return EnergyGrid.from_dict(raw)
+
+
+func _params_of(entity_id: String) -> Dictionary:
+	for key: Variant in _meta.get("entities", {}):
+		var params: Dictionary = (_meta["entities"] as Dictionary)[key]
+		if String(params.get("id", "")) == entity_id:
+			return params
+	return {}

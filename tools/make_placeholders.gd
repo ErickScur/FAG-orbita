@@ -119,8 +119,8 @@ func _draw_cell(
 			_draw_dock(image, origin, size, palette, col, entry)
 		"bar_stripe":
 			_draw_door(image, origin, size, palette, col, entry)
-		"diamond_rows":
-			_draw_diamond(image, origin, size, palette, col, row, entry)
+		"pickup_rows":
+			_draw_pickup(image, origin, size, palette, col, row, entry)
 		"rect_border":
 			_draw_rect_border(image, origin, size, palette, entry)
 		"grow":
@@ -399,7 +399,7 @@ func _draw_door(
 		_fill_rect(image, origin.x + 7, origin.y + size.y / 2 - 5, 2, 2, Color("#D9534F"))
 
 
-func _draw_diamond(
+func _draw_pickup(
 	image: Image,
 	origin: Vector2i,
 	size: Vector2i,
@@ -413,14 +413,96 @@ func _draw_diamond(
 	if row < rows.size():
 		body = Color(String(rows[row]))
 	var outline: Color = palette.get("outline", Color.BLACK)
+	var light: Color = palette.get("light", Color.WHITE)
 	var bob: int = [0, -1, 0, 1][col % 4]
-	var cx: int = origin.x + size.x / 2
-	var cy: int = origin.y + size.y / 2 + bob
-	_fill_diamond(image, cx, cy, 6, outline)
-	_fill_diamond(image, cx, cy, 5, body)
-	_fill_diamond(image, cx, cy - 1, 2, _shade(body, 0.35))
+	var x: int = origin.x
+	var y: int = origin.y + bob
+	match row:
+		0:
+			_draw_pickup_cell(image, x, y, body, outline, light)
+		1:
+			_draw_pickup_repair_kit(image, x, y, body, outline, light)
+		2:
+			_draw_pickup_log(image, x, y, body, outline, light)
+		3:
+			_draw_pickup_research(image, x, y, body, outline, light)
+		_:
+			_draw_pickup_capacitor(image, x, y, body, outline, light)
 	if col % 2 == 0:
-		_put(image, cx - 4, cy - 3, palette.get("light", Color.WHITE))
+		_put(image, x + 2, y + 2, light)
+
+
+func _draw_pickup_cell(
+	image: Image, x: int, y: int, body: Color, outline: Color, light: Color
+) -> void:
+	_fill_rect(image, x + 6, y + 2, 4, 2, _shade(body, 0.4))
+	_stroke_rect(image, x + 6, y + 2, 4, 2, outline)
+	_fill_rect(image, x + 4, y + 4, 8, 10, body)
+	_stroke_rect(image, x + 4, y + 4, 8, 10, outline)
+	_fill_rect(image, x + 5, y + 5, 1, 8, _shade(body, 0.4))
+	_fill_rect(image, x + 6, y + 8, 4, 2, light)
+
+
+func _draw_pickup_repair_kit(
+	image: Image, x: int, y: int, body: Color, outline: Color, light: Color
+) -> void:
+	_fill_rect(image, x + 6, y + 2, 4, 3, _shade(body, -0.35))
+	_stroke_rect(image, x + 6, y + 2, 4, 3, outline)
+	_fill_rect(image, x + 2, y + 5, 12, 9, body)
+	_stroke_rect(image, x + 2, y + 5, 12, 9, outline)
+	_fill_rect(image, x + 7, y + 7, 2, 5, light)
+	_fill_rect(image, x + 5, y + 9, 6, 1, light)
+
+
+func _draw_pickup_log(
+	image: Image, x: int, y: int, body: Color, outline: Color, light: Color
+) -> void:
+	_fill_rect(image, x + 3, y + 2, 10, 12, body)
+	_stroke_rect(image, x + 3, y + 2, 10, 12, outline)
+	_fill_rect(image, x + 5, y + 4, 6, 1, light)
+	var line: Color = _shade(body, -0.6)
+	_fill_rect(image, x + 5, y + 7, 6, 1, line)
+	_fill_rect(image, x + 5, y + 9, 6, 1, line)
+	_fill_rect(image, x + 5, y + 11, 4, 1, line)
+
+
+func _draw_pickup_research(
+	image: Image, x: int, y: int, body: Color, outline: Color, light: Color
+) -> void:
+	_fill_hexagon(image, x + 8, y + 8, 13, 13, outline)
+	_fill_hexagon(image, x + 8, y + 8, 11, 11, body)
+	_fill_rect(image, x + 6, y + 5, 4, 1, _shade(body, 0.45))
+	_fill_rect(image, x + 6, y + 7, 1, 4, light)
+	_put(image, x + 9, y + 10, light)
+
+
+func _draw_pickup_capacitor(
+	image: Image, x: int, y: int, body: Color, outline: Color, light: Color
+) -> void:
+	_fill_ring(image, x + 8, y + 8, 6.6, 3.4, outline)
+	_fill_ring(image, x + 8, y + 8, 5.6, 4.2, body)
+	_fill_rect(image, x + 7, y + 5, 2, 6, outline)
+	_fill_rect(image, x + 7, y + 6, 2, 4, light)
+	_put(image, x + 5, y + 5, _shade(body, 0.45))
+
+
+func _fill_ring(image: Image, cx: int, cy: int, outer: float, inner: float, color: Color) -> void:
+	var limit: int = int(ceilf(outer))
+	for oy: int in range(-limit, limit + 1):
+		for ox: int in range(-limit, limit + 1):
+			var distance: float = sqrt(float(ox * ox + oy * oy))
+			if distance > outer or distance < inner:
+				continue
+			_put(image, cx + ox, cy + oy, color)
+
+
+func _fill_hexagon(image: Image, cx: int, cy: int, width: int, height: int, color: Color) -> void:
+	var half_w: int = width / 2
+	var half_h: int = height / 2
+	for oy: int in range(-half_h, half_h + 1):
+		var taper: int = maxi(0, absi(oy) - half_h / 2)
+		for ox: int in range(-half_w + taper, half_w - taper + 1):
+			_put(image, cx + ox, cy + oy, color)
 
 
 func _draw_rect_border(
@@ -513,6 +595,13 @@ func _draw_hud_icon(
 		_fill_rect(image, origin.x + 4, origin.y + 4, size.x - 8, size.y - 8, tint)
 	elif index < 5:
 		_fill_rect(image, origin.x + 4, origin.y + 6, size.x - 8, 4, tint)
+	elif index == HudModel.ICON_LOG:
+		_fill_rect(image, origin.x + 5, origin.y + 4, 6, 8, tint)
+		var line: Color = _shade(tint, -0.65)
+		_fill_rect(image, origin.x + 6, origin.y + 6, 4, 1, line)
+		_fill_rect(image, origin.x + 6, origin.y + 8, 4, 1, line)
+	elif index == HudModel.ICON_RESEARCH:
+		_fill_hexagon(image, origin.x + size.x / 2, origin.y + size.y / 2, 7, 7, tint)
 	elif index < 13:
 		_fill_diamond(image, origin.x + size.x / 2, origin.y + size.y / 2, 3, tint)
 	else:

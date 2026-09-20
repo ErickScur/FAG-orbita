@@ -5,6 +5,28 @@ const FALLBACK_LEVEL: String = "res://tests/qa/scenes/loading_target.tscn"
 const OPTIONS_SCENE: String = "res://scenes/ui/options_menu.tscn"
 const CONFIRM_SCENE: String = "res://scenes/ui/confirm_dialog.tscn"
 const GAMEPLAY_GROUP: StringName = &"gameplay"
+const CONTROL_ROWS: Array[Dictionary] = [
+	{"label": "MOVER", "actions": [&"move_left", &"move_right"]},
+	{"label": "PULAR", "actions": [&"jump"]},
+	{"label": "DESCER", "actions": [&"move_down"]},
+	{"label": "INTERAGIR", "actions": [&"interact"]},
+	{"label": "LANTERNA", "actions": [&"flashlight"]},
+	{"label": "GARRAS", "actions": [&"move_up"]},
+	{"label": "PAUSA", "actions": [&"pause"]},
+]
+const KEY_NAMES: Dictionary = {
+	"Space": "ESPAÇO",
+	"Escape": "ESC",
+	"Shift": "SHIFT",
+	"Enter": "ENTER",
+	"Tab": "TAB",
+}
+const HEADLESS_SERVER: String = "headless"
+const CONTROL_NAME_WIDTH: float = 62.0
+const CONTROL_ROW_HEIGHT: float = 16.0
+const CONTROL_FONT_SIZE: int = 16
+const CONTROL_NAME_COLOR: Color = Color(0.541176, 0.607843, 0.658824)
+const CONTROL_KEY_COLOR: Color = Color(0.843137, 0.890196, 0.909804)
 
 @export var restart_question: String = ""
 @export var quit_question: String = ""
@@ -12,6 +34,8 @@ const GAMEPLAY_GROUP: StringName = &"gameplay"
 var is_open: bool = false
 
 @onready var main_panel: PanelContainer = %Main
+@onready var controls_panel: PanelContainer = %Controls
+@onready var controls_rows: VBoxContainer = %Rows
 @onready var restart_panel: PanelContainer = %RestartPanel
 @onready var overlay: Control = %Overlay
 @onready var resume_button: Button = %ResumeButton
@@ -36,6 +60,7 @@ func _ready() -> void:
 	cancel_button.pressed.connect(_show_main)
 	for button: Button in _buttons():
 		button.focus_entered.connect(_play_move)
+	_build_controls()
 
 
 func _notification(what: int) -> void:
@@ -102,6 +127,7 @@ func close() -> void:
 	_clear_overlay()
 	restart_panel.visible = false
 	main_panel.visible = true
+	controls_panel.visible = true
 	visible = false
 	get_tree().paused = false
 	EventBus.game_paused.emit(false)
@@ -139,6 +165,7 @@ func _first_level() -> String:
 func _show_main() -> void:
 	restart_panel.visible = false
 	main_panel.visible = true
+	controls_panel.visible = true
 	from_backup_button.disabled = not SaveManager.has_save()
 	if is_open:
 		resume_button.grab_focus()
@@ -149,6 +176,7 @@ func _show_main() -> void:
 func _show_restart() -> void:
 	AudioManager.play_sfx(&"ui_confirm")
 	main_panel.visible = false
+	controls_panel.visible = false
 	restart_panel.visible = true
 	from_backup_button.disabled = not SaveManager.has_save()
 	if from_backup_button.disabled:
@@ -232,3 +260,64 @@ func _open_dialog() -> Control:
 
 func _play_move() -> void:
 	AudioManager.play_sfx(&"ui_move")
+
+
+func _build_controls() -> void:
+	for child: Node in controls_rows.get_children():
+		child.queue_free()
+	for entry: Dictionary in CONTROL_ROWS:
+		var keys: String = _keys_for(entry["actions"])
+		if keys.is_empty():
+			continue
+		controls_rows.add_child(_control_row(String(entry["label"]), keys))
+
+
+func _control_row(name_text: String, keys_text: String) -> HBoxContainer:
+	var row := HBoxContainer.new()
+	row.custom_minimum_size = Vector2(0.0, CONTROL_ROW_HEIGHT)
+	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	row.add_theme_constant_override("separation", 2)
+	row.add_child(_control_label(name_text, CONTROL_NAME_COLOR, CONTROL_NAME_WIDTH))
+	row.add_child(_control_label(keys_text, CONTROL_KEY_COLOR, 0.0))
+	return row
+
+
+func _control_label(text: String, color: Color, width: float) -> Label:
+	var label := Label.new()
+	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	label.focus_mode = Control.FOCUS_NONE
+	label.custom_minimum_size = Vector2(width, CONTROL_ROW_HEIGHT)
+	label.add_theme_font_size_override("font_size", CONTROL_FONT_SIZE)
+	label.add_theme_color_override("font_color", color)
+	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	label.text = text
+	return label
+
+
+func _keys_for(actions: Array) -> String:
+	var names: PackedStringArray = []
+	for action: Variant in actions:
+		var key: String = _first_key(StringName(action))
+		if key.is_empty() or names.has(key):
+			continue
+		names.append(key)
+	return " ".join(names)
+
+
+func _first_key(action: StringName) -> String:
+	if not InputMap.has_action(action):
+		return ""
+	for event: InputEvent in InputMap.action_get_events(action):
+		var key := event as InputEventKey
+		if key == null:
+			continue
+		var code: int = key.physical_keycode
+		if code != 0 and DisplayServer.get_name() != HEADLESS_SERVER:
+			code = DisplayServer.keyboard_get_keycode_from_physical(code)
+		elif code == 0:
+			code = key.keycode
+		if code == 0:
+			continue
+		var text: String = OS.get_keycode_string(code)
+		return String(KEY_NAMES.get(text, text.to_upper()))
+	return ""

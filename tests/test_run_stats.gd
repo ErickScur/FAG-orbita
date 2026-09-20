@@ -84,8 +84,12 @@ func test_secrets_found_without_flags() -> void:
 
 
 func test_unread_logs_line() -> void:
-	_fill_logs(6)
-	assert_eq(RunStats.unread_logs_line(_state), "VOCÊ NUNCA VAI LER 18 LOGS.", "dezoito logs")
+	_fill_logs(1)
+	assert_eq(
+		RunStats.unread_logs_line(_state),
+		"VOCÊ NUNCA VAI LER %d LOGS." % (Balance.LOGS_TOTAL - 1),
+		"logs que ficaram para trás"
+	)
 
 
 func test_unread_logs_line_singular() -> void:

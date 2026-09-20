@@ -1,0 +1,7 @@
+[
+  {"frame": 60, "screenshot": "f37_l01_inicio"},
+  {"frame": 70, "action": "move_right", "pressed": true},
+  {"frame": 160, "action": "move_right", "pressed": false},
+  {"frame": 180, "screenshot": "f37_l02_andando"},
+  {"frame": 210, "quit": true}
+]
