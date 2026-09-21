@@ -24,13 +24,14 @@ Três pilares:
 |---|---|---|
 | Mover | A / D ou ← / → | Analógico esquerdo |
 | Pular (segurar = mais alto) | Espaço | A |
-| Dash magnético | Shift | B |
-| Interagir | E | X |
-| Feixe de Manutenção | Q | Y |
+| Descer da plataforma fina | S ou ↓ | Analógico para baixo |
+| Interagir / ler registro | E | X |
+| Escalar parede magnética (depois das garras) | encostar e segurar W ou ↑ | Analógico para cima |
 | Lanterna | F | LB |
-| Arquivo de Logs | L | — |
-| Pause | Esc | Start |
-| Mapa da estação | Tab | Select *(entrega final)* |
+| Terminal do chassi (reator, coleta, habilidades) | Tab | Select |
+| Pausa, opções e lista de controles | Esc | Start |
+
+Dash magnético, Feixe de Manutenção e Arquivo de Logs estão no GDD para a entrega final e **não fazem parte da demo**.
 
 ## Como rodar
 
