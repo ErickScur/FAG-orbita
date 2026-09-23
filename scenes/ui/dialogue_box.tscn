@@ -30,12 +30,28 @@ grow_horizontal = 2
 grow_vertical = 0
 mouse_filter = 2
 
-[node name="Content" type="VBoxContainer" parent="Root/Box"]
+[node name="Layout" type="HBoxContainer" parent="Root/Box"]
 layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 6
+
+[node name="Portrait" type="TextureRect" parent="Root/Box/Layout"]
+unique_name_in_owner = true
+visible = false
+texture_filter = 1
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_vertical = 0
+mouse_filter = 2
+stretch_mode = 2
+
+[node name="Content" type="VBoxContainer" parent="Root/Box/Layout"]
+layout_mode = 2
+size_flags_horizontal = 3
 mouse_filter = 2
 theme_override_constants/separation = 0
 
-[node name="Header" type="Label" parent="Root/Box/Content"]
+[node name="Header" type="Label" parent="Root/Box/Layout/Content"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
@@ -43,12 +59,12 @@ theme_override_colors/font_color = Color(0.552941, 0.65098, 0.686275, 1)
 theme_override_font_sizes/font_size = 16
 text = "LOG"
 
-[node name="SpeakerRow" type="HBoxContainer" parent="Root/Box/Content"]
+[node name="SpeakerRow" type="HBoxContainer" parent="Root/Box/Layout/Content"]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 6
 
-[node name="Speaker" type="Label" parent="Root/Box/Content/SpeakerRow"]
+[node name="Speaker" type="Label" parent="Root/Box/Layout/Content/SpeakerRow"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -57,7 +73,7 @@ theme_override_colors/font_color = Color(0.498039, 0.890196, 0.941176, 1)
 theme_override_font_sizes/font_size = 16
 text = "ÓRBITA"
 
-[node name="Rec" type="Label" parent="Root/Box/Content/SpeakerRow"]
+[node name="Rec" type="Label" parent="Root/Box/Layout/Content/SpeakerRow"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
@@ -65,7 +81,7 @@ theme_override_colors/font_color = Color(0.941176, 0.760784, 0.498039, 1)
 theme_override_font_sizes/font_size = 16
 text = "[REC] REPRODUZINDO"
 
-[node name="Next" type="Label" parent="Root/Box/Content/SpeakerRow"]
+[node name="Next" type="Label" parent="Root/Box/Layout/Content/SpeakerRow"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
@@ -73,7 +89,7 @@ theme_override_colors/font_color = Color(0.843137, 0.890196, 0.909804, 1)
 theme_override_font_sizes/font_size = 16
 text = "v"
 
-[node name="Text" type="RichTextLabel" parent="Root/Box/Content"]
+[node name="Text" type="RichTextLabel" parent="Root/Box/Layout/Content"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 16)
 layout_mode = 2

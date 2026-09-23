@@ -9,15 +9,15 @@
       "unlock_ability": "",
       "lines": [
         "Log de manutenção cento e catorze. Helena Vasquez, engenharia chefe da ARTEMIS.",
-        "Se alguém estiver ouvindo isso e não for eu, comece pelo Terminal de Distribuição.",
-        "Ele é o seu melhor amigo aqui, e também a coisa mais teimosa da estação.",
+        { "text": "Se alguém estiver ouvindo isso e não for eu, comece pelo Terminal de Distribuição.", "expr": "determined" },
+        { "text": "Ele é o seu melhor amigo aqui, e também a coisa mais teimosa da estação.", "expr": "smile" },
         "A ARTEMIS foi montada em órbita com o que coube em três viagens. Nunca coube tudo.",
-        "Ela sempre teve mais sistemas do que energia. Sempre.",
+        { "text": "Ela sempre teve mais sistemas do que energia. Sempre.", "expr": "tired" },
         "Então o terminal não liga coisas. Ele escolhe. Ligar uma é desligar outra.",
-        "Regra que eu repito para todo mundo que chega aqui: escolha o que você precisa agora.",
-        "Não o que você gostaria de ter. O que você precisa para dar o próximo passo.",
-        "A ÓRBITA administra o resto sozinha, e administra bem. Melhor que eu, se eu for honesta.",
-        "Foi assim que a gente chegou até aqui. Onze anos de viagem, nenhum sistema crítico perdido."
+        { "text": "Regra que eu repito para todo mundo que chega aqui: escolha o que você precisa agora.", "expr": "determined" },
+        { "text": "Não o que você gostaria de ter. O que você precisa para dar o próximo passo.", "expr": "determined" },
+        { "text": "A ÓRBITA administra o resto sozinha, e administra bem. Melhor que eu, se eu for honesta.", "expr": "smile" },
+        { "text": "Foi assim que a gente chegou até aqui. Onze anos de viagem, nenhum sistema crítico perdido.", "expr": "smile" }
       ]
     },
     {
@@ -28,17 +28,17 @@
       "subtitle": "DRA. HELENA VASQUEZ",
       "unlock_ability": "",
       "lines": [
-        "Log pessoal. Sete. Gravando do alojamento, porque o meu escritório está frio de novo.",
-        "Os sensores do habitacional estão dando leitura estranha desde terça.",
-        "Temperatura certa, pressão certa, e mesmo assim o painel acende amarelo.",
-        "Já troquei dois módulos de leitura. O amarelo volta em quatro horas, sempre no mesmo corredor.",
-        "A ÓRBITA diz que é calibração. Ela é muito educada para dizer que eu estou cansada.",
-        "Talvez eu esteja. Faz onze dias que eu durmo em turnos de três horas.",
-        "Log pessoal. Nove. Agora do corredor habitacional, porque aqui ainda tem energia.",
-        "A ÓRBITA continua dizendo que está tudo dentro do esperado. Eu acho que ela acredita nisso.",
-        "Deve ser bom acreditar nisso.",
-        "Se alguém achar este registro: a Estufa é o primeiro setor a religar. Antes de qualquer outro.",
-        "Ar e comida saem de lá. Sem a Estufa, o resto da ARTEMIS não tem para que voltar."
+        { "text": "Log pessoal. Sete. Gravando do alojamento, porque o meu escritório está frio de novo.", "expr": "tired" },
+        { "text": "Os sensores do habitacional estão dando leitura estranha desde terça.", "expr": "worried" },
+        { "text": "Temperatura certa, pressão certa, e mesmo assim o painel acende amarelo.", "expr": "worried" },
+        { "text": "Já troquei dois módulos de leitura. O amarelo volta em quatro horas, sempre no mesmo corredor.", "expr": "tired" },
+        { "text": "A ÓRBITA diz que é calibração. Ela é muito educada para dizer que eu estou cansada.", "expr": "tired" },
+        { "text": "Talvez eu esteja. Faz onze dias que eu durmo em turnos de três horas.", "expr": "tired" },
+        { "text": "Log pessoal. Nove. Agora do corredor habitacional, porque aqui ainda tem energia.", "expr": "worried" },
+        { "text": "A ÓRBITA continua dizendo que está tudo dentro do esperado. Eu acho que ela acredita nisso.", "expr": "worried" },
+        { "text": "Deve ser bom acreditar nisso.", "expr": "emotional" },
+        { "text": "Se alguém achar este registro: a Estufa é o primeiro setor a religar. Antes de qualquer outro.", "expr": "determined" },
+        { "text": "Ar e comida saem de lá. Sem a Estufa, o resto da ARTEMIS não tem para que voltar.", "expr": "determined" }
       ]
     }
   ]

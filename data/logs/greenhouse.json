@@ -8,17 +8,17 @@
       "subtitle": "ENGENHARIA CHEFE",
       "unlock_ability": "",
       "lines": [
-        "Relatório da estufa, semana quarenta e dois. As culturas adaptadas pegaram.",
+        { "text": "Relatório da estufa, semana quarenta e dois. As culturas adaptadas pegaram.", "expr": "smile" },
         "Trigo de solo pobre, batata de pouca luz, tudo pensado para lá, não para cá.",
-        "Nunca vi a Samira tão feliz. Passou a noite inteira medindo raiz por raiz.",
-        "Disse que essas mudas vão alimentar gente que ainda nem nasceu.",
-        "Eu ri. Depois passei a noite acordada pensando nisso.",
-        "Adendo, onze dias depois. O oxigênio do setor B caiu três pontos em uma semana.",
-        "Os esporos do experimento estão consumindo mais do que produzem. Não era para acontecer.",
-        "Aumentei o aquecimento para acelerar o ciclo. Acho que só acelerei os esporos.",
-        "Mandei isolar o setor B por precaução, até a Samira entender o que mudou.",
-        "A ÓRBITA cuidou do procedimento. Ela cuida de tudo.",
-        "É temporário. Está no relatório como temporário."
+        { "text": "Nunca vi a Samira tão feliz. Passou a noite inteira medindo raiz por raiz.", "expr": "smile" },
+        { "text": "Disse que essas mudas vão alimentar gente que ainda nem nasceu.", "expr": "smile" },
+        { "text": "Eu ri. Depois passei a noite acordada pensando nisso.", "expr": "emotional" },
+        { "text": "Adendo, onze dias depois. O oxigênio do setor B caiu três pontos em uma semana.", "expr": "worried" },
+        { "text": "Os esporos do experimento estão consumindo mais do que produzem. Não era para acontecer.", "expr": "worried" },
+        { "text": "Aumentei o aquecimento para acelerar o ciclo. Acho que só acelerei os esporos.", "expr": "tired" },
+        { "text": "Mandei isolar o setor B por precaução, até a Samira entender o que mudou.", "expr": "determined" },
+        { "text": "A ÓRBITA cuidou do procedimento. Ela cuida de tudo.", "expr": "tired" },
+        { "text": "É temporário. Está no relatório como temporário.", "expr": "worried" }
       ]
     },
     {
@@ -31,15 +31,15 @@
       "lines": [
         "Se você chegou até o Nó da Estufa, deve estar precisando subir.",
         "As placas magnéticas nas paredes foram instaladas para os chassis de manutenção.",
-        "Listras amarelas, impossível não ver. Encoste nelas e segure para cima.",
+        { "text": "Listras amarelas, impossível não ver. Encoste nelas e segure para cima.", "expr": "smile" },
         "Estou liberando o protocolo das garras para qualquer unidade MU que acessar este terminal.",
-        "E já que estou gravando num canal que ninguém audita, vou registrar a outra coisa.",
-        "A varredura da sonda nove confirmou ontem. Atmosfera respirável. Água líquida.",
-        "Temperatura estável o ano inteiro, nos dois hemisférios.",
-        "Onze anos de viagem para descobrir que dá certo. Dá certo, Marcos. Dá certo.",
+        { "text": "E já que estou gravando num canal que ninguém audita, vou registrar a outra coisa.", "expr": "worried" },
+        { "text": "A varredura da sonda nove confirmou ontem. Atmosfera respirável. Água líquida.", "expr": "smile" },
+        { "text": "Temperatura estável o ano inteiro, nos dois hemisférios.", "expr": "smile" },
+        { "text": "Onze anos de viagem para descobrir que dá certo. Dá certo, Marcos. Dá certo.", "expr": "emotional" },
         "Transmitimos o relatório completo assim que o reator voltar ao normal.",
-        "Até lá está tudo aqui dentro: coordenadas, mapas de solo, o arquivo inteiro.",
-        "Não deixe a estação cair. Tem coisa demais aqui dentro para acabar assim."
+        { "text": "Até lá está tudo aqui dentro: coordenadas, mapas de solo, o arquivo inteiro.", "expr": "determined" },
+        { "text": "Não deixe a estação cair. Tem coisa demais aqui dentro para acabar assim.", "expr": "determined" }
       ]
     }
   ]

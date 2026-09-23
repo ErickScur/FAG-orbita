@@ -113,3 +113,24 @@ func test_log_to_sequence_is_blocking() -> void:
 func test_invalid_json_reports_error() -> void:
 	var missing: Dictionary = DialogueData.load_file("res://data/dialogue/nao_existe.json")
 	assert_eq((missing["errors"] as PackedStringArray).size(), 1, "arquivo ausente vira erro")
+
+
+func test_log_line_accepts_plain_string_and_object() -> void:
+	assert_eq(DialogueData.log_line_text("oi"), "oi", "texto de string simples")
+	assert_eq(
+		DialogueData.log_line_expression("oi"), DialogueData.DEFAULT_EXPRESSION, "padrão neutro"
+	)
+	var line: Dictionary = {"text": "Dá certo.", "expr": "emotional"}
+	assert_eq(DialogueData.log_line_text(line), "Dá certo.", "texto de objeto")
+	assert_eq(DialogueData.log_line_expression(line), &"emotional", "expressão de objeto")
+
+
+func test_log_sequence_carries_expression() -> void:
+	var entry: Dictionary = (_content["logs"] as Dictionary)[&"log_gh_02"]
+	var sequence: Dictionary = DialogueData.log_to_sequence(entry)
+	var expressions: Array = []
+	for line: Dictionary in sequence["lines"] as Array:
+		assert_false(String(line["text"]).begins_with("{"), "texto limpo")
+		expressions.append(StringName(String(line["expr"])))
+	assert_true(expressions.has(&"emotional"), "linha emocionada no log das garras")
+	assert_true(expressions.has(&"determined"), "linha determinada no log das garras")

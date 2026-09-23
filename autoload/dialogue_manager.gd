@@ -298,7 +298,8 @@ func _show_line(index: int) -> void:
 		_speaker_data(speaker_id),
 		String(line.get("text", "")),
 		current_header(),
-		_is_blocking()
+		_is_blocking(),
+		StringName(String(line.get("expr", DialogueData.DEFAULT_EXPRESSION)))
 	)
 	_update_box_progress()
 

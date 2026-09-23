@@ -5,6 +5,10 @@ const MODE_BLOCKING: StringName = &"blocking"
 const MODE_AMBIENT: StringName = &"ambient"
 const VALID_MODES: Array[StringName] = [MODE_BLOCKING, MODE_AMBIENT]
 const MAX_LINE_CHARS: int = 110
+const DEFAULT_EXPRESSION: StringName = &"neutral"
+const EXPRESSIONS: Array[StringName] = [
+	&"neutral", &"tired", &"worried", &"smile", &"emotional", &"determined"
+]
 const FORBIDDEN_WORDS: PackedStringArray = [
 	"morreu", "morreram", "morta", "mortos", "selou", "40 pessoas", "quarentena definitiva"
 ]
@@ -118,6 +122,9 @@ static func validate(
 			errors.append("log '%s' sem linhas" % key)
 		if String(entry.get("title", "")).strip_edges().is_empty():
 			errors.append("log '%s' sem título" % key)
+		for value: Variant in entry.get("lines", []) as Array:
+			if not EXPRESSIONS.has(log_line_expression(value)):
+				errors.append("log '%s': expressão desconhecida" % key)
 	return errors
 
 
@@ -136,7 +143,7 @@ static func log_length_errors(logs: Dictionary, max_chars: int) -> PackedStringA
 	var errors: PackedStringArray = []
 	for key: Variant in logs:
 		for value: Variant in (logs[key] as Dictionary).get("lines", []) as Array:
-			var text: String = String(value)
+			var text: String = log_line_text(value)
 			if text.length() > max_chars:
 				errors.append("log '%s': linha com %d caracteres" % [key, text.length()])
 	return errors
@@ -146,7 +153,7 @@ static func forbidden_word_errors(logs: Dictionary, words: PackedStringArray) ->
 	var errors: PackedStringArray = []
 	for key: Variant in logs:
 		for value: Variant in (logs[key] as Dictionary).get("lines", []) as Array:
-			var text: String = String(value).to_lower()
+			var text: String = log_line_text(value).to_lower()
 			for word: String in words:
 				if text.contains(word.to_lower()):
 					errors.append("log '%s': palavra proibida '%s'" % [key, word])
@@ -163,7 +170,11 @@ static func sequence_mode(sequences: Dictionary, sequence_id: StringName) -> Str
 static func log_to_sequence(entry: Dictionary) -> Dictionary:
 	var lines: Array = []
 	for value: Variant in entry.get("lines", []) as Array:
-		lines.append({"speaker": String(entry.get("author", "helena")), "text": String(value)})
+		lines.append({
+			"speaker": String(entry.get("author", "helena")),
+			"text": log_line_text(value),
+			"expr": String(log_line_expression(value)),
+		})
 	return {
 		"mode": String(MODE_BLOCKING),
 		"once": false,
@@ -179,3 +190,17 @@ static func header_for(entry: Dictionary) -> String:
 	if subtitle.is_empty():
 		return title
 	return "%s · %s" % [title, subtitle]
+
+
+static func log_line_text(value: Variant) -> String:
+	if value is Dictionary:
+		return String((value as Dictionary).get("text", ""))
+	return String(value)
+
+
+static func log_line_expression(value: Variant) -> StringName:
+	if value is Dictionary:
+		var expression: String = String((value as Dictionary).get("expr", ""))
+		if not expression.is_empty():
+			return StringName(expression)
+	return DEFAULT_EXPRESSION
