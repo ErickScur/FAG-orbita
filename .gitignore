@@ -2,7 +2,4 @@
 /android/
 /builds/
 .DS_Store
-CLAUDE.md
-.claude/
-docs/*
-!docs/design/
+.claude/settings.local.json

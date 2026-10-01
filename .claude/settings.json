@@ -1,0 +1,26 @@
+{
+  "env": {
+    "GODOT": "/Users/BRScurPaEr/Downloads/Godot.app/Contents/MacOS/Godot",
+    "ORBITA_QA_SCREEN": "1"
+  },
+  "includeCoAuthoredBy": false,
+  "permissions": {
+    "allow": [
+      "Bash(\"$GODOT\" *)",
+      "Bash($GODOT *)",
+      "Bash(/Users/BRScurPaEr/Downloads/Godot.app/Contents/MacOS/Godot *)",
+      "Bash(tools/smoke.sh*)",
+      "Bash(git status*)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git check-ignore *)",
+      "Bash(git show *)"
+    ],
+    "deny": [
+      "Bash(git push --force*)",
+      "Bash(git push -f*)"
+    ]
+  }
+}
