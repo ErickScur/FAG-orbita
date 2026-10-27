@@ -110,7 +110,7 @@ Top-down por bloco. Dentro de um bloco, top-down, respeitando `depends_on`. **N�
 
 | # | Feature | Escopo | Rubrica | Status | Atualizado |
 |---|---|:--:|---|:--:|---|
-| F31 | [Dash magnético & Feixe de Manutenção](features/F31-dash-feixe.md) | STRETCH | Habilidades · Combate (não-letal) | `[ ]` | 2026-09-19 |
+| F31 | [Dash magnético & Feixe de Manutenção](features/F31-dash-feixe.md) | STRETCH | Habilidades · Combate (não-letal) | `[x]` | 2026-10-27 |
 | F32 | [Obstáculos ambientais (vapor, piso elétrico)](features/F32-obstaculos-ambientais.md) | STRETCH | Efeitos visuais/sonoros | `[ ]` | 2026-09-19 |
 | F33 | [Arquivo de Logs (codex)](features/F33-arquivo-logs.md) | STRETCH | Diálogo · Itens e inventário | `[ ]` | 2026-09-19 |
 | F34 | [Drone BOTÂNICO 04](features/F34-drone-botanico.md) | STRETCH | Movimento aleatório de NPCs | `[ ]` | 2026-09-19 |

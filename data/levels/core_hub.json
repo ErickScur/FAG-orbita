@@ -11,7 +11,7 @@
   "on_enter_dialogue": "core_wake",
   "revisit": {
     "after_sector": "greenhouse",
-    "spawn_dock": "hab_dock_01",
+    "spawn_dock": "hab_dock_02",
     "objective": "obj_core_lab",
     "ambient_color": "#2b3f52",
     "on_enter_dialogue": "core_return",
@@ -114,23 +114,38 @@
       "frame": 3,
       "prompt_text": "EXAMINAR TRAJE"
     },
-    "70,11": {
+    "69,9": {
+      "id": "hab_lamp_tunnel",
+      "color": "#e0b43c",
+      "radius": 80.0,
+      "energy": 1.5
+    },
+    "75,10": {
       "id": "hab_sr3_01",
       "dir": -1
     },
-    "72,11": {
+    "81,9": {
+      "id": "hab_lamp_duct",
+      "color": "#e0b43c",
+      "radius": 80.0,
+      "energy": 1.5
+    },
+    "95,11": {
+      "id": "hab_dock_02"
+    },
+    "98,11": {
       "id": "kit_hab_01"
     },
-    "76,11": {
+    "101,11": {
       "id": "core_hub_exit",
       "target": "res://scenes/levels/greenhouse.tscn",
       "closes_after_sector": "greenhouse"
     },
-    "80,11": {
+    "105,11": {
       "id": "door_lab",
       "sealed_until_sector": "greenhouse"
     },
-    "84,11": {
+    "109,11": {
       "id": "core_hub_exit_lab",
       "target": "res://scenes/levels/lab.tscn"
     }
@@ -250,13 +265,35 @@
     {
       "id": "core_t_sr3",
       "rect": [
-        68,
+        66,
         7,
         2,
         5
       ],
       "dialogue": "hab_first_sr3",
       "once": true
+    },
+    {
+      "id": "core_t_beam",
+      "rect": [
+        66,
+        7,
+        2,
+        5
+      ],
+      "tutorial": "tut_beam",
+      "once": false
+    },
+    {
+      "id": "core_t_dash",
+      "rect": [
+        82,
+        7,
+        2,
+        5
+      ],
+      "tutorial": "tut_dash",
+      "once": false
     }
   ]
 }

@@ -89,5 +89,11 @@ O modelo é generoso com energia (toda porta aberta, toda planta crescida, garra
   Confira contraste de zona dentro de zona na captura.
 - **(F60)** Parede magnética na saída de uma prateleira agarra o MU-7 quando ele só anda para
   fora: use escada de plataforma fina onde a garra não é a intenção.
+- **(F31)** **Vão "maior que 3 tiles" não obriga o dash**: coyote time (0,12 s) saindo da borda
+  alcança ~87 px. Para obrigar o dash, ponha **teto baixo (2 tiles) sobre o vão** ou vão de 6+ tiles;
+  prove com `dash_enabled=false` no modelo de alcançabilidade (`tests/test_level_core_hub.gd`).
+- **(F31)** **Cartão de tecla cobre obstáculo rente ao piso** quando a câmera encosta no limite de
+  baixo do mapa (o piso cai sempre na faixa de 140–176 px da tela, a do cartão). Obstáculo de
+  tutorial fica pelo menos 1 tile acima do piso do corredor ou longe do centro da tela.
 - **(F60)** Elevador que nasce estacionado no destino e **desce** quando ligado dá consequência
   visível no console e é a única forma de embarcar: bom padrão para "ligar mostra algo".

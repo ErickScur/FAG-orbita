@@ -97,6 +97,11 @@ Saída no scratchpad da sessão, nunca no repo.
   por `await frame_post_draw` (fotos idênticas com a janela sem foco) nem pause a árvore para
   esperar o desenho (trava o jogo).
 - Deixe ~30 frames depois de trocar de cena antes de capturar (fade + loading).
+- **(F31)** **Arte trocada no disco não aparece no QA sem reimportar**: o jogo lê a textura de
+  `.godot/imported`. A captura "depois do conserto" mostrou a folha antiga e quase aprovou o defeito.
+  Hoje o `qa.sh` roda `--import` antes de abrir o jogo; não tire esse passo.
+- **(F31, suspeita)** Não rode `tools/qa.sh` em paralelo com `tools/gates.sh` no mesmo projeto: uma
+  rodada perdeu o trilho junto com o import do outro e não se repetiu sozinha.
 - **(F60)** O QA abriu em **tela cheia no monitor principal** e roubou o foco do humano: o
   `Settings` carrega antes do `QACapture` e aplicava o `fullscreen=true` do `settings.cfg` dele,
   e janela em tela cheia não muda de monitor. Hoje `Settings.is_qa_run()` pula a tela cheia, a

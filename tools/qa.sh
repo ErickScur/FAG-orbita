@@ -59,6 +59,11 @@ rm -rf "$out"
 mkdir -p "$out"
 out="$(cd "$out" && pwd)"
 
+if ! perl -e 'alarm 300; exec @ARGV' "$GODOT" --headless --path . --import > "$out/import.log" 2>&1; then
+  echo "QA ABORT: import falhou (log em $out/import.log)"
+  exit 1
+fi
+
 user_args=(--qa "--qa-script=res://$script" "--qa-out=$out")
 [ -n "$scene" ] && user_args+=("--qa-scene=$scene")
 [ -n "$new_game" ] && user_args+=("$new_game")

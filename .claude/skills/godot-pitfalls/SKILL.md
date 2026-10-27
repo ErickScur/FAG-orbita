@@ -82,6 +82,9 @@ origem).
 - **Sonda de borda com a mesma máscara do corpo**: com `mask = 1 | 7` a `FloorProbe` via
   plataforma fina como chão e o corpo (`mask = 1`) atravessava; a SR-3 caía da fase (F22).
 - Raycast no `_ready()`: ver "Testes e números" (2 quadros de física).
+- **Raio horizontal na altura do peito passa por cima da SR-3** (10 px de altura): o feixe sai a
+  −8 px do pé e colide **só com corpos** — área de gatilho fica na camada 1 por padrão e bloquearia
+  o raio (F31).
 
 ## Energia (Terminal e grupo `powered`)
 - **Nó comandado por `invert` entra só por `group`**, nunca pelo par `terminal_id`/`system_id`

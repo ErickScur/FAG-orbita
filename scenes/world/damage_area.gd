@@ -9,6 +9,7 @@ extends Area2D
 @export var status_id: StringName = &""
 @export var status_duration: float = 0.0
 @export var active: bool = true
+@export var dash_passable: bool = false
 
 
 func _ready() -> void:

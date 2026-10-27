@@ -77,7 +77,10 @@ ASSETS.md: status `integrado`, autor/licença nos créditos; espelhe no `README.
 `art(F<id>): <asset>` ou `audio(F<id>): <asset>`.
 
 ## Testes de asset que existem (rode depois de trocar arte)
-`tests/test_level_tileset.gd`, `tests/test_asset_resolver.gd`, `tests/test_light_crowding.gd`.
+`tests/test_level_tileset.gd`, `tests/test_asset_resolver.gd`, `tests/test_light_crowding.gd`,
+`tests/test_asset_fringe.gd` (reprova franja magenta **semitransparente** em `assets/sprites`,
+`tiles` e `ui`: a linha `dash` do MU-7 carregou 155 px de rastro roxo da demo até a F31 porque a
+animação nunca tocava; rosa desenhado de propósito, como as flores da Estufa, é opaco e passa).
 Teste de asset nunca usa como cobaia um asset real "ainda sem arte final": ele quebra na entrega
 da arte (aconteceu três vezes, F49). O resolvedor hoje usa a cobaia sintética
 `assets/placeholder/sprites/_sem_arte/fixture.png` — mantenha assim.

@@ -9,6 +9,9 @@ const MAX_STEP_TILES: int = 2
 const MAX_GAP_TILES: int = 3
 const MAIN_FLOOR_TOP: int = 9
 const TERMINAL_ID: StringName = &"core_hub"
+const DASH_PIT_FLOOR_ROW: int = 15
+const SR3_SCENE: String = "res://scenes/enemies/sr3.tscn"
+const PLAYER_SCENE: String = "res://scenes/player/mu7.tscn"
 const TUTORIAL_ORDER: Array[String] = [
 	"tut_move",
 	"tut_pause",
@@ -18,6 +21,8 @@ const TUTORIAL_ORDER: Array[String] = [
 	"tut_chassis",
 	"tut_flashlight",
 	"tut_terminal",
+	"tut_beam",
+	"tut_dash",
 ]
 
 var _parsed: Dictionary = {}
@@ -63,7 +68,7 @@ func test_tutorial_has_one_of_each_pickup() -> void:
 	assert_eq(_count_symbol("l"), 0, "nenhum fragmento solto de log")
 	assert_eq(_count_symbol("L"), 1, "um terminal de registros")
 	assert_eq(_count_symbol("m"), 1, "um elevador de serviço")
-	assert_eq(_count_symbol("D"), 2, "duas docas de backup")
+	assert_eq(_count_symbol("D"), 3, "doca inicial, doca antes do Habitacional e a da revisita")
 
 
 func test_tutorial_cards_follow_the_teaching_order() -> void:
@@ -108,12 +113,113 @@ func test_floor_is_continuous_and_climbable() -> void:
 			assert_true(gap <= MAX_GAP_TILES, "vão de %d tiles na coluna %d" % [gap, column])
 			continue
 		gap = 0
+		if previous >= DASH_PIT_FLOOR_ROW:
+			previous = ground
+			continue
 		if previous >= 0:
 			assert_true(
 				absi(ground - previous) <= MAX_STEP_TILES,
 				"degrau de %d tiles na coluna %d" % [absi(ground - previous), column]
 			)
 		previous = ground
+
+
+func test_beam_card_comes_before_the_tunnel_and_dash_card_before_the_duct() -> void:
+	var columns: Dictionary = _tutorial_columns()
+	var tunnel: Vector2i = _tunnel_span()
+	var gap: Vector2i = _dash_gap_span()
+	assert_true(tunnel.x > 0 and gap.x > 0, "túnel e vão existem")
+	assert_true(int(columns.get("tut_beam", 999)) < tunnel.x, "cartão do feixe antes do túnel")
+	assert_true(int(columns.get("tut_dash", 999)) < gap.x, "cartão do dash antes do vão")
+	assert_true(
+		int(columns.get("tut_dash", 0)) > tunnel.y, "o dash se ensina depois de passar a SR-3"
+	)
+
+
+func test_the_sr3_patrols_a_tunnel_too_low_to_jump_over() -> void:
+	var tunnel: Vector2i = _tunnel_span()
+	var sr3: Vector2i = _cell_of("hab_sr3_01")
+	assert_true(sr3.x > tunnel.x and sr3.x < tunnel.y, "a SR-3 nasce dentro do túnel")
+	var solids: Dictionary = _parsed.get("solids", {})
+	var floor_row: int = sr3.y + 1
+	var first: int = sr3.x
+	while solids.has(Vector2i(first - 1, floor_row)):
+		first -= 1
+	var last: int = sr3.x
+	while solids.has(Vector2i(last + 1, floor_row)):
+		last += 1
+	assert_eq(first, tunnel.x - 2, "a patrulha vira no degrau logo a oeste do túnel")
+	assert_eq(last, tunnel.y + 2, "a patrulha vira no degrau logo a leste do túnel")
+	for column: int in [first, first + 1, last - 1, last]:
+		assert_false(
+			solids.has(Vector2i(column, floor_row - 3)), "poço aberto para subir em %d" % column
+		)
+	assert_true(
+		floor_row < MAIN_FLOOR_TOP + 3, "o túnel fica acima do piso, longe do cartão de tecla"
+	)
+	var headroom: float = _air_rows(tunnel.x, floor_row) * Balance.TILE_SIZE - _player_height()
+	assert_true(
+		headroom < _sr3_hitbox_height(),
+		"folga de %d px no túnel não pode deixar pular a SR-3" % int(headroom)
+	)
+
+
+func test_the_dash_gap_needs_the_dash() -> void:
+	var gap: Vector2i = _dash_gap_span()
+	assert_true(gap.y - gap.x + 1 > 3, "vão mais largo que o pulo")
+	assert_true(
+		float(gap.y - gap.x + 1) * Balance.TILE_SIZE
+		< DashLogic.distance(Balance.DASH_SPEED, Balance.DASH_TIME),
+		"o dash no chão cobre o vão"
+	)
+	var far_side := Vector2i(gap.y + 1, MAIN_FLOOR_TOP + 2)
+	var text: String = FileAccess.get_file_as_string(MAP_PATH)
+	var profile: Dictionary = LevelReachability.default_profile()
+	profile["dash_enabled"] = false
+	var without: Dictionary = LevelReachability.analyze(text, _meta, profile)
+	assert_false(LevelReachability.can_stand_at(without, far_side), "sem dash não se cruza o vão")
+	for item: Dictionary in LevelReachability.unreachable_interactables(without):
+		assert_true(
+			(item.get("cell", Vector2i.ZERO) as Vector2i).x > gap.y,
+			"sem dash só o que fica além do vão some: %s" % LevelReachability.describe(item)
+		)
+	assert_false(
+		LevelReachability.unreachable_interactables(without).is_empty(),
+		"as saídas ficam depois do vão"
+	)
+	var with_dash: Dictionary = LevelReachability.analyze(text, _meta)
+	assert_true(LevelReachability.can_stand_at(with_dash, far_side), "com dash cruza")
+
+
+func test_the_dash_pit_is_shallow_and_has_a_way_back() -> void:
+	var gap: Vector2i = _dash_gap_span()
+	var profile: Dictionary = LevelReachability.default_profile()
+	profile["dash_enabled"] = false
+	var pit_floor := Vector2i(gap.x + 1, DASH_PIT_FLOOR_ROW - 1)
+	var from_spawn: Dictionary = LevelReachability.analyze(
+		FileAccess.get_file_as_string(MAP_PATH), _meta, profile
+	)
+	assert_true(LevelReachability.can_stand_at(from_spawn, pit_floor), "dá para cair no fosso")
+	assert_true(DASH_PIT_FLOOR_ROW < int(_parsed.get("height", 0)), "o fosso tem fundo no mapa")
+	var from_pit: Dictionary = LevelReachability.analyze(
+		_map_with_spawn_at(pit_floor), _meta, profile
+	)
+	var near_side := Vector2i(gap.x - 1, MAIN_FLOOR_TOP + 2)
+	assert_true(LevelReachability.can_stand_at(from_pit, near_side), "do fosso volta à borda")
+	assert_true(
+		LevelReachability.can_stand_at(from_pit, _cell_of("hab_dock_01")), "e à doca de antes"
+	)
+	assert_false(
+		LevelReachability.can_stand_at(from_pit, Vector2i(gap.y + 1, MAIN_FLOOR_TOP + 2)),
+		"do fosso não se sobe do outro lado sem dash"
+	)
+
+
+func test_revisit_spawns_past_the_tutorial_obstacles() -> void:
+	var revisit: Dictionary = _meta.get("revisit", {})
+	var dock: Vector2i = _cell_of(String(revisit.get("spawn_dock", "")))
+	assert_true(dock.x > _dash_gap_span().y, "a revisita nasce depois do vão")
+	assert_true(dock.x < _cell_of("core_hub_exit").x, "e antes da saída da Estufa")
 
 
 func test_entity_keys_point_to_entity_cells() -> void:
@@ -311,6 +417,97 @@ func _ground_row(column: int) -> int:
 		if solids.has(Vector2i(column, row)) and not solids.has(Vector2i(column, row - 1)):
 			return row
 	return -1
+
+
+func _map_with_spawn_at(cell: Vector2i) -> String:
+	var lines: PackedStringArray = _lines()
+	for row: int in range(lines.size()):
+		lines[row] = lines[row].replace(LevelParser.SPAWN, " ")
+	var line: String = lines[cell.y]
+	lines[cell.y] = line.substr(0, cell.x) + LevelParser.SPAWN + line.substr(cell.x + 1)
+	return "\n".join(lines)
+
+
+func _tutorial_columns() -> Dictionary:
+	var columns: Dictionary = {}
+	for value: Variant in _meta.get("triggers", []) as Array:
+		var data: Dictionary = value
+		var tutorial: String = String(data.get("tutorial", ""))
+		if not tutorial.is_empty():
+			columns[tutorial] = int((data.get("rect", [0]) as Array)[0])
+	return columns
+
+
+func _tunnel_span() -> Vector2i:
+	var sr3: Vector2i = _cell_of("hab_sr3_01")
+	if sr3.x < 0:
+		return Vector2i(-1, -1)
+	var solids: Dictionary = _parsed.get("solids", {})
+	var ceiling: int = sr3.y - 2
+	var first: int = sr3.x
+	while solids.has(Vector2i(first - 1, ceiling)):
+		first -= 1
+	var last: int = sr3.x
+	while solids.has(Vector2i(last + 1, ceiling)):
+		last += 1
+	return Vector2i(first, last)
+
+
+func _dash_gap_span() -> Vector2i:
+	var first: int = -1
+	var last: int = -1
+	for column: int in range(int(_parsed.get("width", 0))):
+		if _ground_row(column) != DASH_PIT_FLOOR_ROW:
+			continue
+		if not _parsed.get("solids", {}).has(Vector2i(column, MAIN_FLOOR_TOP)):
+			continue
+		if _is_one_way(column, MAIN_FLOOR_TOP + 3):
+			continue
+		if first < 0:
+			first = column
+		last = column
+	return Vector2i(first, last)
+
+
+func _is_one_way(column: int, row: int) -> bool:
+	for cell: Vector2i in _parsed.get("one_ways", []) as Array:
+		if cell == Vector2i(column, row):
+			return true
+	return false
+
+
+func _air_rows(column: int, floor_row: int) -> int:
+	var solids: Dictionary = _parsed.get("solids", {})
+	var rows: int = 0
+	var row: int = floor_row - 1
+	while row >= 0 and not solids.has(Vector2i(column, row)):
+		rows += 1
+		row -= 1
+	return rows
+
+
+func _player_height() -> float:
+	var shape: Variant = _scene_property(PLAYER_SCENE, "CollisionShape2D", "shape")
+	return (shape as RectangleShape2D).size.y if shape is RectangleShape2D else 24.0
+
+
+func _sr3_hitbox_height() -> float:
+	var shape: Variant = _scene_property(SR3_SCENE, "Hitbox/CollisionShape2D", "shape")
+	return (shape as RectangleShape2D).size.y if shape is RectangleShape2D else 0.0
+
+
+func _scene_property(scene_path: String, node_path: String, property: String) -> Variant:
+	var packed: PackedScene = load(scene_path)
+	if packed == null:
+		return null
+	var state: SceneState = packed.get_state()
+	for index: int in range(state.get_node_count()):
+		if String(state.get_node_path(index)).trim_prefix("./") != node_path:
+			continue
+		for slot: int in range(state.get_node_property_count(index)):
+			if String(state.get_node_property_name(index, slot)) == property:
+				return state.get_node_property_value(index, slot)
+	return null
 
 
 func _jump_block_column() -> int:

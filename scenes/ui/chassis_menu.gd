@@ -11,6 +11,7 @@ const COLOR_ABILITY: Color = Color(0.843137, 0.890196, 0.909804)
 const COLOR_EMPTY: Color = Color(0.309804, 0.356863, 0.4)
 const COLOR_VALUE: Color = Color(0.843137, 0.890196, 0.909804)
 const COLOR_CRITICAL: Color = Color(1.0, 0.360784, 0.360784)
+const COST_SEPARATION: int = 4
 
 var is_open: bool = false
 
@@ -31,7 +32,7 @@ var _texts: Dictionary = {}
 @onready var _research_icon: TextureRect = %ResearchIcon
 @onready var _research_value: Label = %ResearchValue
 @onready var _abilities_title: Label = %AbilitiesTitle
-@onready var _abilities: VBoxContainer = %Abilities
+@onready var _abilities: GridContainer = %Abilities
 @onready var _locked_title: Label = %LockedTitle
 @onready var _map_label: Label = %MapLabel
 @onready var _map_value: Label = %MapValue
@@ -172,7 +173,7 @@ func _refresh_abilities() -> void:
 		_abilities.add_child(_ability_label(_text(&"abilities_empty"), COLOR_EMPTY))
 		return
 	for ability_id: StringName in GameState.abilities:
-		_abilities.add_child(_ability_label(ability_name(ability_id), COLOR_ABILITY))
+		_abilities.add_child(_ability_row(ability_id))
 
 
 func ability_name(ability_id: StringName) -> String:
@@ -180,6 +181,29 @@ func ability_name(ability_id: StringName) -> String:
 	if named.is_empty():
 		return String(ability_id).to_upper()
 	return named
+
+
+func ability_cost_text(ability_id: StringName) -> String:
+	var cost: int = HudModel.ability_cost(ability_id)
+	if cost <= 0:
+		return ""
+	return HudModel.format_single(_text(&"ability_cost"), cost)
+
+
+func _ability_row(ability_id: StringName) -> HBoxContainer:
+	var row := HBoxContainer.new()
+	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	row.add_theme_constant_override("separation", COST_SEPARATION)
+	var name_label: Label = _ability_label(ability_name(ability_id), COLOR_ABILITY)
+	name_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_child(name_label)
+	var cost: String = ability_cost_text(ability_id)
+	if not cost.is_empty():
+		var cost_label: Label = _ability_label(cost, COLOR_EMPTY)
+		cost_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		row.add_child(cost_label)
+	return row
 
 
 func _ability_label(text: String, color: Color) -> Label:

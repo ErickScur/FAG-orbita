@@ -97,6 +97,35 @@ func test_powered_off_never_fires() -> void:
 	assert_almost_eq(_logic.lock_ratio(), 0.0, 0.0001, "religada começa sem trava")
 
 
+func test_beam_shutdown_silences_and_wakes_up_alone() -> void:
+	_run(Balance.CX2_LOCK_TIME * 0.5, true)
+	assert_true(_logic.shutdown(Balance.BEAM_SHUTDOWN_TIME), "acordada desliga")
+	assert_eq(_logic.phase(), Cx2Logic.Phase.SHUTDOWN, "desligada pelo feixe")
+	assert_almost_eq(_logic.lock_ratio(), 0.0, 0.0001, "trava zerada")
+	assert_false(_run(Balance.BEAM_SHUTDOWN_TIME - 0.5, true), "não dispara desligada")
+	assert_true(_logic.is_shut_down(), "ainda desligada antes do fim")
+	_run(0.6, false)
+	assert_false(_logic.is_shut_down(), "volta sozinha")
+	assert_eq(_logic.phase(), Cx2Logic.Phase.SCAN, "volta a varrer")
+
+
+func test_beam_shutdown_extends_but_does_not_restart() -> void:
+	assert_true(_logic.shutdown(2.0), "primeiro feixe")
+	assert_false(_logic.shutdown(1.0), "segundo feixe não reanuncia")
+	assert_almost_eq(_logic.shutdown_remaining(), 2.0, 0.0001, "fica o maior tempo")
+	assert_false(_logic.shutdown(0.0), "duração nula ignorada")
+
+
+func test_terminal_power_wins_over_the_beam_timer() -> void:
+	_logic.shutdown(1.0)
+	_logic.set_powered(false)
+	assert_eq(_logic.phase(), Cx2Logic.Phase.OFF, "desligada pelo terminal tem prioridade")
+	_run(1.5, true)
+	assert_eq(_logic.phase(), Cx2Logic.Phase.OFF, "o fim do feixe não religa a torre")
+	_logic.set_powered(true)
+	assert_eq(_logic.phase(), Cx2Logic.Phase.SCAN, "religada pelo terminal varre")
+
+
 func test_scan_frame_follows_the_sweep() -> void:
 	var arc: float = Balance.CX2_SWEEP_ARC
 	assert_eq(Cx2Logic.scan_frame(arc, arc, 4), 0, "giro horário: cabeça à esquerda")
@@ -130,6 +159,23 @@ func test_scene_is_powered_and_turns_off() -> void:
 	assert_false((tower.get_node("ConeLight") as PointLight2D).enabled, "luz apagada")
 	tower.set_powered_silent(true)
 	assert_eq(tower.phase(), Cx2Logic.Phase.SCAN, "religada varre")
+	node.free()
+
+
+func test_scene_is_a_beam_target_and_goes_dark() -> void:
+	var node: Node = _instantiate()
+	if node == null:
+		return
+	var tower: Cx2 = node
+	assert_true(tower.is_in_group(BeamLogic.TARGET_GROUP), "grupo do feixe")
+	var body: Node = tower.get_node("Mount/BeamBody")
+	assert_eq(BeamLogic.resolve_target(body), tower, "o corpo do feixe leva à torre")
+	tower.shutdown(Balance.BEAM_SHUTDOWN_TIME)
+	assert_true(tower.is_shut_down(), "desligada pelo feixe")
+	assert_eq(tower.current_animation(), Cx2.ANIM_OFF, "quadro desligado")
+	assert_false((tower.get_node("Cone") as Polygon2D).visible, "cone apagado")
+	assert_false((tower.get_node("ConeLight") as PointLight2D).enabled, "luz apagada")
+	assert_true(tower.powered, "o terminal continua mandando energia")
 	node.free()
 
 

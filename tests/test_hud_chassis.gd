@@ -8,6 +8,10 @@ const PAUSE_SCRIPT: String = "res://scenes/ui/pause_menu.gd"
 const THEME_PATH: String = "res://assets/ui/theme.tres"
 const OBJECTIVE_VARIATION: StringName = &"ObjectiveLabel"
 const OBJECTIVE_SLOT_WIDTH: float = 136.0
+const PANEL_WIDTH: float = 368.0
+const PANEL_PADDING: float = 8.0
+const SCREEN_HEIGHT: float = 216.0
+const ALL_ABILITIES: Array[StringName] = [&"dash", &"beam", &"magnetic_claws", &"heat_sink"]
 const REQUIRED_KEYS: Array[StringName] = [
 	&"title",
 	&"footer",
@@ -22,6 +26,9 @@ const REQUIRED_KEYS: Array[StringName] = [
 	&"abilities_title",
 	&"abilities_empty",
 	&"ability_magnetic_claws",
+	&"ability_dash",
+	&"ability_beam",
+	&"ability_cost",
 	&"locked_title",
 	&"map_label",
 	&"map_value",
@@ -72,6 +79,63 @@ func test_chassis_names_the_claws_ability() -> void:
 		"nome da habilidade das garras"
 	)
 	assert_eq(ClimbLogic.ABILITY_ID, &"magnetic_claws", "id da habilidade não mudou")
+
+
+func test_chassis_names_dash_and_beam_with_their_cost() -> void:
+	assert_eq(HudModel.text_for(&"ability_dash", _texts), "IMPULSO MAGNÉTICO", "nome do dash")
+	assert_eq(HudModel.text_for(&"ability_beam", _texts), "FEIXE DE MANUTENÇÃO", "nome do feixe")
+	var template: String = HudModel.text_for(&"ability_cost", _texts)
+	assert_eq(
+		HudModel.format_single(template, HudModel.ability_cost(DashLogic.ABILITY_ID)),
+		"20 CARGA",
+		"custo do dash vem do Balance"
+	)
+	assert_eq(
+		HudModel.format_single(template, HudModel.ability_cost(BeamLogic.ABILITY_ID)),
+		"25 CARGA",
+		"custo do feixe vem do Balance"
+	)
+	assert_eq(HudModel.ability_cost(ClimbLogic.ABILITY_ID), 0, "garras não gastam Carga")
+
+
+func test_every_ability_with_its_cost_fits_half_the_panel() -> void:
+	var font: Font = (load(THEME_PATH) as Theme).default_font
+	var column: float = (PANEL_WIDTH - PANEL_PADDING - _scene_constant("h_separation")) * 0.5
+	var template: String = HudModel.text_for(&"ability_cost", _texts)
+	for ability_id: StringName in ALL_ABILITIES:
+		var text: String = HudModel.text_for(StringName("ability_" + ability_id), _texts)
+		var width: float = font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, 16).x
+		var cost: int = HudModel.ability_cost(ability_id)
+		if cost > 0:
+			var cost_text: String = HudModel.format_single(template, cost)
+			width += 4.0 + font.get_string_size(cost_text, HORIZONTAL_ALIGNMENT_LEFT, -1, 16).x
+		assert_true(
+			width <= column, "'%s' ocupa %.0f px (coluna %.0f)" % [ability_id, width, column]
+		)
+
+
+func test_the_open_menu_fits_the_screen_with_every_ability() -> void:
+	var saved: Array[StringName] = GameState.abilities.duplicate()
+	GameState.abilities = ALL_ABILITIES.duplicate()
+	var menu: CanvasLayer = (load(MENU_SCENE) as PackedScene).instantiate()
+	(Engine.get_main_loop() as SceneTree).root.add_child(menu)
+	menu.call("_refresh")
+	var panel: Control = menu.get_node("Root/Center/Panel")
+	var height: float = panel.get_combined_minimum_size().y
+	var width: float = panel.get_combined_minimum_size().x
+	menu.free()
+	GameState.abilities = saved
+	assert_true(height <= SCREEN_HEIGHT, "painel com %.0f px de altura" % height)
+	assert_true(width <= PANEL_WIDTH, "painel com %.0f px de largura" % width)
+
+
+func _scene_constant(name: String) -> float:
+	var scene: String = FileAccess.get_file_as_string(MENU_SCENE)
+	var key: String = "theme_override_constants/%s = " % name
+	var start: int = scene.find(key)
+	if start < 0:
+		return 0.0
+	return float(scene.substr(start + key.length()).split("\n")[0])
 
 
 func test_scene_exists_and_is_registered_in_the_smoke() -> void:

@@ -16,6 +16,8 @@ const REQUIRED_IDS: Array[String] = [
 	"tut_flashlight",
 	"tut_terminal",
 	"tut_climb",
+	"tut_beam",
+	"tut_dash",
 ]
 
 var _catalog: Dictionary = {}
@@ -50,6 +52,8 @@ func test_every_card_completes_with_the_key_it_shows() -> void:
 		&"tut_flashlight": [&"flashlight"],
 		&"tut_terminal": [&"interact"],
 		&"tut_climb": [&"move_up"],
+		&"tut_beam": [&"beam"],
+		&"tut_dash": [&"dash"],
 	}
 	for tutorial_id: Variant in expected:
 		var actions: Array[StringName] = TutorialData.actions_of(tutorial_id, _catalog)
@@ -184,7 +188,8 @@ func test_cards_that_do_not_share_a_key_with_dialogue_are_never_blocked() -> voi
 	var table: Dictionary = TutorialData.load_all()
 	var advance: Array[StringName] = DialogueManager.ADVANCE_ACTIONS
 	for tutorial_id: StringName in [
-		&"tut_climb", &"tut_flashlight", &"tut_drop", &"tut_move", &"tut_chassis"
+		&"tut_climb", &"tut_flashlight", &"tut_drop", &"tut_move", &"tut_chassis",
+		&"tut_beam", &"tut_dash"
 	]:
 		var actions: Array[StringName] = TutorialData.actions_of(tutorial_id, table)
 		assert_false(

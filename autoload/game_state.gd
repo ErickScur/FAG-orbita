@@ -3,6 +3,7 @@ extends Node
 const SAVE_VERSION: int = 1
 const LEVELS_PREFIX: String = "res://scenes/levels/"
 const LEVEL_GROUP: StringName = &"level"
+const INITIAL_ABILITIES: Array[StringName] = [DashLogic.ABILITY_ID, BeamLogic.ABILITY_ID]
 
 var reactor_percent: float = Balance.REACTOR_START
 var integrity: int = Balance.INTEGRITY_MAX
@@ -66,7 +67,7 @@ func new_game() -> void:
 	logs_collected = []
 	research_collected = []
 	collected_ids = []
-	abilities = []
+	abilities = initial_abilities()
 	sectors_restored = []
 	energy_states = {}
 	checkpoint = {}
@@ -273,6 +274,18 @@ func has_ability(ability_id: StringName) -> bool:
 	return abilities.has(ability_id)
 
 
+static func initial_abilities() -> Array[StringName]:
+	return INITIAL_ABILITIES.duplicate()
+
+
+static func with_initial_abilities(loaded: Array[StringName]) -> Array[StringName]:
+	var result: Array[StringName] = loaded.duplicate()
+	for ability_id: StringName in INITIAL_ABILITIES:
+		if not result.has(ability_id):
+			result.append(ability_id)
+	return result
+
+
 func get_stats() -> Dictionary:
 	return {
 		"time": play_time,
@@ -327,7 +340,7 @@ func from_dict(data: Dictionary) -> void:
 	logs_collected = _strings_to_names(data.get("logs_collected", []))
 	research_collected = _strings_to_names(data.get("research_collected", []))
 	collected_ids = _strings_to_names(data.get("collected_ids", []))
-	abilities = _strings_to_names(data.get("abilities", []))
+	abilities = with_initial_abilities(_strings_to_names(data.get("abilities", [])))
 	sectors_restored = _strings_to_names(data.get("sectors_restored", []))
 	energy_states = {}
 	var energy: Dictionary = data.get("energy_states", {})

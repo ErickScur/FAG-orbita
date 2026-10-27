@@ -34,6 +34,7 @@ func _ready() -> void:
 	monitorable = true
 	damage_per_second = Balance.SPORE_DPS
 	knockback = false
+	dash_passable = true
 	status_id = StatusEffects.CORROSION
 	status_duration = Balance.CORROSION_TIME
 	_setup_particles()

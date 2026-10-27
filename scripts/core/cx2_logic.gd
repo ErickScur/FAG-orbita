@@ -1,7 +1,7 @@
 class_name Cx2Logic
 extends RefCounted
 
-enum Phase { SCAN, LOCK, COOLDOWN, OFF }
+enum Phase { SCAN, LOCK, COOLDOWN, OFF, SHUTDOWN }
 
 const MOUNT_CEILING: StringName = &"ceiling"
 const MOUNT_WALL_LEFT: StringName = &"wall_left"
@@ -32,6 +32,7 @@ var sweep_speed: float = Balance.CX2_SWEEP_SPEED
 var _sweep_time: float = 0.0
 var _lock: float = 0.0
 var _cooldown: float = 0.0
+var _shutdown_left: float = 0.0
 
 
 static func normalize_mount(mount: StringName) -> StringName:
@@ -101,6 +102,10 @@ static func cone_polygon(
 
 
 func update(delta: float, sees_target: bool) -> bool:
+	if _shutdown_left > 0.0:
+		_shutdown_left = maxf(0.0, _shutdown_left - maxf(0.0, delta))
+		_lock = 0.0
+		return false
 	if not powered:
 		_lock = 0.0
 		return false
@@ -129,6 +134,24 @@ func set_powered(on: bool) -> void:
 	_cooldown = 0.0
 
 
+func shutdown(duration: float) -> bool:
+	if duration <= 0.0:
+		return false
+	var was_awake: bool = not is_shut_down()
+	_shutdown_left = maxf(_shutdown_left, duration)
+	_lock = 0.0
+	_cooldown = 0.0
+	return was_awake
+
+
+func is_shut_down() -> bool:
+	return _shutdown_left > 0.0
+
+
+func shutdown_remaining() -> float:
+	return _shutdown_left
+
+
 func aim_angle() -> float:
 	return base_angle + current_sweep()
 
@@ -140,6 +163,8 @@ func current_sweep() -> float:
 func phase() -> Phase:
 	if not powered:
 		return Phase.OFF
+	if _shutdown_left > 0.0:
+		return Phase.SHUTDOWN
 	if _cooldown > 0.0:
 		return Phase.COOLDOWN
 	if _lock > 0.0:

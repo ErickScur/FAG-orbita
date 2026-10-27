@@ -38,6 +38,9 @@ const DEFAULT_TICKS: int = 60
 const HINT_RADIUS_TILES: int = 6
 const MARK_TOUCHED: String = "."
 const MARK_STAND: String = "_"
+const DASH_JUMP_DELAYS: Array[int] = [4, 10, 17, 24]
+const DASH_FALL_DELAYS: Array[int] = [1, 4, 8]
+const LEDGE_MARGIN: float = 1.0
 
 static var _cached_profile: Dictionary = {}
 
@@ -69,6 +72,8 @@ var _wall_jump_velocity: float = 0.0
 var _active_platform: int = -1
 var _active_top: float = 0.0
 var _active_x: float = 0.0
+var _dash_enabled: bool = true
+var _dash_frames: int = 0
 
 
 static func analyze(text: String, meta: Dictionary = {}, profile: Dictionary = {}) -> Dictionary:
@@ -124,6 +129,7 @@ static func default_profile() -> Dictionary:
 		"platform_half_width": platform_size.x * 0.5,
 		"pickup_half": pickup_size.x * 0.5,
 		"ticks": maxi(1, ticks),
+		"dash_enabled": true,
 	}
 	return _cached_profile.duplicate()
 
@@ -345,6 +351,8 @@ func _run(parsed: Dictionary, meta: Dictionary, profile: Dictionary) -> Dictiona
 	_drop_nudge = float(profile.get("drop_nudge", 1.0))
 	_pickup_half = float(profile.get("pickup_half", 6.0))
 	_dt = 1.0 / float(profile.get("ticks", DEFAULT_TICKS))
+	_dash_enabled = bool(profile.get("dash_enabled", true))
+	_dash_frames = DashLogic.frames(Balance.DASH_TIME, _dt)
 	_jump_velocity = PlatformerMath.jump_velocity(Balance.JUMP_HEIGHT, Balance.GRAVITY, _dt)
 	_wall_jump_velocity = -absf(
 		PlatformerMath.jump_velocity(Balance.JUMP_HEIGHT, Balance.GRAVITY)
@@ -493,9 +501,53 @@ func _expand_stand(column: int, feet: float) -> void:
 		if wall >= 0:
 			_enqueue_climb(wall, -direction, feet, x)
 	_simulate({"x": x, "fy": feet, "jump": true, "segment": segment, "start_fy": feet})
+	_dash_launches(column, x, feet, segment)
 	if _one_way_below(x, feet):
 		for direction: int in [-1, 0, 1]:
 			_simulate({"x": x, "fy": feet, "drop": true, "axis": direction})
+
+
+func _dash_launches(column: int, x: float, feet: float, segment: Vector2i) -> void:
+	if not _dash_enabled or _dash_frames <= 0:
+		return
+	for direction: int in [-1, 1]:
+		var base: Dictionary = {
+			"fy": feet, "axis": direction, "dash": direction, "segment": segment,
+			"start_fy": feet,
+		}
+		var ledge: bool = not _is_stand(column + direction, feet)
+		var starts: Array[float] = [x]
+		var edge: float = _ledge_x(column, direction)
+		if ledge and not _overlaps_solid(edge, feet):
+			starts.append(edge)
+		for start: float in starts:
+			var ground: Dictionary = base.duplicate()
+			ground["x"] = start
+			_simulate(ground)
+		var can_run: bool = _is_stand(column - direction, feet)
+		for delay: int in DASH_JUMP_DELAYS:
+			var jumping: Dictionary = base.duplicate()
+			jumping["x"] = x
+			jumping["jump"] = true
+			jumping["dash_delay"] = delay
+			if can_run:
+				jumping["vx"] = direction * Balance.WALK_SPEED
+			_simulate(jumping)
+		if not ledge or _overlaps_solid(x + direction * _tile, feet):
+			continue
+		for delay: int in DASH_FALL_DELAYS:
+			var falling: Dictionary = base.duplicate()
+			falling["x"] = x
+			falling["dash_delay"] = delay
+			if can_run:
+				falling["vx"] = direction * Balance.WALK_SPEED
+			_simulate(falling)
+
+
+func _ledge_x(column: int, direction: int) -> float:
+	if direction > 0:
+		return (column + 1) * _tile + _half_width - LEDGE_MARGIN
+	return column * _tile - _half_width + LEDGE_MARGIN
 
 
 func _launch_set(
@@ -647,6 +699,11 @@ func _simulate(spec: Dictionary) -> void:
 	var on_floor: bool = bool(spec.get("on_floor", true))
 	var jump: bool = bool(spec.get("jump", false))
 	var skip_wall: int = int(spec.get("skip_wall", -1))
+	var dash_dir: int = int(spec.get("dash", 0))
+	var dash_delay: int = int(spec.get("dash_delay", 0))
+	var dash_started: bool = dash_dir == 0
+	var dash_left: int = 0
+	var air_frames: int = 0
 	var start_x: float = x
 	var airborne: bool = not on_floor
 	var one_way_on: bool = true
@@ -670,6 +727,22 @@ func _simulate(spec: Dictionary) -> void:
 		if first.y < 0.0:
 			vy = 0.0
 	for frame: int in range(MAX_SIM_FRAMES):
+		if not dash_started and (dash_delay <= 0 or air_frames >= dash_delay):
+			dash_started = true
+			dash_left = _dash_frames
+		if dash_left > 0:
+			dash_left -= 1
+			var dashed: Vector2 = _move_x(x, fy, dash_dir * Balance.DASH_SPEED * _dt)
+			x = dashed.x
+			vx = 0.0 if dashed.y != 0.0 else dash_dir * Balance.DASH_SPEED
+			if dash_left == 0:
+				vx = DashLogic.exit_speed(vx, Balance.WALK_SPEED)
+			vy = 0.0
+			wall_push = 0.0
+			on_floor = false
+			airborne = true
+			_touch(x, fy)
+			continue
 		var axis: float = float(axis_dir) if (release < 0 or frame < release) else 0.0
 		if not one_way_on:
 			drop_left -= _dt
@@ -714,6 +787,7 @@ func _simulate(spec: Dictionary) -> void:
 				return
 		if not on_floor:
 			airborne = true
+			air_frames += 1
 			continue
 		if airborne:
 			_land(spec, x, fy, surface)

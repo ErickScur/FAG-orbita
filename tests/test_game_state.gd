@@ -28,11 +28,32 @@ func test_new_game_defaults() -> void:
 	assert_eq(_state.logs_collected.size(), 0, "logs_collected")
 	assert_eq(_state.research_collected.size(), 0, "research_collected")
 	assert_eq(_state.collected_ids.size(), 0, "collected_ids")
-	assert_eq(_state.abilities.size(), 0, "abilities")
+	assert_eq(_state.abilities, GameState.INITIAL_ABILITIES, "dash e feixe são iniciais")
 	assert_eq(_state.sectors_restored.size(), 0, "sectors_restored")
 	assert_eq(_state.deaths, 0, "deaths")
 	assert_almost_eq(_state.play_time, 0.0, 0.0001, "play_time")
 	assert_eq(_state.checkpoint.size(), 0, "checkpoint")
+
+
+func test_new_game_lists_dash_and_beam_without_announcing_them() -> void:
+	assert_true(_state.abilities.has(DashLogic.ABILITY_ID), "dash no new_game")
+	assert_true(_state.abilities.has(BeamLogic.ABILITY_ID), "feixe no new_game")
+	assert_false(_state.abilities.has(ClimbLogic.ABILITY_ID), "garras só na Estufa")
+
+
+func test_an_old_save_without_dash_and_beam_gets_them_back() -> void:
+	var restored: Node = load(GAME_STATE_SCRIPT).new()
+	restored.from_dict({"abilities": ["magnetic_claws"]})
+	assert_eq(
+		restored.abilities,
+		[ClimbLogic.ABILITY_ID, DashLogic.ABILITY_ID, BeamLogic.ABILITY_ID] as Array[StringName],
+		"save antigo ganha dash e feixe sem perder as garras"
+	)
+	restored.from_dict({})
+	assert_eq(restored.abilities, GameState.INITIAL_ABILITIES, "save sem a chave")
+	restored.from_dict({"abilities": ["beam", "dash"]})
+	assert_eq(restored.abilities.size(), 2, "não duplica quem já tinha")
+	restored.free()
 
 
 func test_damage_over_time_follows_difficulty() -> void:

@@ -41,7 +41,7 @@ func _mutate_state() -> void:
 	var logs: Array[StringName] = [&"log_helena_01", &"log_helena_02"]
 	var research: Array[StringName] = [&"res_greenhouse_01"]
 	var collected: Array[StringName] = [&"cell_core_01", &"log_helena_01"]
-	var abilities: Array[StringName] = [&"magnetic_claws"]
+	var abilities: Array[StringName] = [&"dash", &"beam", &"magnetic_claws"]
 	var sectors: Array[StringName] = [&"core"]
 	var systems: Array[StringName] = [&"grow_lamp", &"door_north"]
 	GameState.logs_collected = logs

@@ -1,6 +1,9 @@
 class_name Cx2
 extends Node2D
 
+signal shut_down(duration: float)
+signal woke_up()
+
 const SHEET_PATH: String = "res://assets/sprites/enemies/cx2_sheet.png"
 const LIGHT_TEXTURE: String = "res://assets/fx/light_radial.png"
 const FRAME_SIZE: Vector2i = Vector2i(32, 32)
@@ -18,6 +21,7 @@ const SCAN_FRAMES: int = 4
 const PLAYER_GROUP: StringName = &"player"
 const POWERED_GROUP: StringName = &"powered"
 const ENEMY_GROUP: StringName = &"enemy"
+const BEAM_TARGET_GROUP: StringName = &"beam_target"
 const WORLD_MASK: int = 1
 const HALF_TILE: float = 8.0
 const SPRITE_DEPTH: float = 16.0
@@ -42,6 +46,7 @@ var _angle_override: float = 0.0
 var _has_angle_override: bool = false
 var _fire_left: float = 0.0
 var _was_locking: bool = false
+var _was_shut_down: bool = false
 
 @onready var _mount: Node2D = $Mount
 @onready var _sprite: AnimatedSprite2D = $Mount/Sprite
@@ -52,6 +57,7 @@ var _was_locking: bool = false
 func _ready() -> void:
 	add_to_group(POWERED_GROUP)
 	add_to_group(ENEMY_GROUP)
+	add_to_group(BEAM_TARGET_GROUP)
 	_build_animations()
 	_setup_cone()
 	_setup_light()
@@ -66,6 +72,7 @@ func _physics_process(delta: float) -> void:
 	var sees: bool = player != null and _sees(player)
 	if _logic.update(delta, sees):
 		_fire(player)
+	_check_wake()
 	var locking: bool = _logic.phase() == Cx2Logic.Phase.LOCK
 	if locking and not _was_locking:
 		AudioManager.play_sfx(&"ui_error")
@@ -109,6 +116,27 @@ func is_active() -> bool:
 	return powered
 
 
+func shutdown(duration: float) -> void:
+	if not _logic.shutdown(duration):
+		return
+	_fire_left = 0.0
+	_was_locking = false
+	_was_shut_down = true
+	if powered:
+		AudioManager.play_sfx(&"sr3_shutdown")
+	shut_down.emit(duration)
+	if _sprite != null:
+		_refresh_visuals()
+
+
+func is_shut_down() -> bool:
+	return _logic.is_shut_down()
+
+
+func shutdown_remaining() -> float:
+	return _logic.shutdown_remaining()
+
+
 func lens_position() -> Vector2:
 	var depth := Vector2(0.0, LENS_DEPTH).rotated(deg_to_rad(Cx2Logic.mount_rotation(mount)))
 	return global_position + Cx2Logic.mount_base(mount) * HALF_TILE + depth
@@ -128,8 +156,15 @@ func current_animation() -> StringName:
 	return _sprite.animation
 
 
+func _check_wake() -> void:
+	if not _was_shut_down or _logic.is_shut_down():
+		return
+	_was_shut_down = false
+	woke_up.emit()
+
+
 func _sees(player: Node2D) -> bool:
-	if not powered:
+	if not powered or _logic.is_shut_down():
 		return false
 	if player.has_method(&"is_input_locked") and bool(player.call(&"is_input_locked")):
 		return false
@@ -177,7 +212,7 @@ func _refresh_visuals() -> void:
 		_show_scan_frame()
 	else:
 		_play(animation)
-	var visible_cone: bool = powered and current != Cx2Logic.Phase.COOLDOWN
+	var visible_cone: bool = current == Cx2Logic.Phase.SCAN or current == Cx2Logic.Phase.LOCK
 	_cone.visible = visible_cone
 	_light.enabled = visible_cone
 	if not visible_cone:
@@ -224,7 +259,7 @@ func _show_scan_frame() -> void:
 
 
 func _animation_for(current: Cx2Logic.Phase) -> StringName:
-	if current == Cx2Logic.Phase.OFF:
+	if current == Cx2Logic.Phase.OFF or current == Cx2Logic.Phase.SHUTDOWN:
 		return ANIM_OFF
 	if _fire_left > 0.0:
 		return ANIM_FIRE

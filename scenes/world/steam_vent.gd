@@ -28,6 +28,7 @@ func _ready() -> void:
 	add_to_group(HAZARD_GROUP)
 	_jet.contact_damage = Balance.STEAM_DAMAGE
 	_jet.knockback = true
+	_jet.dash_passable = true
 	_plume.material = HeatZone.unshaded_material()
 	_hiss.material = HeatZone.unshaded_material()
 	_apply_nozzle()

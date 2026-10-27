@@ -1,8 +1,11 @@
-[gd_scene load_steps=2 format=3 uid="uid://c0rbitacx2tower"]
+[gd_scene load_steps=3 format=3 uid="uid://c0rbitacx2tower"]
 
 [ext_resource type="Script" path="res://scenes/enemies/cx2.gd" id="1_cx2"]
 
-[node name="CX2" type="Node2D" groups=["enemy", "powered"]]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cx2_beam"]
+size = Vector2(20, 20)
+
+[node name="CX2" type="Node2D" groups=["enemy", "powered", "beam_target"]]
 script = ExtResource("1_cx2")
 
 [node name="Cone" type="Polygon2D" parent="."]
@@ -16,3 +19,11 @@ position = Vector2(0, -8)
 
 [node name="Sprite" type="AnimatedSprite2D" parent="Mount"]
 position = Vector2(0, 16)
+
+[node name="BeamBody" type="StaticBody2D" parent="Mount"]
+collision_layer = 4
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Mount/BeamBody"]
+position = Vector2(0, 14)
+shape = SubResource("RectangleShape2D_cx2_beam")

@@ -52,5 +52,17 @@
     "text": "ESCALAR A PAREDE AMARELA",
     "hint": "encoste nela e segure",
     "actions": ["move_up"]
+  },
+  "tut_beam": {
+    "key": "[Q]",
+    "text": "FEIXE DE MANUTENÇÃO",
+    "hint": "desliga a máquina por 4 s",
+    "actions": ["beam"]
+  },
+  "tut_dash": {
+    "key": "[SHIFT]",
+    "text": "IMPULSO MAGNÉTICO",
+    "hint": "atravessa vãos largos",
+    "actions": ["dash"]
   }
 }

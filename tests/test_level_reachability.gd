@@ -191,7 +191,7 @@ func test_a_two_tile_claw_chimney_is_climbable() -> void:
 
 
 func test_stacked_thin_platforms_with_one_column_overlap_are_out_of_reach() -> void:
-	var result: Dictionary = _analyze_fixture(STACK_ONE_COLUMN)
+	var result: Dictionary = _analyze_fixture(STACK_ONE_COLUMN, false)
 	assert_true(LevelReachability.can_stand_at(result, Vector2i(3, 4)), "primeira plataforma")
 	assert_false(LevelReachability.can_stand_at(result, Vector2i(8, 2)), "segunda plataforma")
 	assert_false(_goal_reached(result), "sobreposição de 1 coluna não pode bastar")
@@ -254,8 +254,10 @@ func _analyze_level(level_id: String) -> Dictionary:
 	return _analyzed[level_id]
 
 
-func _analyze_fixture(lines: Array[String]) -> Dictionary:
-	return LevelReachability.analyze("\n".join(PackedStringArray(lines)))
+func _analyze_fixture(lines: Array[String], dash: bool = true) -> Dictionary:
+	var profile: Dictionary = LevelReachability.default_profile()
+	profile["dash_enabled"] = dash
+	return LevelReachability.analyze("\n".join(PackedStringArray(lines)), {}, profile)
 
 
 func _goal_reached(result: Dictionary) -> bool:

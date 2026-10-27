@@ -67,6 +67,7 @@
 | Placeholder | Retângulo cinza-azulado 20×26 com "olho" ciano, uma cor por animação |
 | Fonte preferida | IA (Nano Banana Pro) |
 | Placeholder gerado | `assets/placeholder/sprites/mu7/mu7_sheet.png` (192×320 = 6×10 frames de 32×32) — `tools/make_placeholders.gd` |
+| Pós-processamento | **(F31, 2026-10-27)** a linha `dash` vinha com rastro roxo-magenta pintado (375 px, vários semitransparentes, sobra do fundo de recorte). Removidos os pixels de violeta saturado e os pontos soltos só nessa linha; o rastro do dash agora é a partícula ciano do código. Original guardado no scratchpad da sessão |
 | Status | **integrado** |
 
 **Prompt (Nano Banana Pro):**

@@ -67,6 +67,37 @@ position = Vector2(0, -4)
 target_position = Vector2(10, 0)
 collision_mask = 1
 
+[node name="BeamRay" type="RayCast2D" parent="."]
+position = Vector2(0, -8)
+enabled = false
+target_position = Vector2(32, 0)
+collision_mask = 5
+
+[node name="BeamLine" type="Line2D" parent="."]
+visible = false
+position = Vector2(0, -8)
+points = PackedVector2Array(0, 0, 32, 0)
+width = 2.0
+default_color = Color(0.372549, 0.909804, 1, 1)
+
+[node name="BeamLight" type="PointLight2D" parent="."]
+position = Vector2(16, -8)
+enabled = false
+blend_mode = 0
+
+[node name="DashTrail" type="CPUParticles2D" parent="."]
+position = Vector2(0, -12)
+emitting = false
+amount = 16
+lifetime = 0.2
+local_coords = false
+emission_shape = 3
+emission_rect_extents = Vector2(3, 8)
+gravity = Vector2(0, 0)
+scale_amount_min = 2.0
+scale_amount_max = 2.0
+color = Color(0.37, 0.91, 1, 0.7)
+
 [node name="Camera2D" type="Camera2D" parent="."]
 process_callback = 0
 position_smoothing_enabled = true

@@ -1,7 +1,7 @@
 class_name Mu7
 extends CharacterBody2D
 
-enum State { IDLE, WALK, JUMP, FALL, LAND, CLIMB, ACTION }
+enum State { IDLE, WALK, JUMP, FALL, LAND, CLIMB, ACTION, DASH }
 
 const SHEET_PATH: String = "res://assets/sprites/mu7/mu7_sheet.png"
 const LIGHT_TEXTURE: String = "res://assets/fx/light_radial.png"
@@ -28,12 +28,21 @@ const STATE_ANIMATIONS: Dictionary = {
 	State.FALL: &"fall",
 	State.LAND: &"land",
 	State.CLIMB: &"climb",
+	State.DASH: &"dash",
 }
 const ONE_WAY_BIT: int = 7
 const CLAW_PROBE_REACH: float = 10.0
 const STEP_FRAMES: Array[int] = [1, 4]
 const DROP_NUDGE: float = 1.0
 const BLINK_INTERVAL: float = 0.1
+const BEAM_FLASH_TIME: float = 0.1
+const BEAM_COLOR: Color = Color("5fe8ff")
+const BEAM_LIGHT_ENERGY: float = 1.2
+const BEAM_LIGHT_RADIUS: float = 24.0
+const BEAM_BLINK_PERIOD: float = 0.02
+const BEAM_DIM_RATIO: float = 0.5
+const TRAIL_COLOR: Color = Color(0.37, 0.91, 1.0, 0.7)
+const REFUSE_SFX: StringName = &"ui_error"
 
 @export var floor_sfx: StringName = &"step_metal"
 
@@ -67,6 +76,12 @@ var _shake_amplitude: float = 0.0
 var _shake_elapsed: float = 0.0
 var _flash_left: float = 0.0
 var _flash_material: ShaderMaterial = null
+var _dashing: bool = false
+var _dash_left: float = 0.0
+var _dash_cooldown: float = 0.0
+var _dash_velocity: Vector2 = Vector2.ZERO
+var _air_dash_used: bool = false
+var _beam_flash_left: float = 0.0
 
 @onready var _sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var _camera: Camera2D = $Camera2D
@@ -78,6 +93,10 @@ var _flash_material: ShaderMaterial = null
 @onready var _sensor: Area2D = $InteractionSensor
 @onready var _sensor_shape: CollisionShape2D = $InteractionSensor/CollisionShape2D
 @onready var _flashlight: PointLight2D = $Flashlight
+@onready var _beam_ray: RayCast2D = $BeamRay
+@onready var _beam_line: Line2D = $BeamLine
+@onready var _beam_light: PointLight2D = $BeamLight
+@onready var _dash_trail: CPUParticles2D = $DashTrail
 
 
 func _ready() -> void:
@@ -85,6 +104,8 @@ func _ready() -> void:
 	_setup_flash()
 	_setup_sensor()
 	_setup_flashlight()
+	_setup_beam()
+	_setup_dash_trail()
 	_camera.offset = Vector2.ZERO
 	_camera.position.y = Balance.CAMERA_OFFSET_Y
 	_camera.position_smoothing_speed = Balance.CAMERA_SMOOTHING
@@ -115,15 +136,20 @@ func _input(event: InputEvent) -> void:
 func _physics_process(delta: float) -> void:
 	_update_timers(delta)
 	_update_drop_through(delta)
-	if _climbing:
+	_try_dash()
+	if _dashing:
+		_dash_step(delta)
+	elif _climbing:
 		_climb_step(delta)
 	else:
 		_walk_step(delta)
+	_try_beam()
 	_process_hurtbox(delta)
 	_update_flashlight(delta)
 	_update_interaction()
 	_update_shake(delta)
 	_update_flash(delta)
+	_update_beam_flash(delta)
 
 
 func _walk_step(delta: float) -> void:
@@ -140,6 +166,8 @@ func _walk_step(delta: float) -> void:
 	move_and_slide()
 	if not was_on_floor and is_on_floor():
 		_land(fall_speed)
+	if is_on_floor():
+		_air_dash_used = false
 	_update_facing(axis)
 	if _try_grab(axis):
 		return
@@ -175,6 +203,7 @@ func _try_grab(axis: float) -> bool:
 	if not ClimbLogic.can_grab(_has_claws(), touching, axis, facing, up):
 		return false
 	_climbing = true
+	_air_dash_used = false
 	_wall_push = 0.0
 	velocity = Vector2.ZERO
 	_jump_assist.cancel()
@@ -251,10 +280,27 @@ func is_climbing() -> bool:
 	return _climbing
 
 
+func is_dashing() -> bool:
+	return _dashing
+
+
+func dash_cooldown_left() -> float:
+	return _dash_cooldown
+
+
+func is_air_dash_used() -> bool:
+	return _air_dash_used
+
+
+func is_beam_visible() -> bool:
+	return _beam_line != null and _beam_line.visible
+
+
 func set_input_locked(locked: bool) -> void:
 	_locked = locked
 	if not locked:
 		return
+	_cancel_dash()
 	velocity.x = 0.0
 	_jump_assist.cancel()
 
@@ -403,6 +449,163 @@ func _on_sector_restored(_sector_id: StringName) -> void:
 	shake(Balance.SHAKE_SECTOR)
 
 
+func _setup_beam() -> void:
+	_beam_ray.enabled = false
+	_beam_ray.collide_with_bodies = true
+	_beam_ray.collide_with_areas = false
+	_beam_line.visible = false
+	_beam_line.default_color = BEAM_COLOR
+	_beam_line.material = _unshaded_material()
+	_beam_light.enabled = false
+	_beam_light.texture = AssetResolver.texture(LIGHT_TEXTURE)
+	_beam_light.color = BEAM_COLOR
+	_beam_light.energy = BEAM_LIGHT_ENERGY
+	_beam_light.blend_mode = Light2D.BLEND_MODE_ADD
+	_beam_light.texture_scale = LightMath.scale_for_radius(
+		BEAM_LIGHT_RADIUS, LightMath.TEXTURE_SIZE
+	)
+
+
+func _setup_dash_trail() -> void:
+	_dash_trail.emitting = false
+	_dash_trail.local_coords = false
+	_dash_trail.color = TRAIL_COLOR
+	_dash_trail.material = _unshaded_material()
+
+
+func _unshaded_material() -> CanvasItemMaterial:
+	var material := CanvasItemMaterial.new()
+	material.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
+	return material
+
+
+func _try_dash() -> void:
+	if _dashing or not Input.is_action_just_pressed(&"dash"):
+		return
+	if _movement_blocked() or not DashLogic.has_ability(GameState.abilities):
+		return
+	var on_floor: bool = is_on_floor() and not _climbing
+	if not DashLogic.can_dash_now(on_floor, _air_dash_used) or _dash_cooldown > 0.0:
+		return
+	var blocked: bool = GameState.statuses.blocks_abilities()
+	if not DashLogic.can_use(GameState.charge, Balance.DASH_COST, _dash_cooldown, blocked):
+		AudioManager.play_sfx(REFUSE_SFX)
+		return
+	if not GameState.spend_charge(Balance.DASH_COST):
+		AudioManager.play_sfx(REFUSE_SFX)
+		return
+	_start_dash(on_floor)
+
+
+func _start_dash(on_floor: bool) -> void:
+	if _climbing:
+		_climbing = false
+		_claw_blocked = true
+		_set_facing(-facing)
+	else:
+		var axis: float = Input.get_axis(&"move_left", &"move_right")
+		if not is_zero_approx(axis):
+			_set_facing(1 if axis > 0.0 else -1)
+	if not on_floor:
+		_air_dash_used = true
+	_dashing = true
+	_dash_left = Balance.DASH_TIME
+	_dash_velocity = DashLogic.dash_velocity(facing, Balance.DASH_SPEED)
+	velocity = _dash_velocity
+	_wall_push = 0.0
+	_jump_assist.cancel()
+	_set_state(State.DASH)
+	_dash_trail.emitting = true
+	AudioManager.play_sfx(&"dash")
+
+
+func _dash_step(delta: float) -> void:
+	_dash_left = DashLogic.tick(_dash_left, delta)
+	velocity = _dash_velocity
+	move_and_slide()
+	_update_look_ahead(float(facing), delta)
+	if _dash_left <= 0.0:
+		_finish_dash()
+
+
+func _finish_dash() -> void:
+	_dashing = false
+	_dash_left = 0.0
+	_dash_cooldown = Balance.DASH_COOLDOWN
+	velocity.x = DashLogic.exit_speed(velocity.x, Balance.WALK_SPEED)
+	velocity.y = 0.0
+	_dash_trail.emitting = false
+	_set_state(State.IDLE if is_on_floor() else State.FALL)
+
+
+func _cancel_dash() -> void:
+	if not _dashing:
+		return
+	_dashing = false
+	_dash_left = 0.0
+	_dash_cooldown = Balance.DASH_COOLDOWN
+	_dash_trail.emitting = false
+	if _state == State.DASH:
+		_state = State.IDLE
+
+
+func _set_facing(next: int) -> void:
+	facing = -1 if next < 0 else 1
+	_sprite.flip_h = facing < 0
+
+
+func _try_beam() -> void:
+	if not Input.is_action_just_pressed(&"beam"):
+		return
+	if _movement_blocked() or not BeamLogic.has_ability(GameState.abilities):
+		return
+	var blocked: bool = GameState.statuses.blocks_abilities()
+	if not BeamLogic.can_fire(GameState.charge, Balance.BEAM_COST, blocked):
+		AudioManager.play_sfx(REFUSE_SFX)
+		return
+	if not GameState.spend_charge(Balance.BEAM_COST):
+		AudioManager.play_sfx(REFUSE_SFX)
+		return
+	_fire_beam()
+
+
+func _fire_beam() -> void:
+	_beam_ray.target_position = BeamLogic.ray_vector(facing, Balance.BEAM_RANGE)
+	_beam_ray.force_raycast_update()
+	var hit_point: Variant = null
+	var target: Node = null
+	if _beam_ray.is_colliding():
+		hit_point = _beam_ray.get_collision_point()
+		target = BeamLogic.resolve_target(_beam_ray.get_collider())
+	if target != null:
+		target.call(BeamLogic.SHUTDOWN_METHOD, Balance.BEAM_SHUTDOWN_TIME)
+	var length: float = BeamLogic.beam_length(
+		_beam_ray.global_position, hit_point, Balance.BEAM_RANGE
+	)
+	var tip := Vector2(float(facing) * length, 0.0)
+	_beam_line.points = PackedVector2Array([Vector2.ZERO, tip])
+	_beam_line.visible = true
+	_beam_light.position = _beam_line.position + tip * 0.5
+	_beam_light.enabled = true
+	_beam_flash_left = BEAM_FLASH_TIME
+	AudioManager.play_sfx(&"beam")
+	if is_on_floor() and not _dashing and not _climbing:
+		play_action(&"interact")
+
+
+func _update_beam_flash(delta: float) -> void:
+	if _beam_flash_left <= 0.0:
+		return
+	_beam_flash_left = maxf(0.0, _beam_flash_left - delta)
+	var bright: bool = fmod(_beam_flash_left, BEAM_BLINK_PERIOD * 2.0) > BEAM_BLINK_PERIOD
+	_beam_light.energy = BEAM_LIGHT_ENERGY * (1.0 if bright else BEAM_DIM_RATIO)
+	if _beam_flash_left > 0.0:
+		return
+	_beam_line.visible = false
+	_beam_light.enabled = false
+	_beam_light.energy = BEAM_LIGHT_ENERGY
+
+
 func _setup_sensor() -> void:
 	var shape: Shape2D = _sensor_shape.shape
 	if shape is CircleShape2D:
@@ -490,6 +693,8 @@ func _update_drop_through(delta: float) -> void:
 func _update_timers(delta: float) -> void:
 	if _hurt_timer > 0.0:
 		_hurt_timer = maxf(0.0, _hurt_timer - delta)
+	if _dash_cooldown > 0.0 and not _dashing:
+		_dash_cooldown = maxf(0.0, _dash_cooldown - delta)
 	if _invincible_left <= 0.0:
 		return
 	_invincible_left = maxf(0.0, _invincible_left - delta)
@@ -517,6 +722,8 @@ func _process_hurtbox(delta: float) -> void:
 		if not (area is DamageArea):
 			continue
 		var source: DamageArea = area
+		if _dashing and source.dash_passable:
+			continue
 		if source.hurts_over_time():
 			per_second += source.damage_per_second
 		if not source.hurts_on_contact() or is_invincible():
@@ -564,6 +771,8 @@ func _start_hurt(source: Vector2, push: bool, push_x: float = Balance.KNOCKBACK_
 	AudioManager.play_sfx(&"damage")
 	if _dead:
 		return
+	if push:
+		_cancel_dash()
 	play_action(&"hurt")
 	if not push:
 		return
@@ -752,6 +961,7 @@ func _on_player_died() -> void:
 	if _dead:
 		return
 	_dead = true
+	_cancel_dash()
 	_climbing = false
 	_claw_blocked = false
 	_wall_push = 0.0
@@ -773,6 +983,9 @@ func _on_player_respawned() -> void:
 		global_position = spawn
 	_dead = false
 	_locked = false
+	_cancel_dash()
+	_dash_cooldown = 0.0
+	_air_dash_used = false
 	_climbing = false
 	_claw_blocked = false
 	_wall_push = 0.0

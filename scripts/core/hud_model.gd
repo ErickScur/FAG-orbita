@@ -19,6 +19,10 @@ const STATUS_ICONS: Dictionary = {
 	&"overload": 9,
 }
 const MAX_STATUS_ICONS: int = 4
+const ABILITY_COSTS: Dictionary = {
+	DashLogic.ABILITY_ID: Balance.DASH_COST,
+	BeamLogic.ABILITY_ID: Balance.BEAM_COST,
+}
 const REACTOR_STATE_NONE: StringName = &""
 const REACTOR_STATE_CRITICAL: StringName = &"reactor_critical"
 const REACTOR_STATE_NO_TIMER: StringName = &"reactor_no_timer"
@@ -62,6 +66,10 @@ static func atlas_cell(index: int, columns: int) -> Vector2i:
 	if columns <= 0:
 		return Vector2i.ZERO
 	return Vector2i(index % columns, index / columns)
+
+
+static func ability_cost(ability_id: StringName) -> int:
+	return roundi(float(ABILITY_COSTS.get(ability_id, 0.0)))
 
 
 static func status_icon_index(status_id: StringName) -> int:

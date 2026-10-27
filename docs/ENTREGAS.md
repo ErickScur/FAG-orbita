@@ -75,7 +75,7 @@ Asset "definitivo" é trabalho paralelo do humano: assim que o Dia 1 terminar, o
 | Plataformas que se movimentam | [F25](features/F25-plataformas-moveis-planta.md) | Demo | `[`[x]` |
 | Paralax | [F26](features/F26-parallax.md) | Demo | `[`[x]` |
 | Área secreta | [F27](features/F27-area-secreta.md) | Demo | `[`[x]` |
-| Combate (não-letal) | [F31](features/F31-dash-feixe.md) (Feixe desliga inimigos) | Stretch | `[ ]` |
+| Combate (não-letal) | [F31](features/F31-dash-feixe.md) (Feixe desliga inimigos) | Stretch | `[x]` |
 | Movimento aleatório de NPCs | [F34](features/F34-drone-botanico.md) | Stretch | `[ ]` |
 | Missões secundárias | Coleta opcional de Dados de Pesquisa ([F20](features/F20-coletaveis-contadores.md)) + F66 | Final | `[ ]` |
 | Desenvolvimento de 4 fases com dificuldades diferentes | F60 `[x]`, F61, F62 (+ Estufa) | Final | `[ ]` |
