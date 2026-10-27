@@ -55,9 +55,9 @@ func test_map_is_tall_enough_for_the_viewport() -> void:
 
 func test_single_spawn_and_one_exit_per_sector() -> void:
 	assert_eq(_count_symbol("P"), 1, "exatamente um spawn")
-	assert_eq(_count_symbol("E"), 2, "uma saída para a Estufa e uma para o Laboratório")
+	assert_eq(_count_symbol("E"), 3, "uma saída para a Estufa, o Laboratório e a Enfermaria")
 	assert_eq(_count_symbol("T"), 1, "exatamente um terminal de distribuição")
-	assert_eq(_count_symbol("|"), 2, "a porta do Habitacional e a comporta do Laboratório")
+	assert_eq(_count_symbol("|"), 3, "a porta do Habitacional e as comportas do Lab e da Enfermaria")
 	assert_eq(_count_symbol("S"), 1, "exatamente uma SR-3")
 
 
@@ -216,10 +216,43 @@ func test_the_dash_pit_is_shallow_and_has_a_way_back() -> void:
 
 
 func test_revisit_spawns_past_the_tutorial_obstacles() -> void:
-	var revisit: Dictionary = _meta.get("revisit", {})
-	var dock: Vector2i = _cell_of(String(revisit.get("spawn_dock", "")))
-	assert_true(dock.x > _dash_gap_span().y, "a revisita nasce depois do vão")
-	assert_true(dock.x < _cell_of("core_hub_exit").x, "e antes da saída da Estufa")
+	for restored: Array in [[&"greenhouse"], [&"greenhouse", &"lab"]]:
+		var revisit: Dictionary = SectorRevisit.active_block(_meta, restored)
+		var dock: Vector2i = _cell_of(String(revisit.get("spawn_dock", "")))
+		assert_true(dock.x > _dash_gap_span().y, "a revisita nasce depois do vão")
+		assert_true(dock.x < _cell_of("core_hub_exit").x, "e antes da saída da Estufa")
+
+
+func test_each_sector_opens_the_next_door_and_closes_its_own_exit() -> void:
+	var chain: Array[Dictionary] = [
+		{"exit": "core_hub_exit", "closes": "greenhouse", "door": "door_lab"},
+		{"exit": "core_hub_exit_lab", "closes": "lab", "door": "door_infirmary"},
+	]
+	var previous_door: int = 0
+	for link: Dictionary in chain:
+		var exit: Dictionary = _params_of(String(link["exit"]))
+		var door: Dictionary = _params_of(String(link["door"]))
+		assert_eq(String(exit.get("closes_after_sector", "")), link["closes"], "saída fecha")
+		assert_eq(String(door.get("sealed_until_sector", "")), link["closes"], "comporta abre")
+		var door_x: int = _cell_of(String(link["door"])).x
+		assert_true(door_x > _cell_of(String(link["exit"])).x, "comporta depois da saída")
+		assert_true(door_x > previous_door, "comportas em ordem de setor")
+		previous_door = door_x
+	var last: Dictionary = _params_of("core_hub_exit_infirmary")
+	assert_eq(String(last.get("target", "")), "res://scenes/levels/infirmary.tscn", "Enfermaria")
+	assert_true(
+		_cell_of("core_hub_exit_infirmary").x > _cell_of("door_infirmary").x,
+		"a saída da Enfermaria fica atrás da comporta"
+	)
+	var after_lab: Dictionary = SectorRevisit.active_block(_meta, [&"greenhouse", &"lab"])
+	assert_eq(String(after_lab.get("objective", "")), "obj_core_infirmary", "objetivo novo")
+	assert_eq(String(after_lab.get("on_enter_dialogue", "")), "core_return_lab", "fala nova")
+	var after_gh: Dictionary = SectorRevisit.active_block(_meta, [&"greenhouse"])
+	assert_true(
+		_luma(String(after_lab.get("ambient_color", ""))) >
+		_luma(String(after_gh.get("ambient_color", ""))),
+		"o Núcleo clareia a cada setor"
+	)
 
 
 func test_entity_keys_point_to_entity_cells() -> void:
@@ -548,3 +581,8 @@ func _params_of(entity_id: String) -> Dictionary:
 		if String(params.get("id", "")) == entity_id:
 			return params
 	return {}
+
+
+func _luma(hex: String) -> float:
+	var color := Color(hex)
+	return 0.2126 * color.r + 0.7152 * color.g + 0.0722 * color.b

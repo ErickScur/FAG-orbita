@@ -4,10 +4,23 @@ extends RefCounted
 const ABILITY_ID: StringName = &"heat_sink"
 const KIND_WARM: StringName = &"warm"
 const KIND_FURNACE: StringName = &"furnace"
+const KIND_COLD: StringName = &"cold"
+const ISLAND_COOL: StringName = &"cool"
+const ISLAND_WARM: StringName = &"warm"
 
 
 static func normalize_kind(kind: StringName) -> StringName:
-	return KIND_FURNACE if kind == KIND_FURNACE else KIND_WARM
+	if kind == KIND_FURNACE or kind == KIND_COLD:
+		return kind
+	return KIND_WARM
+
+
+static func is_cold(kind: StringName) -> bool:
+	return normalize_kind(kind) == KIND_COLD
+
+
+static func normalize_island_kind(kind: StringName) -> StringName:
+	return ISLAND_WARM if kind == ISLAND_WARM else ISLAND_COOL
 
 
 static func overheats(in_heat: bool, cooled: bool) -> bool:

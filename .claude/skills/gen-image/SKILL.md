@@ -50,6 +50,13 @@ tools/gen_image.sh --prompt=<scratchpad>/<ID>.txt --out=<scratchpad>/<ID>/raw.pn
      --in=<raw> --out=<scratchpad>/<ID>/sheet.png --frame-width=W --frame-height=H --columns=N [--fit=contain]
    ```
    O fatiador imprime as linhas e quadros que achou: tem de bater com o contrato.
+   **Quadro de estado de 16 px perde linha fina na redução por média**: a rachadura do gelo fino
+   (~10 px em ~410 px brutos) sumiu e o quadro `cracked` saiu igual ao `intact`. Preserve linhas
+   finas (pixel bruto quase branco que cobre ≥10% da célula reduzida vira cor cheia) e **compare
+   quadros vizinhos da mesma animação** antes de aceitar (F61).
+   **Passarela one-way desenhada pela IA some contra o fundo** (aconteceu no Lab e na Enfermaria):
+   monte a one-way a partir da faixa de piso do próprio tileset (F61).
+   **"Sem cruz" vale também para padrão acidental**: geada nas juntas dos azulejos formou "+" (F61).
    **Sprite pendurado (teto ou parede) não vai pelo `autoslice_sheet.gd`**: ele alinha cada
    quadro pelo pé e tira a escala do quadro mais alto, então a placa de fixação da CX-2 ficaria
    em alturas diferentes e o feixe do `fire` encolheria os outros quadros. Fatie alinhado pelo

@@ -1,0 +1,51 @@
+{
+  "sequences": {
+    "inf_enter": {
+      "mode": "blocking",
+      "once": true,
+      "lines": [
+        {
+          "speaker": "orbita",
+          "text": "Enfermaria, setor D. Temperatura interna: oito graus negativos."
+        },
+        {
+          "speaker": "orbita",
+          "text": "Os leitos estão arrumados. Alguém se deu ao trabalho de arrumar os leitos."
+        },
+        {
+          "speaker": "orbita",
+          "text": "Sentinelas de quarentena ativas. Vou tentar não parecer contagiosa."
+        }
+      ]
+    },
+    "inf_heated_core": {
+      "mode": "ambient",
+      "once": true,
+      "lines": [
+        {
+          "speaker": "orbita",
+          "text": "Núcleo aquecido integrado. Obrigada, doutora. De novo."
+        }
+      ]
+    },
+    "inf_restored": {
+      "mode": "blocking",
+      "once": true,
+      "lines": [
+        {
+          "speaker": "orbita",
+          "text": "Enfermaria religada. Estabilidade subindo.",
+          "sfx": "sector_restored"
+        },
+        {
+          "speaker": "orbita",
+          "text": "Doze leitos, onze prontuários. Vou deixar tudo como a doutora deixou."
+        },
+        {
+          "speaker": "orbita",
+          "text": "Três setores. Quando eles voltarem, a enfermaria vai estar quente."
+        }
+      ]
+    }
+  }
+}

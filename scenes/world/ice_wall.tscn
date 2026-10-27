@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://c0rbitaicewall"]
+
+[ext_resource type="Script" path="res://scenes/world/ice_wall.gd" id="1_wall"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_body"]
+size = Vector2(16, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_touch"]
+size = Vector2(20, 18)
+
+[node name="IceWall" type="StaticBody2D" groups=["powered"]]
+collision_layer = 1
+collision_mask = 0
+script = ExtResource("1_wall")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_wall_body")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="Touch" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Touch"]
+shape = SubResource("RectangleShape2D_wall_touch")

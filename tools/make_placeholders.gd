@@ -150,6 +150,190 @@ func _draw_cell(
 			_draw_ceiling_turret(image, origin, size, palette, col, row, entry)
 		"steam_vent":
 			_draw_steam_vent(image, origin, size, palette, entry)
+		"flying_sentinel":
+			_draw_flying_sentinel(image, origin, size, palette, col, row, entry)
+		"ice":
+			_draw_ice(image, origin, size, palette, col, row)
+		"infirmary_props":
+			_draw_infirmary_prop(image, origin, size, palette, col, row, entry)
+
+
+func _draw_flying_sentinel(
+	image: Image,
+	origin: Vector2i,
+	size: Vector2i,
+	palette: Dictionary,
+	col: int,
+	row: int,
+	entry: Dictionary
+) -> void:
+	var outline: Color = palette.get("outline", Color.BLACK)
+	var body: Color = _body_color(entry, palette)
+	var steel: Color = palette.get("secondary", Color.GRAY)
+	var amber: Color = palette.get("danger", Color.ORANGE)
+	var jet: Color = palette.get("accent", Color.CYAN)
+	var off: bool = row == 1 and col == 3
+	var lens: Color = jet
+	if row == 1:
+		lens = [amber, Color("#E0383A"), Color("#E0383A"), _shade(outline, 0.2)][col]
+	var bob: int = [0, -1, 0, 1][col] if row == 0 else 0
+	var dip: int = 1 if row == 1 and col == 1 else 0
+	var cx: int = origin.x + size.x / 2
+	var cy: int = origin.y + 13 + bob + (6 if off else 0)
+	var half_h: float = 4.0 if off else 6.0
+	if not off:
+		var flame: int = [2, 4, 2, 4][col] if row == 0 else 3
+		for side: int in [-7, 5]:
+			_fill_rect(image, cx + side, cy + 4, 3, 3, steel)
+			_stroke_rect(image, cx + side, cy + 4, 3, 3, outline)
+			_fill_rect(image, cx + side + 1, cy + 7, 1, flame, jet)
+	var claw_y: int = cy + 5
+	if row == 1 and col == 2:
+		_fill_rect(image, cx - 4, claw_y, 2, 6, steel)
+		_fill_rect(image, cx + 2, claw_y, 2, 6, steel)
+		_fill_rect(image, cx - 6, claw_y + 5, 3, 2, outline)
+		_fill_rect(image, cx + 3, claw_y + 5, 3, 2, outline)
+	elif not off:
+		_fill_rect(image, cx - 2, claw_y, 4, 3, steel)
+		_stroke_rect(image, cx - 2, claw_y, 4, 3, outline)
+	_fill_ellipse(image, float(cx), float(cy) + 0.5, 11.5, half_h + 1.0, outline)
+	_fill_ellipse(image, float(cx), float(cy) + 0.5, 10.5, half_h, body)
+	_fill_rect(image, cx - 8, cy - int(half_h) + 1, 16, 1, _shade(body, 0.25))
+	_fill_rect(image, cx - 3, cy - int(half_h), 3, int(half_h) * 2 + 1, amber)
+	_put(image, cx - 2, cy - 2, _shade(amber, -0.5))
+	_put(image, cx - 2, cy + 2, _shade(amber, -0.5))
+	var lens_x: float = float(cx) + 6.0
+	var lens_y: float = float(cy) + 0.5 + float(dip * 2)
+	_fill_ellipse(image, lens_x, lens_y, 4.2, 4.2, outline)
+	_fill_ellipse(image, lens_x, lens_y, 3.0, 3.0, lens)
+	if not off:
+		_put(image, int(lens_x) - 1, int(lens_y) - 1, _shade(lens, 0.6))
+
+
+func _draw_ice(
+	image: Image, origin: Vector2i, size: Vector2i, palette: Dictionary, col: int, row: int
+) -> void:
+	var outline: Color = palette.get("outline", Color.BLACK)
+	var deep: Color = Color("#3E6E95")
+	var mid: Color = Color("#6FA8CF")
+	var pale: Color = Color("#A9DCEC")
+	var shine: Color = palette.get("light", Color.WHITE)
+	if row == 0:
+		var slab_h: int = 6
+		var pieces: Array = [[0, size.x]]
+		if col == 2:
+			pieces = [[0, 4], [6, 4], [12, 4]]
+		for index: int in range(pieces.size()):
+			var piece: Array = pieces[index]
+			var drop: int = index % 2 if col == 2 else 0
+			var px: int = origin.x + int(piece[0])
+			var py: int = origin.y + drop
+			_fill_rect(image, px, py, int(piece[1]), slab_h, mid)
+			_fill_rect(image, px, py, int(piece[1]), 2, pale)
+			_fill_rect(image, px, py + slab_h - 1, int(piece[1]), 1, outline)
+			_put(image, px + 1, py, shine)
+		if col < 2:
+			for icicle: int in [3, 8, 12]:
+				_fill_rect(image, origin.x + icicle, origin.y + slab_h, 2, 2, mid)
+				_put(image, origin.x + icicle, origin.y + slab_h + 2, pale)
+		if col == 1:
+			for step: int in range(5):
+				_put(image, origin.x + 3 + step * 2, origin.y + 2 + step % 2 * 2, shine)
+		return
+	var lump_h: int = [size.y, size.y - 4, 5][col]
+	var inset: int = [0, 2, 3][col]
+	var top: int = origin.y + size.y - lump_h
+	_fill_rect(image, origin.x + inset, top, size.x - inset * 2, lump_h, deep)
+	_fill_rect(image, origin.x + inset + 1, top + 1, size.x - inset * 2 - 2, lump_h - 2, mid)
+	_fill_rect(image, origin.x + inset + 2, top + 1, 2, mini(lump_h - 2, 8), pale)
+	_put(image, origin.x + inset + 2, top + 1, shine)
+	if col == 0:
+		_fill_rect(image, origin.x + 9, origin.y + 4, 1, 6, pale)
+		_fill_rect(image, origin.x + 10, origin.y + 9, 3, 1, pale)
+		return
+	_fill_rect(image, origin.x + inset + 4, origin.y + size.y - 1, size.x - inset * 2 - 6, 1, pale)
+	if col == 1:
+		_fill_rect(image, origin.x + 11, top + lump_h - 1, 1, 1, pale)
+		_put(image, origin.x + 6, top + lump_h - 2, shine)
+
+
+func _draw_infirmary_prop(
+	image: Image,
+	origin: Vector2i,
+	size: Vector2i,
+	palette: Dictionary,
+	col: int,
+	row: int,
+	entry: Dictionary
+) -> void:
+	var outline: Color = palette.get("outline", Color.BLACK)
+	var body: Color = _body_color(entry, palette)
+	var steel: Color = palette.get("secondary", Color.GRAY)
+	var sheet: Color = palette.get("accent", Color.CYAN)
+	var amber: Color = palette.get("danger", Color.ORANGE)
+	var ground: int = origin.y + size.y
+	var x: int = origin.x
+	match row * 4 + col:
+		0, 1:
+			_fill_rect(image, x + 2, ground - 4, 2, 4, steel)
+			_fill_rect(image, x + 28, ground - 4, 2, 4, steel)
+			_fill_rect(image, x + 1, ground - 9, 30, 5, steel)
+			_stroke_rect(image, x + 1, ground - 9, 30, 5, outline)
+			_fill_rect(image, x + 1, ground - 14, 2, 6, steel)
+			var mattress: Color = sheet if col == 0 else _shade(body, -0.25)
+			_fill_rect(image, x + 3, ground - 12, 27, 3, mattress)
+			_stroke_rect(image, x + 3, ground - 12, 27, 3, outline)
+			if col == 0:
+				_fill_rect(image, x + 4, ground - 14, 7, 3, body)
+				_stroke_rect(image, x + 4, ground - 14, 7, 3, outline)
+			else:
+				_fill_rect(image, x + 21, ground - 16, 8, 4, sheet)
+				_stroke_rect(image, x + 21, ground - 16, 8, 4, outline)
+		2:
+			_fill_rect(image, x + 3, ground - 3, 3, 3, outline)
+			_fill_rect(image, x + 26, ground - 3, 3, 3, outline)
+			for step: int in range(8):
+				_fill_rect(image, x + 6 + step * 2, ground - 4 - step, 2, 1, steel)
+				_fill_rect(image, x + 24 - step * 2, ground - 4 - step, 2, 1, steel)
+			_fill_rect(image, x + 2, ground - 14, 28, 3, body)
+			_stroke_rect(image, x + 2, ground - 14, 28, 3, outline)
+		3:
+			_fill_rect(image, x + 9, ground - 2, 14, 2, steel)
+			_fill_rect(image, x + 15, ground - 30, 2, 28, steel)
+			_fill_rect(image, x + 11, ground - 30, 10, 1, steel)
+			_fill_rect(image, x + 18, ground - 29, 5, 7, sheet)
+			_stroke_rect(image, x + 18, ground - 29, 5, 7, outline)
+		4:
+			_fill_rect(image, x + 8, ground - 5, 16, 5, steel)
+			_stroke_rect(image, x + 8, ground - 5, 16, 5, outline)
+			_fill_ellipse(image, float(x) + 16.0, float(ground) - 12.0, 15.0, 7.0, outline)
+			_fill_ellipse(image, float(x) + 16.0, float(ground) - 12.0, 14.0, 6.0, body)
+			_fill_rect(image, x + 7, ground - 17, 18, 4, sheet)
+			_fill_rect(image, x + 4, ground - 11, 24, 1, amber)
+		5:
+			_fill_rect(image, x + 6, ground - 18, 20, 15, steel)
+			_stroke_rect(image, x + 6, ground - 18, 20, 15, outline)
+			for drawer: int in range(3):
+				_fill_rect(image, x + 14, ground - 15 + drawer * 4, 4, 1, amber)
+			_fill_rect(image, x + 8, ground - 3, 3, 3, outline)
+			_fill_rect(image, x + 21, ground - 3, 3, 3, outline)
+			_fill_rect(image, x + 9, ground - 21, 2, 3, sheet)
+			_fill_rect(image, x + 13, ground - 22, 2, 4, body)
+		6:
+			_fill_ellipse(image, float(x) + 13.0, float(ground) - 8.0, 7.5, 7.5, outline)
+			_fill_ellipse(image, float(x) + 13.0, float(ground) - 8.0, 5.5, 5.5, _shade(outline, 0.15))
+			_fill_ellipse(image, float(x) + 13.0, float(ground) - 8.0, 2.0, 2.0, steel)
+			_fill_rect(image, x + 22, ground - 3, 3, 3, outline)
+			_fill_rect(image, x + 10, ground - 14, 14, 3, body)
+			_fill_rect(image, x + 9, ground - 26, 3, 13, steel)
+			_fill_rect(image, x + 22, ground - 12, 2, 9, steel)
+		_:
+			_fill_rect(image, x + 6, ground - 30, 20, 30, steel)
+			_stroke_rect(image, x + 6, ground - 30, 20, 30, outline)
+			for drawer: int in range(3):
+				_stroke_rect(image, x + 8, ground - 28 + drawer * 9, 16, 8, outline)
+				_fill_rect(image, x + 14, ground - 25 + drawer * 9, 4, 1, amber)
+			_fill_rect(image, x + 10, ground - 32, 10, 3, body)
 
 
 func _draw_ceiling_turret(

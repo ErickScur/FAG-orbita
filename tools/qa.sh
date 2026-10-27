@@ -70,8 +70,15 @@ user_args=(--qa "--qa-script=res://$script" "--qa-out=$out")
 [ -n "$scale" ] && user_args+=("$scale")
 
 screen="${ORBITA_QA_SCREEN:-1}"
+screen_args=()
+screens="$(system_profiler SPDisplaysDataType 2> /dev/null | grep -c "Resolution:")"
+if [ "${screens:-0}" -gt "$screen" ]; then
+  screen_args=(--screen "$screen")
+else
+  echo "QA AVISO: só ${screens:-?} monitor(es); a janela abre no principal, sem foco"
+fi
 
-engine_args=(--path "$PWD" --fixed-fps 60 --windowed --screen "$screen" -- "${user_args[@]}")
+engine_args=(--path "$PWD" --fixed-fps 60 --windowed ${screen_args[@]+"${screen_args[@]}"} -- "${user_args[@]}")
 app="${GODOT%/Contents/MacOS/*}"
 
 if [ "$app" != "$GODOT" ] && [ -d "$app" ] && command -v open > /dev/null; then

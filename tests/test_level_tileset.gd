@@ -17,8 +17,12 @@ const SHEETS: Dictionary = {
 		"tileset": "res://assets/tiles/lab_tileset.tres",
 		"texture": "res://assets/tiles/lab_tiles.png",
 	},
+	"infirmary": {
+		"tileset": "res://assets/tiles/infirmary_tileset.tres",
+		"texture": "res://assets/tiles/infirmary_tiles.png",
+	},
 }
-const MAGNETIC_SHEETS: Array[String] = ["greenhouse", "lab"]
+const MAGNETIC_SHEETS: Array[String] = ["greenhouse", "lab", "infirmary"]
 const YELLOW_MIN_WARM: float = 0.45
 const YELLOW_MIN_GAP: float = 0.12
 const LAMP_MIN_GAP: float = 0.20

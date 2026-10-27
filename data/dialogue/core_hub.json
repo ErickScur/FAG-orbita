@@ -158,6 +158,20 @@
           "text": "A comporta do Laboratório recebeu energia. Próxima parada."
         }
       ]
+    },
+    "core_return_lab": {
+      "mode": "blocking",
+      "once": true,
+      "lines": [
+        {
+          "speaker": "orbita",
+          "text": "O Núcleo sentiu o Laboratório. Mais luz, menos alarme."
+        },
+        {
+          "speaker": "orbita",
+          "text": "A comporta da Enfermaria respondeu. Próxima parada."
+        }
+      ]
     }
   }
 }

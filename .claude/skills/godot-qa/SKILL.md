@@ -85,9 +85,10 @@ Saída no scratchpad da sessão, nunca no repo.
   plataforma fina passou com ↓+pulo e quebrou na mão do jogador, que apertou só ↓.
 - **(F36)** **Mexeu no mapa → os roteiros da fase mentem.** Rode e releia todos eles; os marcos
   vão reprovar, que é o objetivo.
-- **(F36)** Cada linha de log custa **dois** apertos de `interact` (completa a digitação, depois
-  avança): um log de 10 linhas fecha com 20. Aperto sobrando em cima do terminal de registros
-  **reabre o log**. Conte, ou ande para longe antes de apertar mais.
+- **(F36, corrigida na F61)** O log **abre** com um `interact` e **avança** com `ui_accept`, dois
+  apertos por linha (completa a digitação, depois avança): um log de 10 linhas fecha com ~22.
+  `interact` repetido não avança — na F61 o log ficou parado na linha 1 com 22 apertos. Aperto de
+  `interact` sobrando em cima do terminal de registros **reabre o log**.
 - **(F36/F35)** Fala travante pausa a árvore: Tween comum congela e o tempo do roteiro continua
   correndo. Dê folga depois de cada fala.
 - **(F47)** Screenshot não revela tudo: buraco de alfa num tile (`blit_rect` copiando
@@ -97,6 +98,15 @@ Saída no scratchpad da sessão, nunca no repo.
   por `await frame_post_draw` (fotos idênticas com a janela sem foco) nem pause a árvore para
   esperar o desenho (trava o jogo).
 - Deixe ~30 frames depois de trocar de cena antes de capturar (fade + loading).
+- **(F61)** Com **um monitor só**, `--screen 1` vira erro do Godot e reprova o QA. O `qa.sh` conta
+  os monitores (`system_profiler`) e só pede a tela secundária quando ela existe; senão a janela
+  abre no principal, em janela e sem roubar o foco, e o script avisa `QA AVISO`.
+- **(F61)** Marco de troca de cena precisa de folga para a tela de carregamento (mínimo de 1,6 s):
+  ~100 quadros depois de entrar na saída. Com 80 o `f60_hub_return` reprovou na tela de loading.
+- **(F61)** Roteiro longo de fase se monta **por trechos encadeados** com um gerador
+  (`R` de `qa_build.py`, guardado na receita da F61): cada trecho termina com captura a cada 4–6
+  quadros para ler a posição, e o tempo do trecho seguinte sai dessas posições. Repetir um trecho
+  depois (a volta pela mesma rota) é o mesmo bloco com um deslocamento de quadros.
 - **(F31)** **Arte trocada no disco não aparece no QA sem reimportar**: o jogo lê a textura de
   `.godot/imported`. A captura "depois do conserto" mostrou a folha antiga e quase aprovou o defeito.
   Hoje o `qa.sh` roda `--import` antes de abrir o jogo; não tire esse passo.

@@ -32,7 +32,7 @@
   {"frame": 629, "expect_scene": "res://scenes/levels/core_hub.tscn"},
   {"frame": 629, "action": "move_right", "pressed": true},
   {"frame": 719, "action": "move_right", "pressed": false},
-  {"frame": 923, "expect_scene": "res://scenes/levels/lab.tscn"},
-  {"frame": 943, "screenshot": "06_chegada_ao_laboratorio"},
-  {"frame": 953, "quit": true}
+  {"frame": 1000, "expect_scene": "res://scenes/levels/lab.tscn"},
+  {"frame": 1020, "screenshot": "06_chegada_ao_laboratorio"},
+  {"frame": 1030, "quit": true}
 ]

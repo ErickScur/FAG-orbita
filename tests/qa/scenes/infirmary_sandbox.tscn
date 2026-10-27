@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0rbitainfsandbox"]
+
+[ext_resource type="Script" path="res://tests/qa/scenes/infirmary_sandbox.gd" id="1_inf"]
+
+[node name="InfirmarySandbox" type="Node2D"]
+script = ExtResource("1_inf")

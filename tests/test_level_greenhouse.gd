@@ -120,9 +120,13 @@ func test_collectibles_match_the_feature_budget() -> void:
 	assert_eq(_count_symbol("C"), 1, "um núcleo de capacitor")
 
 
-func test_the_campaign_has_exactly_six_research_data() -> void:
+func test_the_campaign_has_exactly_eight_research_data() -> void:
 	var total: int = _count_symbol("r")
-	for path: String in ["res://data/levels/core_hub.json", "res://data/levels/lab.json"]:
+	for path: String in [
+		"res://data/levels/core_hub.json",
+		"res://data/levels/lab.json",
+		"res://data/levels/infirmary.json",
+	]:
 		var raw: Variant = JSON.parse_string(FileAccess.get_file_as_string(path))
 		if not (raw is Dictionary):
 			continue
@@ -130,7 +134,7 @@ func test_the_campaign_has_exactly_six_research_data() -> void:
 			var params: Dictionary = ((raw as Dictionary)["entities"] as Dictionary)[key]
 			if String(params.get("id", "")).begins_with("data_"):
 				total += 1
-	assert_eq(total, Balance.RESEARCH_TOTAL, "o placar de Dados fecha com o Laboratório")
+	assert_eq(total, Balance.RESEARCH_TOTAL, "o placar de Dados fecha com a Enfermaria")
 
 
 func test_the_level_has_two_secret_areas() -> void:

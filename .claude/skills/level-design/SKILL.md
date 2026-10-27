@@ -95,5 +95,11 @@ O modelo é generoso com energia (toda porta aberta, toda planta crescida, garra
 - **(F31)** **Cartão de tecla cobre obstáculo rente ao piso** quando a câmera encosta no limite de
   baixo do mapa (o piso cai sempre na faixa de 140–176 px da tela, a do cartão). Obstáculo de
   tutorial fica pelo menos 1 tile acima do piso do corredor ou longe do centro da tela.
+- **(F61)** **Cutscene de religamento fraca** quando o caminho do Nó ao nascimento quase não tem
+  lâmpada ou aquecedor sem energia: na Enfermaria ela mostra a sala clareando e pouca coisa
+  acendendo. Ponha lâmpadas ligadas a sistemas (ou desligadas no fim do puzzle) ao longo dessa rota.
+- **(F61)** **O Terminal do Chassi cresce uma linha a cada 2 habilidades**: a 5ª estourou os 216 px
+  e Mapa/Setores viraram uma linha só; a 7ª estoura de novo. `test_the_open_menu_fits_the_screen_with_every_ability`
+  pega isso **se** a habilidade nova entrar em `ALL_ABILITIES`.
 - **(F60)** Elevador que nasce estacionado no destino e **desce** quando ligado dá consequência
   visível no console e é a única forma de embarcar: bom padrão para "ligar mostra algo".

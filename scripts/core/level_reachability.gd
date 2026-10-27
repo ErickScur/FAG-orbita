@@ -22,6 +22,7 @@ const PLANT_TOP_NODE: String = "Top/CollisionShape2D"
 const MAGNETIC_SYMBOL: String = "M"
 const PLANT_SYMBOL: String = "g"
 const PLATFORM_SYMBOL: String = "m"
+const THIN_ICE_SYMBOL: String = "_"
 const PASSABLE_SYMBOLS: String = "|x"
 const PICKUP_SYMBOLS: String = "lrckC"
 const INTERACT_SYMBOLS: String = "TLED"
@@ -405,6 +406,8 @@ func _build_grid(parsed: Dictionary, meta: Dictionary, profile: Dictionary) -> v
 		var cell: Vector2i = entry.get("cell", Vector2i.ZERO)
 		if symbol == MAGNETIC_SYMBOL:
 			_cells[cell.y * _width + cell.x] = CELL_MAGNETIC
+		elif symbol == THIN_ICE_SYMBOL:
+			_cells[cell.y * _width + cell.x] = CELL_SOLID
 		elif symbol == PLANT_SYMBOL:
 			var plant_offset: float = float(profile.get("plant_top_offset", -64.0))
 			_plants.append({

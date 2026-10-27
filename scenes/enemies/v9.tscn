@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://c0rbitav9drone"]
+
+[ext_resource type="Script" path="res://scenes/enemies/v9.gd" id="1_v9"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v9_beam"]
+size = Vector2(18, 14)
+
+[node name="V9" type="Node2D" groups=["enemy", "powered", "beam_target"]]
+script = ExtResource("1_v9")
+
+[node name="Lens" type="PointLight2D" parent="."]
+blend_mode = 0
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+
+[node name="BeamBody" type="StaticBody2D" parent="."]
+collision_layer = 4
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BeamBody"]
+shape = SubResource("RectangleShape2D_v9_beam")

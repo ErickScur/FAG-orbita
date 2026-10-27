@@ -285,13 +285,19 @@ theme_override_colors/font_color = Color(0.309804, 0.356863, 0.4, 1)
 text = "AGUARDANDO ENERGIA"
 vertical_alignment = 1
 
-[node name="MapRow" type="HBoxContainer" parent="Root/Center/Panel/Body"]
+[node name="LockedColumns" type="HBoxContainer" parent="Root/Center/Panel/Body"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 8
+
+[node name="MapRow" type="HBoxContainer" parent="Root/Center/Panel/Body/LockedColumns"]
 custom_minimum_size = Vector2(0, 16)
 layout_mode = 2
+size_flags_horizontal = 3
 mouse_filter = 2
 theme_override_constants/separation = 4
 
-[node name="MapLabel" type="Label" parent="Root/Center/Panel/Body/MapRow"]
+[node name="MapLabel" type="Label" parent="Root/Center/Panel/Body/LockedColumns/MapRow"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -300,7 +306,7 @@ theme_override_colors/font_color = Color(0.309804, 0.356863, 0.4, 1)
 text = "MAPA DA ESTAÇÃO"
 vertical_alignment = 1
 
-[node name="MapValue" type="Label" parent="Root/Center/Panel/Body/MapRow"]
+[node name="MapValue" type="Label" parent="Root/Center/Panel/Body/LockedColumns/MapRow"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
@@ -309,13 +315,14 @@ text = "SEM ENERGIA"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="SectorsRow" type="HBoxContainer" parent="Root/Center/Panel/Body"]
+[node name="SectorsRow" type="HBoxContainer" parent="Root/Center/Panel/Body/LockedColumns"]
 custom_minimum_size = Vector2(0, 16)
 layout_mode = 2
+size_flags_horizontal = 3
 mouse_filter = 2
 theme_override_constants/separation = 4
 
-[node name="SectorsLabel" type="Label" parent="Root/Center/Panel/Body/SectorsRow"]
+[node name="SectorsLabel" type="Label" parent="Root/Center/Panel/Body/LockedColumns/SectorsRow"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -324,7 +331,7 @@ theme_override_colors/font_color = Color(0.309804, 0.356863, 0.4, 1)
 text = "SETORES VISITADOS"
 vertical_alignment = 1
 
-[node name="SectorsValue" type="Label" parent="Root/Center/Panel/Body/SectorsRow"]
+[node name="SectorsValue" type="Label" parent="Root/Center/Panel/Body/LockedColumns/SectorsRow"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2

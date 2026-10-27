@@ -14,10 +14,16 @@ const PARTICLE_LIFETIME: float = 2.4
 const PARTICLE_FALL: float = 6.0
 const PARTICLE_DRIFT: float = 2.0
 const PARTICLE_SPREAD_ANGLE: float = 30.0
+const WARM_LIGHT_COLOR: Color = Color("ff9a4a")
+const WARM_LIGHT_ENERGY: float = 1.0
+const STEAM_COLOR: Color = Color(1.0, 0.85, 0.7, 0.35)
+const STEAM_RISE: float = -8.0
+const STEAM_SPREAD_ANGLE: float = 15.0
 
 @export var terminal_id: StringName = &""
 @export var system_id: StringName = &""
 @export var powered: bool = true
+@export var kind: StringName = HeatRules.ISLAND_COOL
 @export var size_tiles: Vector2i = Vector2i.ONE
 
 var _tween: Tween = null
@@ -41,6 +47,7 @@ func configure(params: Dictionary) -> void:
 	terminal_id = StringName(String(params.get("terminal_id", terminal_id)))
 	system_id = StringName(String(params.get("system_id", system_id)))
 	size_tiles = HeatZone.parse_rect(params.get("rect", null), size_tiles)
+	kind = HeatRules.normalize_island_kind(StringName(String(params.get("kind", kind))))
 	if params.has("powered"):
 		powered = bool(params["powered"])
 	if _shape == null:
@@ -58,7 +65,7 @@ func set_powered(on: bool) -> void:
 	_kill_tween()
 	_glow.enabled = true
 	_tween = create_tween()
-	_tween.tween_property(_glow, "energy", LIGHT_ENERGY if on else 0.0, Balance.LIGHT_FADE_TIME)
+	_tween.tween_property(_glow, "energy", _light_energy() if on else 0.0, Balance.LIGHT_FADE_TIME)
 	_tween.tween_callback(_finish_fade)
 
 
@@ -67,7 +74,7 @@ func set_powered_silent(on: bool) -> void:
 	_kill_tween()
 	if _glow == null:
 		return
-	_glow.energy = LIGHT_ENERGY if on else 0.0
+	_glow.energy = _light_energy() if on else 0.0
 	_glow.enabled = on
 	_frost.emitting = on
 
@@ -76,12 +83,26 @@ func is_active() -> bool:
 	return powered
 
 
+func is_warm() -> bool:
+	return HeatRules.normalize_island_kind(kind) == HeatRules.ISLAND_WARM
+
+
+func cools() -> bool:
+	return powered and not is_warm()
+
+
+func warms() -> bool:
+	return powered and is_warm()
+
+
 func world_rect() -> Rect2:
 	var local: Rect2 = HeatZone.area_rect(size_tiles, Balance.TILE_SIZE)
 	return Rect2(global_position + local.position, local.size)
 
 
 func _apply_layout() -> void:
+	kind = HeatRules.normalize_island_kind(kind)
+	var warm: bool = is_warm()
 	var rect: Rect2 = HeatZone.area_rect(size_tiles, Balance.TILE_SIZE)
 	var box := RectangleShape2D.new()
 	box.size = rect.size
@@ -92,7 +113,7 @@ func _apply_layout() -> void:
 		push_warning("ColdIsland: textura de luz ausente em %s" % LIGHT_TEXTURE)
 	_glow.blend_mode = Light2D.BLEND_MODE_ADD
 	_glow.shadow_enabled = false
-	_glow.color = LIGHT_COLOR
+	_glow.color = WARM_LIGHT_COLOR if warm else LIGHT_COLOR
 	_glow.texture_scale = 1.0
 	_glow.position = rect.get_center()
 	_glow.scale = rect.size * LIGHT_COVER / LightMath.TEXTURE_SIZE
@@ -102,13 +123,17 @@ func _apply_layout() -> void:
 	_frost.position = rect.get_center()
 	_frost.emission_shape = CPUParticles2D.EMISSION_SHAPE_RECTANGLE
 	_frost.emission_rect_extents = rect.size * 0.5
-	_frost.direction = Vector2.DOWN
-	_frost.spread = PARTICLE_SPREAD_ANGLE
-	_frost.gravity = Vector2(0.0, PARTICLE_FALL)
+	_frost.direction = Vector2.UP if warm else Vector2.DOWN
+	_frost.spread = STEAM_SPREAD_ANGLE if warm else PARTICLE_SPREAD_ANGLE
+	_frost.gravity = Vector2(0.0, STEAM_RISE if warm else PARTICLE_FALL)
 	_frost.initial_velocity_min = 0.0
 	_frost.initial_velocity_max = PARTICLE_DRIFT
-	_frost.color = FROST_COLOR
+	_frost.color = STEAM_COLOR if warm else FROST_COLOR
 	_frost.material = HeatZone.unshaded_material()
+
+
+func _light_energy() -> float:
+	return WARM_LIGHT_ENERGY if is_warm() else LIGHT_ENERGY
 
 
 func _finish_fade() -> void:

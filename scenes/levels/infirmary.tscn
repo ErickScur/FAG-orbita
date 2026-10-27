@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://c0rbitainfirmary"]
+
+[ext_resource type="PackedScene" uid="uid://c0rbitalevelbase" path="res://scenes/levels/level_base.tscn" id="1_base"]
+[ext_resource type="Script" path="res://scenes/levels/sector_narrative.gd" id="2_narrative"]
+
+[node name="Infirmary" instance=ExtResource("1_base")]
+level_id = "infirmary"
+
+[node name="Narrative" type="Node" parent="."]
+script = ExtResource("2_narrative")
+sector_id = &"infirmary"
+ability_id = &"heated_core"
+ability_dialogue = &"inf_heated_core"
+restored_dialogue = &"inf_restored"

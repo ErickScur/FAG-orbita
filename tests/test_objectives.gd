@@ -1,12 +1,18 @@
 extends TestCase
 
 const DEMO_IDS: Array[StringName] = [
-	&"obj_core_hub", &"obj_greenhouse", &"obj_core_lab", &"obj_lab"
+	&"obj_core_hub",
+	&"obj_greenhouse",
+	&"obj_core_lab",
+	&"obj_lab",
+	&"obj_core_infirmary",
+	&"obj_infirmary",
 ]
 const LEVEL_OBJECTIVES: Dictionary = {
 	"res://data/levels/core_hub.json": "obj_core_hub",
 	"res://data/levels/greenhouse.json": "obj_greenhouse",
 	"res://data/levels/lab.json": "obj_lab",
+	"res://data/levels/infirmary.json": "obj_infirmary",
 }
 const LEVELS_DIR: String = "res://data/levels/"
 const DIALOGUE_DIR: String = "res://data/dialogue/"

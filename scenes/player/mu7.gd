@@ -213,9 +213,7 @@ func _try_grab(axis: float) -> bool:
 
 
 func _jump_off_wall() -> void:
-	var jump_speed: float = absf(
-		PlatformerMath.jump_velocity(Balance.JUMP_HEIGHT, Balance.GRAVITY)
-	)
+	var jump_speed: float = absf(_jump_speed())
 	velocity = ClimbLogic.jump_off_velocity(facing, Balance.CLAW_JUMP_PUSH, jump_speed)
 	_wall_push = velocity.x
 	_climbing = false
@@ -276,6 +274,15 @@ func _has_heat_sink() -> bool:
 	return HeatRules.has_heat_sink(GameState.abilities)
 
 
+func _has_heated_core() -> bool:
+	return FreezeRules.has_heated_core(GameState.abilities)
+
+
+func _jump_speed(step: float = 0.0) -> float:
+	var height: float = FreezeRules.jump_height(GameState.statuses.jump_multiplier())
+	return PlatformerMath.jump_velocity(height, Balance.GRAVITY, step)
+
+
 func is_climbing() -> bool:
 	return _climbing
 
@@ -320,6 +327,18 @@ func take_hit(
 	GameState.apply_damage(damage)
 	_start_hurt(source, true, push_x, push_y)
 	return true
+
+
+func take_latch_hit(damage: int, source: Vector2) -> bool:
+	if _dead or is_invincible() or damage <= 0:
+		return false
+	GameState.apply_damage(damage)
+	_start_hurt(source, false)
+	return true
+
+
+func is_dead() -> bool:
+	return _dead
 
 
 func is_invincible() -> bool:
@@ -453,6 +472,7 @@ func _setup_beam() -> void:
 	_beam_ray.enabled = false
 	_beam_ray.collide_with_bodies = true
 	_beam_ray.collide_with_areas = false
+	_beam_ray.hit_from_inside = true
 	_beam_line.visible = false
 	_beam_line.default_color = BEAM_COLOR
 	_beam_line.material = _unshaded_material()
@@ -635,10 +655,12 @@ func _apply_camera_limits() -> void:
 
 
 func _apply_horizontal(axis: float, delta: float) -> void:
-	var rate: float = Balance.WALK_ACCEL if not is_zero_approx(axis) else Balance.WALK_DECEL
-	if not is_on_floor():
-		rate *= Balance.AIR_ACCEL_RATIO
-	velocity.x = PlatformerMath.approach(velocity.x, axis * Balance.WALK_SPEED, rate * delta)
+	var statuses: StatusEffects = GameState.statuses
+	var rate: float = FreezeRules.horizontal_rate(
+		axis, velocity.x, is_on_floor(), statuses.is_slippery()
+	)
+	var top: float = FreezeRules.walk_speed(statuses.speed_multiplier())
+	velocity.x = PlatformerMath.approach(velocity.x, axis * top, rate * delta)
 
 
 func _apply_gravity(delta: float) -> void:
@@ -657,7 +679,7 @@ func _handle_jump(delta: float) -> void:
 	if pressed:
 		_jump_assist.press()
 	if _jump_assist.consume():
-		velocity.y = PlatformerMath.jump_velocity(Balance.JUMP_HEIGHT, Balance.GRAVITY, delta)
+		velocity.y = _jump_speed(delta)
 		AudioManager.play_sfx(&"jump")
 		_set_state(State.JUMP)
 	if Input.is_action_just_released(&"jump"):
@@ -716,9 +738,12 @@ func _process_hurtbox(delta: float) -> void:
 		_heat_accumulator = 0.0
 		return
 	var per_second: float = 0.0
-	var heat: Dictionary = {"in_heat": false, "kind": HeatRules.KIND_WARM, "cooled": false}
+	var climate: Dictionary = {
+		"in_heat": false, "kind": HeatRules.KIND_WARM, "cooled": false,
+		"in_cold": false, "warmed": false,
+	}
 	for area: Area2D in _hurtbox.get_overlapping_areas():
-		_read_climate(area, heat)
+		_read_climate(area, climate)
 		if not (area is DamageArea):
 			continue
 		var source: DamageArea = area
@@ -730,8 +755,11 @@ func _process_hurtbox(delta: float) -> void:
 			continue
 		GameState.apply_damage(source.contact_damage)
 		source.notify_status()
-		_start_hurt(source.global_position, source.knockback, source.knockback_x, source.knockback_y)
-	_process_heat(heat, delta)
+		_start_hurt(
+			source.global_position, source.knockback, source.knockback_x, source.knockback_y
+		)
+	_process_heat(climate, delta)
+	_process_cold(climate)
 	if per_second <= 0.0:
 		_damage_accumulator = 0.0
 		return
@@ -740,14 +768,28 @@ func _process_hurtbox(delta: float) -> void:
 	)
 
 
-func _read_climate(area: Area2D, heat: Dictionary) -> void:
+func _read_climate(area: Area2D, climate: Dictionary) -> void:
 	if area is HeatZone:
 		var zone: HeatZone = area
-		heat["in_heat"] = true
-		if HeatRules.normalize_kind(zone.kind) == HeatRules.KIND_FURNACE:
-			heat["kind"] = HeatRules.KIND_FURNACE
-	elif area is ColdIsland and (area as ColdIsland).is_active():
-		heat["cooled"] = true
+		if zone.is_cold():
+			climate["in_cold"] = true
+			return
+		climate["in_heat"] = true
+		if zone.is_furnace():
+			climate["kind"] = HeatRules.KIND_FURNACE
+	elif area is ColdIsland:
+		var island: ColdIsland = area
+		if island.cools():
+			climate["cooled"] = true
+		elif island.warms():
+			climate["warmed"] = true
+
+
+func _process_cold(climate: Dictionary) -> void:
+	var in_cold: bool = bool(climate["in_cold"])
+	var warmed: bool = bool(climate["warmed"])
+	if FreezeRules.freezes(in_cold, warmed, _has_heated_core()):
+		GameState.apply_status(StatusEffects.FREEZE)
 
 
 func _process_heat(heat: Dictionary, delta: float) -> void:
@@ -765,7 +807,12 @@ func _process_heat(heat: Dictionary, delta: float) -> void:
 	_heat_accumulator = GameState.apply_damage_over_time(per_second, delta, _heat_accumulator)
 
 
-func _start_hurt(source: Vector2, push: bool, push_x: float = Balance.KNOCKBACK_SPEED, push_y: float = Balance.KNOCKBACK_SPEED) -> void:
+func _start_hurt(
+	source: Vector2,
+	push: bool,
+	push_x: float = Balance.KNOCKBACK_SPEED,
+	push_y: float = Balance.KNOCKBACK_SPEED
+) -> void:
 	_invincible_left = Balance.INVULNERABLE_TIME
 	_blink_timer = 0.0
 	AudioManager.play_sfx(&"damage")

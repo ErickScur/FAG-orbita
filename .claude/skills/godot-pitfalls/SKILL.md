@@ -82,6 +82,9 @@ origem).
 - **Sonda de borda com a mesma máscara do corpo**: com `mask = 1 | 7` a `FloorProbe` via
   plataforma fina como chão e o corpo (`mask = 1`) atravessava; a SR-3 caía da fase (F22).
 - Raycast no `_ready()`: ver "Testes e números" (2 quadros de física).
+- **`RayCast2D.hit_from_inside` é `false` por padrão**: raio que começa dentro de um corpo ignora
+  esse corpo. O feixe disparado com a V-9 grudada no MU-7 não acertava nada e não dava erro.
+  Ferramenta à queima-roupa usa `hit_from_inside = true` (F61).
 - **Raio horizontal na altura do peito passa por cima da SR-3** (10 px de altura): o feixe sai a
   −8 px do pé e colide **só com corpos** — área de gatilho fica na camada 1 por padrão e bloquearia
   o raio (F31).

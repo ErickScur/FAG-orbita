@@ -4,6 +4,28 @@ const DOOR_SCENE: String = "res://scenes/world/door.tscn"
 const EXIT_SCENE: String = "res://scenes/world/level_exit.tscn"
 const GREENHOUSE_SCENE: String = "res://scenes/levels/greenhouse.tscn"
 const LAB_SCENE: String = "res://scenes/levels/lab.tscn"
+const CORE_SCENE: String = "res://scenes/levels/core_hub.tscn"
+const INFIRMARY_SCENE: String = "res://scenes/levels/infirmary.tscn"
+const LIST_META: Dictionary = {
+	"objective": "obj_core_hub",
+	"ambient_color": "#0d1219",
+	"music": "core",
+	"revisit": [
+		{
+			"after_sector": "greenhouse",
+			"spawn_dock": "hab_dock_01",
+			"objective": "obj_core_lab",
+			"ambient_color": "#1b2a36",
+		},
+		{
+			"after_sector": "lab",
+			"spawn_dock": "lab_dock",
+			"objective": "obj_core_infirmary",
+			"ambient_color": "#2a3c4a",
+			"on_enter_dialogue": "core_return_lab",
+		},
+	],
+}
 const SEALED_DOOR: Dictionary = {
 	"sealed_until_sector": "greenhouse", "terminal_id": "core_hub", "system_id": "x"
 }
@@ -98,7 +120,7 @@ func test_exit_scene_closes_after_the_sector() -> void:
 	exit.free()
 
 
-func test_greenhouse_returns_to_the_core_and_lab_ends_the_demo() -> void:
+func test_greenhouse_and_lab_return_to_the_core_and_infirmary_ends() -> void:
 	var greenhouse: Dictionary = _narrative(GREENHOUSE_SCENE)
 	assert_eq(greenhouse.get("sector_id"), &"greenhouse", "setor da Estufa")
 	assert_eq(greenhouse.get("ability_id"), ClimbLogic.ABILITY_ID, "garras")
@@ -108,8 +130,39 @@ func test_greenhouse_returns_to_the_core_and_lab_ends_the_demo() -> void:
 	var lab: Dictionary = _narrative(LAB_SCENE)
 	assert_eq(lab.get("sector_id"), &"lab", "setor do Laboratório")
 	assert_eq(lab.get("ability_id"), HeatRules.ABILITY_ID, "Dissipador")
-	assert_eq(String(lab.get("next_scene", "")), "", "sem próxima cena: tela de fim")
+	assert_eq(String(lab.get("next_scene", "")), CORE_SCENE, "o Laboratório volta ao Núcleo")
 	assert_eq(lab.get("restored_dialogue"), &"lab_restored", "fala de fechamento")
+	var infirmary: Dictionary = _narrative(INFIRMARY_SCENE)
+	assert_eq(infirmary.get("sector_id"), &"infirmary", "setor da Enfermaria")
+	assert_eq(infirmary.get("ability_id"), FreezeRules.ABILITY_ID, "Núcleo Aquecido")
+	assert_eq(infirmary.get("ability_dialogue"), &"inf_heated_core", "fala do upgrade")
+	assert_eq(infirmary.get("restored_dialogue"), &"inf_restored", "fala de fechamento")
+	assert_eq(String(infirmary.get("next_scene", "")), "", "sem próxima cena: tela de fim")
+
+
+func test_revisit_list_uses_the_last_restored_entry() -> void:
+	var restored_gh: Array = [&"greenhouse"]
+	var restored_lab: Array = [&"greenhouse", &"lab"]
+	assert_eq(SectorRevisit.blocks(LIST_META).size(), 2, "duas entradas")
+	assert_eq(String(SectorRevisit.apply(LIST_META, [])["objective"]), "obj_core_hub", "antes")
+	var after_gh: Dictionary = SectorRevisit.apply(LIST_META, restored_gh)
+	assert_eq(String(after_gh["objective"]), "obj_core_lab", "depois da Estufa")
+	assert_eq(String(after_gh["ambient_color"]), "#1b2a36", "Núcleo mais claro")
+	assert_eq(SectorRevisit.spawn_dock(LIST_META, restored_gh), "hab_dock_01", "doca da Estufa")
+	var after_lab: Dictionary = SectorRevisit.apply(LIST_META, restored_lab)
+	assert_eq(String(after_lab["objective"]), "obj_core_infirmary", "depois do Laboratório")
+	assert_eq(String(after_lab["ambient_color"]), "#2a3c4a", "ainda mais claro")
+	assert_eq(String(after_lab["on_enter_dialogue"]), "core_return_lab", "fala de marco nova")
+	assert_eq(String(after_lab["music"]), "core", "chave de topo que ninguém cita fica")
+	assert_eq(SectorRevisit.spawn_dock(LIST_META, restored_lab), "lab_dock", "doca do Lab")
+	assert_false(after_lab.has("revisit"), "lista consumida")
+
+
+func test_revisit_list_order_wins_over_restore_order() -> void:
+	var meta: Dictionary = SectorRevisit.apply(LIST_META, [&"lab"])
+	assert_eq(String(meta["objective"]), "obj_core_infirmary", "só o Lab: vale a entrada dele")
+	var invalid: Dictionary = SectorRevisit.active_block({"revisit": [1, "x"]}, [&"lab"])
+	assert_true(invalid.is_empty(), "entradas inválidas são ignoradas")
 
 
 func _narrative(scene_path: String) -> Dictionary:

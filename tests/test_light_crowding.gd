@@ -1,7 +1,7 @@
 extends TestCase
 
 const LEVELS_DIR: String = "res://data/levels/"
-const PLAYABLE_LEVELS: PackedStringArray = ["core_hub", "greenhouse", "lab"]
+const PLAYABLE_LEVELS: PackedStringArray = ["core_hub", "greenhouse", "lab", "infirmary"]
 const TILE_SIZE: int = 16
 const WINDOW_PX: int = 256
 const WINDOW_STEP_PX: int = 32
@@ -14,6 +14,7 @@ const RADIUS_BY_SYMBOL: Dictionary = {
 	"E": 80.0,
 	"S": 40.0,
 	"X": 56.0,
+	"Y": 22.0,
 }
 const TOWER_SYMBOL: String = "X"
 const RECT_LIGHT_SYMBOLS: String = "hi"

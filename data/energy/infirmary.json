@@ -1,0 +1,146 @@
+{
+  "id": "infirmary",
+  "title": "ENFERMARIA - DISTRIBUIÇÃO",
+  "budget": 2,
+  "goal_text": "Abrir a Porta do Nó do Setor e religar o Nó",
+  "goal_done_text": "Porta do Nó do Setor aberta. Falta religar o Nó",
+  "goal_systems": [
+    "node_door"
+  ],
+  "initial": [
+    "sentinels",
+    "heating"
+  ],
+  "systems": [
+    {
+      "id": "sentinels",
+      "name": "SENTINELAS V-9",
+      "tag": "PERIGO",
+      "description": "Mantém as sentinelas de quarentena patrulhando.",
+      "effect_off": "As sentinelas pousam e apagam.",
+      "cost": 1,
+      "requires": [],
+      "locked": false,
+      "effects": [
+        {
+          "target": "id:inf_v9_01",
+          "action": "power"
+        },
+        {
+          "target": "id:inf_v9_02",
+          "action": "power"
+        },
+        {
+          "target": "id:inf_v9_03",
+          "action": "power"
+        },
+        {
+          "target": "id:inf_v9_04",
+          "action": "power"
+        }
+      ]
+    },
+    {
+      "id": "heating",
+      "name": "AQUECIMENTO",
+      "tag": "CLIMA",
+      "description": "Liga os aquecedores e derrete o gelo ao alcance deles.",
+      "effect_off": "Os aquecedores apagam e o gelo volta.",
+      "cost": 1,
+      "requires": [],
+      "locked": false,
+      "effects": [
+        {
+          "target": "id:inf_heater_ala_01",
+          "action": "power"
+        },
+        {
+          "target": "id:inf_heater_ala_02",
+          "action": "power"
+        },
+        {
+          "target": "id:inf_heater_pharmacy",
+          "action": "power"
+        },
+        {
+          "target": "id:inf_heater_landing",
+          "action": "power"
+        },
+        {
+          "target": "id:inf_heater_quarantine",
+          "action": "power"
+        }
+      ]
+    },
+    {
+      "id": "stretcher_lift",
+      "name": "ELEVADOR DE MACAS",
+      "tag": "ROTA",
+      "description": "Puxa da linha do aquecimento. Move o elevador do poço.",
+      "effect_off": "O elevador para onde estiver.",
+      "cost": 1,
+      "requires": [
+        "heating"
+      ],
+      "locked": false,
+      "effects": [
+        {
+          "target": "id:inf_lift",
+          "action": "power"
+        }
+      ]
+    },
+    {
+      "id": "pharmacy_door",
+      "name": "FARMÁCIA",
+      "tag": "ROTA",
+      "description": "Abre a porta da farmácia.",
+      "effect_off": "A porta da farmácia fecha.",
+      "cost": 1,
+      "requires": [],
+      "locked": false,
+      "effects": [
+        {
+          "target": "id:inf_pharmacy_door",
+          "action": "power"
+        }
+      ]
+    },
+    {
+      "id": "quarantine_door",
+      "name": "QUARENTENA",
+      "tag": "ROTA",
+      "description": "Abre a comporta da quarentena.",
+      "effect_off": "A comporta da quarentena fecha.",
+      "cost": 1,
+      "requires": [],
+      "locked": false,
+      "effects": [
+        {
+          "target": "id:inf_quarantine_door",
+          "action": "power"
+        }
+      ]
+    },
+    {
+      "id": "node_door",
+      "name": "PORTA DO NÓ DO SETOR",
+      "tag": "META",
+      "description": "Abre a comporta da câmara do Nó do Setor.",
+      "effect_off": "A comporta do Nó fecha e o setor segue desligado.",
+      "cost": 1,
+      "requires": [],
+      "locked": false,
+      "effects": [
+        {
+          "target": "id:inf_node_door",
+          "action": "power"
+        },
+        {
+          "target": "id:inf_node_lamp",
+          "action": "power"
+        }
+      ]
+    }
+  ]
+}

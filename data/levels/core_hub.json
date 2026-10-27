@@ -9,15 +9,26 @@
   "reactor_online": false,
   "objective": "obj_core_hub",
   "on_enter_dialogue": "core_wake",
-  "revisit": {
-    "after_sector": "greenhouse",
-    "spawn_dock": "hab_dock_02",
-    "objective": "obj_core_lab",
-    "ambient_color": "#2b3f52",
-    "on_enter_dialogue": "core_return",
-    "reactor_online": true,
-    "triggers": []
-  },
+  "revisit": [
+    {
+      "after_sector": "greenhouse",
+      "spawn_dock": "hab_dock_02",
+      "objective": "obj_core_lab",
+      "ambient_color": "#2b3f52",
+      "on_enter_dialogue": "core_return",
+      "reactor_online": true,
+      "triggers": []
+    },
+    {
+      "after_sector": "lab",
+      "spawn_dock": "hab_dock_02",
+      "objective": "obj_core_infirmary",
+      "ambient_color": "#3b5266",
+      "on_enter_dialogue": "core_return_lab",
+      "reactor_online": true,
+      "triggers": []
+    }
+  ],
   "terminals": [
     "core_hub"
   ],
@@ -147,7 +158,16 @@
     },
     "109,11": {
       "id": "core_hub_exit_lab",
-      "target": "res://scenes/levels/lab.tscn"
+      "target": "res://scenes/levels/lab.tscn",
+      "closes_after_sector": "lab"
+    },
+    "113,11": {
+      "id": "door_infirmary",
+      "sealed_until_sector": "lab"
+    },
+    "117,11": {
+      "id": "core_hub_exit_infirmary",
+      "target": "res://scenes/levels/infirmary.tscn"
     }
   },
   "triggers": [

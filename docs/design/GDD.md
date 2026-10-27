@@ -527,8 +527,8 @@ Toda vez que a dificuldade sobe demais, o jogador ganha um upgrade que faz o con
 | `ENERGY_CELL_CHARGE` | 40 | Carga | 2.6.3 |
 | `REPAIR_KIT_INTEGRITY` | 25 | pts | 2.6.3 |
 | `CAPACITOR_BONUS` | 25 | Carga máx. | 2.6.3 |
-| `LOGS_TOTAL` | 6 | un. | AJ-041 |
-| `RESEARCH_TOTAL` | 6 | un. | AJ-041 |
+| `LOGS_TOTAL` | 8 | un. | AJ-045 |
+| `RESEARCH_TOTAL` | 8 | un. | AJ-045 |
 | `DIFFICULTY_DAMAGE_MULT` | {easy: 0.5, normal: 1.0, hard: 1.5} | fator | AJ-003 |
 | `DIFFICULTY_REACTOR_MULT` | {easy: 0.5, normal: 1.0, hard: 1.5} | fator | AJ-003 |
 | `RESPAWN_CHARGE_RATIO` | 1.0 | fração | AJ-006 |
@@ -699,6 +699,22 @@ Toda vez que a dificuldade sobe demais, o jogador ganha um upgrade que faz o con
 | `CX2_COOLDOWN` | 1.6 | s | AJ-039 |
 | `FURNACE_DPS` | 12 | pts/s | AJ-039 |
 | `HEAT_SINK_DAMAGE_MULT` | 0.3 | fator | 2.6.1 (−70%) |
+| `V9_CONTACT_DAMAGE` | 12 | pts | 2.6.2-C |
+| `V9_CHASE_TIME` | 8.0 | s | 2.6.2-C |
+| `V9_VISION_RANGE` | 96 | px | 2.6.2-C (6 m) |
+| `V9_DARK_VISION` | 32 | px | AJ-043 |
+| `V9_HEAR_RADIUS` | 128 | px | AJ-043 |
+| `V9_LOSE_TIME` | 1.0 | s | AJ-043 |
+| `V9_PATROL_SPEED` | 30 | px/s | AJ-043 |
+| `V9_CHASE_SPEED` | 70 | px/s | AJ-043 |
+| `V9_LATCH_TIME` | 1.5 | s | AJ-043 |
+| `V9_LATCH_DRAIN` | 10 | Carga/s | AJ-043 |
+| `V9_COOLDOWN` | 2.0 | s | AJ-043 |
+| `FREEZE_DECEL_MULT` | 0.2 | fator | AJ-044 |
+| `THIN_ICE_BREAK_TIME` | 0.5 | s | 2.6.2-E |
+| `THIN_ICE_REFORM_TIME` | 3.0 | s | AJ-044 |
+| `ICE_MELT_TIME` | 0.5 | s | AJ-044 |
+| `V9_ALERT_TIME` | 0.4 | s | AJ-046 |
 
 <a id="gdd-p-dificuldade"></a>
 ### Multiplicadores de dificuldade (AJ-003)
@@ -740,3 +756,7 @@ Toda vez que a dificuldade sobe demais, o jogador ganha um upgrade que faz o con
 | AJ-040 | 2026-10-27 | 2.6.2-F | **DESCARGA também bloqueia as garras magnéticas** enquanto dura, além de dash, feixe e propulsor | Dash, feixe e propulsor ainda não existem na build (F31/F62): sem isso o status seria um ícone sem efeito. As garras são eletroímã, a ficção sustenta, e nasce o par CX-2 vigiando parede magnética |
 | AJ-041 | 2026-10-27 | 2.7 · 2.6.3 · GDD-P | **Religar a Estufa não encerra mais o jogo**: o MU-7 volta ao Núcleo Central, que fica mais claro, troca o objetivo e destrava a comporta do Laboratório; a saída para a Estufa fecha até as portas de mão dupla da F45. Religar o Laboratório leva à tela de fim. O Laboratório traz 2 logs e 2 dados: `LOGS_TOTAL` 4→6 e `RESEARCH_TOTAL` 4→6 | Decisão do humano: "Volta ao Núcleo". Segue o hub radial do GDD-2.7 ("a cada volta o centro está mais iluminado") e o AJ-027 |
 | AJ-042 | 2026-10-27 | 2.4 · 2.6.1 · 2.6.2-D/E · 2.7-F0 | **Dash e Feixe entram no jogo (F31).** O dash sai no chão e **uma vez no ar** por salto (renova ao tocar o chão ou agarrar parede) e, enquanto dura, o MU-7 não toma dano de esporos nem de jato de vapor; contato com máquina continua ferindo. O feixe dispara na direção em que o MU-7 olha, não atravessa parede e desliga qualquer máquina do grupo de alvos (SR-3, CX-2 e as que vierem). Os dois se ensinam no **Habitacional**, dentro do Núcleo, com cartão de tecla e um obstáculo que só eles resolvem, sem fala da ÓRBITA. O custo de cada um aparece no Terminal do Chassi, não na barra de Carga | Decisão do humano: "F31 inteira antes" da Enfermaria. A marcação de custo na barra (GDD-2.8) faria a HUD crescer, o que o playtest reprovou (AJ-028); ensinar por fala fora do tutorial também foi reprovado (AJ-029) |
+| AJ-043 | 2026-10-27 | 2.6.2-C · GDD-P | **Enfermaria: a V-9 em números.** "Visão 6 m" vale para o MU-7 **iluminado** (lanterna acesa ou dentro da luz de uma lâmpada ligada); no escuro a V-9 só o percebe a 32 px. O dash a até 128 px a denuncia. A perseguição dura até 8 s (GDD) e termina antes se o MU-7 passar 1 s sem ser visto. Patrulha a 30 px/s, persegue a 70 px/s — mais devagar que o MU-7 andando (110), mais rápido que ele congelado (55). "Gruda e drena": no contato dá 12 (GDD), sem empurrão, e fica presa 1,5 s drenando 10 de Carga/s; depois solta e espera 2 s antes de poder grudar de novo | O GDD dava visão, tempo de perseguição e dano, sem dizer o que é "ver" num jogo em que a escuridão é regra, nem quanto dura o "gruda e drena". A visão ligada à luz é o que transforma a lanterna no dilema que o GDD pede para a fase |
+| AJ-044 | 2026-10-27 | 2.6.2-E · 2.6.2-F · 2.6.1 · 2.3 · GDD-P | **Gelo em duas formas e chão escorregadio.** "Gelo fino" é a **plataforma** que racha e cai 0,5 s depois de pisada (GDD) e se refaz em 3 s. A **parede de gelo** bloqueia passagem: derrete em 0,5 s enquanto o aquecedor do grupo dela está ligado e recongela quando ele desliga (o exemplo do GDD-2.3), ou derrete para sempre quando o MU-7 com **Núcleo Aquecido** encosta nela (o "derrete gelo fino" do GDD-2.6.1). O "chão escorregadio" do CONGELAMENTO multiplica a desaceleração por 0,2 | O GDD usa "gelo fino" para duas coisas incompatíveis: uma que se quebra sozinha e outra que o upgrade derrete. Separar as duas mantém as três frases do GDD verdadeiras |
+| AJ-045 | 2026-10-27 | 2.7 · 2.6.3 · GDD-P | **Religar o Laboratório também volta ao Núcleo**, que fica mais claro outra vez, troca o objetivo e destrava a comporta da Enfermaria; a saída para o Laboratório fecha até a F45. A revisita do Núcleo passa a ser uma lista (vale a última entrada já cumprida). Religar a Enfermaria leva à tela de fim, com a frase de fechamento do último setor religado. A Enfermaria traz 2 logs e 2 dados: `LOGS_TOTAL` 6→8 e `RESEARCH_TOTAL` 6→8 | Mesmo padrão do AJ-041; decisão do humano de fazer a próxima fase completa |
+| AJ-046 | 2026-10-27 | 2.6.2-C · GDD-P | **A V-9 avisa antes de perseguir.** Ao detectar o MU-7 ela para no ar por 0,4 s com a lente âmbar e um som de alerta; só então persegue. A visão também exige linha livre (parede corta), e a perseguição atravessa o cenário como o GDD pede | Playtest da demo reprovou inimigo sem aviso; 0,4 s é curto para a V-9 continuar perigosa e longo para o jogador ler o alerta e apagar a lanterna |

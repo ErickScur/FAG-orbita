@@ -30,6 +30,16 @@
       "light": "#ECE8DC",
       "outline": "#141310"
     },
+    "infirmary": {
+      "base": "#18222C",
+      "secondary": "#5B6E7C",
+      "tile": "#B9CFD9",
+      "tile_back": "#4A5E6C",
+      "accent": "#9FE3F0",
+      "danger": "#E8B04A",
+      "light": "#EEF6F8",
+      "outline": "#0C141B"
+    },
     "ui": {
       "base": "#0B0F14",
       "secondary": "#2F4F5A",
@@ -207,6 +217,47 @@
       "palette": "lab",
       "body": "#6E7378",
       "seed": 120
+    },
+    {
+      "id": "TIL-INFIRMARY",
+      "path": "tiles/infirmary_tiles.png",
+      "frame": [16, 16],
+      "grid": [8, 4],
+      "shape": "tileset",
+      "palette": "infirmary",
+      "seed": 121
+    },
+    {
+      "id": "SPR-V9",
+      "path": "sprites/enemies/v9_sheet.png",
+      "frame": [32, 32],
+      "grid": [4, 2],
+      "frames": [4, 4],
+      "shape": "flying_sentinel",
+      "palette": "infirmary",
+      "body": "#D8E6EC",
+      "seed": 122
+    },
+    {
+      "id": "SPR-ICE",
+      "path": "sprites/world/ice_sheet.png",
+      "frame": [16, 16],
+      "grid": [4, 2],
+      "frames": [3, 3],
+      "shape": "ice",
+      "palette": "infirmary",
+      "seed": 123
+    },
+    {
+      "id": "SPR-PROPS-INF",
+      "path": "sprites/props/infirmary_props_sheet.png",
+      "frame": [32, 32],
+      "grid": [4, 2],
+      "frames": [4, 4],
+      "shape": "infirmary_props",
+      "palette": "infirmary",
+      "body": "#D8E6EC",
+      "seed": 124
     },
     {
       "id": "BG-SPACE-FAR",

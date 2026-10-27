@@ -13,6 +13,7 @@
   "abilities_empty": "NENHUMA INSTALADA",
   "ability_magnetic_claws": "GARRAS MAGNÉTICAS",
   "ability_heat_sink": "DISSIPADOR TÉRMICO",
+  "ability_heated_core": "NÚCLEO AQUECIDO",
   "ability_dash": "IMPULSO MAGNÉTICO",
   "ability_beam": "FEIXE DE MANUTENÇÃO",
   "ability_cost": "%d CARGA",

@@ -89,7 +89,7 @@ func test_test_room_has_every_implemented_char() -> void:
 		symbols[String(entry["symbol"])] = true
 	for symbol: Variant in LevelBuilder.LEGEND:
 		var feature: String = String((LevelBuilder.LEGEND[symbol] as Dictionary)["feature"])
-		if feature == "F32" or feature == "F34" or feature == "F60":
+		if ["F32", "F34", "F60", "F61"].has(feature):
 			continue
 		assert_true(symbols.has(String(symbol)), "test_room sem o caractere '%s'" % symbol)
 

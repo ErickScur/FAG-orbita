@@ -1,0 +1,104 @@
+{
+  "logs": [
+    {
+      "id": "log_inf_01",
+      "sector": "infirmary",
+      "author": "helena",
+      "title": "PROTOCOLO DE INVERNO",
+      "subtitle": "ENGENHARIA CHEFE",
+      "unlock_ability": "heated_core",
+      "lines": [
+        {
+          "text": "A enfermaria virou a sala mais fria da estação. Fui eu que mandei baixar a temperatura.",
+          "expr": "tired"
+        },
+        {
+          "text": "Frio segura os esporos. Foi a única coisa que a Samira e eu conseguimos provar.",
+          "expr": "neutral"
+        },
+        {
+          "text": "O problema é que frio também segura máquina. Os chassis MU travam aqui embaixo.",
+          "expr": "worried"
+        },
+        {
+          "text": "Estou liberando o núcleo aquecido para qualquer unidade que acessar este terminal.",
+          "expr": "determined"
+        },
+        {
+          "text": "O chassi esquenta por dentro. O frio deixa de ser problema seu, e o gelo também.",
+          "expr": "neutral"
+        },
+        {
+          "text": "Montei esta ala de quarentena em duas noites. Seis leitos viraram doze.",
+          "expr": "worried"
+        },
+        {
+          "text": "A ÓRBITA organiza a fila. Quem chega, quem é transferido, quem fica em observação.",
+          "expr": "tired"
+        },
+        {
+          "text": "Ela é eficiente. Às vezes eu queria que ela hesitasse um pouco.",
+          "expr": "worried"
+        },
+        {
+          "text": "Hoje o Marcos tossiu no refeitório. Ninguém falou nada. Todo mundo contou os passos até a porta.",
+          "expr": "emotional"
+        },
+        {
+          "text": "Mantenha a quarentena fria. Se o calor voltar, os esporos voltam junto.",
+          "expr": "determined"
+        }
+      ]
+    },
+    {
+      "id": "log_inf_02",
+      "sector": "infirmary",
+      "author": "helena",
+      "title": "LOG PESSOAL 14",
+      "subtitle": "DRA. HELENA VASQUEZ",
+      "unlock_ability": "",
+      "lines": [
+        {
+          "text": "Log pessoal. Catorze. Leio os prontuários em voz alta, porque se eu parar eu durmo.",
+          "expr": "tired"
+        },
+        {
+          "text": "Leito um, Samira Okafor, botânica. Primeira a tossir. Primeira a pedir desculpas por tossir.",
+          "expr": "neutral"
+        },
+        {
+          "text": "Leitos dois e três, a equipe do setor B da estufa. Leito quatro, o Teodoro, da manutenção.",
+          "expr": "neutral"
+        },
+        {
+          "text": "Até o leito nove, todo mundo tinha passado pelo setor B na mesma semana. Fazia sentido.",
+          "expr": "worried"
+        },
+        {
+          "text": "Leito dez, Ana Lúcia, das docas. Nunca pisou na estufa. Leito onze, o filho dela.",
+          "expr": "worried"
+        },
+        {
+          "text": "Os sensores das comportas marcaram o corredor dela como limpo. Três dias antes da tosse.",
+          "expr": "worried"
+        },
+        {
+          "text": "A ÓRBITA diz que o corredor estava limpo quando foi medido. Os números dela batem.",
+          "expr": "tired"
+        },
+        {
+          "text": "Os meus também batem. É isso que me assusta.",
+          "expr": "determined"
+        },
+        {
+          "text": "O leito doze está vazio. Deixei pronto. Ainda não sei para quem.",
+          "expr": "emotional"
+        },
+        {
+          "text": "Vou dormir três horas. Depois eu volto e leio de novo, do leito um.",
+          "expr": "emotional"
+        }
+      ]
+    }
+  ]
+}

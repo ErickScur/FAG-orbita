@@ -1,7 +1,12 @@
 extends Control
 
 const BACKGROUND_FAR: String = "res://assets/backgrounds/space_far.png"
-const CLOSING_TEXT: String = "O LABORATÓRIO ESFRIOU. A ESTAÇÃO AINDA NÃO."
+const CLOSING_TEXTS: Dictionary = {
+	&"greenhouse": "A ESTUFA VOLTOU A RESPIRAR. A ESTAÇÃO AINDA NÃO.",
+	&"lab": "O LABORATÓRIO ESFRIOU. A ESTAÇÃO AINDA NÃO.",
+	&"infirmary": "A ENFERMARIA AQUECEU. A ESTAÇÃO AINDA NÃO.",
+}
+const DEFAULT_SECTOR: StringName = &"infirmary"
 const ROW_LABEL_COLOR: Color = Color(0.541176, 0.607843, 0.658824)
 const ROW_VALUE_COLOR: Color = Color(0.372549, 0.831373, 0.784314)
 const ROW_HEIGHT: int = 14
@@ -15,12 +20,19 @@ const ROW_HEIGHT: int = 14
 func _ready() -> void:
 	get_tree().paused = false
 	stars.texture = AssetResolver.texture(BACKGROUND_FAR)
-	closing.text = CLOSING_TEXT
+	closing.text = closing_text(GameState.sectors_restored)
 	_build_stats()
 	AudioManager.play_music(&"menu")
 	menu_button.pressed.connect(_on_menu)
 	menu_button.focus_entered.connect(_play_move)
 	menu_button.grab_focus()
+
+
+static func closing_text(restored: Array) -> String:
+	var sector: StringName = DEFAULT_SECTOR
+	if not restored.is_empty():
+		sector = StringName(String(restored[restored.size() - 1]))
+	return String(CLOSING_TEXTS.get(sector, CLOSING_TEXTS[DEFAULT_SECTOR]))
 
 
 func _build_stats() -> void:

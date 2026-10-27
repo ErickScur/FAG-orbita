@@ -1,0 +1,577 @@
+{
+  "id": "infirmary",
+  "name": "Enfermaria",
+  "tileset": "res://assets/tiles/infirmary_tileset.tres",
+  "entity_tiles": "res://assets/tiles/infirmary_tiles.png",
+  "ambient_color": "#0a0e14",
+  "ambient_restored": "#4c5a66",
+  "ambient_motes": "#cfeaff",
+  "parallax": true,
+  "floor_sfx": "step_metal",
+  "music": "core",
+  "reactor_online": true,
+  "objective": "obj_infirmary",
+  "on_enter_dialogue": "inf_enter",
+  "terminals": [
+    "infirmary"
+  ],
+  "entities": {
+    "62,3": {
+      "id": "inf_cold_detour",
+      "rect": [
+        34,
+        10
+      ],
+      "kind": "cold"
+    },
+    "77,3": {
+      "id": "inf_ice_detour_01"
+    },
+    "77,4": {
+      "id": "inf_ice_detour_02"
+    },
+    "67,5": {
+      "id": "capacitor_inf_01"
+    },
+    "69,5": {
+      "id": "inf_secret_01_upper",
+      "secret_id": "inf_secret_01"
+    },
+    "77,5": {
+      "id": "inf_ice_detour_03"
+    },
+    "89,5": {
+      "id": "cell_inf_02"
+    },
+    "64,6": {
+      "id": "log_inf_02",
+      "prompt_text": "LER REGISTRO"
+    },
+    "69,6": {
+      "id": "inf_secret_01_lower",
+      "secret_id": "inf_secret_01"
+    },
+    "77,6": {
+      "id": "inf_ice_detour_04"
+    },
+    "82,7": {
+      "id": "inf_thin_detour_01"
+    },
+    "83,7": {
+      "id": "inf_thin_detour_02"
+    },
+    "84,7": {
+      "id": "inf_thin_detour_03"
+    },
+    "85,7": {
+      "id": "inf_thin_detour_04"
+    },
+    "86,7": {
+      "id": "inf_thin_detour_05"
+    },
+    "58,13": {
+      "id": "inf_cold_landing",
+      "rect": [
+        21,
+        4
+      ],
+      "kind": "cold"
+    },
+    "71,13": {
+      "terminal_id": "infirmary",
+      "system_id": "heating",
+      "group": "heat_landing",
+      "id": "inf_heater_landing",
+      "rect": [
+        5,
+        4
+      ],
+      "kind": "warm"
+    },
+    "80,13": {
+      "id": "inf_cold_quarantine",
+      "rect": [
+        28,
+        10
+      ],
+      "kind": "cold"
+    },
+    "82,13": {
+      "terminal_id": "infirmary",
+      "system_id": "sentinels",
+      "id": "inf_v9_04",
+      "path": [
+        [
+          0,
+          0
+        ],
+        [
+          4,
+          0
+        ]
+      ]
+    },
+    "85,13": {
+      "terminal_id": "infirmary",
+      "system_id": "heating",
+      "group": "heat_quarantine",
+      "id": "inf_heater_quarantine",
+      "rect": [
+        3,
+        4
+      ],
+      "kind": "warm"
+    },
+    "88,13": {
+      "id": "inf_ice_quarantine_01",
+      "heater": "heat_quarantine"
+    },
+    "100,13": {
+      "id": "inf_ice_cryo_gate_01"
+    },
+    "62,14": {
+      "id": "inf_lamp_landing",
+      "color": "#bfe6ff",
+      "radius": 64.0,
+      "energy": 1.2
+    },
+    "81,14": {
+      "id": "inf_lamp_quarantine",
+      "color": "#bfe6ff",
+      "radius": 56.0,
+      "energy": 1.2
+    },
+    "88,14": {
+      "id": "inf_ice_quarantine_02",
+      "heater": "heat_quarantine"
+    },
+    "100,14": {
+      "id": "inf_ice_cryo_gate_02"
+    },
+    "88,15": {
+      "id": "inf_ice_quarantine_03",
+      "heater": "heat_quarantine"
+    },
+    "100,15": {
+      "id": "inf_ice_cryo_gate_03"
+    },
+    "60,16": {
+      "id": "inf_wheelchair_01",
+      "sheet": "res://assets/sprites/props/infirmary_props_sheet.png",
+      "frame": 6
+    },
+    "63,16": {
+      "id": "inf_stretcher_02",
+      "sheet": "res://assets/sprites/props/infirmary_props_sheet.png",
+      "frame": 2
+    },
+    "68,16": {
+      "terminal_id": "infirmary",
+      "system_id": "stretcher_lift",
+      "id": "inf_lift",
+      "path": [
+        [
+          0,
+          0.75
+        ],
+        [
+          0,
+          30.75
+        ]
+      ],
+      "wait": 0.6,
+      "freight": true
+    },
+    "73,16": {
+      "id": "inf_console_c",
+      "terminal": "infirmary"
+    },
+    "77,16": {
+      "id": "inf_dock_03"
+    },
+    "79,16": {
+      "terminal_id": "infirmary",
+      "system_id": "quarantine_door",
+      "id": "inf_quarantine_door"
+    },
+    "81,16": {
+      "id": "inf_bed_10",
+      "sheet": "res://assets/sprites/props/infirmary_props_sheet.png",
+      "frame": 0
+    },
+    "83,16": {
+      "id": "inf_bed_11",
+      "sheet": "res://assets/sprites/props/infirmary_props_sheet.png",
+      "frame": 0
+    },
+    "88,16": {
+      "id": "inf_ice_quarantine_04",
+      "heater": "heat_quarantine"
+    },
+    "90,16": {
+      "id": "log_inf_01",
+      "prompt_text": "LER PROTOCOLO"
+    },
+    "100,16": {
+      "id": "inf_ice_cryo_gate_04"
+    },
+    "71,23": {
+      "id": "inf_cold_cryo",
+      "rect": [
+        38,
+        17
+      ],
+      "kind": "cold"
+    },
+    "71,28": {
+      "id": "inf_thin_well_a_01"
+    },
+    "72,28": {
+      "id": "inf_thin_well_a_02"
+    },
+    "73,28": {
+      "id": "inf_thin_well_a_03"
+    },
+    "102,29": {
+      "id": "inf_cryo_01",
+      "sheet": "res://assets/sprites/props/infirmary_props_sheet.png",
+      "frame": 4
+    },
+    "84,30": {
+      "id": "inf_thin_bridge_b_01"
+    },
+    "85,30": {
+      "id": "inf_thin_bridge_b_02"
+    },
+    "86,30": {
+      "id": "inf_thin_bridge_b_03"
+    },
+    "87,30": {
+      "id": "inf_thin_bridge_b_04"
+    },
+    "88,30": {
+      "id": "inf_thin_bridge_b_05"
+    },
+    "89,30": {
+      "id": "inf_thin_bridge_b_06"
+    },
+    "93,30": {
+      "id": "inf_thin_bridge_a_01"
+    },
+    "94,30": {
+      "id": "inf_thin_bridge_a_02"
+    },
+    "95,30": {
+      "id": "inf_thin_bridge_a_03"
+    },
+    "96,30": {
+      "id": "inf_thin_bridge_a_04"
+    },
+    "97,30": {
+      "id": "inf_thin_bridge_a_05"
+    },
+    "98,30": {
+      "id": "inf_thin_bridge_a_06"
+    },
+    "71,33": {
+      "id": "inf_thin_well_b_01"
+    },
+    "72,33": {
+      "id": "inf_thin_well_b_02"
+    },
+    "73,33": {
+      "id": "inf_thin_well_b_03"
+    },
+    "104,34": {
+      "terminal_id": "infirmary",
+      "system_id": "node_door",
+      "id": "inf_node_lamp",
+      "color": "#ffb46a",
+      "radius": 96.0,
+      "energy": 1.4
+    },
+    "84,36": {
+      "id": "inf_ice_node_hall_01"
+    },
+    "12,37": {
+      "id": "inf_cold_ward",
+      "rect": [
+        50,
+        14
+      ],
+      "kind": "cold"
+    },
+    "73,37": {
+      "id": "data_inf_02"
+    },
+    "84,37": {
+      "id": "inf_ice_node_hall_02"
+    },
+    "84,38": {
+      "id": "inf_ice_node_hall_03"
+    },
+    "82,39": {
+      "id": "inf_cryo_03",
+      "sheet": "res://assets/sprites/props/infirmary_props_sheet.png",
+      "frame": 4
+    },
+    "84,39": {
+      "id": "inf_ice_node_hall_04"
+    },
+    "88,39": {
+      "id": "inf_cryo_04",
+      "sheet": "res://assets/sprites/props/infirmary_props_sheet.png",
+      "frame": 4
+    },
+    "91,39": {
+      "id": "inf_cryo_05",
+      "sheet": "res://assets/sprites/props/infirmary_props_sheet.png",
+      "frame": 4
+    },
+    "94,39": {
+      "id": "inf_dock_04"
+    },
+    "96,39": {
+      "id": "kit_inf_02"
+    },
+    "97,39": {
+      "terminal_id": "infirmary",
+      "system_id": "node_door",
+      "id": "inf_node_door"
+    },
+    "98,39": {
+      "id": "inf_cryo_02",
+      "sheet": "res://assets/sprites/props/infirmary_props_sheet.png",
+      "frame": 4
+    },
+    "104,39": {
+      "id": "inf_sector_node",
+      "scene": "res://scenes/world/sector_node.tscn",
+      "sector_id": "infirmary"
+    },
+    "16,40": {
+      "terminal_id": "infirmary",
+      "system_id": "sentinels",
+      "id": "inf_v9_01",
+      "path": [
+        [
+          0,
+          0
+        ],
+        [
+          7,
+          0
+        ]
+      ]
+    },
+    "51,42": {
+      "terminal_id": "infirmary",
+      "system_id": "sentinels",
+      "id": "inf_v9_03",
+      "path": [
+        [
+          0,
+          0
+        ],
+        [
+          5,
+          0
+        ]
+      ]
+    },
+    "7,43": {
+      "id": "inf_lamp_entry",
+      "color": "#bfe6ff",
+      "radius": 80.0,
+      "energy": 1.2
+    },
+    "27,43": {
+      "terminal_id": "infirmary",
+      "system_id": "heating",
+      "group": "heat_ward_01",
+      "id": "inf_heater_ala_01",
+      "rect": [
+        3,
+        4
+      ],
+      "kind": "warm"
+    },
+    "46,43": {
+      "terminal_id": "infirmary",
+      "system_id": "heating",
+      "group": "heat_ward_02",
+      "id": "inf_heater_ala_02",
+      "rect": [
+        3,
+        4
+      ],
+      "kind": "warm"
+    },
+    "62,43": {
+      "id": "inf_cold_ward_end",
+      "rect": [
+        24,
+        4
+      ],
+      "kind": "cold"
+    },
+    "73,43": {
+      "terminal_id": "infirmary",
+      "system_id": "heating",
+      "group": "heat_pharmacy",
+      "id": "inf_heater_pharmacy",
+      "rect": [
+        3,
+        4
+      ],
+      "kind": "warm"
+    },
+    "77,43": {
+      "id": "inf_ice_pharmacy_01",
+      "heater": "heat_pharmacy"
+    },
+    "17,44": {
+      "id": "inf_lamp_ward_01",
+      "color": "#bfe6ff",
+      "radius": 56.0,
+      "energy": 1.2
+    },
+    "34,44": {
+      "terminal_id": "infirmary",
+      "system_id": "sentinels",
+      "id": "inf_v9_02",
+      "path": [
+        [
+          0,
+          0
+        ],
+        [
+          8,
+          0
+        ]
+      ]
+    },
+    "40,44": {
+      "id": "inf_lamp_ward_02",
+      "color": "#bfe6ff",
+      "radius": 48.0,
+      "energy": 1.2
+    },
+    "57,44": {
+      "id": "inf_lamp_ward_03",
+      "color": "#bfe6ff",
+      "radius": 56.0,
+      "energy": 1.2
+    },
+    "77,44": {
+      "id": "inf_ice_pharmacy_02",
+      "heater": "heat_pharmacy"
+    },
+    "77,45": {
+      "id": "inf_ice_pharmacy_03",
+      "heater": "heat_pharmacy"
+    },
+    "82,45": {
+      "id": "data_inf_01"
+    },
+    "4,46": {
+      "id": "inf_dock_01"
+    },
+    "13,46": {
+      "id": "inf_bed_01",
+      "sheet": "res://assets/sprites/props/infirmary_props_sheet.png",
+      "frame": 0
+    },
+    "16,46": {
+      "id": "inf_bed_02",
+      "sheet": "res://assets/sprites/props/infirmary_props_sheet.png",
+      "frame": 0
+    },
+    "19,46": {
+      "id": "inf_bed_03",
+      "sheet": "res://assets/sprites/props/infirmary_props_sheet.png",
+      "frame": 0
+    },
+    "25,46": {
+      "id": "inf_bed_04",
+      "sheet": "res://assets/sprites/props/infirmary_props_sheet.png",
+      "frame": 0
+    },
+    "29,46": {
+      "id": "inf_stretcher_01",
+      "sheet": "res://assets/sprites/props/infirmary_props_sheet.png",
+      "frame": 2
+    },
+    "33,46": {
+      "id": "inf_bed_05",
+      "sheet": "res://assets/sprites/props/infirmary_props_sheet.png",
+      "frame": 0
+    },
+    "35,46": {
+      "id": "inf_bed_06",
+      "sheet": "res://assets/sprites/props/infirmary_props_sheet.png",
+      "frame": 0
+    },
+    "41,46": {
+      "id": "inf_bed_07",
+      "sheet": "res://assets/sprites/props/infirmary_props_sheet.png",
+      "frame": 0
+    },
+    "43,46": {
+      "id": "inf_bed_08",
+      "sheet": "res://assets/sprites/props/infirmary_props_sheet.png",
+      "frame": 0
+    },
+    "50,46": {
+      "id": "inf_bed_09",
+      "sheet": "res://assets/sprites/props/infirmary_props_sheet.png",
+      "frame": 0
+    },
+    "55,46": {
+      "id": "inf_bed_12",
+      "sheet": "res://assets/sprites/props/infirmary_props_sheet.png",
+      "frame": 1
+    },
+    "62,46": {
+      "id": "inf_dock_02"
+    },
+    "65,46": {
+      "id": "inf_console_b",
+      "terminal": "infirmary"
+    },
+    "72,46": {
+      "terminal_id": "infirmary",
+      "system_id": "pharmacy_door",
+      "id": "inf_pharmacy_door"
+    },
+    "74,46": {
+      "id": "inf_cart_01",
+      "sheet": "res://assets/sprites/props/infirmary_props_sheet.png",
+      "frame": 5
+    },
+    "77,46": {
+      "id": "inf_ice_pharmacy_04",
+      "heater": "heat_pharmacy"
+    },
+    "80,46": {
+      "id": "inf_cabinet_01",
+      "sheet": "res://assets/sprites/props/infirmary_props_sheet.png",
+      "frame": 7
+    },
+    "84,46": {
+      "id": "kit_inf_01"
+    },
+    "4,48": {
+      "id": "inf_cold_duct_west",
+      "rect": [
+        8,
+        3
+      ],
+      "kind": "cold"
+    },
+    "30,49": {
+      "id": "cell_inf_01"
+    }
+  },
+  "triggers": []
+}

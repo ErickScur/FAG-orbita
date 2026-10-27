@@ -148,16 +148,34 @@ const LEGEND: Dictionary = {
 		"feature": "F60",
 	},
 	"h": {
-		"name": "zona de calor",
+		"name": "zona de clima",
 		"scene": "res://scenes/world/heat_zone.tscn",
 		"anchor": &"center",
 		"feature": "F60",
 	},
 	"i": {
-		"name": "ilha fria",
+		"name": "ilha de clima",
 		"scene": "res://scenes/world/cold_island.tscn",
 		"anchor": &"center",
 		"feature": "F60",
+	},
+	"Y": {
+		"name": "sentinela voadora V-9",
+		"scene": "res://scenes/enemies/v9.tscn",
+		"anchor": &"center",
+		"feature": "F61",
+	},
+	"_": {
+		"name": "gelo fino",
+		"scene": "res://scenes/world/thin_ice.tscn",
+		"anchor": &"center",
+		"feature": "F61",
+	},
+	"I": {
+		"name": "parede de gelo",
+		"scene": "res://scenes/world/ice_wall.tscn",
+		"anchor": &"center",
+		"feature": "F61",
 	},
 }
 const COLLECTIBLE_KINDS: Array[StringName] = [
@@ -165,6 +183,7 @@ const COLLECTIBLE_KINDS: Array[StringName] = [
 ]
 const PROPS_SHEET: String = "res://assets/sprites/props/props_sheet.png"
 const PROP_FRAME: Vector2i = Vector2i(32, 32)
+const PARAM_SHEET: String = "sheet"
 const TRIGGER_SCRIPT: String = "res://scenes/world/dialogue_trigger.gd"
 const BACKGROUND_TILE: Vector2i = Vector2i(1, 2)
 const WINDOW_TILE: Vector2i = Vector2i(2, 2)
@@ -451,13 +470,22 @@ static func _instantiate(symbol: String, definition: Dictionary, params: Diction
 	return null
 
 
+static func prop_cell(frame: int, sheet_width: int) -> Vector2i:
+	var columns: int = maxi(1, sheet_width / PROP_FRAME.x)
+	var index: int = maxi(0, frame)
+	return Vector2i(index % columns, index / columns)
+
+
 static func _make_prop(params: Dictionary) -> Node2D:
-	var column: int = int(params.get("frame", 0))
-	var texture: AtlasTexture = AssetResolver.atlas(PROPS_SHEET, PROP_FRAME, column, 0)
+	var sheet: String = String(params.get(PARAM_SHEET, PROPS_SHEET))
+	var source: Texture2D = AssetResolver.texture(sheet)
+	var width: int = source.get_width() if source != null else PROP_FRAME.x
+	var cell: Vector2i = prop_cell(int(params.get("frame", 0)), width)
+	var texture: AtlasTexture = AssetResolver.atlas(sheet, PROP_FRAME, cell.x, cell.y)
 	var sprite := Sprite2D.new()
 	sprite.name = "Prop"
 	if texture == null:
-		push_warning("LevelBuilder: folha de props ausente em %s" % PROPS_SHEET)
+		push_warning("LevelBuilder: folha de props ausente em %s" % sheet)
 	else:
 		sprite.texture = texture
 	sprite.offset = Vector2(0.0, -float(PROP_FRAME.y) * 0.5)

@@ -15,15 +15,25 @@ static func is_restored(sector_id: StringName, restored: Array) -> bool:
 	return false
 
 
-static func active_block(meta: Dictionary, restored: Array) -> Dictionary:
+static func blocks(meta: Dictionary) -> Array[Dictionary]:
 	var raw: Variant = meta.get(KEY_BLOCK, {})
-	if not (raw is Dictionary):
-		return {}
-	var block: Dictionary = raw
-	var after: StringName = StringName(String(block.get(KEY_AFTER, "")))
-	if not is_restored(after, restored):
-		return {}
-	return block
+	var found: Array[Dictionary] = []
+	if raw is Dictionary:
+		found.append(raw as Dictionary)
+	elif raw is Array:
+		for entry: Variant in raw as Array:
+			if entry is Dictionary:
+				found.append(entry as Dictionary)
+	return found
+
+
+static func active_block(meta: Dictionary, restored: Array) -> Dictionary:
+	var active: Dictionary = {}
+	for block: Dictionary in blocks(meta):
+		var after: StringName = StringName(String(block.get(KEY_AFTER, "")))
+		if is_restored(after, restored):
+			active = block
+	return active
 
 
 static func apply(meta: Dictionary, restored: Array) -> Dictionary:

@@ -36,6 +36,12 @@
 | **Ilha fria** | `cold_island` | Área ligada à refrigeração que anula o calor dentro dela |
 | **Jato de vapor** | `steam_vent` | Obstáculo cíclico (3 s ligado / 2 s desligado, 20 de dano) |
 | **Laboratório** | `lab` | Fase 2 (Verão) |
+| **Sentinela Voadora V-9** | `v9` | Inimigo da Enfermaria: vê o MU-7 iluminado, ouve o dash, persegue atravessando o cenário e gruda drenando Carga |
+| **Núcleo Aquecido** | `heated_core` | Upgrade da Enfermaria: imune a Congelamento; derrete parede de gelo por contato |
+| **Gelo fino** | `thin_ice` | Plataforma que racha ao ser pisada, cai em 0,5 s e se refaz |
+| **Parede de gelo** | `ice_wall` | Bloqueio que derrete com o aquecedor ligado (e recongela) ou com o Núcleo Aquecido |
+| **Aquecedor** | `cold_island` (`kind: warm`) | Área ligada ao aquecimento que anula o frio |
+| **Enfermaria** | `infirmary` | Fase 3 (Inverno) |
 | **SR-3 "Aranha de Reparo"** | `sr3` | Primeiro inimigo; patrulha e vira na borda |
 | **Enxame de Esporos** | `spore_swarm` | Nuvem que cresce com calor; causa Corrosão |
 | **BOTÂNICO 04** | `botanico` | Drone de irrigação aliado da Estufa |

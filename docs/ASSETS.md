@@ -35,9 +35,13 @@
 | [SPR-BOTANICO](#spr-botanico) | Sprite sheet | Drone BOTÂNICO 04 | C | IA | **integrado** | F34 |
 | [SPR-CX2](#spr-cx2) | Sprite sheet | Torre Calibradora CX-2 (inimigo do Laboratório) | A | IA | **integrado (IA)** | F60 |
 | [SPR-STEAM](#spr-steam) | Sprite | Bocal do jato de vapor | B | IA | **integrado (IA)** | F60 |
+| [SPR-V9](#spr-v9) | Sprite sheet | Sentinela Voadora V-9 (inimigo da Enfermaria) | A | IA | **integrado (IA)** | F61 |
+| [SPR-ICE](#spr-ice) | Sprite sheet | Gelo fino e parede de gelo | A | IA | **integrado (IA)** | F61 |
+| [SPR-PROPS-INF](#spr-props-inf) | Sprite sheet | Objetos da Enfermaria (leitos, maca, soro, cápsula…) | B | IA | **integrado (IA)** | F61 |
 | [TIL-CORE](#til-core) | Tileset | Núcleo Central | A | Grátis + IA | **integrado** | F21, F28 |
 | [TIL-GREENHOUSE](#til-greenhouse) | Tileset | Estufa | A | Grátis + IA | **integrado** | F21, F29 |
 | [TIL-LAB](#til-lab) | Tileset | Laboratório (Verão) | A | IA | **integrado (IA)** | F60 |
+| [TIL-INFIRMARY](#til-infirmary) | Tileset | Enfermaria (Inverno) | A | IA | **integrado (IA)** | F61 |
 | [BG-SPACE](#bg-space) | Camadas parallax | Espaço pelas janelas + menu | A | Grátis ou IA | **integrado** | F26, F07 |
 | [UI-LOGO](#ui-logo) | Imagem | Logo ÓRBITA (splash + menu) | A | IA | **integrado** | F03, F07 |
 | [UI-FONT](#ui-font) | Fonte | Fonte pixel de toda a UI | A | Grátis | integrado | F05, F07 |
@@ -47,6 +51,7 @@
 | [MUS-CORE](#mus-core) | Música | Trilha do Núcleo Central | A | Grátis | **integrado** | F28 |
 | [MUS-GREENHOUSE](#mus-greenhouse) | Música | Trilha da Estufa | A | Grátis | **integrado** | F29 |
 | [MUS-LAB](#mus-lab) | Música | Trilha do Laboratório | A | IA ou Grátis | pendente | F60 |
+| [MUS-INFIRMARY](#mus-infirmary) | Música | Trilha da Enfermaria | A | IA ou Grátis | pendente | F61 |
 | [MUS-CHASSIS](#mus-chassis) | Música | Momento CHASSI PERDIDO (one-shot) | B | Grátis | pendente | F46 |
 | [MUS-GAMEOVER](#mus-gameover) | Música | Momento PERDA DE ÓRBITA (one-shot) | B | Grátis | pendente | F46 |
 | [MUS-SECTOR](#mus-sector) | Música | Momento do religamento do setor (one-shot) | B | Grátis | pendente | F46 |
@@ -381,6 +386,123 @@ IMPORTANT RULE: draw ONLY the nozzle. Never draw the floor, walls, pipes, scener
 Solid flat magenta background (#FF00FF) everywhere else. No text, no letters, no labels, no grid lines, no watermark.
 ```
 
+<a id="spr-v9"></a>
+### SPR-V9 — Sentinela Voadora V-9
+
+| Campo | Valor |
+|---|---|
+| Caminho final | `assets/sprites/enemies/v9_sheet.png` |
+| Contrato | Folha **128×64 = 4 col × 2 lin de 32×32**, fundo transparente. Linha 0: `patrol` 4f (paira; os jatos dos propulsores alternam curto/longo; lente **ciano**). Linha 1: `alert` 1f (lente **âmbar**), `chase` 1f (inclinada para a frente, lente vermelha, jatos para trás), `latch` 1f (garras abertas para baixo e para a frente), `off` 1f (tombada de lado, lente apagada, sem jato). **Voadora**: centrada pelo **corpo**, não pelo pé — o centro do corpo oval fica em (16, ~15) em todos os quadros, e jatos e garras sobram para baixo. Olha para a **direita** (o código espelha) |
+| Silhueta | Ovo deitado branco-sujo com **faixa âmbar de quarentena** listrada, **uma lente grande** na frente, dois propulsores com jato ciano embaixo e um par de garras no meio. Sem hélice, sem antena, sem pernas, **sem cruz vermelha** (emblema protegido). Não se confunde com SR-3 (aranha laranja de chão), CX-2 (torre creme pendurada no teto) nem BOTÂNICO 04 (bolinha verde de 16 px com hélice) |
+| Placeholder | Oval claro com faixa âmbar, lente ciano/âmbar/vermelha/apagada, propulsores e garras |
+| Placeholder gerado | `assets/placeholder/sprites/enemies/v9_sheet.png` (128×64) — `tools/make_placeholders.gd`, forma `flying_sentinel` |
+| Fonte | **IA — geração de imagem do Codex CLI** (`tools/gen_image.sh`), 2026-10-27, 2 variações (as duas em grade 4×2 exata), escolhida a **2ª**: corpo maior e de sombreado limpo a 32 px (escala 0,080 contra 0,071), lente e garras abertas legíveis. A 1ª tinha o balanço de pairar desenhado, mas o corpo cheio de rebites e sujeira virava chuvisco branco a 32 px; o balanço fica com o código. Referências de estilo: `mu7_sheet.png` e `cx2_sheet.png` (ampliadas ×6 sobre magenta). Bruto 1774×887 |
+| Montagem | Fatiada por **células da grade** (1774/4 × 887/2), não pelo `autoslice_sheet.gd` (que alinha pelo pé): centro do corpo = linhas em que a largura opaca passa de 50 % da máxima (o oval; jatos e garras são estreitos), média dos 4 quadros de patrulha; a linha 2 desce 31 px brutos para o `alert` casar com a patrulha; janela quadrada única que cabe todos os quadros com 1 px de folga. Chave por magentice + *unmix*: 0 px semitransparentes, 0 px de franja magenta |
+| Status | **integrado (IA)** em 2026-10-27 |
+
+**Prompt (Codex, com as duas referências anexadas):**
+```
+Pixel art sprite sheet of a FLYING MEDICAL SENTINEL DRONE called V-9, for a 2D side-view sci-fi platformer set in the frozen, abandoned infirmary of a space station. Side view, the drone faces RIGHT.
+
+STYLE MUST MATCH THE ATTACHED REFERENCE IMAGES (the MU-7 robot and the CX-2 turret): same worn, lived-in 16-bit look, hard pixels, dark 1-pixel outline, visible bolts, scratched paint, a little frost on the top edges. MEDIUM brightness overall: the game darkens the scene and lights it at runtime, so do NOT bake strong shadows or glow halos into the sprite.
+
+THE MACHINE (same design in every frame): it FLOATS IN THE AIR, it has no legs and never touches the ground.
+- A chunky HORIZONTAL OVAL body like an egg lying on its side, in cold white medical casing (#D8E6EC body, #9FB4C0 shading, #4A5A66 cold steel seams), with ONE thick AMBER QUARANTINE STRIPE (#E8B04A with dark #3A2A10 diagonal hatching) wrapped vertically around the middle of the body.
+- On the FRONT (right side) of the body: ONE BIG ROUND LENS that takes up almost half of the body height. The lens is the most visible part of the machine.
+- Under each end of the body: a short stubby THRUSTER POD pointing DOWN, with a small pale cyan jet flame (#9FE3F0) under it.
+- Under the middle of the body: a pair of short folded GRABBER CLAWS (cold steel).
+NO propeller on top, NO rotor blades, NO antenna, NO legs. NO red cross and NO cross symbol of any kind anywhere. It must NOT look like a spider, a ceiling turret, a walking robot, a lamp or a small round garden drone: it is a white flying egg with a huge lens, an amber stripe and two thrusters.
+
+Layout: a grid of SQUARE frames, 4 columns and 2 rows, the same size each, every frame showing the WHOLE drone centered in its frame.
+Row 1 — "patrol", 4 frames: the drone hovers, bobbing gently up and down by a few pixels; the thruster jets flicker (short, long, short, long); the lens is BRIGHT PALE CYAN (#7FD6E8) with a small white highlight.
+Row 2 — frame 1 "alert": level pose, lens AMBER (#E8B04A), the claws still folded. Frame 2 "chase": the whole body TILTED FORWARD (nose down toward the right) about 20 degrees, lens RED (#E0383A), thruster jets long and angled backward. Frame 3 "latch": level pose, lens RED, the two grabber claws OPEN WIDE and reaching DOWN and FORWARD, big and clearly visible. Frame 4 "off": the drone is DEAD, tipped over on its side about 70 degrees, lens DARK GREY with no light, claws limp, NO thruster flame at all.
+
+Chunky readable shapes only: no thin 1-pixel details, no tiny panel lines, no speckle — everything must still read when each frame is shrunk to 32x32 pixels. The drone (without its jets) should fill about 70% of the frame width and 50% of the frame height.
+
+IMPORTANT RULE FOR EVERY FRAME: draw ONLY the drone. Never draw floors, walls, ceilings, rooms, scenery, characters, targets or cast shadows. The drone floats on the flat magenta background.
+
+Solid flat magenta background (#FF00FF) everywhere else, with clear magenta gaps between frames. No text, no letters, no labels, no numbers, no grid lines, no frame borders, no watermark.
+```
+
+<a id="spr-ice"></a>
+### SPR-ICE — Gelo fino e parede de gelo
+
+| Campo | Valor |
+|---|---|
+| Caminho final | `assets/sprites/world/ice_sheet.png` |
+| Contrato | Folha **64×32 = 4 col × 2 lin de 16×16**, fundo transparente, **todo pixel opaco ou vazio** (nada de alfa parcial). Linha 0, **gelo fino** (plataforma de 1 tile, pontes são sequências): `intact`, `cracked`, `breaking`, (vazio) — laje de ~6 px **colada no topo do quadro e de borda a borda**, com pingentes embaixo até ~y 11. Linha 1, **parede de gelo** (bloco de 1 tile que empilha): `solid` (16×16 cheio), `melting_a` (menor, cantos de cima abertos, escorrendo), `melting_b` (montinho de ~1/3 da altura no pé do quadro), (vazio) |
+| Silhueta | Gelo fino = laje branco-azulada com **pingentes**: não se confunde com a passarela one-way do tileset (faixa de aço lisa de 5 px, sem pingente). Parede de gelo = bloco azul-escuro cheio com fraturas claras |
+| Placeholder | Laje azul com pingentes / bloco azul com brilho, nas mesmas posições |
+| Placeholder gerado | `assets/placeholder/sprites/world/ice_sheet.png` (64×32) — `tools/make_placeholders.gd`, forma `ice` |
+| Fonte | **IA — geração de imagem do Codex CLI**, 2026-10-27, 2 variações (as duas 4×2 com as células vazias certas), escolhida a **1ª**: laje grossa e reta que lê como chão, 3 pingentes curtos; a 2ª tinha pingentes compridos que, a 16 px, viravam franja e escondiam a laje, e uma poça ciano saturada no `melting_b`. Referência: `lab_tiles.png` ×6 |
+| Montagem | Células tiradas da grade (passo entre caixas detectadas): linha 0 ancorada no topo da laje, linha 1 no pé do bloco. Linha 0 esticada **×1,6 na vertical** (laje de 3 px viraria uma risca; ficou com ~6) e com as rachaduras finas preservadas (pixel bruto quase branco que cobre ≥10 % da célula reduzida vira `#EEF8FC`), senão `cracked` saía igual a `intact`. 0 px semitransparentes, 0 px de franja |
+| Status | **integrado (IA)** em 2026-10-27 |
+
+**Prompt (Codex):**
+```
+Pixel art sprite sheet of ICE pieces for a 2D side-view space station platformer set in a frozen infirmary. Side view.
+
+STYLE MUST MATCH THE ATTACHED REFERENCE IMAGES (the existing station tiles): same 16-bit look, hard pixels, dark 1-pixel outline, no anti-aliasing, no soft gradients, NO transparency and NO glow: every pixel fully opaque. Ice is drawn with solid opaque colors: deep blue (#3E6E95), mid blue (#6FA8CF), pale cyan (#A9DCEC), white highlights (#EEF8FC), dark outline (#0C1E2C).
+
+Layout: a grid of SQUARE frames, 4 columns and 2 rows, all the same size, separated by flat magenta gaps.
+Row 1 — "THIN ICE" platform, a slab of ice that the player can stand on for a moment before it breaks:
+ Frame 1 "intact": a flat horizontal slab of pale blue ice spanning the FULL WIDTH of the frame, edge to edge, only about one third of the frame tall, sitting at the TOP of the frame, with white highlights on its top surface and 3 short chunky ICICLES hanging under it. The rest of the frame below is magenta.
+ Frame 2 "cracked": the same slab with bold white zig-zag cracks across it.
+ Frame 3 "breaking": the same slab split into 3 separate chunks with magenta gaps between them, the chunks starting to drop and tilt.
+ Frame 4: EMPTY, only magenta.
+Row 2 — "ICE WALL", a solid block of thick ice that blocks a corridor and stacks vertically:
+ Frame 1 "solid": a block of thick deep-blue ice filling the WHOLE square edge to edge, with a few pale internal fracture lines and white highlight streaks; the top and bottom must line up seamlessly when blocks are stacked.
+ Frame 2 "melting A": the same block slightly smaller, edges rounded and wet, drips running down, a few magenta gaps at the top corners.
+ Frame 3 "melting B": only a low lump of ice at the bottom of the frame, about one third of its height, with a small puddle.
+ Frame 4: EMPTY, only magenta.
+
+Chunky readable shapes only: everything must still read when each frame is shrunk to 16x16 pixels. Thin ice must look clearly different from a steel catwalk: blue, glassy, with icicles.
+
+IMPORTANT RULE FOR EVERY FRAME: draw ONLY the ice. Never draw walls, floors, scenery, characters or cast shadows.
+
+Solid flat magenta background (#FF00FF) everywhere else. No text, no letters, no labels, no numbers, no grid lines, no frame borders, no watermark.
+```
+
+<a id="spr-props-inf"></a>
+### SPR-PROPS-INF — Objetos da Enfermaria
+
+| Campo | Valor |
+|---|---|
+| Caminho final | `assets/sprites/props/infirmary_props_sheet.png` (carregado pelo `o` com `"sheet"` + `"frame"`) |
+| Contrato | Folha **128×64 = 4 col × 2 lin de 32×32**, fundo transparente, cada objeto **apoiado no pé do quadro** (última linha) e centrado. Quadros: 0 leito arrumado · 1 leito vazio com lençol dobrado · 2 maca · 3 suporte de soro · 4 cápsula criogênica · 5 carrinho de medicação · 6 cadeira de rodas · 7 armário de prontuários. Leitos 0 e 1 diferem pelo lençol (ciano esticado × colchão cinza com o lençol dobrado nos pés): é o que conta a ordem em que a tripulação adoeceu |
+| Placeholder | Silhuetas retangulares de cada objeto, apoiadas no pé |
+| Placeholder gerado | `assets/placeholder/sprites/props/infirmary_props_sheet.png` (128×64) — `tools/make_placeholders.gd`, forma `infirmary_props` |
+| Fonte | **IA — geração de imagem do Codex CLI**, 2026-10-27, 2 variações (as duas com os 8 objetos na ordem), escolhida a **1ª**: lençol ciano × colchão cinza bem separados a 32 px e gaveta aberta com pastas legível; na 2ª o lençol dobrado era quase branco e sumia no colchão. Referências: `mu7_sheet.png` e `props_sheet.png` ×6. **Sem cruz vermelha** |
+| Montagem | Escala comum tirada da altura (o objeto mais alto ocupa 31 px), limitada pela largura de 31 px nos compridos (leitos e maca quase na mesma escala; a cápsula fica menor, 31×13). Alinhados pelo pé, centrados. 0 px semitransparentes, 0 px de franja |
+| Status | **integrado (IA)** em 2026-10-27 |
+
+**Prompt (Codex):**
+```
+Pixel art sprite sheet of EIGHT abandoned infirmary objects for a melancholic 2D side-view space station game, "a beautiful station nobody is using", in the frozen infirmary where the crew fell ill one by one. Side view.
+
+STYLE MUST MATCH THE ATTACHED REFERENCE IMAGES (the MU-7 robot and the station objects): same worn 16-bit look, hard pixels, dark 1-pixel outline, scratched paint, a thin layer of white frost on top surfaces. MEDIUM brightness, no baked glow, no cast shadows.
+
+Palette: cold white medical casing (#D8E6EC, #9FB4C0 shading), cold blue steel (#5B6E7C, #34434F), pale cyan sheets and glass (#9FE3F0, #6FA8CF), white frost (#EEF6F8), a few amber quarantine marks (#E8B04A), dark blue outline (#0C141B). NO red cross and NO cross symbol of any kind on any object.
+
+Layout: a grid of SQUARE frames, 4 columns and 2 rows, the same size each, every object STANDING ON THE BOTTOM EDGE of its own frame, centered horizontally.
+Row 1:
+ 1. a hospital BED, made: low steel frame on short legs, mattress with a smooth pale cyan sheet tucked in and a white pillow at the left end, the bed is long and low.
+ 2. the same hospital BED, EMPTY: bare grey mattress, the sheet FOLDED in a neat square stack at the foot, pillow gone.
+ 3. a wheeled STRETCHER (gurney): thin flat padded top on an X-shaped steel scissor frame with four small wheels.
+ 4. an IV STAND: a tall steel pole on a wheeled star base, with a hanging pale cyan fluid bag at the top; make the pole thick enough to read.
+Row 2:
+ 5. a CRYOGENIC POD: a long horizontal capsule on a short pedestal, white casing, a big frosted pale cyan glass window on top, an amber warning stripe, heavily frosted.
+ 6. a MEDICATION CART: a squat steel cart on four wheels with three drawers and amber handles, a few small bottles on top.
+ 7. a WHEELCHAIR seen from the side: one big wheel, one small front wheel, seat and backrest, empty.
+ 8. a tall FILE CABINET for medical records: steel cabinet with three drawers, the top drawer half open with paper folders sticking out.
+
+Chunky readable shapes only: no thin 1-pixel details — everything must still read when each frame is shrunk to 32x32 pixels. Keep the relative sizes realistic: the beds, stretcher and pod are wide and low, the IV stand and file cabinet are tall and narrow.
+
+IMPORTANT RULE FOR EVERY FRAME: draw ONLY the object described. Never draw walls, floors, ground, ceilings, rooms, scenery, characters, bodies, cast shadows or any other object. Each object floats on the flat magenta background, resting on the bottom edge of its frame.
+
+Solid flat magenta background (#FF00FF) everywhere else, with clear magenta gaps between frames. No text, no letters, no labels, no numbers, no grid lines, no frame borders, no watermark.
+```
+
 <a id="til-core"></a>
 ### TIL-CORE — Tileset Núcleo Central
 
@@ -470,6 +592,55 @@ Row 3: lab details, each a full square tile: a sample cabinet with small glass d
 Row 4: eight more variations of the row-1 interior wall block (different seams, rivets, a small dent, a stain), each seamless.
 
 IMPORTANT RULE: deliver a GRID OF SEPARATE TILES, not a finished picture. Do not draw a room, a level or a composed scene; do not draw characters, creatures or props resting on the tiles.
+No text, no letters, no numbers, no labels, no grid lines, no watermark.
+```
+
+<a id="til-infirmary"></a>
+### TIL-INFIRMARY — Tileset Enfermaria
+
+| Campo | Valor |
+|---|---|
+| Caminho final | `assets/tiles/infirmary_tiles.png` + `assets/tiles/infirmary_tileset.tres` |
+| Contrato | **Mesmo atlas do TIL-LAB**: 128×64, 8×4 de 16×16, mesmas coordenadas. Linhas 0–1: as 16 máscaras 4-dir, opacas. Linha 2: (0,2) passarela one-way só no topo (5 px) · (1,2) parede de fundo opaca · (2,2) janela com miolo transparente · (3,2) grade de ventilação com geada · (4,2) cano horizontal congelado · (5,2) cano vertical · (6,2) luminária acesa (quadro 22) · (7,2) faixa de perigo. Linha 3: (0,3) **parede magnética amarela** · (1,3) luminária apagada (quadro 25) · (2..7,3) armário de remédios, monitor, painel com placa de gelo e pingentes, cabos congelados, painel de sinais vitais, azulejo com rachadura de gelo. O `.tres` é cópia do `lab_tileset.tres` com a textura trocada (colisão de mundo nas 16 máscaras, one-way em (0,2) na camada 64) |
+| Paleta | GDD-2.9: azulejo hospitalar ciano-pálido (`#B9CFD9`), geada branca nas bordas e juntas, aço azul-frio por baixo, contorno azul-escuro, faixa âmbar de quarentena; paleta `infirmary` no `tools/placeholders.json` |
+| Placeholder gerado | `assets/placeholder/tiles/infirmary_tiles.png` (128×64) — `tools/make_placeholders.gd` |
+| Fonte | **IA — geração de imagem do Codex CLI**, 2026-10-27, 2 variações (as duas 8×4 exatas), escolhida a **1ª**: azulejos mais limpos e geada só nas bordas. A 2ª tinha mais ruído e, na linha 4, geada em forma de **"+"** nas juntas — descartada pela regra de não ter cruz. Referências: `lab_tiles.png` e `core_tiles.png` ×6 |
+| Montagem | Receita do TIL-LAB (`compose`): as 16 máscaras são o azulejo "interior" com faixas de borda coladas (cima 28 % da célula "piso" com crosta de geada, baixo 22 % do "teto", lados 13 %). **Passarela one-way montada da faixa de piso** (4 px de aço com geada + 1 px de sombra): as duas passarelas da IA (grade escura na 1ª, tela ciano vazada na 2ª) sumiam contra o fundo escuro. Fundo = o próprio azulejo escuro da IA (0,7), sem escurecer. Ganho 0,87 com joelho nos claros: luma dos sólidos **0,552** (Núcleo 0,53, Lab 0,555). 0 px semitransparentes, 0 px de franja |
+| Status | **integrado (IA)** em 2026-10-27; `tests/test_level_tileset.gd` confere a Enfermaria papel por papel (inclui a parede magnética) |
+
+**Prompt (Codex, com os dois tilesets anexados):**
+```
+Pixel art TILE SET for a 2D side-view space station platformer: the station's INFIRMARY, frozen solid after the heating failed. Dark, narrow, cold hospital corridors with pale cyan wall tiles and frost creeping along the seams.
+
+STYLE MUST MATCH THE ATTACHED REFERENCE IMAGES (the existing station tilesets): same 16-bit worn look, panel seams, rivets, scratched paint, grime in recesses, hard pixels, no anti-aliasing, no soft gradients.
+
+Palette (16 colors max): pale icy cyan-white hospital wall tiles (#B9CFD9 body, #DDEBF0 highlight, #7D97A6 shading), white frost (#EEF6F8) only along edges and seams, cold blue steel underneath (#5B6E7C, #34434F), dark blue outline (#0C141B), amber quarantine stripes (#E8B04A), a little pale cyan (#9FE3F0) only on lamp glass. Keep the base tiles MEDIUM-BRIGHT: the engine darkens the scene with lighting, so do NOT bake shadows, glow or vignettes into tiles.
+
+Layout: a strict grid of SQUARE tiles, 8 columns and 4 rows, all the same size, separated by flat magenta (#FF00FF) gaps. Each tile filled EDGE TO EDGE with artwork inside its own square (except where a tile is told to have magenta).
+Row 1:
+ 1. wall block INTERIOR: pale cyan hospital wall made of square ceramic tiles, seamless on all four sides, no border, a few grout lines, a hairline crack.
+ 2. the same block seen as a FLOOR TOP: a cold steel floor trim with a thick white FROST crust along the TOP edge, the tile wall below.
+ 3. the same block as a CEILING UNDERSIDE: darker blue steel lip along the BOTTOM edge with tiny frost.
+ 4. the same block with a steel edge trim along the LEFT side only.
+ 5. the same block with a steel edge trim along the RIGHT side only.
+ 6. a single isolated block with trim on all four sides.
+ 7. a THIN ONE-WAY steel grating catwalk filling only the TOP QUARTER of the square, the rest flat magenta.
+ 8. a dark recessed BACKGROUND wall (deep cold blue-grey #4A5E6C and #34434F, clearly darker than the blocks), seamless, plain ceramic tiles.
+Row 2:
+ 1. a square WINDOW FRAME: thick pale steel frame with frost in the corners, the center fully flat magenta (#FF00FF).
+ 2. a ventilation grille with horizontal slats, frost on the slats.
+ 3. a horizontal pipe covered in frost, with a short icicle under it.
+ 4. a vertical frosted pipe.
+ 5. a ceiling lamp fixture, cold hospital light, glass lit pale cyan.
+ 6. the same ceiling lamp, OFF, glass dark grey.
+ 7. an amber-and-black diagonal QUARANTINE hazard stripe panel.
+ 8. a climbable MAGNETIC wall panel with bold diagonal YELLOW (#E8C15A) and dark grey stripes, steel frame.
+Row 3: infirmary details, each a full square tile: a medicine cabinet with small frosted glass doors, a wall monitor screen (dark, no text, no numbers), a wall panel with a thick sheet of ice and icicles, a frozen cable bundle, a vital-signs wall panel with a dark screen (no numbers, no text), a wall tile panel with a deep ice crack, a riveted blue steel plate, a frozen floor drain grate.
+Row 4: eight more variations of the row-1 interior wall block (different grout, a missing ceramic tile, a frost patch, a small stain), each seamless.
+
+NO red cross and NO cross symbol of any kind on any tile.
+
+IMPORTANT RULE: deliver a GRID OF SEPARATE TILES, not a finished picture. Do not draw a room, a level or a composed scene; do not draw characters, creatures, beds or props resting on the tiles.
 No text, no letters, no numbers, no labels, no grid lines, no watermark.
 ```
 
@@ -675,6 +846,23 @@ EDGES: the two 9-slice bar frames must reach the edges of their cell, because th
 Instrumental seamless loop, 2 minutes 30 seconds, dark ambient for a 2D sci-fi game level: an abandoned space station laboratory where the cooling system broke and the white corridors bake in still, heavy heat. Low warm drone in a minor key, muffled and stifling, around 60 BPM with no clear beat. A faint electric hum of a failing compressor that tries to start and chokes, sparse soft metallic ticks of expanding metal, a slow detuned pad that feels like it is melting. Mixed quiet, lots of low-mid warmth, no bright highs. No drums, no percussion groove, no vocals, no choir, no melody that can be sung. Start and end at the same intensity, no fade-in, no fade-out, so it loops seamlessly.
 ```
 
+<a id="mus-infirmary"></a>
+### MUS-INFIRMARY — Enfermaria
+
+| Campo | Valor |
+|---|---|
+| Caminho final | `assets/audio/music/infirmary.ogg` (**loop** sem fade nas pontas, 2–3 min) — a resolução aceita `.ogg`, `.mp3` ou `.wav` |
+| Direção | Mesmo universo do MUS-CORE, mas **frio e vazio**: Inverno numa enfermaria onde a tripulação adoeceu um a um. Pad gelado e alto, quase sem graves, com muito espaço entre as notas; a **respiração de máquina** de um ventilador hospitalar desligado que ainda sopra de vez em quando (ar entrando e saindo, lento); um bipe distante de monitor, raro e sem ritmo; estalos de gelo no metal. Modo menor, ~50 BPM sem pulso marcado, reverb longo de sala de azulejo. **Sem bateria e sem voz** ([GDD-2.9](design/GDD.md#gdd-2-9-musica)) |
+| Fonte grátis | Pixabay Music (licença Pixabay, sem crédito obrigatório) — https://pixabay.com/music/search/cold%20ambient/ · Free Music Archive filtrado CC0/CC-BY · incompetech (CC-BY, crédito no README) |
+| Termos de busca | `cold ambient drone` · `frozen ambient loop` · `winter dark ambient` · `hospital ambient eerie` · `abandoned hospital ambience` · `sci-fi ice cave ambient` · `breathing machine ambient` |
+| Placeholder | nenhum: até o arquivo chegar a fase toca `core` |
+| Status | **pendente** — o humano gera ou baixa e entrega; o agente normaliza por RMS, confere a emenda do loop e integra |
+
+**Prompt (Stable Audio — preferido para loop; Suno com "instrumental" marcado):**
+```
+Instrumental seamless loop, 2 minutes 30 seconds, dark ambient for a 2D sci-fi game level: the frozen, abandoned infirmary of a space station, where the crew fell ill one by one and the heating died. Cold, empty and still. A high, glassy, icy pad in a minor key with long silences between notes, very little bass, around 50 BPM with no clear beat. The slow mechanical breathing of a hospital ventilator that is still running in an empty room, air in, air out, every few seconds. A distant, rare monitor beep with no rhythm, faint creaks of ice on metal, long reverb of a tiled room. Mixed quiet. No drums, no percussion groove, no vocals, no choir, no melody that can be sung. Start and end at the same intensity, no fade-in, no fade-out, so it loops seamlessly.
+```
+
 <a id="mus-chassis"></a>
 ### MUS-CHASSIS — Chassi perdido
 
@@ -754,6 +942,10 @@ Caminho final: `assets/audio/sfx/<nome>.ogg` (ou `.wav`). Fontes CC0 sugeridas: 
 | `electric_buzz` | Piso eletrificado (F32, loop) | Freesound "electric buzz" CC0 |
 | `spores` | Chiado orgânico (loop) | Freesound CC0 |
 | `plant_grow` | Crescimento rápido | Freesound CC0 |
+| `v9_alert` | Alerta da V-9 antes de perseguir (F61; hoje toca `ui_error`) | Kenney Sci-fi Sounds |
+| `ice_crack` | Gelo fino rachando (F61; hoje toca `land`) | Freesound CC0 "ice crack" |
+| `ice_break` | Gelo fino quebrando (F61; hoje toca `door_close`) | Freesound CC0 "ice break" |
+| `ice_melt` | Parede de gelo derretendo (F61; hoje toca `spores`) | Freesound CC0 "melting ice drip" |
 | Fonte | **Kenney — Sci-Fi Sounds 1.0 (11-10-2020), CC0 1.0 Universal.** Linha do `License.txt`: *"License: (Creative Commons Zero, CC0)"* — http://creativecommons.org/publicdomain/zero/1.0/. Crédito não é obrigatório; creditado mesmo assim no `README.md` |
 | Formato | `.wav` 44,1 kHz mono 16 bits. Não há codificador Vorbis nesta máquina, e o `.wav` é **necessário** para o enxame de esporos, que exige `AudioStreamWAV` para forçar o loop |
 | Normalização | Por **RMS**, não por pico. O pacote chega todo com pico ≈ −1 dBFS mas com 21 dB de diferença de volume percebido entre os arquivos, então normalizar por pico não resolveria nada |
