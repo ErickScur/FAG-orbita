@@ -527,8 +527,8 @@ Toda vez que a dificuldade sobe demais, o jogador ganha um upgrade que faz o con
 | `ENERGY_CELL_CHARGE` | 40 | Carga | 2.6.3 |
 | `REPAIR_KIT_INTEGRITY` | 25 | pts | 2.6.3 |
 | `CAPACITOR_BONUS` | 25 | Carga máx. | 2.6.3 |
-| `LOGS_TOTAL` | 4 | un. | 2.6.3 |
-| `RESEARCH_TOTAL` | 4 | un. | 2.6.3 |
+| `LOGS_TOTAL` | 6 | un. | AJ-041 |
+| `RESEARCH_TOTAL` | 6 | un. | AJ-041 |
 | `DIFFICULTY_DAMAGE_MULT` | {easy: 0.5, normal: 1.0, hard: 1.5} | fator | AJ-003 |
 | `DIFFICULTY_REACTOR_MULT` | {easy: 0.5, normal: 1.0, hard: 1.5} | fator | AJ-003 |
 | `RESPAWN_CHARGE_RATIO` | 1.0 | fração | AJ-006 |
@@ -690,6 +690,15 @@ Toda vez que a dificuldade sobe demais, o jogador ganha um upgrade que faz o con
 | `DISCHARGE_TIME` | 3.0 | s | 2.6.2-F (Final) |
 | `OVERLOAD_TIME` | 10.0 | s | 2.6.2-F (Final) |
 | `OVERLOAD_SPEED_MULT` | 1.3 | fator | 2.6.2-F (Final) |
+| `CX2_PULSE_DAMAGE` | 15 | pts | 2.6.2-B |
+| `CX2_LOCK_TIME` | 0.8 | s | 2.6.2-B |
+| `CX2_RANGE` | 112 | px | AJ-039 |
+| `CX2_CONE_HALF_ANGLE` | 18 | graus | AJ-039 |
+| `CX2_SWEEP_ARC` | 50 | graus | AJ-039 |
+| `CX2_SWEEP_SPEED` | 35 | graus/s | AJ-039 |
+| `CX2_COOLDOWN` | 1.6 | s | AJ-039 |
+| `FURNACE_DPS` | 12 | pts/s | AJ-039 |
+| `HEAT_SINK_DAMAGE_MULT` | 0.3 | fator | 2.6.1 (−70%) |
 
 <a id="gdd-p-dificuldade"></a>
 ### Multiplicadores de dificuldade (AJ-003)
@@ -727,3 +736,6 @@ Toda vez que a dificuldade sobe demais, o jogador ganha um upgrade que faz o con
 | AJ-016 | 2026-09-19 | 2.6.3 | Parede falsa de área secreta fica **translúcida** ao ser revelada, em vez de sumir | O jogador precisa entender que era uma parede, não um bug |
 | AJ-012 | 2026-09-19 | GDD-P | Constantes das features de mundo/inimigo/stretch (SR-3, feixe, lâmpada, escuridão ambiente, plataforma, parede secreta, vapor, drone) fixadas no GDD-P | Vieram dos ADRs locais das F22–F34; ficam num lugar só |
 | AJ-011 | 2026-09-19 | 2.6.1 | **Garras Magnéticas entregues no meio da Estufa** (log da Helena), e não só ao religar o Nó | Sem isso a habilidade da fase só seria usável depois que a fase acaba; assim ela abre a rota final do setor |
+| AJ-039 | 2026-10-27 | 2.6.2-B · 2.6.1 · GDD-P | **Laboratório: CX-2 e calor em números.** A CX-2 ganha alcance (112 px), meia abertura do cone (18°), arco de varredura (±50°), velocidade de varredura (35°/s) e recarga depois do pulso (1,6 s). "Passar agachado" vira **cobertura**: o MU-7 não agacha, então o cone é cortado por parede sólida e a trava só conta com linha de visão. O calor passa a ter dois níveis: a zona de Verão aplica SUPERAQUECIMENTO (valores do GDD) e a **fornalha** soma `FURNACE_DPS` 12/s. O Dissipador multiplica por 0,3 todo dano de calor de ambiente (SUPERAQUECIMENTO e fornalha); jato de vapor não é calor de ambiente e não reduz | O GDD só dava dano e tempo de mira da CX-2. Sem um calor que o jogador não aguente, o Dissipador não muda nada dentro da fase: 3/s atravessa qualquer corredor |
+| AJ-040 | 2026-10-27 | 2.6.2-F | **DESCARGA também bloqueia as garras magnéticas** enquanto dura, além de dash, feixe e propulsor | Dash, feixe e propulsor ainda não existem na build (F31/F62): sem isso o status seria um ícone sem efeito. As garras são eletroímã, a ficção sustenta, e nasce o par CX-2 vigiando parede magnética |
+| AJ-041 | 2026-10-27 | 2.7 · 2.6.3 · GDD-P | **Religar a Estufa não encerra mais o jogo**: o MU-7 volta ao Núcleo Central, que fica mais claro, troca o objetivo e destrava a comporta do Laboratório; a saída para a Estufa fecha até as portas de mão dupla da F45. Religar o Laboratório leva à tela de fim. O Laboratório traz 2 logs e 2 dados: `LOGS_TOTAL` 4→6 e `RESEARCH_TOTAL` 4→6 | Decisão do humano: "Volta ao Núcleo". Segue o hub radial do GDD-2.7 ("a cada volta o centro está mais iluminado") e o AJ-027 |

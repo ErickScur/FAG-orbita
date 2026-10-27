@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://c0rbitalaboratory"]
+
+[ext_resource type="PackedScene" uid="uid://c0rbitalevelbase" path="res://scenes/levels/level_base.tscn" id="1_base"]
+[ext_resource type="Script" path="res://scenes/levels/sector_narrative.gd" id="2_narrative"]
+
+[node name="Lab" instance=ExtResource("1_base")]
+level_id = "lab"
+
+[node name="Narrative" type="Node" parent="."]
+script = ExtResource("2_narrative")
+sector_id = &"lab"
+ability_id = &"heat_sink"
+ability_dialogue = &"lab_heat_sink"
+restored_dialogue = &"lab_restored"

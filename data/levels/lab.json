@@ -1,0 +1,299 @@
+{
+  "id": "lab",
+  "name": "Laboratório",
+  "tileset": "res://assets/tiles/lab_tileset.tres",
+  "entity_tiles": "res://assets/tiles/lab_tiles.png",
+  "ambient_color": "#13100d",
+  "ambient_restored": "#5a5348",
+  "ambient_motes": "#e0a070",
+  "parallax": true,
+  "floor_sfx": "step_metal",
+  "music": "core",
+  "reactor_online": true,
+  "objective": "obj_lab",
+  "on_enter_dialogue": "lab_enter",
+  "terminals": [
+    "lab"
+  ],
+  "entities": {
+    "44,9": {
+      "id": "lab_heat_attic",
+      "rect": [
+        32,
+        7
+      ],
+      "kind": "warm"
+    },
+    "84,10": {
+      "terminal_id": "lab",
+      "system_id": "cooling",
+      "id": "lab_island_04",
+      "rect": [
+        6,
+        6
+      ]
+    },
+    "97,10": {
+      "terminal_id": "lab",
+      "system_id": "towers",
+      "id": "lab_cx2_05",
+      "mount": "ceiling"
+    },
+    "59,13": {
+      "id": "kit_lab_02"
+    },
+    "76,13": {
+      "id": "lab_heat_landing",
+      "rect": [
+        17,
+        3
+      ],
+      "kind": "warm"
+    },
+    "43,14": {
+      "id": "lab_secret_01_upper",
+      "secret_id": "lab_secret_01"
+    },
+    "39,15": {
+      "id": "log_lab_02",
+      "prompt_text": "LER REGISTRO"
+    },
+    "41,15": {
+      "id": "capacitor_lab_01"
+    },
+    "43,15": {
+      "id": "lab_secret_01_lower",
+      "secret_id": "lab_secret_01"
+    },
+    "77,15": {
+      "id": "lab_vent_04",
+      "group": "lab_vents",
+      "phase": 0.5
+    },
+    "86,15": {
+      "id": "lab_console_c",
+      "terminal": "lab"
+    },
+    "90,15": {
+      "id": "lab_dock_03"
+    },
+    "93,15": {
+      "terminal_id": "lab",
+      "system_id": "wing_door",
+      "id": "lab_wing_door"
+    },
+    "101,15": {
+      "id": "log_lab_01",
+      "prompt_text": "LER PROTOCOLO"
+    },
+    "67,17": {
+      "id": "lab_vent_05",
+      "group": "lab_vents",
+      "phase": 2.5
+    },
+    "99,17": {
+      "id": "lab_furnace_01",
+      "rect": [
+        11,
+        3
+      ],
+      "kind": "furnace"
+    },
+    "71,20": {
+      "terminal_id": "lab",
+      "system_id": "towers",
+      "id": "lab_cx2_02",
+      "mount": "ceiling"
+    },
+    "101,22": {
+      "terminal_id": "lab",
+      "system_id": "",
+      "group": "lab_spores",
+      "id": "lab_spore_01"
+    },
+    "70,23": {
+      "id": "cell_lab_02"
+    },
+    "72,23": {
+      "id": "data_lab_01"
+    },
+    "89,23": {
+      "id": "data_lab_02"
+    },
+    "105,23": {
+      "id": "cell_lab_03"
+    },
+    "98,25": {
+      "id": "lab_furnace_02",
+      "rect": [
+        11,
+        3
+      ],
+      "kind": "furnace"
+    },
+    "102,26": {
+      "terminal_id": "lab",
+      "system_id": "",
+      "group": "lab_spores",
+      "id": "lab_spore_02"
+    },
+    "73,29": {
+      "terminal_id": "lab",
+      "system_id": "towers",
+      "id": "lab_cx2_03",
+      "mount": "wall_right"
+    },
+    "97,29": {
+      "id": "lab_furnace_03",
+      "rect": [
+        9,
+        3
+      ],
+      "kind": "furnace"
+    },
+    "106,30": {
+      "terminal_id": "lab",
+      "system_id": "",
+      "group": "lab_spores",
+      "id": "lab_spore_03"
+    },
+    "59,33": {
+      "id": "kit_lab_01"
+    },
+    "24,34": {
+      "terminal_id": "lab",
+      "system_id": "towers",
+      "id": "lab_cx2_01",
+      "mount": "ceiling"
+    },
+    "65,34": {
+      "terminal_id": "lab",
+      "system_id": "towers",
+      "id": "lab_cx2_04",
+      "mount": "wall_right"
+    },
+    "8,36": {
+      "id": "lab_lamp_entry",
+      "color": "#bfe6ff",
+      "radius": 96.0,
+      "energy": 1.2
+    },
+    "99,36": {
+      "terminal_id": "lab",
+      "system_id": "node_door",
+      "id": "lab_node_lamp",
+      "color": "#ffb46a",
+      "radius": 96.0,
+      "energy": 1.4
+    },
+    "15,38": {
+      "id": "lab_heat_corridor",
+      "rect": [
+        36,
+        4
+      ],
+      "kind": "warm"
+    },
+    "16,38": {
+      "terminal_id": "lab",
+      "system_id": "cooling",
+      "id": "lab_island_01",
+      "rect": [
+        3,
+        4
+      ]
+    },
+    "29,38": {
+      "terminal_id": "lab",
+      "system_id": "cooling",
+      "id": "lab_island_02",
+      "rect": [
+        3,
+        4
+      ]
+    },
+    "39,38": {
+      "terminal_id": "lab",
+      "system_id": "cooling",
+      "id": "lab_island_03",
+      "rect": [
+        3,
+        4
+      ]
+    },
+    "80,40": {
+      "id": "lab_console_b",
+      "terminal": "lab"
+    },
+    "3,41": {
+      "id": "lab_dock_01"
+    },
+    "12,41": {
+      "id": "lab_console_a",
+      "terminal": "lab"
+    },
+    "33,41": {
+      "id": "lab_vent_01",
+      "group": "lab_vents",
+      "phase": 0.0
+    },
+    "43,41": {
+      "id": "lab_vent_03",
+      "group": "lab_vents",
+      "phase": 2.0
+    },
+    "45,41": {
+      "id": "cell_lab_01"
+    },
+    "53,41": {
+      "id": "lab_dock_02"
+    },
+    "61,41": {
+      "id": "lab_sr3_01",
+      "dir": 1
+    },
+    "73,41": {
+      "id": "lab_sr3_02",
+      "dir": -1
+    },
+    "82,41": {
+      "terminal_id": "lab",
+      "system_id": "sample_lift",
+      "id": "lab_lift",
+      "path": [
+        [
+          0,
+          -25.25
+        ],
+        [
+          0,
+          0.75
+        ]
+      ],
+      "wait": 0.6,
+      "freight": true
+    },
+    "98,41": {
+      "id": "lab_sector_node",
+      "scene": "res://scenes/world/sector_node.tscn",
+      "sector_id": "lab"
+    },
+    "102,41": {
+      "terminal_id": "lab",
+      "system_id": "node_door",
+      "id": "lab_node_door"
+    },
+    "104,41": {
+      "id": "kit_lab_03"
+    },
+    "106,41": {
+      "id": "lab_dock_04"
+    },
+    "36,42": {
+      "id": "lab_vent_02",
+      "group": "lab_vents",
+      "phase": 1.0
+    }
+  },
+  "triggers": []
+}

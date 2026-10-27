@@ -289,8 +289,7 @@
   {"frame": 5943, "action": "ui_accept", "pressed": false},
   {"frame": 5970, "action": "ui_accept", "pressed": true},
   {"frame": 5973, "action": "ui_accept", "pressed": false},
-  {"frame": 6200, "expect_scene": "res://scenes/ui/demo_end.tscn"},
-  {"frame": 6200, "screenshot": "43_fim_da_demo"},
-  {"frame": 6320, "screenshot": "44_fim_da_demo_estatisticas"},
+  {"frame": 6320, "expect_scene": "res://scenes/levels/core_hub.tscn"},
+  {"frame": 6320, "screenshot": "43_volta_ao_nucleo"},
   {"frame": 6380, "quit": true}
 ]

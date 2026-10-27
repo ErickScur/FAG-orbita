@@ -9,6 +9,15 @@
   "reactor_online": false,
   "objective": "obj_core_hub",
   "on_enter_dialogue": "core_wake",
+  "revisit": {
+    "after_sector": "greenhouse",
+    "spawn_dock": "hab_dock_01",
+    "objective": "obj_core_lab",
+    "ambient_color": "#2b3f52",
+    "on_enter_dialogue": "core_return",
+    "reactor_online": true,
+    "triggers": []
+  },
   "terminals": [
     "core_hub"
   ],
@@ -114,7 +123,16 @@
     },
     "76,11": {
       "id": "core_hub_exit",
-      "target": "res://scenes/levels/greenhouse.tscn"
+      "target": "res://scenes/levels/greenhouse.tscn",
+      "closes_after_sector": "greenhouse"
+    },
+    "80,11": {
+      "id": "door_lab",
+      "sealed_until_sector": "greenhouse"
+    },
+    "84,11": {
+      "id": "core_hub_exit_lab",
+      "target": "res://scenes/levels/lab.tscn"
     }
   },
   "triggers": [

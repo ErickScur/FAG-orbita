@@ -3,10 +3,10 @@ extends TestCase
 const DIALOGUE_DIR: String = "res://data/dialogue/"
 const LOGS_DIR: String = "res://data/logs/"
 const OBJECTIVES_PATH: String = "res://data/objectives.json"
-const DEMO_LOGS: int = 4
+const CAMPAIGN_LOGS: int = 6
 const MIN_LOG_LINES: int = 9
 const MAX_LOG_LINES: int = 12
-const ABILITY_LOG: String = "log_gh_02"
+const ABILITY_LOGS: Dictionary = {"log_gh_02": "magnetic_claws", "log_lab_01": "heat_sink"}
 
 var _content: Dictionary = {}
 
@@ -61,10 +61,10 @@ func test_objectives_exist() -> void:
 		assert_true(table.has(objective), "objetivo desconhecido '%s' em '%s'" % [objective, key])
 
 
-func test_demo_has_four_long_logs() -> void:
+func test_campaign_has_six_long_logs() -> void:
 	var logs: Dictionary = _content["logs"]
-	assert_eq(logs.size(), DEMO_LOGS, "total de logs da demo")
-	assert_eq(logs.size(), Balance.LOGS_TOTAL, "contador do HUD fecha dentro da demo")
+	assert_eq(logs.size(), CAMPAIGN_LOGS, "total de logs: Núcleo, Estufa e Laboratório")
+	assert_eq(logs.size(), Balance.LOGS_TOTAL, "contador do HUD fecha com as fases jogáveis")
 	for key: Variant in logs:
 		var lines: Array = (logs[key] as Dictionary).get("lines", [])
 		assert_true(lines.size() >= MIN_LOG_LINES, "log '%s' com %d linhas" % [key, lines.size()])
@@ -89,13 +89,13 @@ func test_no_twist_words() -> void:
 	assert_true(errors.is_empty(), ", ".join(errors))
 
 
-func test_unlock_ability_only_on_the_claws_log() -> void:
+func test_unlock_ability_only_on_the_ability_logs() -> void:
 	for key: Variant in _content["logs"] as Dictionary:
 		var ability: String = String(
 			((_content["logs"] as Dictionary)[key] as Dictionary).get("unlock_ability", "")
 		)
-		if String(key) == ABILITY_LOG:
-			assert_eq(ability, "magnetic_claws", "garras no %s" % ABILITY_LOG)
+		if ABILITY_LOGS.has(String(key)):
+			assert_eq(ability, String(ABILITY_LOGS[String(key)]), "habilidade do %s" % key)
 		else:
 			assert_true(ability.is_empty(), "log '%s' não deveria liberar habilidade" % key)
 

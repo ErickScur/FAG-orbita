@@ -81,3 +81,13 @@ O modelo é generoso com energia (toda porta aberta, toda planta crescida, garra
 - **(F47)** Coordenada crua de atlas (`LevelBuilder.ONE_WAY_TILE`, `MagneticWall.TILE_COLUMN/ROW`, `SecretWall.tile_column/row`) é contrato com a arte; tileset novo passa por `tests/test_level_tileset.gd`.
 - **(F22)** Sonda de borda de inimigo usa a **mesma máscara de colisão do corpo**, senão o inimigo anda para fora de plataforma fina e cai da fase.
 - **(F36)** Mexeu no mapa → os roteiros de QA da fase ficaram falsos. Refaça os marcos.
+- **(F60)** Troca forçada de energia some se houver console **depois** da comporta que precisa
+  ficar ligada: o jogador a desliga pelas costas. Último console antes dela (ADR-F60-001),
+  provado por flood fill em `tests/test_level_lab.gd`.
+- **(F60)** Luz fria dentro de zona quente grande some na imagem (o laranja aditivo apaga o azul
+  claro): a ilha fria lia como lâmpada branca até a cor ir para `#4aa8ff` com energia 1,2.
+  Confira contraste de zona dentro de zona na captura.
+- **(F60)** Parede magnética na saída de uma prateleira agarra o MU-7 quando ele só anda para
+  fora: use escada de plataforma fina onde a garra não é a intenção.
+- **(F60)** Elevador que nasce estacionado no destino e **desce** quando ligado dá consequência
+  visível no console e é a única forma de embarcar: bom padrão para "ligar mostra algo".

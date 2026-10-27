@@ -141,6 +141,24 @@ const LEGEND: Dictionary = {
 		"anchor": &"feet",
 		"feature": "F32",
 	},
+	"X": {
+		"name": "torre calibradora CX-2",
+		"scene": "res://scenes/enemies/cx2.tscn",
+		"anchor": &"center",
+		"feature": "F60",
+	},
+	"h": {
+		"name": "zona de calor",
+		"scene": "res://scenes/world/heat_zone.tscn",
+		"anchor": &"center",
+		"feature": "F60",
+	},
+	"i": {
+		"name": "ilha fria",
+		"scene": "res://scenes/world/cold_island.tscn",
+		"anchor": &"center",
+		"feature": "F60",
+	},
 }
 const COLLECTIBLE_KINDS: Array[StringName] = [
 	&"log", &"research", &"cell", &"repair_kit", &"capacitor"
@@ -156,6 +174,8 @@ const DEATH_ZONE_MARGIN_TILES: int = 8
 const DEATH_ZONE_DEPTH_TILES: int = 4
 const DEATH_ZONE_OFFSET_TILES: int = 2
 const RESERVED_PARAMS: Array[String] = ["id", "group"]
+const META_ENTITY_TILES: String = "entity_tiles"
+const PARAM_TILES: String = "tiles"
 const OCCLUDERS_NODE: String = "Occluders"
 const OCCLUDER_LIGHT_MASK: int = 1
 
@@ -282,6 +302,7 @@ static func build_entities(
 	if parent == null:
 		return
 	var entities_meta: Dictionary = meta.get("entities", {})
+	var shared_tiles: String = String(meta.get(META_ENTITY_TILES, ""))
 	for entry: Dictionary in parsed.get("entities", []) as Array:
 		var symbol: String = String(entry.get("symbol", ""))
 		var cell: Vector2i = entry.get("cell", Vector2i.ZERO)
@@ -289,6 +310,8 @@ static func build_entities(
 		if definition.is_empty():
 			continue
 		var params: Dictionary = _params_for(entities_meta, cell, definition)
+		if not shared_tiles.is_empty() and not params.has(PARAM_TILES):
+			params[PARAM_TILES] = shared_tiles
 		var kind: StringName = StringName(definition.get("kind", &""))
 		if kind != &"":
 			params["kind"] = kind

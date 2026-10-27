@@ -27,7 +27,9 @@ const ANIM_SEALED: StringName = &"sealed"
 @export var system_id: StringName = &""
 @export var powered: bool = false
 @export var sealed: bool = false
+@export var sealed_until_sector: StringName = &""
 
+var _held_open: bool = false
 var _bulkhead_height: float = 0.0
 var _bulkhead_delay: int = BULKHEAD_DELAY_FRAMES
 
@@ -41,6 +43,7 @@ func _ready() -> void:
 	add_to_group(&"door")
 	_build_animations()
 	_sprite.animation_finished.connect(_on_animation_finished)
+	_apply_sector_seal()
 	set_powered_silent(powered)
 	EventBus.energy_changed.connect(_on_energy_changed)
 	set_physics_process(true)
@@ -55,7 +58,7 @@ func _physics_process(_delta: float) -> void:
 
 
 func set_powered(on: bool) -> void:
-	if sealed or powered == on:
+	if sealed or _held_open or powered == on:
 		return
 	powered = on
 	if on:
@@ -69,7 +72,7 @@ func set_powered(on: bool) -> void:
 
 
 func set_powered_silent(on: bool) -> void:
-	powered = on and not sealed
+	powered = (on or _held_open) and not sealed
 	if _sprite != null:
 		_sprite.modulate = SEALED_TINT if sealed else Color.WHITE
 	if sealed:
@@ -84,9 +87,15 @@ func configure(params: Dictionary) -> void:
 	terminal_id = StringName(String(params.get("terminal_id", terminal_id)))
 	system_id = StringName(String(params.get("system_id", system_id)))
 	sealed = bool(params.get("sealed", sealed))
+	sealed_until_sector = StringName(String(params.get("sealed_until_sector", sealed_until_sector)))
+	_apply_sector_seal()
 	if _sprite == null:
 		return
 	set_powered_silent(powered)
+
+
+func is_sector_sealed() -> bool:
+	return SectorRevisit.door_sealed(sealed_until_sector, GameState.sectors_restored)
 
 
 func is_open() -> bool:
@@ -113,6 +122,19 @@ func _draw() -> void:
 		draw_rect(Rect2(12.0, bolt, 2.0, 1.0), BULKHEAD_EDGE)
 		bolt -= BULKHEAD_SEAM_STEP
 	draw_rect(Rect2(-15.0, top, 30.0, 1.0), BULKHEAD_OUTLINE)
+
+
+func _apply_sector_seal() -> void:
+	if sealed_until_sector == &"":
+		return
+	if is_sector_sealed():
+		sealed = true
+		return
+	sealed = false
+	powered = true
+	_held_open = true
+	terminal_id = &""
+	system_id = &""
 
 
 func _measure_bulkhead() -> void:

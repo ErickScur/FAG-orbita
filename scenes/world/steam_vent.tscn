@@ -1,0 +1,53 @@
+[gd_scene load_steps=4 format=3 uid="uid://c0rbitasteamvent"]
+
+[ext_resource type="Script" path="res://scenes/world/steam_vent.gd" id="1_steam"]
+[ext_resource type="Script" path="res://scenes/world/damage_area.gd" id="2_steam_damage"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_steam_jet"]
+size = Vector2(10, 48)
+
+[node name="SteamVent" type="Node2D" groups=["hazard", "powered"]]
+script = ExtResource("1_steam")
+
+[node name="Plume" type="CPUParticles2D" parent="."]
+position = Vector2(0, -10)
+emitting = false
+amount = 28
+lifetime = 0.5
+emission_shape = 3
+emission_rect_extents = Vector2(2, 1)
+direction = Vector2(0, -1)
+spread = 6.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 85.0
+initial_velocity_max = 100.0
+scale_amount_min = 2.0
+scale_amount_max = 3.0
+color = Color(0.92, 0.95, 1, 0.45)
+
+[node name="Hiss" type="CPUParticles2D" parent="."]
+position = Vector2(0, -10)
+emitting = false
+amount = 6
+lifetime = 0.35
+direction = Vector2(0, -1)
+spread = 25.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 12.0
+initial_velocity_max = 20.0
+scale_amount_min = 1.0
+scale_amount_max = 2.0
+color = Color(0.92, 0.95, 1, 0.35)
+
+[node name="Nozzle" type="Sprite2D" parent="."]
+position = Vector2(0, -8)
+
+[node name="Jet" type="Area2D" parent="."]
+collision_layer = 16
+collision_mask = 0
+monitoring = false
+script = ExtResource("2_steam_damage")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Jet"]
+position = Vector2(0, -28)
+shape = SubResource("RectangleShape2D_steam_jet")

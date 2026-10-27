@@ -94,3 +94,12 @@ Saída no scratchpad da sessão, nunca no repo.
   por `await frame_post_draw` (fotos idênticas com a janela sem foco) nem pause a árvore para
   esperar o desenho (trava o jogo).
 - Deixe ~30 frames depois de trocar de cena antes de capturar (fade + loading).
+- **(F60)** O roteiro herda a dificuldade do `user://settings.cfg` do humano (ele joga no
+  Difícil). Fixe `{"frame": 1, "call": "Settings.set", "args": ["difficulty", "normal"]}`: é o `set`
+  de propriedade, não grava no arquivo dele.
+- **(F60)** `pressed` sem o `released` correspondente desliga em silêncio todo pulo seguinte
+  (`is_action_just_pressed` nunca mais dispara). Solte tudo antes de cada trecho acabar.
+- **(F60)** Inimigo e varredura andam em **tempo real desde a carga da cena** (CX-2, patrulhas):
+  roteiro que para dentro de um cone para fotografar passa numa rodada e perde o trilho na
+  outra. Rode roteiro longo **pelo menos duas vezes** antes de concluir, e calibre trecho dentro
+  da rodada encadeada, não a partir de estado montado.

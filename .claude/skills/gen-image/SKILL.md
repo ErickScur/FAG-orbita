@@ -50,6 +50,10 @@ tools/gen_image.sh --prompt=<scratchpad>/<ID>.txt --out=<scratchpad>/<ID>/raw.pn
      --in=<raw> --out=<scratchpad>/<ID>/sheet.png --frame-width=W --frame-height=H --columns=N [--fit=contain]
    ```
    O fatiador imprime as linhas e quadros que achou: tem de bater com o contrato.
+   **Sprite pendurado (teto ou parede) não vai pelo `autoslice_sheet.gd`**: ele alinha cada
+   quadro pelo pé e tira a escala do quadro mais alto, então a placa de fixação da CX-2 ficaria
+   em alturas diferentes e o feixe do `fire` encolheria os outros quadros. Fatie alinhado pelo
+   topo, centrado na placa, com a escala dos quadros sem efeito (F60; receita na ficha SPR-CX2).
 4. **Veja em escala de jogo**:
    ```bash
    perl -e 'alarm 60; exec @ARGV' "$GODOT" --headless --path . -s res://tools/preview_sheet.gd -- \

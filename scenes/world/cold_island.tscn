@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://c0rbitacoldisland"]
+
+[ext_resource type="Script" path="res://scenes/world/cold_island.gd" id="1_cold"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cold"]
+size = Vector2(16, 16)
+
+[node name="ColdIsland" type="Area2D" groups=["powered"]]
+collision_layer = 16
+collision_mask = 0
+monitoring = false
+script = ExtResource("1_cold")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_cold")
+
+[node name="Glow" type="PointLight2D" parent="."]
+blend_mode = 0
+
+[node name="Frost" type="CPUParticles2D" parent="."]
+amount = 4

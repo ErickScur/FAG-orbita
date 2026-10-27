@@ -48,11 +48,11 @@ func test_map_is_tall_enough_for_the_viewport() -> void:
 		assert_eq(line.length(), int(_parsed.get("width", 0)), "linha com largura irregular")
 
 
-func test_single_spawn_and_single_exit() -> void:
+func test_single_spawn_and_one_exit_per_sector() -> void:
 	assert_eq(_count_symbol("P"), 1, "exatamente um spawn")
-	assert_eq(_count_symbol("E"), 1, "exatamente uma saída")
+	assert_eq(_count_symbol("E"), 2, "uma saída para a Estufa e uma para o Laboratório")
 	assert_eq(_count_symbol("T"), 1, "exatamente um terminal de distribuição")
-	assert_eq(_count_symbol("|"), 1, "exatamente uma porta de energia")
+	assert_eq(_count_symbol("|"), 2, "a porta do Habitacional e a comporta do Laboratório")
 	assert_eq(_count_symbol("S"), 1, "exatamente uma SR-3")
 
 

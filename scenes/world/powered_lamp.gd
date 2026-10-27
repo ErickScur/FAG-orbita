@@ -81,7 +81,7 @@ func configure(params: Dictionary) -> void:
 		lamp_color = Color(String(params.get("color", "")))
 	radius = float(params.get("radius", radius))
 	energy = float(params.get("energy", energy))
-	sheet = String(params.get("sheet", sheet))
+	sheet = String(params.get("sheet", params.get("tiles", sheet)))
 	frame_on = int(params.get("frame_on", frame_on))
 	frame_off = int(params.get("frame_off", frame_off))
 	if _light == null:

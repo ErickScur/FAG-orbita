@@ -146,6 +146,69 @@ func _draw_cell(
 			_draw_radial(image, origin, size)
 		"cone":
 			_draw_cone(image, origin, size)
+		"ceiling_turret":
+			_draw_ceiling_turret(image, origin, size, palette, col, row, entry)
+		"steam_vent":
+			_draw_steam_vent(image, origin, size, palette, entry)
+
+
+func _draw_ceiling_turret(
+	image: Image,
+	origin: Vector2i,
+	size: Vector2i,
+	palette: Dictionary,
+	col: int,
+	row: int,
+	entry: Dictionary
+) -> void:
+	var outline: Color = palette.get("outline", Color.BLACK)
+	var body: Color = _body_color(entry, palette)
+	var steel: Color = _shade(body, -0.38)
+	var off: bool = row == 1 and col == 3
+	var lens: Color = palette.get("accent", Color.CYAN)
+	if row == 1:
+		lens = Color("#E0383A") if not off else _shade(outline, 0.18)
+	if row == 1 and col == 1:
+		lens = Color("#FF6A5A")
+	var cx: int = origin.x + size.x / 2
+	var swing: int = [-3, -1, 1, 3][col] if row == 0 else 0
+	var droop: int = 4 if off else 0
+	_fill_rect(image, cx - 9, origin.y, 18, 4, steel)
+	_stroke_rect(image, cx - 9, origin.y, 18, 4, outline)
+	_fill_rect(image, cx - 7, origin.y + 1, 2, 2, palette.get("danger", Color.ORANGE))
+	_fill_rect(image, cx + 5, origin.y + 1, 2, 2, palette.get("danger", Color.ORANGE))
+	_fill_rect(image, cx - 2, origin.y + 4, 4, 6, steel)
+	_stroke_rect(image, cx - 2, origin.y + 4, 4, 6, outline)
+	_fill_rect(image, cx - 3 + swing / 2, origin.y + 9, 6, 3, body)
+	_stroke_rect(image, cx - 3 + swing / 2, origin.y + 9, 6, 3, outline)
+	var head_x: int = cx - 7 + swing
+	var head_y: int = origin.y + 12 + droop
+	_fill_rect(image, head_x, head_y, 14, 9, body)
+	_stroke_rect(image, head_x, head_y, 14, 9, outline)
+	_fill_rect(image, head_x + 1, head_y + 1, 12, 2, _shade(body, 0.2))
+	_fill_ellipse(image, float(head_x) + 7.0, float(head_y) + 8.5, 5.0, 4.0, outline)
+	_fill_ellipse(image, float(head_x) + 7.0, float(head_y) + 8.5, 3.6, 2.8, lens)
+	if not off:
+		_put(image, head_x + 6, head_y + 7, _shade(lens, 0.5))
+	if row == 1 and col == 2:
+		_fill_diamond(image, head_x + 7, head_y + 15, 3, Color("#FFD9C2"))
+		_fill_rect(image, head_x + 6, head_y + 12, 3, 8, Color("#FF6A5A"))
+
+
+func _draw_steam_vent(
+	image: Image, origin: Vector2i, size: Vector2i, palette: Dictionary, entry: Dictionary
+) -> void:
+	var outline: Color = palette.get("outline", Color.BLACK)
+	var body: Color = _body_color(entry, palette)
+	var heat: Color = palette.get("danger", Color.ORANGE)
+	var top: int = origin.y + size.y - 7
+	_fill_rect(image, origin.x + 1, top, size.x - 2, 7, body)
+	_stroke_rect(image, origin.x + 1, top, size.x - 2, 7, outline)
+	_fill_rect(image, origin.x + 2, top + 1, size.x - 4, 1, heat)
+	for slot: int in range(4, size.x - 4, 3):
+		_fill_rect(image, origin.x + slot, top + 3, 2, 3, _shade(outline, 0.1))
+	_fill_rect(image, origin.x + 4, top - 2, size.x - 8, 2, _shade(body, 0.18))
+	_stroke_rect(image, origin.x + 4, top - 2, size.x - 8, 2, outline)
 
 
 func _body_color(entry: Dictionary, palette: Dictionary) -> Color:

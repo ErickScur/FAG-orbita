@@ -1,7 +1,7 @@
 extends TestCase
 
 const LEVELS_DIR: String = "res://data/levels/"
-const PLAYABLE_LEVELS: PackedStringArray = ["core_hub", "greenhouse"]
+const PLAYABLE_LEVELS: PackedStringArray = ["core_hub", "greenhouse", "lab"]
 const TILE_SIZE: int = 16
 const WINDOW_PX: int = 256
 const WINDOW_STEP_PX: int = 32
@@ -13,6 +13,15 @@ const RADIUS_BY_SYMBOL: Dictionary = {
 	"m": 24.0,
 	"E": 80.0,
 	"S": 40.0,
+	"X": 56.0,
+}
+const TOWER_SYMBOL: String = "X"
+const RECT_LIGHT_SYMBOLS: String = "hi"
+const RECT_LIGHT_COVER: float = 1.3
+const TOWER_AIM_BY_MOUNT: Dictionary = {
+	"ceiling": Vector2(0.0, 1.0),
+	"wall_left": Vector2(1.0, 0.0),
+	"wall_right": Vector2(-1.0, 0.0),
 }
 
 
@@ -89,9 +98,15 @@ func _lights(level_id: String) -> Array[Dictionary]:
 		var row: String = rows[y]
 		for x: int in range(row.length()):
 			var symbol: String = row[x]
+			var entity: Dictionary = entities.get("%d,%d" % [x, y], {})
+			if RECT_LIGHT_SYMBOLS.contains(symbol):
+				found.append(_rect_light(x, y, entity))
+				continue
+			if symbol == TOWER_SYMBOL:
+				found.append(_tower_light(x, y, entity))
+				continue
 			if not RADIUS_BY_SYMBOL.has(symbol):
 				continue
-			var entity: Dictionary = entities.get("%d,%d" % [x, y], {})
 			var radius: float = float(entity.get("radius", RADIUS_BY_SYMBOL[symbol]))
 			found.append({
 				"position": Vector2(float(x * TILE_SIZE) + 8.0, float(y * TILE_SIZE) + 8.0),
@@ -99,6 +114,25 @@ func _lights(level_id: String) -> Array[Dictionary]:
 			})
 	found.append_array(_magnetic_lights(level_id))
 	return found
+
+
+func _rect_light(x: int, y: int, entity: Dictionary) -> Dictionary:
+	var rect: Array = entity.get("rect", [1, 1])
+	var size := Vector2(float(rect[0]), float(rect[1])) * float(TILE_SIZE)
+	return {
+		"position": Vector2(float(x * TILE_SIZE), float(y * TILE_SIZE)) + size * 0.5,
+		"extent": size * RECT_LIGHT_COVER * 0.5,
+	}
+
+
+func _tower_light(x: int, y: int, entity: Dictionary) -> Dictionary:
+	var radius: float = float(RADIUS_BY_SYMBOL[TOWER_SYMBOL])
+	var aim: Vector2 = TOWER_AIM_BY_MOUNT.get(String(entity.get("mount", "ceiling")), Vector2.DOWN)
+	if entity.has("base_angle"):
+		aim = Vector2.from_angle(deg_to_rad(float(entity["base_angle"])))
+	var swing: float = radius * sin(deg_to_rad(Balance.CX2_SWEEP_ARC * 0.5))
+	var center := Vector2(float(x * TILE_SIZE) + 8.0, float(y * TILE_SIZE) + 8.0)
+	return {"position": center + aim * radius, "extent": Vector2.ONE * (radius + swing)}
 
 
 func _magnetic_lights(level_id: String) -> Array[Dictionary]:

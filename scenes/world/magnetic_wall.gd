@@ -8,6 +8,8 @@ const TILE_ROW: int = 3
 const WORLD_LAYER: int = 1
 const GLOW_TEXTURE: String = "res://assets/fx/light_radial.png"
 
+@export var tiles_path: String = TILE_SHEET
+
 @onready var _sprite: Sprite2D = $Sprite2D
 @onready var _glow: PointLight2D = $Glow
 
@@ -19,6 +21,14 @@ func _ready() -> void:
 	_apply_texture()
 	_setup_glow()
 	_merge_glow.call_deferred()
+
+
+func configure(params: Dictionary) -> void:
+	if params.has("tiles"):
+		tiles_path = String(params["tiles"])
+	if _sprite == null:
+		return
+	_apply_texture()
 
 
 func glow_energy() -> float:
@@ -38,10 +48,10 @@ func cell() -> Vector2i:
 
 func _apply_texture() -> void:
 	var texture: AtlasTexture = AssetResolver.atlas(
-		TILE_SHEET, TILE_FRAME, TILE_COLUMN, TILE_ROW
+		tiles_path, TILE_FRAME, TILE_COLUMN, TILE_ROW
 	)
 	if texture == null:
-		push_warning("MagneticWall: tile de parede magnética ausente em %s" % TILE_SHEET)
+		push_warning("MagneticWall: tile de parede magnética ausente em %s" % tiles_path)
 		return
 	_sprite.texture = texture
 	var self_light: float = Balance.MAGNETIC_SELF_LIGHT

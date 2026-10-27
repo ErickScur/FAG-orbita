@@ -68,6 +68,7 @@ res://tests/qa/scenes/parallax_sandbox.tscn
 res://scenes/world/level_exit.tscn
 res://scenes/levels/core_hub.tscn
 res://scenes/levels/greenhouse.tscn
+res://scenes/levels/lab.tscn
 res://tests/qa/scenes/chassis_probe.tscn
 res://scenes/fx/sector_cutscene.tscn
 res://tests/qa/scenes/cutscene_probe_core.tscn
@@ -75,3 +76,8 @@ res://tests/qa/scenes/cutscene_probe_greenhouse.tscn
 res://tests/qa/scenes/music_probe.tscn
 res://tests/qa/scenes/parallax_seam.tscn
 res://tests/qa/scenes/pickup_lineup.tscn
+res://scenes/enemies/cx2.tscn
+res://scenes/world/heat_zone.tscn
+res://scenes/world/cold_island.tscn
+res://scenes/world/steam_vent.tscn
+res://tests/qa/scenes/lab_sandbox.tscn

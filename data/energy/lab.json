@@ -1,0 +1,150 @@
+{
+  "id": "lab",
+  "title": "LABORATÓRIO - DISTRIBUIÇÃO",
+  "budget": 2,
+  "goal_text": "Abrir a Porta do Nó do Setor e religar o Nó",
+  "goal_done_text": "Porta do Nó do Setor aberta. Falta religar o Nó",
+  "goal_systems": [
+    "node_door"
+  ],
+  "initial": [
+    "towers",
+    "cooling"
+  ],
+  "systems": [
+    {
+      "id": "towers",
+      "name": "TORRES CALIBRADORAS",
+      "tag": "PERIGO",
+      "description": "Mantém as torres CX-2 varrendo o laboratório.",
+      "effect_off": "As torres apagam e ficam inertes.",
+      "cost": 1,
+      "requires": [],
+      "locked": false,
+      "effects": [
+        {
+          "target": "id:lab_cx2_01",
+          "action": "power"
+        },
+        {
+          "target": "id:lab_cx2_02",
+          "action": "power"
+        },
+        {
+          "target": "id:lab_cx2_03",
+          "action": "power"
+        },
+        {
+          "target": "id:lab_cx2_04",
+          "action": "power"
+        },
+        {
+          "target": "id:lab_cx2_05",
+          "action": "power"
+        }
+      ]
+    },
+    {
+      "id": "cooling",
+      "name": "REFRIGERAÇÃO",
+      "tag": "CLIMA",
+      "description": "Liga as ilhas frias e segura os esporos.",
+      "effect_off": "As ilhas frias somem e os esporos incham.",
+      "cost": 1,
+      "requires": [],
+      "locked": false,
+      "effects": [
+        {
+          "target": "id:lab_island_01",
+          "action": "power"
+        },
+        {
+          "target": "id:lab_island_02",
+          "action": "power"
+        },
+        {
+          "target": "id:lab_island_03",
+          "action": "power"
+        },
+        {
+          "target": "id:lab_island_04",
+          "action": "power"
+        },
+        {
+          "target": "group:lab_spores",
+          "action": "invert"
+        }
+      ]
+    },
+    {
+      "id": "sample_lift",
+      "name": "ELEVADOR DE AMOSTRAS",
+      "tag": "ROTA",
+      "description": "Puxa da linha da refrigeração. Move o elevador do poço.",
+      "effect_off": "O elevador para onde estiver.",
+      "cost": 1,
+      "requires": [
+        "cooling"
+      ],
+      "locked": false,
+      "effects": [
+        {
+          "target": "id:lab_lift",
+          "action": "power"
+        }
+      ]
+    },
+    {
+      "id": "relief",
+      "name": "ALÍVIO DE PRESSÃO",
+      "tag": "ROTA",
+      "description": "Despressuriza as linhas de vapor.",
+      "effect_off": "Os jatos de vapor voltam ao ciclo.",
+      "cost": 1,
+      "requires": [],
+      "locked": false,
+      "effects": [
+        {
+          "target": "group:lab_vents",
+          "action": "invert"
+        }
+      ]
+    },
+    {
+      "id": "wing_door",
+      "name": "COMPORTA DA ALA DE PESQUISA",
+      "tag": "ROTA",
+      "description": "Abre a comporta da ala de pesquisa.",
+      "effect_off": "A comporta da ala fecha.",
+      "cost": 1,
+      "requires": [],
+      "locked": false,
+      "effects": [
+        {
+          "target": "id:lab_wing_door",
+          "action": "power"
+        }
+      ]
+    },
+    {
+      "id": "node_door",
+      "name": "PORTA DO NÓ DO SETOR",
+      "tag": "META",
+      "description": "Abre a comporta da câmara do Nó do Setor.",
+      "effect_off": "A comporta do Nó fecha e o setor segue desligado.",
+      "cost": 1,
+      "requires": [],
+      "locked": false,
+      "effects": [
+        {
+          "target": "id:lab_node_door",
+          "action": "power"
+        },
+        {
+          "target": "id:lab_node_lamp",
+          "action": "power"
+        }
+      ]
+    }
+  ]
+}

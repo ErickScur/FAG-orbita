@@ -49,6 +49,7 @@ var _invincible_left: float = 0.0
 var _invincible_hold: bool = false
 var _blink_timer: float = 0.0
 var _damage_accumulator: float = 0.0
+var _heat_accumulator: float = 0.0
 var _look_ahead: float = 0.0
 var _camera_limits: Rect2i = Rect2i()
 var _has_camera_limits: bool = false
@@ -237,7 +238,13 @@ func _probe_hits_magnetic(probe: RayCast2D) -> bool:
 
 
 func _has_claws() -> bool:
+	if GameState.statuses.blocks_abilities():
+		return false
 	return ClimbLogic.has_ability(GameState.abilities)
+
+
+func _has_heat_sink() -> bool:
+	return HeatRules.has_heat_sink(GameState.abilities)
 
 
 func is_climbing() -> bool:
@@ -254,6 +261,19 @@ func set_input_locked(locked: bool) -> void:
 
 func is_input_locked() -> bool:
 	return _locked
+
+
+func take_hit(
+	damage: int,
+	source: Vector2,
+	push_x: float = Balance.KNOCKBACK_SPEED,
+	push_y: float = Balance.KNOCKBACK_SPEED
+) -> bool:
+	if _dead or is_invincible() or damage <= 0:
+		return false
+	GameState.apply_damage(damage)
+	_start_hurt(source, true, push_x, push_y)
+	return true
 
 
 func is_invincible() -> bool:
@@ -488,9 +508,12 @@ func _movement_blocked() -> bool:
 func _process_hurtbox(delta: float) -> void:
 	if _dead or _invincible_hold:
 		_damage_accumulator = 0.0
+		_heat_accumulator = 0.0
 		return
 	var per_second: float = 0.0
+	var heat: Dictionary = {"in_heat": false, "kind": HeatRules.KIND_WARM, "cooled": false}
 	for area: Area2D in _hurtbox.get_overlapping_areas():
+		_read_climate(area, heat)
 		if not (area is DamageArea):
 			continue
 		var source: DamageArea = area
@@ -501,13 +524,38 @@ func _process_hurtbox(delta: float) -> void:
 		GameState.apply_damage(source.contact_damage)
 		source.notify_status()
 		_start_hurt(source.global_position, source.knockback, source.knockback_x, source.knockback_y)
+	_process_heat(heat, delta)
 	if per_second <= 0.0:
 		_damage_accumulator = 0.0
 		return
-	var dealt: Vector2 = Vitals.accumulate(_damage_accumulator, per_second, delta)
-	_damage_accumulator = dealt.y
-	if dealt.x > 0.0:
-		GameState.apply_damage(int(dealt.x))
+	_damage_accumulator = GameState.apply_damage_over_time(
+		per_second, delta, _damage_accumulator
+	)
+
+
+func _read_climate(area: Area2D, heat: Dictionary) -> void:
+	if area is HeatZone:
+		var zone: HeatZone = area
+		heat["in_heat"] = true
+		if HeatRules.normalize_kind(zone.kind) == HeatRules.KIND_FURNACE:
+			heat["kind"] = HeatRules.KIND_FURNACE
+	elif area is ColdIsland and (area as ColdIsland).is_active():
+		heat["cooled"] = true
+
+
+func _process_heat(heat: Dictionary, delta: float) -> void:
+	var in_heat: bool = bool(heat["in_heat"])
+	var cooled: bool = bool(heat["cooled"])
+	if HeatRules.overheats(in_heat, cooled):
+		GameState.apply_status(StatusEffects.OVERHEAT)
+	var furnace: float = HeatRules.furnace_dps(StringName(heat["kind"]), in_heat, cooled)
+	var per_second: float = HeatRules.total_dps(
+		GameState.statuses.integrity_dps(), furnace, _has_heat_sink()
+	)
+	if per_second <= 0.0:
+		_heat_accumulator = 0.0
+		return
+	_heat_accumulator = GameState.apply_damage_over_time(per_second, delta, _heat_accumulator)
 
 
 func _start_hurt(source: Vector2, push: bool, push_x: float = Balance.KNOCKBACK_SPEED, push_y: float = Balance.KNOCKBACK_SPEED) -> void:
@@ -532,7 +580,8 @@ func _update_flashlight(delta: float) -> void:
 		_toggle_flashlight()
 	if not _flashlight_on:
 		return
-	var cost: float = LightMath.drain_for(delta, Balance.FLASHLIGHT_DRAIN)
+	var drain: float = Balance.FLASHLIGHT_DRAIN * GameState.statuses.charge_drain_multiplier()
+	var cost: float = LightMath.drain_for(delta, drain)
 	if not GameState.spend_charge(cost):
 		_set_flashlight(false)
 
@@ -712,6 +761,7 @@ func _on_player_died() -> void:
 	_invincible_left = 0.0
 	_blink_timer = 0.0
 	_damage_accumulator = 0.0
+	_heat_accumulator = 0.0
 	_sprite.visible = true
 	_set_flashlight(false)
 	play_action(&"death")
@@ -730,6 +780,7 @@ func _on_player_respawned() -> void:
 	velocity = Vector2.ZERO
 	_hurt_timer = 0.0
 	_damage_accumulator = 0.0
+	_heat_accumulator = 0.0
 	_invincible_left = Balance.INVULNERABLE_TIME
 	_blink_timer = 0.0
 	_look_ahead = 0.0

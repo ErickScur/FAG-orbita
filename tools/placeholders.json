@@ -20,6 +20,16 @@
       "light": "#D7E8CF",
       "outline": "#0A120A"
     },
+    "lab": {
+      "base": "#2A2824",
+      "secondary": "#8C8778",
+      "tile": "#C9C4B5",
+      "tile_back": "#8C8778",
+      "accent": "#7FD6E8",
+      "danger": "#E07A3A",
+      "light": "#ECE8DC",
+      "outline": "#141310"
+    },
     "ui": {
       "base": "#0B0F14",
       "secondary": "#2F4F5A",
@@ -167,6 +177,36 @@
       "shape": "tileset",
       "palette": "greenhouse",
       "seed": 113
+    },
+    {
+      "id": "TIL-LAB",
+      "path": "tiles/lab_tiles.png",
+      "frame": [16, 16],
+      "grid": [8, 4],
+      "shape": "tileset",
+      "palette": "lab",
+      "seed": 118
+    },
+    {
+      "id": "SPR-CX2",
+      "path": "sprites/enemies/cx2_sheet.png",
+      "frame": [32, 32],
+      "grid": [4, 2],
+      "frames": [4, 4],
+      "shape": "ceiling_turret",
+      "palette": "lab",
+      "body": "#B8B2A2",
+      "seed": 119
+    },
+    {
+      "id": "SPR-STEAM",
+      "path": "sprites/world/steam_vent.png",
+      "frame": [16, 16],
+      "grid": [1, 1],
+      "shape": "steam_vent",
+      "palette": "lab",
+      "body": "#6E7378",
+      "seed": 120
     },
     {
       "id": "BG-SPACE-FAR",

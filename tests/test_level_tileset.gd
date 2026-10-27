@@ -13,7 +13,12 @@ const SHEETS: Dictionary = {
 		"tileset": "res://assets/tiles/greenhouse_tileset.tres",
 		"texture": "res://assets/tiles/greenhouse_tiles.png",
 	},
+	"lab": {
+		"tileset": "res://assets/tiles/lab_tileset.tres",
+		"texture": "res://assets/tiles/lab_tiles.png",
+	},
 }
+const MAGNETIC_SHEETS: Array[String] = ["greenhouse", "lab"]
 const YELLOW_MIN_WARM: float = 0.45
 const YELLOW_MIN_GAP: float = 0.12
 const LAMP_MIN_GAP: float = 0.20
@@ -115,25 +120,29 @@ func test_the_background_tile_is_opaque_and_free_of_collision() -> void:
 
 func test_the_magnetic_wall_frame_is_yellow_striped() -> void:
 	var coords := Vector2i(MagneticWall.TILE_COLUMN, MagneticWall.TILE_ROW)
-	var source: TileSetAtlasSource = _source("greenhouse")
-	assert_true(source.has_tile(coords), "estufa: quadro da parede magnética ausente")
-	var image: Image = _image("greenhouse")
-	assert_eq(_transparent_pixels(image, coords), 0, "parede magnética com buraco")
-	var warm: float = 0.0
-	var cold: float = 0.0
-	for y: int in range(TILE):
-		for x: int in range(TILE):
-			var pixel: Color = _pixel(image, coords, Vector2i(x, y))
-			warm = maxf(warm, minf(pixel.r, pixel.g))
-			cold = maxf(cold, pixel.b)
-	assert_true(
-		warm >= YELLOW_MIN_WARM,
-		"parede magnética sem amarelo forte (%.2f)" % warm
-	)
-	assert_true(
-		warm - cold >= YELLOW_MIN_GAP,
-		"parede magnética sem listra amarela contra o fundo (%.2f vs %.2f)" % [warm, cold]
-	)
+	for level_id: String in MAGNETIC_SHEETS:
+		var source: TileSetAtlasSource = _source(level_id)
+		assert_true(source.has_tile(coords), "%s: quadro da parede magnética ausente" % level_id)
+		var image: Image = _image(level_id)
+		assert_eq(
+			_transparent_pixels(image, coords), 0, "%s: parede magnética com buraco" % level_id
+		)
+		var warm: float = 0.0
+		var cold: float = 0.0
+		for y: int in range(TILE):
+			for x: int in range(TILE):
+				var pixel: Color = _pixel(image, coords, Vector2i(x, y))
+				warm = maxf(warm, minf(pixel.r, pixel.g))
+				cold = maxf(cold, pixel.b)
+		assert_true(
+			warm >= YELLOW_MIN_WARM,
+			"%s: parede magnética sem amarelo forte (%.2f)" % [level_id, warm]
+		)
+		assert_true(
+			warm - cold >= YELLOW_MIN_GAP,
+			"%s: parede magnética sem listra amarela contra o fundo (%.2f vs %.2f)"
+			% [level_id, warm, cold]
+		)
 
 
 func test_the_lamp_has_a_lit_and_an_unlit_frame() -> void:

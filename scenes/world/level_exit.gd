@@ -9,8 +9,10 @@ const PLAYER_MASK: int = 2
 const LIGHT_COLOR: Color = Color("8fe3b0")
 const LIGHT_RADIUS: float = 80.0
 const LIGHT_ENERGY: float = 0.7
+const CLOSED_TINT: Color = Color("6b3a3a")
 
 @export var target: String = ""
+@export var closes_after_sector: StringName = &""
 
 var _used: bool = false
 
@@ -25,12 +27,22 @@ func _ready() -> void:
 	monitorable = false
 	_apply_sprite()
 	_apply_light()
+	_apply_closed_state()
 	body_entered.connect(_on_body_entered)
 
 
 func configure(params: Dictionary) -> void:
 	if params.has("target"):
 		target = String(params["target"])
+	if params.has("closes_after_sector"):
+		closes_after_sector = StringName(String(params["closes_after_sector"]))
+	if _sprite == null:
+		return
+	_apply_closed_state()
+
+
+func is_closed() -> bool:
+	return SectorRevisit.exit_closed(closes_after_sector, GameState.sectors_restored)
 
 
 func has_target() -> bool:
@@ -56,8 +68,15 @@ func _apply_light() -> void:
 	_light.texture_scale = LightMath.scale_for_radius(LIGHT_RADIUS, LightMath.TEXTURE_SIZE)
 
 
+func _apply_closed_state() -> void:
+	var closed: bool = is_closed()
+	_sprite.modulate = CLOSED_TINT if closed else Color.WHITE
+	_light.enabled = not closed
+	set_deferred(&"monitoring", not closed)
+
+
 func _on_body_entered(body: Node2D) -> void:
-	if _used or not body.is_in_group(&"player"):
+	if _used or is_closed() or not body.is_in_group(&"player"):
 		return
 	_used = true
 	AudioManager.play_sfx(&"door_open")

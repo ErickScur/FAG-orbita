@@ -144,6 +144,20 @@
           "text": "A porta do Habitacional travou de novo."
         }
       ]
+    },
+    "core_return": {
+      "mode": "blocking",
+      "once": true,
+      "lines": [
+        {
+          "speaker": "orbita",
+          "text": "O Núcleo respondeu à Estufa. Luz estável, pela primeira vez em... algum tempo."
+        },
+        {
+          "speaker": "orbita",
+          "text": "A comporta do Laboratório recebeu energia. Próxima parada."
+        }
+      ]
     }
   }
 }

@@ -35,6 +35,20 @@ func test_new_game_defaults() -> void:
 	assert_eq(_state.checkpoint.size(), 0, "checkpoint")
 
 
+func test_damage_over_time_follows_difficulty() -> void:
+	var expected: Dictionary = {&"easy": 5, &"normal": 10, &"hard": 15}
+	for difficulty: StringName in expected:
+		Settings.difficulty = difficulty
+		_state.new_game()
+		var accumulator: float = 0.0
+		for frame: int in range(63):
+			accumulator = _state.apply_damage_over_time(10.0, 1.0 / 60.0, accumulator)
+		assert_eq(
+			Balance.INTEGRITY_MAX - _state.integrity, int(expected[difficulty]),
+			"10/s por 1,05 s em %s" % difficulty
+		)
+
+
 func test_apply_damage_hard() -> void:
 	Settings.difficulty = &"hard"
 	_state.apply_damage(10)

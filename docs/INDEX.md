@@ -161,7 +161,7 @@ Top-down por bloco. Dentro de um bloco, top-down, respeitando `depends_on`. **N�
 
 | # | Feature | Escopo | Rubrica | Design | Status |
 |---|---|:--:|---|---|:--:|
-| F60 | Fase 2 — Laboratório (Verão, CX-2, Superaquecimento, Dissipador) | FINAL | 4 fases · Efeitos naturais | [GDD-2.7 F2](design/GDD.md#gdd-2-7-f2) | `[ ]` |
+| F60 | [Fase 2 — Laboratório (Verão, CX-2, Superaquecimento, Dissipador)](features/F60-fase-laboratorio.md) | FINAL | 4 fases · Efeitos naturais | [GDD-2.7 F2](design/GDD.md#gdd-2-7-f2) | `[x]` |
 | F61 | Fase 3 — Enfermaria (Inverno, V-9, Congelamento, Núcleo Aquecido) | FINAL | 4 fases | [GDD-2.7 F3](design/GDD.md#gdd-2-7-f3) | `[ ]` |
 | F62 | Fase 4 — Docas (vácuo, Propulsor) | FINAL | 4 fases | [GDD-2.7 F4](design/GDD.md#gdd-2-7-f4) | `[ ]` |
 | F63 | Mini boss — O Serralheiro | FINAL | Mini-boss | [GDD-2.6.2-G](design/GDD.md#gdd-2-6-2-g) | `[ ]` |

@@ -27,7 +27,15 @@
 | **Feixe de Manutenção** | `beam` | Desliga máquinas por 4 s (25 Carga); não destrói |
 | **Desligamento** | `shutdown` | Estado de inimigo atingido pelo Feixe |
 | **Corrosão** | `corrosion` | Status: impede recarga de Carga por 6 s (esporos) |
-| **Superaquecimento / Congelamento / Descarga / Sobrecarga** | `overheat` / `freeze` / `discharge` / `overload` | Demais status (Final) |
+| **Superaquecimento** | `overheat` | Status do Verão: −3 Integridade/s e Carga drena 2× (zona de calor) |
+| **Descarga** | `discharge` | Status elétrico (pulso da CX-2): bloqueia as garras por 3 s (AJ-040) |
+| **Congelamento / Sobrecarga** | `freeze` / `overload` | Demais status (Final) |
+| **Dissipador Térmico** | `heat_sink` | Upgrade do Laboratório: −70% de dano de calor |
+| **Torre Calibradora CX-2** | `cx2` | Inimigo do Laboratório: varre um cone e dispara pulso; vence-se no Terminal |
+| **Zona de calor / Fornalha** | `heat_zone` (`warm` / `furnace`) | Área do Verão que aplica Superaquecimento; a fornalha soma 12/s |
+| **Ilha fria** | `cold_island` | Área ligada à refrigeração que anula o calor dentro dela |
+| **Jato de vapor** | `steam_vent` | Obstáculo cíclico (3 s ligado / 2 s desligado, 20 de dano) |
+| **Laboratório** | `lab` | Fase 2 (Verão) |
 | **SR-3 "Aranha de Reparo"** | `sr3` | Primeiro inimigo; patrulha e vira na borda |
 | **Enxame de Esporos** | `spore_swarm` | Nuvem que cresce com calor; causa Corrosão |
 | **BOTÂNICO 04** | `botanico` | Drone de irrigação aliado da Estufa |

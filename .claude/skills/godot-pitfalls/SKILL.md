@@ -28,6 +28,11 @@ origem).
   a cobaia três vezes, F49). Use cobaia sintética que nunca vá existir.
 - **Raycast/medição do mundo no `_ready()` mente**: a colisão dos tiles só existe depois de
   **2 quadros de física** (F54).
+- **Dano por segundo escala a taxa, não os pedaços**: acumular 1 ponto por vez e passar cada
+  ponto por `Vitals.scale_damage` (que arredonda para cima) fez o Fácil tirar o mesmo que o
+  Normal e o Difícil o dobro, de F23 a F60 — a fornalha matava no Difícil. Use
+  `GameState.apply_damage_over_time(per_second, delta, acumulador)`; teste
+  `test_damage_over_time_follows_difficulty` (F60).
 
 ## Luz e sombra (renderer Compatibility)
 - **Máximo de 16 `Light2D` por item de canvas**; da 17ª em diante é descartada **em silêncio**.
@@ -78,6 +83,14 @@ origem).
   plataforma fina como chão e o corpo (`mask = 1`) atravessava; a SR-3 caía da fase (F22).
 - Raycast no `_ready()`: ver "Testes e números" (2 quadros de física).
 
+## Energia (Terminal e grupo `powered`)
+- **Nó comandado por `invert` entra só por `group`**, nunca pelo par `terminal_id`/`system_id`
+  do mesmo sistema: o `EnergyNetwork._drive` liga primeiro o vínculo direto, a lista `touched`
+  pula o `invert`, e o esporo fazia o contrário. Mecanismo: `tests/test_energy_bindings.gd` (F60).
+- **Entidade sem `terminal_id`/`system_id` herda o padrão do script** (o esporo nasce
+  `greenhouse/heating`): em fase nova passe `"system_id": ""` explícito quando ela só deve
+  responder a efeito de grupo (F60).
+
 ## Câmera e parallax
 - **Offset de câmera arredondado a pixel inteiro** em 384×216 com escala inteira; fração borra o
   tremor (F35).
@@ -90,6 +103,8 @@ origem).
   `perl -e 'alarm N; exec @ARGV' "$GODOT" ...`. Sem `run/main_scene` o Godot **fica pendurado**.
 - O editor aberto pode sobrescrever `project.godot` ao salvar: peça para fechar antes de editar à
   mão (bootstrap).
+- UID inventado à mão em `.tscn` não pode ter `z`: o alfabeto de UID do Godot é `a`–`y` + `0`–`9`
+  (F60).
 
 > Armadilha nova de engine entra aqui, na seção do assunto, com a feature de origem. Se ela valer
 > para qualquer tarefa (processo, git, ferramenta), entra também no `CLAUDE.md` §9.

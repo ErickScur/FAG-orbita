@@ -146,16 +146,15 @@ func is_dead() -> bool:
 
 
 func apply_damage(amount: int) -> void:
-	var scaled: int = Vitals.scale_damage(amount, Settings.damage_multiplier())
-	if scaled <= 0 or integrity <= 0:
-		return
-	integrity = clampi(integrity - scaled, 0, integrity_max)
-	EventBus.player_damaged.emit(scaled)
-	EventBus.integrity_changed.emit(integrity, integrity_max)
-	if integrity == 0 and not _died_emitted:
-		_died_emitted = true
-		deaths += 1
-		EventBus.player_died.emit()
+	_deal_damage(Vitals.scale_damage(amount, Settings.damage_multiplier()))
+
+
+func apply_damage_over_time(per_second: float, delta: float, accumulator: float) -> float:
+	var rate: float = per_second * Settings.damage_multiplier()
+	var dealt: Vector2 = Vitals.accumulate(accumulator, rate, delta)
+	if dealt.x > 0.0:
+		_deal_damage(int(dealt.x))
+	return dealt.y
 
 
 func revive() -> void:
@@ -477,3 +476,15 @@ func _on_log_opened(_log_id: StringName) -> void:
 
 func _on_log_closed(_log_id: StringName) -> void:
 	_log_open = false
+
+
+func _deal_damage(scaled: int) -> void:
+	if scaled <= 0 or integrity <= 0:
+		return
+	integrity = clampi(integrity - scaled, 0, integrity_max)
+	EventBus.player_damaged.emit(scaled)
+	EventBus.integrity_changed.emit(integrity, integrity_max)
+	if integrity == 0 and not _died_emitted:
+		_died_emitted = true
+		deaths += 1
+		EventBus.player_died.emit()

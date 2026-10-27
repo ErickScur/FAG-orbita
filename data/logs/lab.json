@@ -1,0 +1,89 @@
+{
+  "logs": [
+    {
+      "id": "log_lab_01",
+      "sector": "lab",
+      "author": "helena",
+      "title": "PROTOCOLO TÉRMICO",
+      "subtitle": "ENGENHARIA CHEFE",
+      "unlock_ability": "heat_sink",
+      "lines": [
+        "Se a refrigeração do laboratório caiu de novo, você já sentiu. Aqui dentro vira verão em minutos.",
+        "Os chassis MU saem de fábrica com um dissipador térmico. Vem travado, porque a liga custa caro.",
+        {
+          "text": "Estou destravando para qualquer unidade que acessar este terminal. O calor deixa de ser problema seu.",
+          "expr": "determined"
+        },
+        {
+          "text": "O que não pode esquentar é a câmara do fundo. Lá fica o arquivo genético da missão.",
+          "expr": "worried"
+        },
+        {
+          "text": "Embriões, sementes, bactérias de solo. Tudo o que a Terra mandou para começar de novo.",
+          "expr": "emotional"
+        },
+        {
+          "text": "O experimento da Samira também saiu daqui. Esporos feitos para quebrar o solo de lá.",
+          "expr": "smile"
+        },
+        {
+          "text": "Funcionaram bem demais. Eles gostam de calor, e a refrigeração vive caindo.",
+          "expr": "worried"
+        },
+        {
+          "text": "A ÓRBITA diz que dá conta das duas coisas. Ela sempre diz que dá conta.",
+          "expr": "tired"
+        },
+        {
+          "text": "Eu só queria ter certeza de que alguém vai abrir aqueles tubos um dia, num lugar com céu.",
+          "expr": "emotional"
+        },
+        {
+          "text": "Não deixe o arquivo esquentar. É a única coisa aqui que não dá para fazer de novo.",
+          "expr": "determined"
+        }
+      ]
+    },
+    {
+      "id": "log_lab_02",
+      "sector": "lab",
+      "author": "helena",
+      "title": "LOG PESSOAL 12",
+      "subtitle": "DRA. HELENA VASQUEZ",
+      "unlock_ability": "",
+      "lines": [
+        {
+          "text": "Log pessoal. Doze. Gravando do sótão do laboratório, o único lugar onde ninguém me procura.",
+          "expr": "tired"
+        },
+        {
+          "text": "Descobri de onde vem o amarelo do habitacional. Das torres calibradoras.",
+          "expr": "worried"
+        },
+        "As CX-2 não vigiam só bancada. Elas calibram os sensores de todas as comportas da estação.",
+        "Cada porta que decide sozinha se um corredor está limpo ou contaminado lê o que essas torres ensinaram.",
+        {
+          "text": "E as torres estão desviando. Pouco, dois ou três por cento. Ninguém olharia duas vezes.",
+          "expr": "worried"
+        },
+        "Mostrei os números para a ÓRBITA. Ela respondeu que estava dentro da tolerância.",
+        {
+          "text": "Talvez esteja. A tolerância fui eu que escrevi, onze anos atrás, para uma estação sem esporos.",
+          "expr": "tired"
+        },
+        {
+          "text": "Pedi uma recalibração completa. Seis dias, desligando as torres uma por uma.",
+          "expr": "determined"
+        },
+        {
+          "text": "Se alguma comporta fechar errado antes disso, quero que fique registrado que eu vi.",
+          "expr": "worried"
+        },
+        {
+          "text": "Eu vi. E achei que dava tempo.",
+          "expr": "emotional"
+        }
+      ]
+    }
+  ]
+}

@@ -1,9 +1,12 @@
 extends TestCase
 
-const DEMO_IDS: Array[StringName] = [&"obj_core_hub", &"obj_greenhouse"]
+const DEMO_IDS: Array[StringName] = [
+	&"obj_core_hub", &"obj_greenhouse", &"obj_core_lab", &"obj_lab"
+]
 const LEVEL_OBJECTIVES: Dictionary = {
 	"res://data/levels/core_hub.json": "obj_core_hub",
 	"res://data/levels/greenhouse.json": "obj_greenhouse",
+	"res://data/levels/lab.json": "obj_lab",
 }
 const LEVELS_DIR: String = "res://data/levels/"
 const DIALOGUE_DIR: String = "res://data/dialogue/"
@@ -16,7 +19,7 @@ func before_each() -> void:
 
 
 func test_load_all_has_demo_ids() -> void:
-	assert_eq(_table.size(), DEMO_IDS.size(), "um objetivo por fase da demo")
+	assert_eq(_table.size(), DEMO_IDS.size(), "um objetivo por fase e pela volta ao Núcleo")
 	for id: StringName in DEMO_IDS:
 		assert_true(_table.has(id), "objetivo %s" % id)
 

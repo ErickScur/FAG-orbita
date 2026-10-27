@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0rbitacx2tower"]
+
+[ext_resource type="Script" path="res://scenes/enemies/cx2.gd" id="1_cx2"]
+
+[node name="CX2" type="Node2D" groups=["enemy", "powered"]]
+script = ExtResource("1_cx2")
+
+[node name="Cone" type="Polygon2D" parent="."]
+
+[node name="ConeLight" type="PointLight2D" parent="."]
+blend_mode = 0
+shadow_enabled = true
+
+[node name="Mount" type="Node2D" parent="."]
+position = Vector2(0, -8)
+
+[node name="Sprite" type="AnimatedSprite2D" parent="Mount"]
+position = Vector2(0, 16)

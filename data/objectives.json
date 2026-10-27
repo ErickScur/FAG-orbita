@@ -1,4 +1,6 @@
 {
   "obj_core_hub": "Chegar à Estufa",
-  "obj_greenhouse": "Religar o Nó da Estufa"
+  "obj_greenhouse": "Religar o Nó da Estufa",
+  "obj_core_lab": "Chegar ao Laboratório",
+  "obj_lab": "Religar o Laboratório"
 }

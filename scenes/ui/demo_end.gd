@@ -1,7 +1,7 @@
 extends Control
 
 const BACKGROUND_FAR: String = "res://assets/backgrounds/space_far.png"
-const CLOSING_TEXT: String = "A ESTUFA VOLTOU A RESPIRAR. A ESTAÇÃO AINDA NÃO."
+const CLOSING_TEXT: String = "O LABORATÓRIO ESFRIOU. A ESTAÇÃO AINDA NÃO."
 const ROW_LABEL_COLOR: Color = Color(0.541176, 0.607843, 0.658824)
 const ROW_VALUE_COLOR: Color = Color(0.372549, 0.831373, 0.784314)
 const ROW_HEIGHT: int = 14

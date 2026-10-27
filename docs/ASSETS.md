@@ -33,8 +33,11 @@
 | [SPR-PLANT](#spr-plant) | Sprite sheet | Planta que cresce | B | IA | **integrado** | F25 |
 | [SPR-PROPS](#spr-props) | Sprite sheet | Objetos do cotidiano (caneca, cadeira, foto, traje/corpo) | B | IA | **integrado** | F19, F28, F29 |
 | [SPR-BOTANICO](#spr-botanico) | Sprite sheet | Drone BOTÂNICO 04 | C | IA | **integrado** | F34 |
+| [SPR-CX2](#spr-cx2) | Sprite sheet | Torre Calibradora CX-2 (inimigo do Laboratório) | A | IA | **integrado (IA)** | F60 |
+| [SPR-STEAM](#spr-steam) | Sprite | Bocal do jato de vapor | B | IA | **integrado (IA)** | F60 |
 | [TIL-CORE](#til-core) | Tileset | Núcleo Central | A | Grátis + IA | **integrado** | F21, F28 |
 | [TIL-GREENHOUSE](#til-greenhouse) | Tileset | Estufa | A | Grátis + IA | **integrado** | F21, F29 |
+| [TIL-LAB](#til-lab) | Tileset | Laboratório (Verão) | A | IA | **integrado (IA)** | F60 |
 | [BG-SPACE](#bg-space) | Camadas parallax | Espaço pelas janelas + menu | A | Grátis ou IA | **integrado** | F26, F07 |
 | [UI-LOGO](#ui-logo) | Imagem | Logo ÓRBITA (splash + menu) | A | IA | **integrado** | F03, F07 |
 | [UI-FONT](#ui-font) | Fonte | Fonte pixel de toda a UI | A | Grátis | integrado | F05, F07 |
@@ -43,6 +46,7 @@
 | [MUS-MENU](#mus-menu) | Música | Trilha do menu | A | IA | **integrado** | F04, F07 |
 | [MUS-CORE](#mus-core) | Música | Trilha do Núcleo Central | A | Grátis | **integrado** | F28 |
 | [MUS-GREENHOUSE](#mus-greenhouse) | Música | Trilha da Estufa | A | Grátis | **integrado** | F29 |
+| [MUS-LAB](#mus-lab) | Música | Trilha do Laboratório | A | IA ou Grátis | pendente | F60 |
 | [MUS-CHASSIS](#mus-chassis) | Música | Momento CHASSI PERDIDO (one-shot) | B | Grátis | pendente | F46 |
 | [MUS-GAMEOVER](#mus-gameover) | Música | Momento PERDA DE ÓRBITA (one-shot) | B | Grátis | pendente | F46 |
 | [MUS-SECTOR](#mus-sector) | Música | Momento do religamento do setor (one-shot) | B | Grátis | pendente | F46 |
@@ -313,6 +317,69 @@ CRITICAL DELIVERY SIZE: draw the whole sheet SMALL — at most 384x64 pixels in 
 FRAME MARGIN: leave at least one empty pixel inside every frame on all four sides. Nothing — no antenna, no tool tip, no motion trail, no glow, no leaf — may touch or cross the edge of its own frame.
 ```
 
+<a id="spr-cx2"></a>
+### SPR-CX2 — Torre Calibradora CX-2
+
+| Campo | Valor |
+|---|---|
+| Caminho final | `assets/sprites/enemies/cx2_sheet.png` |
+| Contrato | Folha **128×64 = 4 col × 2 lin de 32×32**, fundo transparente. Linha 0: `scan` 4f (cabeça varre da esquerda para a direita, lente **ciano**). Linha 1: `lock` 2f (lente vermelha, a 2ª mais clara), `fire` 1f (lente branca e clarão vermelho que sai pelo pé do quadro), `off` 1f (braço caído, lente apagada). **Montada no teto**: a placa de fixação encosta no topo do quadro (y = 0) e o centro da placa fica em x = 16 em todos os quadros (pivô do código). Em parede o código gira o nó 90° |
+| Silhueta | Placa larga no teto + braço curto com um cotovelo + cabeça de scanner creme com **lente redonda grande**. Não se confunde com SR-3 (aranha de chão), doca, terminal nem lâmpada |
+| Placeholder | Placa cinza com marcas laranja, haste, cabeça creme com lente ciano/vermelha/apagada; `fire` com clarão em losango |
+| Placeholder gerado | `assets/placeholder/sprites/enemies/cx2_sheet.png` (128×64) — `tools/make_placeholders.gd`, forma `ceiling_turret` |
+| Fonte | **IA — geração de imagem do Codex CLI** (`tools/gen_image.sh`), 2026-10-27, 2 variações, escolhida a **1ª**: lente maior e silhueta mais limpa a 32 px; a 2ª tinha braço e cabeça mais embolados e virava mancha creme. Referências de estilo: `assets/sprites/mu7/mu7_sheet.png` e `assets/sprites/world/door_sheet.png`. Bruto 1774×887, grade 4×2 detectada exata; fatiada com alinhamento **pelo topo** (o `autoslice_sheet.gd` alinha pelo pé, o que soltaria a torre do teto), escala única tirada dos quadros sem o clarão (o feixe do `fire` é cortado no pé do quadro). Chave por magentice + *unmix*: 0 px semitransparentes, 0 px de franja magenta |
+| Status | **integrado (IA)** em 2026-10-27 |
+
+**Prompt (Codex, com as duas referências anexadas):**
+```
+Pixel art sprite sheet of a CEILING-MOUNTED CALIBRATION TURRET called CX-2, for a 2D side-view sci-fi platformer set in an abandoned space station laboratory. Side view.
+
+STYLE MUST MATCH THE ATTACHED REFERENCE IMAGES (the MU-7 robot and the station door): same worn, lived-in 16-bit look, hard pixels, dark 1-pixel outline, visible bolts, scratched paint, grime in the recesses. MEDIUM brightness overall: the game darkens the scene and lights it at runtime, so do NOT bake strong shadows or glow halos into the sprite.
+
+THE MACHINE (same design in every frame): it HANGS FROM THE CEILING, upside down like a security camera.
+- At the TOP: a wide flat mounting plate bolted to the ceiling (dark cold steel #4A5058), with two small orange heat-warning marks (#E07A3A).
+- Below the plate: a SHORT, THICK articulated arm with ONE visible elbow joint (cold steel), pointing downward.
+- At the BOTTOM of the arm: a chunky boxy SCANNER HEAD in off-white lab casing (#C9C4B5 body, #8C8778 shading) with ONE BIG ROUND LENS on its underside/front that takes up almost half of the head. The lens is the most visible part of the machine.
+It must NOT look like a spider, a walking robot, a lamp, a terminal or a door: it is a hanging arm with a camera-like head and a huge lens.
+
+Layout: a grid of SQUARE frames, 4 columns and 2 rows, the same size each, every frame showing the WHOLE turret with the mounting plate touching the TOP of its frame.
+Row 1 — "scan", 4 frames: the head slowly sweeps from pointing down-left to pointing down-right; the lens is BRIGHT CYAN (#7FD6E8) with a small white highlight.
+Row 2 — frame 1 "lock A": head aimed straight down, lens RED (#E0383A). Frame 2 "lock B": same pose, lens BRIGHTER RED-ORANGE (#FF6A5A), charging. Frame 3 "fire": same pose, lens WHITE-HOT with a short thick red beam flash right under the lens. Frame 4 "off": the arm sags, the head droops lower and tilted, the lens DARK GREY and dead, no light at all.
+
+Chunky readable shapes only: no thin 1-pixel antennas, no tiny panel lines, no speckle — everything must still read when each frame is shrunk to 32x32 pixels. The turret should fill about 60% of the frame width and 75% of the frame height.
+
+IMPORTANT RULE FOR EVERY FRAME: draw ONLY the turret. Never draw the ceiling, walls, floors, rooms, scenery, characters, targets or cast shadows, not even though the turret is mounted on a ceiling. The mounting plate floats on the flat magenta background.
+
+Solid flat magenta background (#FF00FF) everywhere else, with clear magenta gaps between frames. No text, no letters, no labels, no numbers, no grid lines, no frame borders, no watermark.
+```
+
+<a id="spr-steam"></a>
+### SPR-STEAM — Bocal do jato de vapor
+
+| Campo | Valor |
+|---|---|
+| Caminho final | `assets/sprites/world/steam_vent.png` |
+| Contrato | **16×16, 1 quadro**, fundo transparente. Bocal de chão atarracado (16×8) apoiado na borda de baixo do quadro: grade de 4 fendas escuras no topo, aro **laranja-calor**, corpo de aço. O jato é partícula, não sprite |
+| Placeholder | Caixa cinza 14×7 com faixa laranja e fendas |
+| Placeholder gerado | `assets/placeholder/sprites/world/steam_vent.png` (16×16) — `tools/make_placeholders.gd`, forma `steam_vent` |
+| Fonte | **IA — geração de imagem do Codex CLI**, 2026-10-27, 2 imagens com 2 desenhos cada (4 candidatos), escolhido o **1º desenho da 2ª imagem**: 4 fendas grossas continuam separadas a 16 px; os de 6 fendas viravam uma faixa cinza. Referências: `door_sheet.png` e `core_tiles.png`. Reduzido para 16×8 e encostado no pé do quadro; 0 px semitransparentes, 0 px de franja |
+| Status | **integrado (IA)** em 2026-10-27 |
+
+**Prompt (Codex):**
+```
+Pixel art game object for a 2D side-view space station platformer: a FLOOR STEAM VENT nozzle, seen from the side, sitting on the ground.
+
+STYLE MUST MATCH THE ATTACHED REFERENCE IMAGES: same worn 16-bit station look, hard pixels, dark 1-pixel outline, bolts, scratched paint, no anti-aliasing. MEDIUM brightness, no baked glow.
+
+The object: a short, wide, squat metal nozzle housing (cold steel #5E646B, #3A3F45 shading), wider than tall, with a heavy GRATE of thick dark slots on its top where the steam comes out, bolted feet on both sides, and an ORANGE heat-warning rim (#E07A3A) around the top edge. Chunky readable shapes only: it must still read when shrunk to 16x16 pixels, so no thin details. Do NOT draw any steam, smoke, jet or particles: only the dry metal nozzle.
+
+Layout: TWO different design variations of this nozzle, side by side, in two SQUARE frames of the same size (2 columns x 1 row), each nozzle sitting on the bottom edge of its frame and occupying the full frame width and about half of its height.
+
+IMPORTANT RULE: draw ONLY the nozzle. Never draw the floor, walls, pipes, scenery or shadows. The nozzle floats on the flat magenta background.
+
+Solid flat magenta background (#FF00FF) everywhere else. No text, no letters, no labels, no grid lines, no watermark.
+```
+
 <a id="til-core"></a>
 ### TIL-CORE — Tileset Núcleo Central
 
@@ -356,6 +423,53 @@ IMPORTANT RULE: deliver a GRID OF SEPARATE TILES, not a finished picture. Do not
 CRITICAL DELIVERY SIZE: draw the whole atlas SMALL — at most 512x256 pixels in total, which is four times the size it will have in the game (128x64, frames of 16x16). A large upscaled image loses its hard pixel edges when it is reduced and comes out blurry instead of pixel art. Do NOT deliver a big image.
 
 NO EMPTY BORDER INSIDE A TILE: the magenta gaps are separators that go BETWEEN tiles, never inside one. Within its own cell each tile must be filled edge to edge with artwork, because the game lays tiles side by side: a tile with empty or magenta pixels along its own border will show a visible seam in the level.
+```
+
+<a id="til-lab"></a>
+### TIL-LAB — Tileset Laboratório
+
+| Campo | Valor |
+|---|---|
+| Caminho final | `assets/tiles/lab_tiles.png` + `assets/tiles/lab_tileset.tres` |
+| Contrato | **Mesmo atlas do TIL-CORE/TIL-GREENHOUSE**: 128×64, 8×4 de 16×16. Linhas 0–1: as 16 máscaras 4-dir (`LevelParser.atlas_coords_for_mask`, bit 1 cima · 2 direita · 4 baixo · 8 esquerda), todas opacas. Linha 2: (0,2) passarela one-way só no topo · (1,2) parede de fundo opaca · (2,2) janela com miolo transparente · (3,2) grade de ventilação · (4,2) cano horizontal · (5,2) cano vertical · (6,2) luminária acesa (quadro 22) · (7,2) faixa de perigo laranja/preta. Linha 3: (0,3) **parede magnética amarela** (`MagneticWall.TILE_COLUMN/ROW`) · (1,3) luminária apagada (quadro 25) · (2..7,3) armário de amostras, monitor, serpentina de refrigeração quebrada, feixe de cabos, manômetro, painel chamuscado. O `.tres` copia o da Estufa (colisão de mundo nas 16 máscaras, one-way em (0,2) na camada 64) |
+| Placeholder | Creme `#C9C4B5` com bordas, paleta `lab` do `tools/placeholders.json` |
+| Placeholder gerado | `assets/placeholder/tiles/lab_tiles.png` (128×64) — `tools/make_placeholders.gd` |
+| Fonte | **IA — geração de imagem do Codex CLI**, 2026-10-27, 2 variações (as duas em grade 8×4 exata). Base: **1ª variação** (painéis mais limpos, janela de moldura grossa). Da 2ª veio só a passarela one-way (a da 1ª sumia, fina e escura, contra o fundo). Referências: `core_tiles.png` e `greenhouse_tiles.png` |
+| Montagem | Igual à Estufa: as 16 máscaras são a célula "interior" com as faixas de borda coladas por cima (cima 28 % da célula "piso", baixo 22 % da "teto", lados 13 % das células de borda), então as bordas casam por construção. Fundo = variação de painel da linha 4 escurecida (×0,60, quase neutra), porque o fundo de aço com fenda da IA, repetido na fase inteira, virava uma grade de fendas. Ganho final 0,9 com joelho nos claros: luma dos sólidos 0,555 (Núcleo 0,53, Estufa 0,55). 0 px semitransparentes, 0 px de franja |
+| Status | **integrado (IA)** em 2026-10-27; `tests/test_level_tileset.gd` confere o Lab papel por papel (inclui a parede magnética) |
+
+**Prompt (Codex, com os dois tilesets anexados):**
+```
+Pixel art TILE SET for a 2D side-view space station platformer: the station's research LABORATORY, where the cooling system broke and the white corridors bake in the heat.
+
+STYLE MUST MATCH THE ATTACHED REFERENCE IMAGES (the existing station tilesets): same 16-bit worn look, panel seams, rivets, scratched paint, grime in recesses, hard pixels, no anti-aliasing, no soft gradients.
+
+Palette (16 colors max): dirty off-white and cream lab casing (#C9C4B5 body, #DCD7C9 highlight, #8C8778 shading), cold steel underneath (#5E646B, #3A3F45), dark outline (#141310), heat-warning orange stripes (#E07A3A), a little pale cyan (#7FD6E8) only on lamp glass. Keep the base tiles MEDIUM-BRIGHT: the engine darkens the scene with lighting, so do NOT bake shadows, glow or vignettes into tiles.
+
+Layout: a strict grid of SQUARE tiles, 8 columns and 4 rows, all the same size, separated by flat magenta (#FF00FF) gaps. Each tile filled EDGE TO EDGE with artwork inside its own square (except where a tile is told to have magenta).
+Row 1:
+ 1. wall block INTERIOR: off-white lab wall panel that tiles seamlessly on all four sides, no border, a few rivets and a seam.
+ 2. the same block seen as a FLOOR TOP: a cold steel floor trim with a thin orange heat stripe along the TOP edge, the off-white panel below.
+ 3. the same block as a CEILING UNDERSIDE: darker steel lip along the BOTTOM edge.
+ 4. the same block with a steel edge trim along the LEFT side only.
+ 5. the same block with a steel edge trim along the RIGHT side only.
+ 6. a single isolated block with trim on all four sides.
+ 7. a THIN ONE-WAY steel grating catwalk filling only the TOP QUARTER of the square, the rest flat magenta.
+ 8. a dark recessed BACKGROUND wall panel (greyer and darker than the blocks, cream-grey #8C8778 and steel), seamless, with a vent slot.
+Row 2:
+ 1. a square WINDOW FRAME: thick off-white frame, the center fully flat magenta (#FF00FF).
+ 2. a ventilation grille with horizontal slats.
+ 3. a horizontal coolant pipe, cracked, with frost-free dry metal.
+ 4. a vertical coolant pipe.
+ 5. a ceiling lamp fixture, cold lab light, glass lit pale cyan.
+ 6. the same ceiling lamp, OFF, glass dark grey.
+ 7. an orange-and-black diagonal heat hazard stripe panel.
+ 8. a climbable MAGNETIC wall panel with bold diagonal YELLOW (#E8C15A) and dark grey stripes, steel frame.
+Row 3: lab details, each a full square tile: a sample cabinet with small glass doors, a wall monitor screen (dark, no text), a broken cooling coil panel, a cable bundle, a pressure gauge panel (no numbers), an off-white wall panel with a scorch mark, a riveted steel plate, a floor drain grate.
+Row 4: eight more variations of the row-1 interior wall block (different seams, rivets, a small dent, a stain), each seamless.
+
+IMPORTANT RULE: deliver a GRID OF SEPARATE TILES, not a finished picture. Do not draw a room, a level or a composed scene; do not draw characters, creatures or props resting on the tiles.
+No text, no letters, no numbers, no labels, no grid lines, no watermark.
 ```
 
 <a id="bg-space"></a>
@@ -542,6 +656,23 @@ EDGES: the two 9-slice bar frames must reach the edges of their cell, because th
 | Direção | Mesmo universo do MUS-CORE com um elemento orgânico (pads quentes, sinos suaves); quase bonito, levemente triste |
 | Fonte | **Gerada por IA e entregue pelo humano** em 2026-09-20 (`estufa.mp3`, 3,4 MB, **1 min 52 s**). Alternativa grátis registrada: Pixabay Music "ambient calm space" / "ethereal ambient" |
 | Status | **integrado** em 2026-09-20 |
+
+<a id="mus-lab"></a>
+### MUS-LAB — Laboratório
+
+| Campo | Valor |
+|---|---|
+| Caminho final | `assets/audio/music/lab.ogg` (**loop** sem fade nas pontas, 2–3 min) — a resolução aceita `.ogg`, `.mp3` ou `.wav` |
+| Direção | Mesmo universo do MUS-CORE, mas **abafado e parado**: calor que não se mexe, refrigeração quebrada. Drone grave e morno, zumbido elétrico de compressor que tenta partir e engasga, pulsos espaçados como um ventilador falhando, um pad que "derrete" (leve detune). Modo menor, ~60 BPM sem pulso marcado. **Sem bateria e sem voz** ([GDD-2.9](design/GDD.md#gdd-2-9-musica)) |
+| Fonte grátis | Pixabay Music (licença Pixabay, sem crédito obrigatório) — https://pixabay.com/music/search/dark%20ambient%20drone/ · Free Music Archive filtrado CC0/CC-BY · incompetech (CC-BY, crédito no README) |
+| Termos de busca | `industrial ambient drone` · `humming machine ambient loop` · `heat haze ambient` · `broken machinery ambient` · `dark lab ambient` · `sci-fi laboratory loop` |
+| Placeholder | nenhum: até o arquivo chegar a fase toca `core` |
+| Status | **pendente** — o humano gera ou baixa e entrega; o agente normaliza por RMS, confere a emenda do loop e integra |
+
+**Prompt (Stable Audio — preferido para loop; Suno com "instrumental" marcado):**
+```
+Instrumental seamless loop, 2 minutes 30 seconds, dark ambient for a 2D sci-fi game level: an abandoned space station laboratory where the cooling system broke and the white corridors bake in still, heavy heat. Low warm drone in a minor key, muffled and stifling, around 60 BPM with no clear beat. A faint electric hum of a failing compressor that tries to start and chokes, sparse soft metallic ticks of expanding metal, a slow detuned pad that feels like it is melting. Mixed quiet, lots of low-mid warmth, no bright highs. No drums, no percussion groove, no vocals, no choir, no melody that can be sung. Start and end at the same intensity, no fade-in, no fade-out, so it loops seamlessly.
+```
 
 <a id="mus-chassis"></a>
 ### MUS-CHASSIS — Chassi perdido

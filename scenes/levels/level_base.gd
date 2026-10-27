@@ -16,6 +16,7 @@ const RESTORED_META: String = "ambient_restored"
 
 var _parsed: Dictionary = {}
 var _meta: Dictionary = {}
+var _spawn_dock: String = ""
 var _player: Node2D = null
 var _death_armed: bool = true
 
@@ -59,12 +60,13 @@ func spawn_position() -> Vector2:
 	var dock: Node2D = _checkpoint_dock()
 	if dock != null:
 		return dock.global_position
-	return LevelParser.cell_to_position(
-		_parsed.get("spawn", Vector2i.ZERO), LevelParser.ANCHOR_FEET, Balance.TILE_SIZE
-	)
+	return start_position()
 
 
 func start_position() -> Vector2:
+	var dock: Node2D = _revisit_dock()
+	if dock != null:
+		return dock.global_position
 	return LevelParser.cell_to_position(
 		_parsed.get("spawn", Vector2i.ZERO), LevelParser.ANCHOR_FEET, Balance.TILE_SIZE
 	)
@@ -72,6 +74,14 @@ func start_position() -> Vector2:
 
 func camera_rect() -> Rect2i:
 	return LevelBuilder.camera_rect(_parsed)
+
+
+func is_revisit() -> bool:
+	return not _spawn_dock.is_empty()
+
+
+func meta_value(key: String) -> Variant:
+	return _meta.get(key, null)
 
 
 func meta_color(key: String) -> Color:
@@ -88,7 +98,9 @@ func _load_data() -> bool:
 		push_error("level_base: fase ausente em %s" % text_path)
 		return false
 	var text: String = FileAccess.get_file_as_string(text_path)
-	_meta = _read_json(meta_path)
+	var raw_meta: Dictionary = _read_json(meta_path)
+	_spawn_dock = SectorRevisit.spawn_dock(raw_meta, GameState.sectors_restored)
+	_meta = SectorRevisit.apply(raw_meta, GameState.sectors_restored)
 	_parsed = LevelParser.parse(text, LevelBuilder.entity_chars())
 	for warning: String in _parsed.get("warnings", []) as PackedStringArray:
 		push_warning("level_base (%s): %s" % [level_id, warning])
@@ -225,6 +237,10 @@ func _register_entry_checkpoint() -> void:
 	var dock: BackupDock = _entry_dock()
 	if dock == null:
 		return
+	var current: Dictionary = GameState.checkpoint
+	var same_scene: bool = String(current.get("scene", "")) == scene_file_path
+	if same_scene and String(current.get("dock_id", "")).is_empty():
+		GameState.checkpoint = {}
 	if not GameState.register_entry_checkpoint(scene_file_path, String(dock.dock_id)):
 		return
 	SaveManager.save_game()
@@ -243,6 +259,16 @@ func _entry_dock() -> BackupDock:
 			best = dock
 			best_distance = distance
 	return best
+
+
+func _revisit_dock() -> Node2D:
+	if _spawn_dock.is_empty() or not is_inside_tree():
+		return null
+	for dock: Node in get_tree().get_nodes_in_group(StringName("entity:" + _spawn_dock)):
+		if dock is Node2D:
+			return dock
+	push_warning("level_base (%s): doca de revisita '%s' ausente" % [level_id, _spawn_dock])
+	return null
 
 
 func _checkpoint_dock() -> Node2D:
