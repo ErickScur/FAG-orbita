@@ -8,10 +8,35 @@ const FILTER_PREFIX: String = "--filter="
 var _passed: int = 0
 var _failed: int = 0
 var _owned_autoloads: Array[Node] = []
+var _watch: ScriptErrorWatch = ScriptErrorWatch.new()
+
+
+class ScriptErrorWatch extends Logger:
+	var _messages: PackedStringArray = []
+	var _lock: Mutex = Mutex.new()
+
+	func _log_error(
+		function: String, file: String, line: int, code: String, rationale: String,
+		_editor_notify: bool, error_type: int, _script_backtraces: Array[ScriptBacktrace]
+	) -> void:
+		if error_type != ERROR_TYPE_SCRIPT:
+			return
+		var text: String = rationale if not rationale.is_empty() else code
+		_lock.lock()
+		_messages.append("%s (%s:%d em %s)" % [text, file.get_file(), line, function])
+		_lock.unlock()
+
+	func take() -> PackedStringArray:
+		_lock.lock()
+		var taken: PackedStringArray = _messages.duplicate()
+		_messages.clear()
+		_lock.unlock()
+		return taken
 
 
 func _initialize() -> void:
 	await process_frame
+	OS.add_logger(_watch)
 	_ensure_autoloads()
 	var filter: String = _read_filter()
 	var suites: PackedStringArray = _list_suites(filter)
@@ -20,6 +45,7 @@ func _initialize() -> void:
 	for path: String in suites:
 		_run_suite(path)
 	print("%d passed, %d failed" % [_passed, _failed])
+	OS.remove_logger(_watch)
 	await _release_autoloads()
 	quit(1 if _failed > 0 else 0)
 
@@ -108,9 +134,12 @@ func _run_suite(path: String) -> void:
 	var suite: TestCase = instance
 	for method_name: String in _test_methods(suite):
 		suite.failures.clear()
+		_watch.take()
 		suite.before_each()
 		suite.call(method_name)
 		suite.after_each()
+		for message: String in _watch.take():
+			suite.fail("erro de script (o teste parou no meio): %s" % message)
 		if suite.failures.is_empty():
 			_passed += 1
 			print("PASS %s::%s" % [file_name, method_name])

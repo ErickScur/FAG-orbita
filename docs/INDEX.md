@@ -154,7 +154,6 @@ Top-down por bloco. Dentro de um bloco, top-down, respeitando `depends_on`. **N�
 | F52 | [Efeitos sonoros](features/F52-efeitos-sonoros.md) | DEMO | Efeitos visuais/sonoros | `[x]` | 2026-09-20 |
 | F53 | [Backup ao entrar na fase](features/F53-backup-ao-entrar.md) | DEMO | Salvar/Carregar | `[x]` | 2026-09-20 |
 | F54 | [Porta, doca e portal](features/F54-porta-e-doca.md) | DEMO | Efeitos visuais | `[x]` | 2026-09-20 |
-| F53 | [Backup ao entrar numa fase](features/F53-backup-ao-entrar.md) | DEMO | Salvar/Carregar progresso | `[x]` | 2026-09-20 |
 
 ## Bloco 6+ — Entrega final (não detalhado)
 

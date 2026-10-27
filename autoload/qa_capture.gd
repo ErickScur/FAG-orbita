@@ -12,6 +12,7 @@ const DEFAULT_OUT: String = "user://qa/"
 const LOG_FILE: String = "qa_log.txt"
 const TAIL_FRAMES: int = 30
 const SAFETY_FRAMES: int = 10800
+const DEFAULT_TILE_TOLERANCE: int = 1
 
 var is_active: bool = false
 var _events: Array[Dictionary] = []
@@ -24,6 +25,8 @@ var _log_lines: PackedStringArray = []
 var _finishing: bool = false
 var _pending_scene: String = ""
 var _scene_opened: bool = false
+var _checks: int = 0
+var _check_failures: int = 0
 
 
 func _ready() -> void:
@@ -108,6 +111,10 @@ func _run_event(event: Dictionary) -> void:
 			_log("frame %d ERRO cena inexistente %s" % [_frame, scene_path])
 	if event.has("call"):
 		_run_call(String(event.get("call", "")), event.get("args", []))
+	if event.has("expect_tile"):
+		_check_tile(event)
+	if event.has("expect_scene"):
+		_check_scene(String(event.get("expect_scene", "")))
 	if event.has("screenshot"):
 		_capture(String(event.get("screenshot", "")))
 	if bool(event.get("quit", false)):
@@ -168,17 +175,59 @@ func _capture(shot_name: String) -> void:
 
 
 func _player_mark() -> String:
-	var tree: SceneTree = get_tree()
-	if tree == null:
-		return ""
-	var players: Array[Node] = tree.get_nodes_in_group(&"player")
-	if players.is_empty():
-		return ""
-	var body := players[0] as Node2D
+	var body: Node2D = _player_body()
 	if body == null:
 		return ""
 	var tile: Vector2i = Vector2i(body.global_position) / Balance.TILE_SIZE
 	return " jogador em %d,%d" % [tile.x, tile.y]
+
+
+func _player_body() -> Node2D:
+	var tree: SceneTree = get_tree()
+	if tree == null:
+		return null
+	var players: Array[Node] = tree.get_nodes_in_group(&"player")
+	if players.is_empty():
+		return null
+	return players[0] as Node2D
+
+
+func _check_tile(event: Dictionary) -> void:
+	_checks += 1
+	var label: String = String(event.get("label", "sem_nome"))
+	var raw: Variant = event.get("expect_tile", [])
+	var expected: Array = raw if raw is Array else []
+	if expected.size() != 2:
+		_check_failures += 1
+		_log("frame %d ERRO marco %s mal escrito: use [coluna, linha]" % [_frame, label])
+		return
+	var target := Vector2i(int(expected[0]), int(expected[1]))
+	var tolerance: int = int(event.get("tolerance", DEFAULT_TILE_TOLERANCE))
+	var body: Node2D = _player_body()
+	if body == null:
+		_check_failures += 1
+		_log("frame %d ERRO marco %s: nenhum jogador na cena" % [_frame, label])
+		return
+	var tile: Vector2i = Vector2i(body.global_position) / Balance.TILE_SIZE
+	var distance: Vector2i = (tile - target).abs()
+	if distance.x <= tolerance and distance.y <= tolerance:
+		_log("frame %d marco OK %s em %d,%d" % [_frame, label, tile.x, tile.y])
+		return
+	_check_failures += 1
+	_log("frame %d ERRO marco %s: esperado %d,%d (±%d), jogador em %d,%d" % [
+		_frame, label, target.x, target.y, tolerance, tile.x, tile.y
+	])
+
+
+func _check_scene(expected: String) -> void:
+	_checks += 1
+	var current: Node = get_tree().current_scene
+	var actual: String = current.scene_file_path if current != null else ""
+	if actual == expected:
+		_log("frame %d marco OK cena %s" % [_frame, expected])
+		return
+	_check_failures += 1
+	_log("frame %d ERRO marco de cena: esperado %s, atual %s" % [_frame, expected, actual])
 
 
 func _finish() -> void:
@@ -191,6 +240,7 @@ func _finish() -> void:
 		audio.call("stop_all")
 	await RenderingServer.frame_post_draw
 	await get_tree().process_frame
+	_log("resumo: %d marco(s), %d falha(s)" % [_checks, _check_failures])
 	_write_log()
 	get_tree().quit(0)
 

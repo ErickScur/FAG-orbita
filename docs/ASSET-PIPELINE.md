@@ -39,7 +39,26 @@
 
 **Aceito:** CC0, CC-BY (com crédito no README), Pixabay, licenças que permitem uso em jogo não comercial. **Recusado:** sem licença clara, "personal use only" ambíguo, GPL para arte, qualquer coisa "ripada" de jogo comercial.
 
-## 3. Geração com IA — Gemini / Nano Banana Pro
+## 3. Geração com IA
+
+### 3.0 Geração direta pelo agente (padrão desde 2026-10-27)
+
+O agente gera a arte sozinho pela geração de imagem do Codex CLI, sem o humano copiar prompt
+(skill `gen-image`):
+
+```bash
+tools/gen_image.sh --prompt=<prompt.txt> --out=<scratchpad>/<ID>/raw.png \
+  --ref=assets/sprites/mu7/mu7_sheet.png --variants=2
+```
+
+- O prompt é o mesmo do template abaixo; o script acrescenta as instruções para o Codex.
+- `--ref` passa uma arte já aprovada como **referência de estilo** (o MU-7 para personagens e
+  máquinas; a peça do setor mais próxima para tileset e props).
+- **A saída tem proporção fixa: 2:1 (1774×887) ou 1:2 (887×1774).** Peça grades que caibam
+  nelas (4×2, 2×4…) e deixe o fatiador (§4.0) remontar nas colunas do contrato.
+- Bruto no scratchpad; depois `autoslice_sheet.gd` → `tools/preview_sheet.gd` (ampliação nearest
+  para conferir a legibilidade em 32 px) → integração.
+- O Gemini/Nano Banana Pro, com o humano copiando o prompt, fica como fallback.
 
 ### Template de prompt
 ```

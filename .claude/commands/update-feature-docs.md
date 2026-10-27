@@ -15,4 +15,10 @@ A feature é a fonte da verdade do trabalho; o INDEX é o catálogo; o ENTREGAS 
 4. **`docs/design/GDD.md`** — se mudou regra ou número: edite a seção/tabela GDD-P **e** adicione linha em "Ajustes de implementação". Espelhe em `scripts/core/balance.gd`.
 5. **`docs/DECISIONS.md`** — decisão cross-cutting vira ADR (append-only). Decisão local fica na seção 11 da feature.
 6. **`docs/GLOSSARY.md`** / **`docs/ASSETS.md`** — termo novo na UI; asset novo/alterado (status, licença, créditos).
-7. **`/CLAUDE.md` §9** — se aprendeu uma armadilha real, uma linha em "Lições aprendidas".
+7. **Lição aprendida** — armadilha real (sintoma silencioso, retrabalho, playtest reprovando)
+   vira uma linha **na skill do assunto**: `godot-pitfalls` (engine/código), `godot-qa`
+   (roteiros e capturas), `asset-request` (arte/áudio), `level-design` (fase, geometria,
+   regra de design). Se vale para qualquer tarefa (processo, git, ferramenta), vai no `/CLAUDE.md`
+   §9. Formato: regra → sintoma → causa → (feature).
+8. **Mecanismo > lição** — se a armadilha pode ser pega por teste, marco de QA ou varredura do
+   `tools/gates.sh`, escreva o mecanismo também. Lição sem mecanismo se repete.

@@ -17,6 +17,16 @@ Jogo para a disciplina de **Desenvolvimento de Jogos** (faculdade). Tema avaliad
 - **Objetivo:** não é um jogo perfeito. É um jogo **jogável** que **cumpre a rubrica** da disciplina. A rubrica manda no escopo — ver [`docs/ENTREGAS.md`](docs/ENTREGAS.md).
 - **Entrega atual:** **Demo (~30%)** em **3 dias de trabalho focado** — Fase 0 (Núcleo Central) + Fase 1 (Estufa) + todas as telas da rubrica. Detalhes em [`docs/ENTREGAS.md`](docs/ENTREGAS.md) e [ADR-009](docs/DECISIONS.md#adr-009).
 
+### 1.1 O que o humano já reprovou no playtest (não repita)
+
+Doze rodadas de retrabalho da demo vieram do playtest, não de bug. Viraram regra de design
+(detalhes e checklist na skill `level-design`):
+
+- **Puzzle antes de texto.** Só o Núcleo Central (tutorial) explica. Nas outras fases o terminal mostra título, objetivo e orçamento, nada mais; ÓRBITA fala só em marcos; história em poucos fragmentos grandes e difíceis de achar.
+- **Fase grande, não linear, com parkour.** "Liga, sobe, abre a porta e já era" foi reprovado.
+- **Toda escolha tem consequência visível** de onde o jogador está; escuro é escuro de verdade; cada objeto interativo tem silhueta inconfundível.
+- **HUD não cresce**: informação nova vai para o Terminal do Chassi.
+
 ---
 
 ## 2. Regras duras (inegociáveis)
@@ -30,7 +40,7 @@ Jogo para a disciplina de **Desenvolvimento de Jogos** (faculdade). Tema avaliad
 7. **Código em inglês, texto em pt-BR.** Identificadores, arquivos e nós em inglês; tudo que o jogador lê em português (com acentos).
 8. **Placeholder-first.** Nenhuma feature espera arte/som. Enquanto o asset definitivo não existe, a cena aponta para o placeholder em `assets/placeholder/<mesmo nome do arquivo final>` (mesmas dimensões e frames do contrato do [`ASSETS.md`](docs/ASSETS.md)). Quando o definitivo chega, ele vai para o **caminho final** e a cena/`SpriteFrames` troca o `res://` em **uma linha** (ver [ADR-005](docs/DECISIONS.md#adr-005)).
 9. **Ação humana é exceção documentada.** Se algo só pode ser feito no editor, escreva o bloco `🧑 AÇÃO HUMANA` (formato em [`docs/EDITOR-GUIDE.md`](docs/EDITOR-GUIDE.md)) com cada clique, e **pare** até o humano confirmar.
-10. **Assets sempre registrados** em [`docs/ASSETS.md`](docs/ASSETS.md) com fonte (site gratuito + licença **ou** prompt Nano Banana Pro) e contrato técnico. Asset sem licença compatível não entra no repo.
+10. **Assets sempre registrados** em [`docs/ASSETS.md`](docs/ASSETS.md) com fonte (site gratuito + licença **ou** prompt de IA — Codex ou Nano Banana Pro) e contrato técnico. Asset sem licença compatível não entra no repo.
 
 ---
 
@@ -47,7 +57,7 @@ Jogo para a disciplina de **Desenvolvimento de Jogos** (faculdade). Tema avaliad
 | Conteúdo | JSON em `data/` (logs, diálogos, puzzles de energia) | [ADR-006](docs/DECISIONS.md#adr-006) |
 | Save | `user://save.json` (progresso) · `user://settings.cfg` (`ConfigFile`, volume/dificuldade) | F11 / F04 / F08 |
 | Testes | Runner próprio `tests/run_tests.gd` (sem addon) + smoke de cenas | [ADR-007](docs/DECISIONS.md#adr-007) |
-| Arte IA | **Gemini / Nano Banana Pro** | Prompts no [`ASSET-PIPELINE.md`](docs/ASSET-PIPELINE.md) |
+| Arte IA | **Codex CLI (geração de imagem), disparada pelo agente** | `tools/gen_image.sh` + skill `gen-image`; prompts no [`ASSET-PIPELINE.md`](docs/ASSET-PIPELINE.md). Gemini/Nano Banana Pro com o humano é o fallback |
 | Arte/som grátis | Kenney (CC0), itch.io (CC0/CC-BY), OpenGameArt, Freesound, Pixabay | Licença registrada no `ASSETS.md` e nos créditos do `README.md` |
 
 ---
@@ -144,18 +154,17 @@ Fases são arquivos de texto, uma linha = uma linha de tiles de 16 px. A legenda
 
 ## 6. Portões de qualidade
 
-Antes de marcar uma feature `[x]` e antes de commitar, rode **nesta ordem** (comando `/verify-gates`):
+Antes de marcar uma feature `[x]` e antes de commitar (comando `/verify-gates`):
 
 ```bash
-"$GODOT" --headless --path . --import                       # 1. importa assets, compila scripts
-"$GODOT" --headless --path . -s res://tests/run_tests.gd     # 2. testes de lógica (exit code 0)
-tools/smoke.sh                                                # 3. carrega cada cena de tests/scenes.txt, 0 erros
+tools/gates.sh          # import → testes → smoke → varreduras (3D, comentário, fonte, lixo no git); para no 1º que falhar
+tools/qa.sh tests/qa/<roteiro>.json --scene=res://...   # QA visual: janela real, marcos, capturas
 ```
 
-4. **QA visual** com a skill `godot-qa` (janela real, input roteirizado, screenshots lidas pelo agente).
-5. **Varreduras:** `grep -rnE "Node3D|Camera3D|MeshInstance3D|Body3D" --include=*.gd --include=*.tscn .` vazio; `grep -rnE "^\s*#" --include=*.gd .` vazio; `git status --short` sem lixo (`.godot/`, `.DS_Store`, builds) e sem `.claude/settings.local.json`.
+1. **Import**, 2. **testes** (inclui paridade GDD-P ↔ `Balance`, alcançabilidade das fases e limite de luzes), 3. **smoke** de cada cena de `tests/scenes.txt`, 4. **varreduras** — tudo dentro do `gates.sh`. Qualquer `SCRIPT ERROR`, `Parse Error` ou `ERROR:` reprova.
+5. **QA visual** com a skill `godot-qa`: roteiro **com marcos** (`expect_tile`/`expect_scene`) e capturas lidas pelo agente. Roteiro sem marco "passa" mentindo.
 
-Qualquer `SCRIPT ERROR`, `Parse Error` ou `ERROR:` no output reprova o portão.
+Não chame o Godot à mão sem limite de tempo (o macOS não tem `timeout`); os dois scripts já cuidam disso.
 
 ---
 
@@ -166,7 +175,9 @@ export GODOT="/Users/BRScurPaEr/Downloads/Godot.app/Contents/MacOS/Godot"   # j�
 "$GODOT" --path .                                   # abre o jogo (cena principal)
 "$GODOT" --path . res://scenes/levels/greenhouse.tscn   # roda uma cena específica
 "$GODOT" -e --path .                                # abre o editor
-"$GODOT" --path . --fixed-fps 60 -- --qa --qa-scene=res://... --qa-script=res://tests/qa/<roteiro>.json --qa-out=<dir> --qa-screen=1   # QA (skill godot-qa)
+tools/gates.sh                                      # portões completos (--skip-smoke para iterar)
+tools/qa.sh tests/qa/<roteiro>.json --scene=res://... --out=<scratchpad>/qa/x   # QA (skill godot-qa)
+"$GODOT" --version                                  # comando do Godot voltou vazio? confira se o binário existe
 ```
 
 Build/export: ver [F30](docs/features/F30-build-demo.md) (exige templates de export instalados — ação humana).
@@ -192,50 +203,49 @@ Build/export: ver [F30](docs/features/F30-build-demo.md) (exige templates de exp
 | [`docs/design/GDD.md`](docs/design/GDD.md) | **Design e números canônicos** | **sim** |
 | [`docs/design/JORNADA-DO-HEROI.md`](docs/design/JORNADA-DO-HEROI.md) | **Narrativa canônica** | **sim** |
 
-Skills/comandos do projeto (`.claude/`): `/verify-gates`, `/update-feature-docs`, `/commit-feature`, skills `plan-feature`, `feature-loop`, `godot-qa`, `asset-request`.
+Skills/comandos do projeto (`.claude/`):
+
+| Skill / comando | Quando |
+|---|---|
+| `plan-feature` | planejar uma feature ou criar o arquivo de uma feature FINAL |
+| `feature-loop` (+ `BRIEFING.md`) | executar uma ou várias features com subagentes |
+| `level-design` | **toda fase nova ou edição em `data/levels/` e `data/energy/`** |
+| `godot-pitfalls` | antes de codar luz, UI/fonte/foco, Tween/pausa, animação, física, câmera/parallax, testes |
+| `godot-qa` | QA visual com marcos; depois de mexer em mapa |
+| `asset-request` | ficha, prompt e integração de arte/áudio |
+| `gen-image` | **gerar arte por IA direto** (Codex), escolher variação, fatiar e pré-visualizar |
+| `/verify-gates` · `/update-feature-docs` · `/commit-feature` | portões · doc viva · commit |
 
 > Ao terminar qualquer trabalho, **atualize a doc viva** (status no INDEX, log na feature, ASSETS se mexeu em asset). Documentação desatualizada é dívida.
 
 ---
 
-## 9. Lições aprendidas (append-only)
+## 9. Lições aprendidas
 
-> Armadilhas reais encontradas durante o desenvolvimento. Uma linha cada, com a feature de origem.
+> Armadilhas reais encontradas durante o desenvolvimento. **Cada uma mora na skill do seu
+> assunto**, que é carregada quando o assunto aparece; aqui ficam só as que valem para qualquer
+> tarefa e o índice. Nenhuma lição foi apagada: as 38 da demo estão nas skills abaixo, com a
+> feature de origem.
 
-- **(bootstrap)** O macOS não tem `timeout`. Todo comando `$GODOT` não interativo deve ter limite de tempo: `perl -e 'alarm 60; exec @ARGV' "$GODOT" --headless --path . ...`. Sem cena principal (`run/main_scene`) o Godot imprime "no main scene defined" e **fica pendurado** em vez de sair.
-- **(F05/F03)** Fonte pixel exige tamanho nativo: a **m5x7 só fica nítida em múltiplos de 16**; 8/12/24 produzem glifos derretidos que só aparecem na resolução grande. No `.import` da fonte, `keep_rounding_remainders=false` (além de `antialiasing=0`, `hinting=0`, `subpixel_positioning=0`).
-- **(F06)** Captura de tela no QA é **síncrona**: `RenderingServer.force_draw(false)` + `get_viewport().get_texture().get_image()`. Com `await RenderingServer.frame_post_draw` as continuações resolvem em lote quando a janela está sem foco e várias fotos saem idênticas; e pausar a árvore para esperar o desenho **trava o jogo** (o await nunca resolve).
-- **(F06)** O auto-pause por perda de foco (`NOTIFICATION_APPLICATION_FOCUS_OUT`) precisa ignorar o modo QA — com a janela sem foco ele abriria a pausa em cima de toda captura.
-- **(QA)** A janela de QA abre no **segundo monitor** e sem roubar foco (`ORBITA_QA_SCREEN=1` no `.claude/settings.json`, ou `--qa-screen=N`). O humano usa a tela primária enquanto os agentes trabalham — piscar janela em cima dele é interrupção real.
-- **(F12)** Roteiro de QA deve exercitar **o controle que o GDD documenta**, não o que o código faz: a descida de plataforma fina passou no QA com ↓+pulo e quebrou na mão do jogador, que apertou só ↓ (como o GDD-2.4 manda).
-- **(F35)** `Tween` criado em nó comum é `TWEEN_PAUSE_BOUND` e **congela durante fala travante** (o diálogo pausa a árvore). Efeito visual que acompanha fala precisa de `set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)` — sem isso o clarão simplesmente não acontece.
-- **(F35)** Deslize horizontal com `clip_contents` **corta o texto** em container de largura fixa (o aviso do HUD virou "DADO DE PESQUISA 01/1"). Anime na vertical ou sem recorte.
-- **(F35)** Offset de câmera em 384×216 com escala inteira tem de ser **arredondado a pixel inteiro**, senão o tremor borra a tela pelo mesmo motivo da lição da fonte.
-- **(F26)** `Parallax2D` no Godot 4.7 nasce com `follow_viewport = true`, que significa "a camada onde eu moro já me arrasta". Numa `CanvasLayer` com `follow_viewport_enabled = false` isso soma a compensação de volta e **o fundo corre para o lado errado**. As duas flags precisam casar (ambas `false` no nosso caso).
-- **(F09)** Sobreposição de UI (modal, opções por cima do pause) **precisa de trava de foco**: sem `focus_neighbor_*` explícitos, a navegação por setas/controle "escapa" para os botões da tela de baixo — com mouse parece funcionar, o que esconde o bug. Use `FocusTrap` (`scripts/core/focus_trap.gd`): ele desliga o foco de todo `Control` fora do modal e liga os botões permitidos em ciclo.
-- **(F10)** Em telas ProMotion a janela roda a ~120 fps, então `frame` nos roteiros `godot-qa` vale ~1/120 s. Passe `--fixed-fps 60` ao capturar, ou dobre as esperas do roteiro.
-- **(F02)** Em edição de markdown por script, `str.replace(a, b)` do Python troca **todas** as ocorrências: uma linha de tabela usada como âncora (`| AJ-012 |`) apareceu 17 vezes e duplicou um bloco inteiro dentro da tabela GDD-P. Ancore por linha inteira e passe `count=1`, e confira o trecho depois.
-- **(F43)** No renderer **Compatibility** cada item de canvas aceita no máximo **16 `Light2D`**; da 17ª em diante a luz é descartada **em silêncio** (nenhum erro no log). As 19 luzes de brilho por tile da parede magnética empurravam a lanterna do MU-7 para fora da lista e ela simplesmente não iluminava. Brilho de cenário repetido por tile precisa ser **fundido por trecho**; `tests/test_light_crowding.gd` trava 12 luzes por janela de 256 px.
-- **(F50)** `OccluderPolygon2D` de tile inteiro faz o tile **projetar sombra sobre a própria face**: num jogo 2D de lado o que se vê de um bloco é a face, e ela é a primeira coisa que a luz deveria acender. Oclusão tem de ser o **contorno da ilha sólida** com `cull_mode` (só a face oposta à luz projeta) — com oclusor por tile, ligar `cull_mode` não adianta, porque as arestas entre dois sólidos vizinhos continuam sombreando uma à outra.
-- **(bootstrap)** O humano pode estar com o editor aberto no mesmo projeto. Rodar headless em paralelo funciona, mas o editor pode sobrescrever `project.godot` ao salvar — peça para fechar o editor antes de editar `project.godot` à mão.
-- **(F37)** `set_anchors_and_offsets_preset(PRESET_FULL_RECT)` usa `PRESET_MODE_MINSIZE` por padrão: chamado antes do primeiro layout (pai ainda com largura 0) ele grava `offset_right = largura_mínima` e o `Control` termina com **largura do pai + largura mínima**. O aviso do HUD nasceu deslocado para a direita assim e ficou errado desde a F15 sem ninguém notar. Defina `size`/`position` explicitamente, ou passe `PRESET_MODE_KEEP_SIZE`.
-- **(F36)** A fonte `ui_font.ttf` (m5x7) **não tem** `—` (em-dash), `←` `→` `↑` `↓` nem `✓`; tem `·`, `-` e todos os acentos. Como o `.import` está com `allow_system_fallback=true`, um glifo ausente não some: cai numa fonte do sistema e sai borrado no meio do pixel art, o que é pior que um erro. Escreva as teclas por extenso (`[SETAS]`, `[CIMA]`, `[BAIXO]`) e use `[OK]` no lugar do `✓`. Para conferir: `font.has_char(code)` num script headless.
-- **(F36)** Roteiro de `godot-qa` **mente quando o mapa muda**: o nome do arquivo continua dizendo `41_fim_da_demo` enquanto a foto mostra o jogador parado no ponto de partida. O log do QA imprime a posição do jogador em cada captura — **compare as posições entre capturas que deveriam mostrar progresso**; posição idêntica é roteiro quebrado, não jogo quebrado. Ao mexer numa fase, rode e releia os roteiros dela antes de confiar neles.
-- **(F36)** Diálogo travante pausa a árvore, então **aperto de `interact` sobrando em cima de um terminal de registros reabre o log** que acabou de fechar, e as capturas seguintes mostram as primeiras linhas de novo, parecendo que o log "voltou". Cada linha custa dois apertos (o primeiro completa a digitação, o segundo avança): um log de 10 linhas fecha em 20. Conte, ou ande para longe do terminal antes de apertar mais.
-- **(F29/F19)** `DialogueManager._finish_current()` aplica os efeitos da fala **antes** de esconder a caixa, e um efeito (`unlock_ability`, `set_flags`) pode iniciar uma fala nova ali mesmo, de forma síncrona. Sem checar `_current` de novo depois de `_apply_effects()`, a função escondia a caixa da fala que acabara de começar: a fala das garras rodava **invisível**, congelando o timer sem mostrar nada. Toda função que limpa estado depois de chamar um gancho precisa reconferir se o gancho recriou esse estado.
-- **(F36)** O cartão de tutorial ignorava a tecla sempre que houvesse diálogo no frame anterior, para que o `[E]` que avança uma fala não completasse o cartão por tabela. Como a Estufa quase sempre tem fala ambiente na tela, o cartão de escalar **nunca completava** e ficava preso até o fim da fase. A guarda tem de valer só para as teclas que o diálogo realmente consome (`DialogueManager.ADVANCE_ACTIONS`), não para qualquer tecla.
-- **(F43)** O topo colidível da `GrowPlant` fica **64 px acima do pé** (4 tiles) e o pulo alcança 40 px: uma trepadeira **não é escalável a partir do chão**. Toda planta que serve de rota precisa de um patamar de embarque a 2 tiles do topo. O mapa antigo escondia isso porque a planta era só degrau intermediário.
-- **(F43)** As garras agarram a até 10 px da parede, mas o corpo do MU-7 tem 14 px de largura: escalando afastado 3 px, a lateral invade a coluna vizinha, o jogador bate `is_on_ceiling` e **para de subir sem nenhum erro no log**. Chaminé de escalada precisa de **2 tiles de largura**.
-- **(F43)** Plataformas finas empilhadas só são transponíveis com **pelo menos 2 colunas de sobreposição horizontal**: o apogeu de 40 px chega, mas o deslocamento horizontal acumulado durante a subida não.
-- **(F22)** Atribuir `sprite_frames` a um `AnimatedSprite2D` já **escolhe** a primeira animação (`animation` deixa de ser `"default"`) mas **não toca** nada. Um guarda `if sprite.animation == anim: return` conclui "já estou nela" e a animação nunca começa — o sprite fica congelado no quadro 0 enquanto o nó anda. O guarda tem de exigir `and sprite.is_playing()`.
-- **(F22)** Sonda de borda de inimigo precisa da **mesma máscara de colisão do corpo**. Com `mask = 1 | 7` a `FloorProbe` via plataforma fina como chão, mas o corpo (`mask = 1`) atravessa: a SR-3 andava para fora do parapeito e caía da fase.
-- **(F49)** Chave de magenta por **distância euclidiana deixa franja rosa**: um pixel meio a meio entre o fundo e o desenho fica longe o bastante da cor-chave para receber alfa cheio. Use "magentice" (`(r+b)/2 − g`), que vale ~245 no fundo e ~0 numa silhueta cinza-azulada, clara ou escura, mais o *unmix* `F = (C − K·(1−a))/a`.
-- **(F49)** O teste do resolvedor de assets precisa de um asset **ainda sem arte final** como cobaia. A cada entrega de arte ele quebra e alguém troca a cobaia — já aconteceu três vezes (SR-3, esporo, e a próxima será o botânico). Vale trocar por uma cobaia sintética que nunca vá existir de verdade.
-- **(F49)** Arte de parallax larga pode ter o assunto **fora de qualquer enquadramento alcançável**: o planeta-alvo caía em x≈700 de uma tira de 1152, e com `scroll_scale` 0,18 numa fase de 768 px o jogo só revelava x ∈ [34, 488] — ele nunca apareceria. Confira onde o assunto cai **depois** de aplicar a escala de rolagem, e role a tira se preciso (como a camada fecha em ciclo, rolar não cria emenda).
-- **(F47)** Rodar `tests/qa/f29_greenhouse.json` **sem `--qa-new-game`** faz o jogo entrar pelo menu e cair no `user://save.json` que a rodada anterior deixou — o MU-7 nasce noutro lugar, todo o roteiro de input se perde e a demo "não fecha". O sintoma imita um bug de dado (o jogador trava contra um muro), mas não há nenhum `ERROR` no log. Comece por conferir a posição do MU-7 nas primeiras capturas contra os marcos documentados na F43 §10 antes de culpar o código.
-- **(F47)** Colar uma faixa de arte sobre um tile com `Image.blit_rect` **copia o alfa** e abre buraco onde a faixa era transparente (a silhueta do musgo vazou o topo de 8 das 16 máscaras da Estufa — ou seja, de toda superfície de piso). Use `blend_rect`, que mistura sobre a base. Nenhuma screenshot mostrou isso; quem pegou foi um teste que conta pixels transparentes por tile.
-- **(F47)** Coordenada crua de atlas (`LevelBuilder.ONE_WAY_TILE`, `MagneticWall.TILE_COLUMN/ROW`, `SecretWall.tile_column/row`) é contrato entre código e arte que ninguém revalida quando a arte é regerada. Toda folha nova precisa passar por `tests/test_level_tileset.gd`, que confere papel por papel.
-- **(F52)** A resolução de efeito sonoro procurava o **arquivo direto** antes das variações `nome_N`, nos dois diretórios. Como o placeholder tinha `pickup.wav` e `door_open.wav`, as variações definitivas `pickup_1/2` e `door_open_1..3` **nunca seriam tocadas**: arquivo novo no disco, som velho no jogo, sem erro nenhum. Resolva **por grupo** — o conjunto inteiro (direto ou variações) no diretório definitivo primeiro, placeholder só depois.
-- **(F52)** Normalize áudio por **RMS**, não por pico. Um pacote inteiro pode chegar com pico ≈ −1 dBFS e ainda ter 21 dB de diferença de volume percebido entre os arquivos; normalizar por pico não muda nada e o passo continua estourando ao lado do alarme inaudível.
-- **(F50)** Rodar `git add -A` com agentes trabalhando em paralelo **varre o trabalho em andamento de quem ainda não entregou** para dentro do seu commit. Conferir `git status` alguns minutos antes não basta: entre a conferência e o `add` o outro agente escreve. Ou **staja caminhos explícitos**, ou confira `git status` no mesmo comando do `add`.
-- **(F54)** Raycast contra `TileMapLayer` **falha na primeira física depois do `_ready()`**: a colisão dos tiles ainda não está registrada e o raio atravessa o teto como se não houvesse nada. A porta da Estufa nasceu com 48 px de antepara enfiada dentro da parede por causa disso. Espere **2 quadros de física** antes de medir o mundo.
+### 9.1 Onde está cada lição
+
+| Vai mexer em… | Leia antes | Exemplos do que já custou caro |
+|---|---|---|
+| Fase, mapa ASCII, terminal de energia, geometria, luz de cenário | skill `level-design` | trepadeira não escalável do chão, chaminé de 1 tile, terminal explicando demais, fase "liga-sobe-abre" |
+| Código Godot: luz, UI/fonte/foco, Tween/pausa, animação, física, câmera/parallax, diálogo reentrante, testes | skill `godot-pitfalls` | 17ª luz descartada em silêncio, sprite congelado no quadro 0, `PRESET_FULL_RECT` largo demais, fala rodando invisível |
+| Roteiro de QA, capturas, marcos | skill `godot-qa` | roteiro "passando" com o MU-7 parado na entrada, save antigo carregado, `interact` sobrando reabrindo log |
+| Arte, tileset, áudio, licença | skills `asset-request` e `gen-image` | folha da IA fora do contrato, franja magenta, `blit_rect` furando o piso, som novo nunca tocado |
+
+### 9.2 Lições transversais
+
+- **(bootstrap)** O macOS não tem `timeout`. Todo Godot não interativo vai por `tools/gates.sh`/`tools/qa.sh` ou `perl -e 'alarm N; exec @ARGV' "$GODOT" ...`. Sem `run/main_scene` o Godot **fica pendurado** em vez de sair.
+- **(ECC)** Comando do Godot que volta **vazio** (sem nem a linha "Godot Engine v4.7.2") significa binário ausente, não sucesso: o `Godot.app` em `~/Downloads` já sumiu no meio de uma sessão. Rode `"$GODOT" --version` antes de depurar qualquer outra coisa.
+- **(bootstrap)** O humano pode estar com o editor aberto no mesmo projeto, e o editor pode sobrescrever `project.godot` ao salvar. Peça para fechar o editor antes de editar `project.godot` à mão.
+- **(F02)** Em edição de texto por script, `str.replace(a, b)` troca **todas** as ocorrências: a linha `| AJ-012 |` apareceu 17 vezes e duplicou um bloco dentro da GDD-P. Use `assert s.count(old) == 1` e `replace(old, new, 1)`; prefira a ferramenta Edit, que exige âncora única.
+- **(F50)** `git add -A` com agentes em paralelo **varre o trabalho de quem ainda não entregou**. Adicione por caminho, com a conferência no mesmo comando; o `settings.json` nega `git add -A`/`--all`/`.`.
+- **(ECC)** Subagente que acerta de primeira recebeu "estado atual", "o que eu já verifiquei" e "arquivos seus/proibidos" (modelo em `.claude/skills/feature-loop/BRIEFING.md`). Mais de 3 agentes pesados ao mesmo tempo esbarram no limite da API e morrem antes de escrever.
+- **(ECC)** A feature termina no playtest do humano, não nos portões: os portões estavam verdes em todas as 12 rodadas de retrabalho da demo. Antes de entregar gameplay, passe pelo checklist do `level-design` §4.7.
+
+### 9.3 Como registrar uma lição nova
+
+Uma linha na skill do assunto — regra → sintoma → causa → (feature). Só entra aqui se valer para qualquer tarefa. E **mecanismo antes de lição**: se a armadilha pode ser pega por teste, marco de QA ou varredura do `tools/gates.sh`, escreva o mecanismo; lição sem mecanismo se repete (foi assim com os roteiros de QA, que mentiram três vezes até ganharem marcos).

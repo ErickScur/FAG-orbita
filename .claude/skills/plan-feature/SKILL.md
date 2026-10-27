@@ -13,12 +13,21 @@ Lance até 3 Explore em paralelo:
 2. **Código:** o que já existe e será tocado — autoloads, sinais do EventBus, cenas e scripts vizinhos, `data/`, `tests/`. Pontos de extensão; o que reutilizar.
 3. **Assets e conteúdo:** fichas do `docs/ASSETS.md` necessárias, placeholders existentes, JSONs de fase.
 
+Feature que é fase ou arena (F60–F65): carregue a skill `level-design` antes do estudo — as
+regras de design dela (puzzle antes de texto, fase grande, terminal mudo, escuro de verdade) são
+o filtro do desenho. Feature que toca luz, UI, Tween, animação ou física: leia a seção
+correspondente da `godot-pitfalls`.
+
 ## Passo 2 — Desenho
 - **Cenas e nós** (árvore de nós 2D exata), scripts e `class_name`, sinais novos no EventBus (evite; reutilize os existentes).
 - **Lógica pura** em `scripts/core/` + testes `tests/test_*.gd`.
 - **Dados** (esquema JSON) e **números** (novos → GDD-P + Ajustes).
 - **Integração:** quem emite, quem escuta, o que salva no `GameState`/save, efeitos no HUD, áudio (SFX-PACK), luz.
-- **Roteiro godot-qa:** cena, inputs por frame, screenshots esperadas.
+- **Roteiro godot-qa:** cena inicial, inputs por frame, **marcos** (`expect_tile` por trecho,
+  `expect_scene` na troca de cena) e screenshots esperadas.
+- **Como o humano vai reagir:** releia as falas de playtest no INDEX (Blocos 5B/5C) e diga por
+  que esta feature não repete nenhuma delas (texto demais, HUD cheia, fácil demais, objeto
+  ambíguo).
 - **🧑 Ação humana** (se houver) no formato do `docs/EDITOR-GUIDE.md`.
 - **Assets:** fichas novas via skill `asset-request`.
 

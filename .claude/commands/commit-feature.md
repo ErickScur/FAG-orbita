@@ -5,9 +5,11 @@ description: Faz o commit de uma feature do ÓRBITA seguindo as regras do projet
 # Commit de feature
 
 1. `git status --short` — confira a lista. **Não pode aparecer** lixo (`.godot/`, `.DS_Store`, builds) nem `.claude/settings.local.json`. A doc viva (`docs/`, `CLAUDE.md`, `.claude/`) **entra** no commit da feature.
-2. Adicione **por caminho**, nunca `git add -A` às cegas:
-   `git add project.godot autoload/ scenes/ scripts/ data/ assets/ tests/ tools/ README.md docs/ CLAUDE.md .claude/ …` (só o que a feature tocou).
-3. `git diff --cached --stat` — revise.
+2. Adicione **por caminho**, nunca `git add -A`/`git add .` (o `settings.json` do projeto nega
+   os dois). Com agentes em paralelo, o `add` e a conferência vão **no mesmo comando**, porque
+   entre os dois outro agente pode escrever (F50):
+   `git add <caminhos que a feature tocou> && git diff --cached --stat`
+3. Revise a lista: nada que seja de outra feature em andamento.
 4. Mensagem (pt-BR), **uma linha** + corpo opcional curto:
    ```
    <tipo>(F<id>): <resumo no imperativo>

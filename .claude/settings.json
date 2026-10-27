@@ -20,7 +20,10 @@
     ],
     "deny": [
       "Bash(git push --force*)",
-      "Bash(git push -f*)"
+      "Bash(git push -f*)",
+      "Bash(git add -A*)",
+      "Bash(git add --all*)",
+      "Bash(git add .)"
     ]
   }
 }

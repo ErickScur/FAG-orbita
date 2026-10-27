@@ -171,8 +171,13 @@ func test_constants_match_gdd() -> void:
 	var constants: Dictionary = Balance.new().get_script().get_script_constant_map()
 	for key: String in EXPECTED:
 		assert_true(constants.has(key), "constante ausente: %s" % key)
-		if constants.has(key):
-			assert_almost_eq(float(constants[key]), float(EXPECTED[key]), 0.0001, key)
+		if not constants.has(key):
+			continue
+		var expected: Variant = EXPECTED[key]
+		if expected is int or expected is float:
+			assert_almost_eq(float(constants[key]), float(expected), 0.0001, key)
+		else:
+			assert_eq(constants[key], expected, key)
 
 
 func test_ambient_dark_color() -> void:

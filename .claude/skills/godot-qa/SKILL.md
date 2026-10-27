@@ -1,46 +1,96 @@
 ---
 name: godot-qa
-description: Roda o ÓRBITA (ou uma cena) com janela real, injeta inputs roteirizados, captura screenshots e o log de erros, e o agente LÊ as imagens para validar a feature visualmente. Use para QA visual de qualquer feature com UI/gameplay, "teste no jogo", "veja se está aparecendo", ou ao fechar uma feature.
+description: Roda o ÓRBITA (ou uma cena) com janela real, injeta inputs roteirizados, confere marcos de posição/cena, captura screenshots e o log de erros, e o agente LÊ as imagens para validar a feature. Use para QA visual de qualquer feature com UI/gameplay, "teste no jogo", "veja se está aparecendo", ao fechar uma feature, ou depois de mexer num mapa (os roteiros da fase ficam falsos).
 ---
 
-# godot-qa — QA visual por screenshot
+# godot-qa — QA visual que não mente
 
-Depende da F06 (autoload `QACapture`). Antes dela existir, faça só o smoke headless.
+Na demo, o QA visual gastou 54 rodadas e várias delas "passaram" mentindo: capturas com nome
+de progresso mostrando o MU-7 parado na entrada. A regra agora é: **o roteiro prova o progresso
+com marcos; a screenshot confirma a aparência.**
 
-## 1. Roteiro
-Crie `tests/qa/<feature>_<caso>.json`:
+## 1. Roteiro — `tests/qa/<feature>_<caso>.json`
+Lista JSON **plana** de eventos (não há chave `scene` nem `steps`), ordenada por `frame`:
+
 ```json
-{
-  "scene": "res://scenes/levels/core_hub.tscn",
-  "steps": [
-    {"frame": 30, "screenshot": "01_inicio"},
-    {"frame": 31, "action": "move_right", "pressed": true},
-    {"frame": 90, "action": "move_right", "pressed": false},
-    {"frame": 91, "action": "jump", "pressed": true},
-    {"frame": 100, "action": "jump", "pressed": false},
-    {"frame": 110, "screenshot": "02_no_ar"},
-    {"frame": 200, "quit": true}
-  ]
-}
+[
+  {"frame": 1, "call": "GameState.new_game", "args": []},
+  {"frame": 1, "scene": "res://scenes/levels/core_hub.tscn"},
+  {"frame": 20, "expect_scene": "res://scenes/levels/core_hub.tscn"},
+  {"frame": 30, "screenshot": "01_inicio"},
+  {"frame": 31, "expect_tile": [3, 61], "label": "spawn"},
+  {"frame": 32, "action": "move_right", "pressed": true},
+  {"frame": 90, "action": "move_right", "pressed": false},
+  {"frame": 95, "expect_tile": [9, 61], "tolerance": 1, "label": "pe_do_console"},
+  {"frame": 96, "screenshot": "02_pe_do_console"},
+  {"frame": 120, "call": "GameState.apply_damage", "args": [100]},
+  {"frame": 400, "expect_scene": "res://scenes/ui/demo_end.tscn"},
+  {"frame": 410, "quit": true}
+]
 ```
 
-## 2. Execução (janela real — o renderer precisa existir para capturar)
+| Evento | O que faz |
+|---|---|
+| `action` + `pressed` | injeta ação do Input Map (nomes do CLAUDE.md §4.4; `ui_accept`/`ui_down` em menus) |
+| `screenshot` | captura síncrona, loga `jogador em coluna,linha` |
+| `expect_tile` (+`tolerance`, `label`) | **marco**: reprova se o MU-7 não estiver no tile (±1 padrão) |
+| `expect_scene` | marco de cena atual (`scene_file_path`) |
+| `call` + `args` | chama método por caminho a partir da raiz (`GameState.x`, `DialogueManager.y`) |
+| `scene` | troca de cena no meio do roteiro |
+| `quit` | encerra; sem ele o roteiro roda até o limite de segurança |
 
-> **A janela de QA vai para o segundo monitor e não rouba o foco.** O `QACapture` lê `ORBITA_QA_SCREEN` (já definida como `1` em `.claude/settings.json`) ou a flag `--qa-screen=N`, centraliza a janela naquela tela e liga `WINDOW_FLAG_NO_FOCUS`. Nunca rode QA na tela primária sem necessidade: o humano está trabalhando nela.
-Saída no **scratchpad da sessão** (nunca no repo):
+**Obrigatório em roteiro de gameplay**:
+- **O roteiro carrega a própria cena** no frame 1 (`call GameState.new_game` e depois `scene`) e
+  a confere com `expect_scene`. Cena inicial que só existe como `--scene` na linha de comando
+  é armadilha: quem roda sem ela recebe o menu, os apertos caem nele, e as capturas "passam"
+  mostrando o MU-7 parado na doca (aconteceu com `f29_greenhouse.json` em 2026-10-27).
+  O `new_game` vem **antes** do `scene`: carregar a fase duas vezes grava o checkpoint da doca
+  e muda o ponto de nascimento.
+- Um `expect_tile` depois de cada trecho, **em ponto de repouso** (nunca no meio de um salto), e
+  `expect_scene` a cada troca de cena. Roteiro sem marco não prova nada (`qa.sh` avisa).
+- Avanço de diálogo com `ui_accept` e **contagem exata** (2 apertos por linha): `ui_accept` só
+  avança fala, ao contrário de `interact`, que reabre o terminal de registros.
+- Referência viva: `tests/qa/f29_greenhouse.json` (Estufa inteira, 27 marcos).
+
+## 2. Execução — sempre por `tools/qa.sh`
 ```bash
-OUT="<scratchpad>/qa/<feature>"; mkdir -p "$OUT"
-"$GODOT" --path . --fixed-fps 60 -- --qa --qa-script=res://tests/qa/<arquivo>.json --qa-out="$OUT" 2>&1 | tee "$OUT/log.txt"
+tools/qa.sh tests/qa/<roteiro>.json --scene=res://scenes/levels/<fase>.tscn \
+  --out=<scratchpad>/qa/<feature>
 ```
-Rode em background se passar de ~20 s; mate o processo ao final (sem órfão).
+O script já resolve as armadilhas: `--fixed-fps 60` (ProMotion roda a ~120 fps e "frame" muda
+de valor), `--qa-new-game` (sem isso o jogo carrega o `user://save.json` da rodada anterior e o
+MU-7 nasce noutro lugar), janela no **segundo monitor sem foco** (`ORBITA_QA_SCREEN`, o humano
+está usando a tela principal), timeout com `perl alarm`, e o resumo de erros, capturas e marcos.
+Sai ≠0 em erro de script, marco falho ou MU-7 parado em todas as capturas. Use `--keep-save`
+só quando o caso é justamente carregar um save. Começar direto na cena da fase tira a variação
+de tempo do menu e do carregamento; passe pelo menu só no roteiro que testa o menu. O
+`--scene=` do `qa.sh` existe, mas prefira a cena dentro do roteiro (§1).
+
+Saída no scratchpad da sessão, nunca no repo.
 
 ## 3. Análise
-1. `grep -nE "SCRIPT ERROR|ERROR:|Parse Error" "$OUT/log.txt"` → deve ser vazio.
-2. **Leia cada PNG** com a ferramenta Read e compare com o que a seção 10 da feature diz que deve aparecer (posição do personagem, HUD, luz, texto em pt-BR com acentos, sem sprites faltando, sem nós 3D).
-3. Problema → descreva o que viu vs. o esperado, corrija (ou devolva ao subagente) e rode de novo.
-4. Registre no log da feature: roteiro usado, resultado, screenshots-chave (caminho do scratchpad não é versionado — descreva o que viu).
+1. Leia o resumo do `qa.sh`: zero `ERRO`, todos os marcos OK, posições mudando onde deveriam.
+2. **Leia cada PNG com a ferramenta Read** e compare com a seção 10 da feature: posição, HUD,
+   luz, texto em pt-BR com acentos e sem glifo borrado (a m5x7 não tem setas/em-dash), nenhum
+   sprite faltando.
+3. O nome da captura tem de bater com o que ela mostra. Se não bater, o roteiro está errado:
+   conserte a temporização e rode de novo, não aceite.
+4. Registre no log da feature: roteiro, resultado do `qa.sh`, o que as capturas-chave mostram.
 
-## Dicas
-- Frames a 60 fps: 60 = 1 s. Deixe ~30 frames após trocar de cena antes de capturar (fade + loading).
-- Para testar UI de menu, use `ui_down`/`ui_accept` nas ações.
-- Para testar morte/game over rapidamente, o roteiro pode chamar `{"frame": N, "call": "GameState.apply_damage", "args": [100]}` se a F06 implementou `call` (confira no `qa_capture.gd`).
+## 4. Armadilhas conhecidas
+- **(F12)** Exercite **o controle que o GDD documenta**, não o que o código aceita: a descida de
+  plataforma fina passou com ↓+pulo e quebrou na mão do jogador, que apertou só ↓.
+- **(F36)** **Mexeu no mapa → os roteiros da fase mentem.** Rode e releia todos eles; os marcos
+  vão reprovar, que é o objetivo.
+- **(F36)** Cada linha de log custa **dois** apertos de `interact` (completa a digitação, depois
+  avança): um log de 10 linhas fecha com 20. Aperto sobrando em cima do terminal de registros
+  **reabre o log**. Conte, ou ande para longe antes de apertar mais.
+- **(F36/F35)** Fala travante pausa a árvore: Tween comum congela e o tempo do roteiro continua
+  correndo. Dê folga depois de cada fala.
+- **(F47)** Screenshot não revela tudo: buraco de alfa num tile (`blit_rect` copiando
+  transparência) passou por todas as capturas e só um teste contando pixels pegou. Defeito de
+  arte se prova com teste de pixel, não com foto.
+- **(F06)** A captura é síncrona (`RenderingServer.force_draw(false)` + `get_image()`); não troque
+  por `await frame_post_draw` (fotos idênticas com a janela sem foco) nem pause a árvore para
+  esperar o desenho (trava o jogo).
+- Deixe ~30 frames depois de trocar de cena antes de capturar (fade + loading).

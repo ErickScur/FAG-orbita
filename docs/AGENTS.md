@@ -62,6 +62,7 @@
 - **Lógica pura primeiro, com teste**: o que for regra (energia, status, reator, parser, save) vai para `scripts/core/` com `tests/test_*.gd` antes da cena.
 - Prefira **escrever `.tscn`/`.tres`/`project.godot` à mão** a pedir ação humana. Só peça o editor quando for realmente inviável (ex.: instalar export templates).
 - Siga `/CLAUDE.md` (2D, sem comentários, EventBus, Balance, SceneManager).
+- Antes de tocar num assunto com armadilhas conhecidas, leia a skill dele (índice no `/CLAUDE.md` §9.1): `level-design` para fases, `godot-pitfalls` para código Godot, `godot-qa` para roteiros, `asset-request` para arte/áudio.
 - Decisão **local** → ADR na seção 11 da feature. Decisão **cross-cutting** → [`DECISIONS.md`](DECISIONS.md) + referência no log.
 - Mudança de **regra ou número de jogo** → edite o [`GDD.md`](design/GDD.md) (tabela GDD-P e/ou seção) **e** registre uma linha em [Ajustes de implementação](design/GDD.md#gdd-ajustes). Depois propague para `balance.gd` e para as features afetadas.
 - Bloqueio → status `[!]`, motivo no log, **pare e peça orientação ao humano**.

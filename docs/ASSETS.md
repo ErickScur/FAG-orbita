@@ -7,9 +7,10 @@
 ## Como o humano usa este arquivo
 
 1. Filtre por `Status = pendente` e **Prioridade = A** (entra na demo).
-2. **Opção 1 (grátis):** abra o link, baixe, salve em `~/Downloads/orbita-assets/<ID>/` e avise o agente com o ID.
-3. **Opção 2 (IA):** copie o **prompt** para o Gemini (Nano Banana Pro), baixe a melhor imagem para `~/Downloads/orbita-assets/<ID>/` e avise o agente.
-4. O agente pós-processa (recorte, redimensionamento nearest, redução de paleta, fatiamento), coloca no caminho final, atualiza a cena, registra licença/créditos e muda o status.
+2. **Opção 0 (padrão para arte por IA, desde 2026-10-27):** o **agente gera sozinho** com a geração de imagem do Codex CLI (`tools/gen_image.sh`, skill `gen-image`), usando o prompt da ficha e uma referência de estilo, fatia até o contrato e integra. O humano só aprova no jogo. As opções 1 e 2 ficam para áudio, pacotes gratuitos e para quando o Codex não estiver disponível.
+3. **Opção 1 (grátis):** abra o link, baixe, salve em `~/Downloads/orbita-assets/<ID>/` e avise o agente com o ID.
+4. **Opção 2 (IA, manual):** copie o **prompt** para o Gemini (Nano Banana Pro), baixe a melhor imagem para `~/Downloads/orbita-assets/<ID>/` e avise o agente.
+5. O agente pós-processa (recorte, redimensionamento nearest, redução de paleta, fatiamento), coloca no caminho final, atualiza a cena, registra licença/créditos e muda o status.
 
 **Legenda de status:** `placeholder` (só o gerado) · `pendente` (aguardando humano) · `recebido` (arquivo bruto chegou) · `integrado` (no jogo) · `final` (revisado).
 
