@@ -7,7 +7,6 @@ const FLAG_OUT: String = "--qa-out="
 const FLAG_SCALE: String = "--qa-scale="
 const FLAG_NEW_GAME: String = "--qa-new-game"
 const FLAG_SCREEN: String = "--qa-screen="
-const ENV_SCREEN: String = "ORBITA_QA_SCREEN"
 const DEFAULT_OUT: String = "user://qa/"
 const LOG_FILE: String = "qa_log.txt"
 const TAIL_FRAMES: int = 30
@@ -40,8 +39,6 @@ func _ready() -> void:
 	var script_path: String = ""
 	var new_game: bool = false
 	var screen_index: int = -1
-	if OS.has_environment(ENV_SCREEN):
-		screen_index = int(OS.get_environment(ENV_SCREEN))
 	for argument: String in arguments:
 		if argument.begins_with(FLAG_SCENE):
 			scene_path = argument.substr(FLAG_SCENE.length())
@@ -238,7 +235,7 @@ func _finish() -> void:
 	var audio: Node = get_tree().root.get_node_or_null("AudioManager")
 	if audio != null and audio.has_method("stop_all"):
 		audio.call("stop_all")
-	await RenderingServer.frame_post_draw
+	await get_tree().process_frame
 	await get_tree().process_frame
 	_log("resumo: %d marco(s), %d falha(s)" % [_checks, _check_failures])
 	_write_log()
@@ -303,6 +300,9 @@ func _place_window(screen_index: int) -> void:
 		return
 	DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_NO_FOCUS, true)
 	if screen_index < 0 or screen_index >= DisplayServer.get_screen_count():
+		var current: int = DisplayServer.window_get_current_screen()
+		var size: Vector2i = DisplayServer.screen_get_size(current)
+		_log("janela na tela %d (%dx%d)" % [current, size.x, size.y])
 		return
 	DisplayServer.window_set_current_screen(screen_index)
 	var screen_size: Vector2i = DisplayServer.screen_get_size(screen_index)

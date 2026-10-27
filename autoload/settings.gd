@@ -4,6 +4,7 @@ const PATH: String = "user://settings.cfg"
 const SECTION_AUDIO: String = "audio"
 const SECTION_GAME: String = "game"
 const SECTION_DISPLAY: String = "display"
+const QA_FLAG: String = "--qa"
 
 var master_volume: float = 1.0
 var music_volume: float = 0.8
@@ -56,7 +57,11 @@ func reactor_decay_multiplier() -> float:
 
 
 func apply_display() -> void:
-	if fullscreen:
+	if fullscreen and not is_qa_run():
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
 	else:
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+
+
+func is_qa_run() -> bool:
+	return OS.get_cmdline_user_args().has(QA_FLAG)

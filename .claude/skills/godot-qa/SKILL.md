@@ -59,8 +59,11 @@ tools/qa.sh tests/qa/<roteiro>.json --scene=res://scenes/levels/<fase>.tscn \
 ```
 O script já resolve as armadilhas: `--fixed-fps 60` (ProMotion roda a ~120 fps e "frame" muda
 de valor), `--qa-new-game` (sem isso o jogo carrega o `user://save.json` da rodada anterior e o
-MU-7 nasce noutro lugar), janela no **segundo monitor sem foco** (`ORBITA_QA_SCREEN`, o humano
-está usando a tela principal), timeout com `perl alarm`, e o resumo de erros, capturas e marcos.
+MU-7 nasce noutro lugar), **janela na tela secundária, sem tela cheia e sem roubar o foco**
+(`--windowed --screen $ORBITA_QA_SCREEN`, padrão 1 = tela do notebook; o jogo é lançado por
+`open -g` e, se o Godot tomar o foco na partida, o script devolve ao app que o humano usava;
+o log do QA registra `janela na tela N (LxA)`), limite de tempo, encerramento do processo que
+ficar pendurado depois do resumo, e o resumo de erros, capturas e marcos.
 Sai ≠0 em erro de script, marco falho ou MU-7 parado em todas as capturas. Use `--keep-save`
 só quando o caso é justamente carregar um save. Começar direto na cena da fase tira a variação
 de tempo do menu e do carregamento; passe pelo menu só no roteiro que testa o menu. O
@@ -94,6 +97,13 @@ Saída no scratchpad da sessão, nunca no repo.
   por `await frame_post_draw` (fotos idênticas com a janela sem foco) nem pause a árvore para
   esperar o desenho (trava o jogo).
 - Deixe ~30 frames depois de trocar de cena antes de capturar (fade + loading).
+- **(F60)** O QA abriu em **tela cheia no monitor principal** e roubou o foco do humano: o
+  `Settings` carrega antes do `QACapture` e aplicava o `fullscreen=true` do `settings.cfg` dele,
+  e janela em tela cheia não muda de monitor. Hoje `Settings.is_qa_run()` pula a tela cheia, a
+  janela nasce na tela certa pelo `--screen` do motor (mover por código ativava o app) e o
+  `qa.sh` lança por `open -g`. Nunca mova a janela do QA por código.
+- **(F60)** Não espere `RenderingServer.frame_post_draw` no QA: com a janela em segundo plano e
+  coberta o macOS para de desenhá-la, o sinal nunca chega e o jogo não sai (travou o `_finish`).
 - **(F60)** O roteiro herda a dificuldade do `user://settings.cfg` do humano (ele joga no
   Difícil). Fixe `{"frame": 1, "call": "Settings.set", "args": ["difficulty", "normal"]}`: é o `set`
   de propriedade, não grava no arquivo dele.

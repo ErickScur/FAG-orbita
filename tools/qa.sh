@@ -22,6 +22,13 @@ EOF
 }
 
 GODOT="${GODOT:-/Users/BRScurPaEr/Downloads/Godot.app/Contents/MacOS/Godot}"
+FOCUS_GUARD_TICKS=100
+EXIT_GRACE_TICKS=50
+
+frontmost_app() {
+  osascript -e 'tell application "System Events" to get name of first process whose frontmost is true' \
+    2> /dev/null
+}
 cd "$(dirname "$0")/.." || exit 1
 
 [ $# -ge 1 ] || { usage; exit 64; }
@@ -50,16 +57,64 @@ done
 [ -n "$out" ] || out="${TMPDIR:-/tmp}/orbita-qa/$name"
 rm -rf "$out"
 mkdir -p "$out"
+out="$(cd "$out" && pwd)"
 
 user_args=(--qa "--qa-script=res://$script" "--qa-out=$out")
 [ -n "$scene" ] && user_args+=("--qa-scene=$scene")
 [ -n "$new_game" ] && user_args+=("$new_game")
 [ -n "$scale" ] && user_args+=("$scale")
-[ -n "${ORBITA_QA_SCREEN:-}" ] && user_args+=("--qa-screen=$ORBITA_QA_SCREEN")
 
-perl -e "alarm $limit; exec @ARGV" "$GODOT" --path . --fixed-fps 60 -- "${user_args[@]}" \
-  > "$out/godot.log" 2>&1
-code=$?
+screen="${ORBITA_QA_SCREEN:-1}"
+
+engine_args=(--path "$PWD" --fixed-fps 60 --windowed --screen "$screen" -- "${user_args[@]}")
+app="${GODOT%/Contents/MacOS/*}"
+
+if [ "$app" != "$GODOT" ] && [ -d "$app" ] && command -v open > /dev/null; then
+  : > "$out/godot.log"
+  : > "$out/godot.err"
+  previous_app="$(frontmost_app)"
+  open -g -n -a "$app" --stdout "$out/godot.log" --stderr "$out/godot.err" \
+    --args "${engine_args[@]}"
+  pid=""
+  for _ in $(seq 1 50); do
+    pid="$(pgrep -f -- "--qa-out=$out" | head -1)"
+    [ -n "$pid" ] && break
+    sleep 0.1
+  done
+  code=0
+  if [ -z "$pid" ]; then
+    echo "QA ABORT: o Godot não abriu (open -g)"
+    exit 1
+  fi
+  waited=0
+  finished_at=-1
+  while kill -0 "$pid" 2> /dev/null; do
+    if [ "$waited" -ge $((limit * 10)) ]; then
+      kill "$pid" 2> /dev/null
+      code=142
+      break
+    fi
+    if [ "$finished_at" -lt 0 ] && grep -q "\[QA\] resumo:" "$out/godot.log"; then
+      finished_at=$waited
+    fi
+    if [ "$finished_at" -ge 0 ] && [ $((waited - finished_at)) -ge "$EXIT_GRACE_TICKS" ]; then
+      kill "$pid" 2> /dev/null
+      break
+    fi
+    if [ "$waited" -lt "$FOCUS_GUARD_TICKS" ] && [ $((waited % 5)) -eq 0 ] \
+      && [ -n "$previous_app" ] && [ "$previous_app" != "Godot" ] \
+      && [ "$(frontmost_app)" = "Godot" ]; then
+      open -a "$previous_app" 2> /dev/null
+    fi
+    sleep 0.1
+    waited=$((waited + 1))
+  done
+  cat "$out/godot.err" >> "$out/godot.log"
+  rm -f "$out/godot.err"
+else
+  perl -e "alarm $limit; exec @ARGV" "$GODOT" "${engine_args[@]}" > "$out/godot.log" 2>&1
+  code=$?
+fi
 
 failed=0
 if [ $code -eq 142 ]; then
