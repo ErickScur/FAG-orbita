@@ -28,7 +28,7 @@ O jogador começa achando que está arrumando uma casa e termina descobrindo que
 |---|---|---|
 | **ÓRBITA** | Protagonista (IA de manutenção) | Otimista, educada; perde a calma conforme o jogo avança |
 | **MU-7** | Corpo da protagonista | Chassi de manutenção enferrujado, duas pernas, parado na doca de recarga há 2 séculos |
-| **Dra. Helena Vasquez** *(nome provisório)* | Mentora (Engenheira Chefe) | Só existe em logs gravados; ensina, mas não responde |
+| **Dra. Helena Vasquez** | Mentora (Engenheira Chefe) | Só existe em logs gravados; ensina, mas não responde |
 | **BOTÂNICO 04** | Aliado | Pequeno drone de irrigação que segue ÓRBITA pela Estufa e ilumina caminhos |
 | **Tripulação (40 pessoas)** | Ausência | Os 40 nomes fecham os dois finais |
 | **PROTOCOLO LUTO** | Boss (Grande Provação) | Firewall que ÓRBITA instalou em si mesma |
