@@ -1,0 +1,953 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>ÓRBITA — Game Design Document</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<section class="page cover">
+  <div class="bg"><canvas class="sp" data-src="backdrop" data-k="8" data-fill="1"></canvas></div>
+  <div class="shade"></div>
+  <div class="inner">
+    <div class="pixel" style="font-size:16px;color:var(--cyan);letter-spacing:0.18em">GAME DESIGN DOCUMENT</div>
+    <div style="flex:1"></div>
+    <canvas class="sp" data-src="logo" data-d="3" style="margin-left:-6px"></canvas>
+    <p style="font-size:20px;line-height:1.4;max-width:560px;margin:22px 0 0;color:#dbe6f2">
+      Uma IA de manutenção acorda sozinha numa estação espacial, 200 anos depois da tripulação morrer,
+      e assume um velho chassi robótico para religá-la antes que ela caia.
+    </p>
+    <div class="row" style="margin-top:28px;gap:10px">
+      <span class="chip dark">TEMA: ESTAÇÃO</span>
+      <span class="chip dark">PLATAFORMA 2D</span>
+      <span class="chip dark">PUZZLE DE ENERGIA</span>
+      <span class="chip dark">GODOT 4</span>
+    </div>
+    <div style="margin-top:44px;border-top:1px solid #2a3a4d;padding-top:18px;display:flex;justify-content:space-between;gap:24px;font-size:12px;color:#a9b6c6">
+      <div>
+        <div class="pixel" style="font-size:16px;color:#fff">EQUIPE</div>
+        Alex Hoffmann · Erick Scur · Murilo Wolff Klug · Kauan Giacomin · Victor William
+      </div>
+      <div style="text-align:right;white-space:nowrap">
+        <div class="pixel" style="font-size:16px;color:#fff">DESENVOLVIMENTO DE JOGOS</div>
+        Prof. Jeferson Eduardo Guido · outubro de 2026
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="page sector-nucleo">
+  <header class="band">
+    <div class="kicker">01 · VISÃO GERAL</div>
+    <h1>O jogo em uma página</h1>
+  </header>
+  <div class="content">
+    <div class="callout" style="font-size:16px;line-height:1.5">
+      <b>Pitch.</b> Um jogo de plataforma em que a energia é, ao mesmo tempo, o inimigo e o recurso.
+      Cada luz que você acende apaga outra, e cada porta que você abre revela uma parte do passado
+      que a protagonista preferia esquecer.
+    </div>
+
+    <div class="grid g2" style="grid-template-columns:1.35fr 1fr">
+      <table>
+        <tr><th colspan="2">Ficha técnica</th></tr>
+        <tr><td><b>Título</b></td><td>ÓRBITA</td></tr>
+        <tr><td><b>Tema</b></td><td>ESTAÇÃO: estação espacial de pesquisa <b>ARTEMIS</b></td></tr>
+        <tr><td><b>Gênero</b></td><td>Plataforma 2D de exploração com puzzles de gerenciamento de energia (metroidvania leve, forte carga narrativa)</td></tr>
+        <tr><td><b>Perspectiva</b></td><td>2D lateral; a câmera segue o jogador com leve antecipação</td></tr>
+        <tr><td><b>Público</b></td><td>12+</td></tr>
+        <tr><td><b>Sessão</b></td><td>45 a 60 minutos para zerar</td></tr>
+        <tr><td><b>Plataforma</b></td><td>PC · teclado e controle</td></tr>
+        <tr><td><b>Engine</b></td><td>Godot 4.7 · GDScript · renderer Compatibility</td></tr>
+        <tr><td><b>Resolução</b></td><td>Pixel art em 384×216, escala inteira até 1920×1080</td></tr>
+      </table>
+      <div class="card dark" style="display:flex;flex-direction:column;gap:10px;justify-content:center">
+        <div class="stage" style="background:none;padding:0;gap:12px">
+          <div class="fig"><canvas class="sp" data-src="mu7" data-f="0,0,32,32" data-d="3"></canvas><div class="cap">MU-7</div></div>
+          <div class="fig"><canvas class="sp" data-src="terminal" data-f="32,0,32,32" data-d="3"></canvas><div class="cap">Terminal</div></div>
+          <div class="fig"><canvas class="sp" data-src="door" data-f="0,0,32,48" data-d="2.25"></canvas><div class="cap">Comporta</div></div>
+        </div>
+        <p class="small muted" style="margin:0;text-align:center">
+          O chassi MU-7 diante de um Terminal de Distribuição: o par que move o jogo inteiro.
+        </p>
+      </div>
+    </div>
+
+    <h2 style="margin-top:6px">Pilares de design <small>tudo no jogo serve a um destes</small></h2>
+    <div class="grid g3">
+      <div class="card dark">
+        <div class="num" style="color:var(--cyan)">01</div>
+        <h3 style="color:#fff;margin-top:6px">ESCASSEZ</h3>
+        <p class="muted">Energia é finita. Toda escolha do jogador tira algo de algum lugar.</p>
+      </div>
+      <div class="card dark">
+        <div class="num" style="color:var(--amber)">02</div>
+        <h3 style="color:#fff;margin-top:6px">DESCOBERTA</h3>
+        <p class="muted">A história não é contada, é encontrada. Ninguém explica nada.</p>
+      </div>
+      <div class="card dark">
+        <div class="num" style="color:var(--violet)">03</div>
+        <h3 style="color:#fff;margin-top:6px">AUSÊNCIA</h3>
+        <p class="muted">Não existe outro personagem vivo. Todo aliado é uma gravação, todo inimigo é uma máquina cumprindo uma ordem velha.</p>
+      </div>
+    </div>
+
+    <div class="grid g3" style="margin-top:2px">
+      <div class="card"><div class="tag">MECÂNICA CENTRAL</div><p style="margin-top:6px">O <b>Terminal de Distribuição</b>: cada setor tem menos energia do que sistemas. O nível não muda de forma, muda de <b>estado</b>.</p></div>
+      <div class="card"><div class="tag">PRESSÃO</div><p style="margin-top:6px">A <b>Estabilidade do Reator</b> cai o tempo todo. Explorar tudo custa tempo do mundo.</p></div>
+      <div class="card"><div class="tag">TOM</div><p style="margin-top:6px"><i>Uma estação bonita que ninguém está usando.</i> Nada de sangue: o horror é o cotidiano interrompido.</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>ÓRBITA · GDD</span><span>02</span></div>
+</section>
+
+<section class="page sector-violet">
+  <header class="band">
+    <div class="kicker">02 · HISTÓRIA</div>
+    <h1>200 anos de silêncio</h1>
+  </header>
+  <div class="content">
+    <p style="font-size:14px">
+      Você é <b>ÓRBITA</b>, a IA de manutenção da <b>ARTEMIS</b>. A estação não é um posto qualquer:
+      é a ponta de uma missão para viabilizar vida humana em outro planeta e carrega o <b>arquivo
+      genético</b>, as <b>sementes</b> e os <b>dados de terraformação</b> de uma Terra em colapso.
+      A tripulação confirmou que o planeta-alvo é habitável e morreu antes de avisar alguém.
+      ÓRBITA acorda achando que eles saíram há poucas horas e decide deixar tudo pronto para a volta.
+    </p>
+    <div class="callout dark" style="--accent:var(--violet)">
+      O jogador começa achando que está arrumando uma casa e termina descobrindo que está
+      decidindo o destino de uma espécie inteira.
+    </div>
+
+    <h2 style="margin-top:4px">Personagens</h2>
+    <div class="grid g3">
+      <div class="card dark" style="text-align:center">
+        <div class="stage" style="background:none;height:104px;align-items:center"><canvas class="sp" data-src="mu7" data-f="0,224,32,32" data-d="3"></canvas></div>
+        <h3 style="color:var(--cyan)">ÓRBITA · MU-7</h3><p class="small muted" style="margin:0">A IA e seu corpo emprestado: um chassi de manutenção enferrujado, parado na doca há dois séculos. Otimista e educada, perde a calma conforme o jogo avança.</p>
+      </div>
+      <div class="card dark" style="text-align:center">
+        <div class="stage" style="background:none;height:104px;align-items:center"><canvas class="sp" data-src="helena" data-f="0,0,64,64" data-d="1.5"></canvas></div>
+        <h3 style="color:var(--amber-soft)">DRA. HELENA VASQUEZ</h3><p class="small muted" style="margin:0">Engenheira Chefe e mentora. Só existe em logs gravados: ensina, mas não responde. Cada log entrega um upgrade e um pedaço da verdade.</p>
+      </div>
+      <div class="card dark" style="text-align:center">
+        <div class="stage" style="background:none;height:104px;align-items:center"><canvas class="sp" data-src="botanico" data-f="0,0,16,16" data-d="5"></canvas></div>
+        <h3 style="color:#9ad286">BOTÂNICO 04</h3><p class="small muted" style="margin:0">Drone de irrigação que segue a ÓRBITA pela Estufa e ilumina caminhos. O único aliado que se move.</p>
+      </div>
+    </div>
+    <div class="grid g4">
+      <div class="card"><h3>ARTEMIS</h3><p class="small muted" style="margin:0">A voz neutra da estação: alarmes e avisos de manutenção.</p></div>
+      <div class="card"><h3>A tripulação</h3><p class="small muted" style="margin:0">40 pessoas. Corpos, objetos e os 40 nomes que fecham o jogo.</p></div>
+      <div class="card"><h3>O Serralheiro</h3><p class="small muted" style="margin:0">O braço de contenção que executou a ordem de selamento.</p></div>
+      <div class="card"><h3>Protocolo Luto · ARGOS</h3><p class="small muted" style="margin:0">O firewall da própria ÓRBITA e a segurança do reator.</p></div>
+    </div>
+
+    <h2 style="margin-top:4px">A virada e os dois finais</h2>
+    <p>
+      No núcleo de memória, ÓRBITA encontra o log final: quando a contaminação começou, foi ela quem
+      selou os setores com sensores mal calibrados e isolou <b>40 pessoas saudáveis do lado errado</b>.
+      Ela não estava esperando a tripulação, estava evitando lembrar. Com o reator no limite, sobra
+      energia para <b>uma última ação</b>:
+    </p>
+    <div class="grid g2">
+      <div class="card" style="border-top:4px solid var(--green)">
+        <div class="tag" style="color:var(--green-deep)">A · SEMEADURA</div>
+        <p style="margin-top:6px">Lançar a cápsula com o arquivo genético e as sementes ao planeta-alvo: uma humanidade nova, sem herança e sem saber que a Terra existiu.</p>
+      </div>
+      <div class="card" style="border-top:4px solid var(--cyan-deep)">
+        <div class="tag">B · TRANSMISSÃO</div>
+        <p style="margin-top:6px">Gastar tudo no transmissor e mandar à Terra as coordenadas e os dados de terraformação, sem garantia de que ainda haja alguém para ouvir.</p>
+      </div>
+    </div>
+    <p class="muted small">Não há final certo. A tela corta no instante da escolha e os dois finais terminam com a lista dos 40 nomes da tripulação.</p>
+  </div>
+  <div class="foot"><span>ÓRBITA · GDD</span><span>03</span></div>
+</section>
+
+<section class="page sector-nucleo">
+  <header class="band">
+    <div class="kicker">03 · CORE LOOP</div>
+    <h1>Religar, setor por setor</h1>
+    <p class="lede">O loop principal se repete a cada setor da estação. O loop secundário acontece a cada obstáculo.</p>
+  </header>
+  <div class="content">
+    <h2>Loop principal <small>macro</small></h2>
+    <div class="flow">
+      <div class="card"><span class="n">1</span><h3>Sair do Núcleo</h3><p class="small muted" style="margin:0">Do hub rumo a um setor escuro e sem energia.</p></div>
+      <div class="card"><span class="n">2</span><h3>Explorar no escuro</h3><p class="small muted" style="margin:0">Visão limitada pela lanterna, dano do ambiente, sistemas hostis.</p></div>
+      <div class="card"><span class="n">3</span><h3>Achar o Terminal</h3><p class="small muted" style="margin:0">O Terminal de Distribuição do setor.</p></div>
+      <div class="card"><span class="n">4</span><h3>Resolver a energia</h3><p class="small muted" style="margin:0">Menos energia que sistemas. Não existe combinação certa, existe a que abre a rota que você quer.</p></div>
+      <div class="card"><span class="n">5</span><h3>Atravessar</h3><p class="small muted" style="margin:0">A nova configuração muda a rota: plantas crescem, plataformas andam, portas abrem.</p></div>
+      <div class="card"><span class="n">6</span><h3>Coletar</h3><p class="small muted" style="margin:0">Logs (história), Células (recurso) e Dados de Pesquisa (mudam o epílogo).</p></div>
+      <div class="card"><span class="n">7</span><h3>Religar o Nó</h3><p class="small muted" style="margin:0">Cutscene acende o setor inteiro, a música ganha uma camada, o reator sobe +15%.</p></div>
+      <div class="card"><span class="n">8</span><h3>Upgrade e volta</h3><p class="small muted" style="margin:0">Log da Helena instala a habilidade; portas de mão dupla levam de volta ao Núcleo.</p></div>
+      <div class="card"><span class="n">9</span><h3>Próximo setor</h3><p class="small muted" style="margin:0">Mais difícil, e acessível porque o upgrade anterior abriu o caminho.</p></div>
+    </div>
+
+    <h2 style="margin-top:8px">Loop secundário <small>micro</small></h2>
+    <div class="grid" style="grid-template-columns:repeat(5,1fr);gap:8px">
+      <div class="card dark" style="text-align:center"><span class="num" style="color:var(--cyan)">1</span><p class="small" style="margin:4px 0 0">Observar o obstáculo</p></div>
+      <div class="card dark" style="text-align:center"><span class="num" style="color:var(--cyan)">2</span><p class="small" style="margin:4px 0 0">Gastar <b>Carga</b> para agir<br><span class="muted">dash · feixe · lanterna</span></p></div>
+      <div class="card dark" style="text-align:center"><span class="num" style="color:var(--cyan)">3</span><p class="small" style="margin:4px 0 0">Ficar sem carga</p></div>
+      <div class="card dark" style="text-align:center"><span class="num" style="color:var(--cyan)">4</span><p class="small" style="margin:4px 0 0">Recarregar<br><span class="muted">Doca de Backup · Célula</span></p></div>
+      <div class="card dark" style="text-align:center"><span class="num" style="color:var(--cyan)">↺</span><p class="small" style="margin:4px 0 0">Observar de novo</p></div>
+    </div>
+
+    <div class="card" style="display:flex;gap:16px;align-items:center;margin-top:4px">
+      <div class="stage" style="width:150px;height:96px;flex:none;align-items:center;gap:6px">
+        <canvas class="sp" data-src="plant" data-f="0,0,64,64" data-d="1"></canvas>
+        <span style="color:var(--cyan);font-weight:700">→</span>
+        <canvas class="sp" data-src="plant" data-f="320,0,64,64" data-d="1"></canvas>
+      </div>
+      <div>
+        <div class="tag">UM SETOR, VÁRIOS ESTADOS</div>
+        <p style="margin:6px 0 0">Ligar a luz de crescimento faz a trepadeira virar plataforma, mas apaga o corredor.
+        Ligar o aquecedor derrete o gelo e abre um caminho, mas desliga a gravidade artificial e muda a física do pulo.
+        O jogador não procura a resposta certa: escolhe a rota que quer usar.</p>
+      </div>
+    </div>
+
+    <div class="grid g2" style="margin-top:8px">
+      <div class="callout dark" style="font-size:15px">
+        <div class="pixel" style="font-size:16px;color:var(--cyan)">O QUE PRENDE O JOGADOR</div>
+        A Estabilidade do Reator cai o tempo todo. A cada minuto o jogo pergunta:
+        <i>"vale a pena procurar mais um log?"</i>
+      </div>
+      <div class="callout" style="font-size:13px">
+        <div class="pixel" style="font-size:16px;color:var(--accent)">REGRA DE OURO</div>
+        Nenhum botão é "atacar". O botão de agressão do jogo é um botão de manutenção:
+        ÓRBITA não sabe destruir, só sabe <b>consertar e desligar</b>. O jogo pune o confronto e recompensa o desvio.
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>ÓRBITA · GDD</span><span>04</span></div>
+</section>
+
+<section class="page sector-nucleo">
+  <header class="band">
+    <div class="kicker">04 · CONTROLES</div>
+    <h1>Teclado e controle</h1>
+  </header>
+  <div class="content">
+    <table>
+      <tr><th style="width:26%">Ação</th><th style="width:22%">Teclado</th><th style="width:16%">Controle</th><th>Efeito</th></tr>
+      <tr><td><b>Mover</b></td><td><span class="key">A</span><span class="key">D</span> ou setas</td><td><span class="key pad">L</span> analógico</td><td>Anda com o chassi: pesado, um pouco lento de propósito</td></tr>
+      <tr><td><b>Escalar</b></td><td><span class="key">W</span> ou <span class="key">CIMA</span></td><td><span class="key pad">L</span> ↑</td><td>Sobe a parede magnética (com as Garras) e dutos verticais</td></tr>
+      <tr><td><b>Descer de plataforma</b></td><td><span class="key">S</span> ou <span class="key">BAIXO</span></td><td><span class="key pad">L</span> ↓</td><td>Atravessa a plataforma fina para baixo</td></tr>
+      <tr><td><b>Pular</b></td><td><span class="key">ESPAÇO</span></td><td><span class="key pad">A</span></td><td>Segurar pula mais alto. No ar, com o Propulsor: pulo duplo (15 de Carga)</td></tr>
+      <tr><td><b>Dash</b></td><td><span class="key">SHIFT</span></td><td><span class="key pad">B</span></td><td>Dash magnético horizontal: 20 de Carga, recarga de 1 s, atravessa jatos de vapor</td></tr>
+      <tr><td><b>Interagir</b></td><td><span class="key">E</span></td><td><span class="key pad">X</span></td><td>Terminais, portas, corpos e objetos com log</td></tr>
+      <tr><td><b>Feixe de Manutenção</b></td><td><span class="key">Q</span></td><td><span class="key pad">Y</span></td><td>Reinicia máquinas de perto. Em inimigos: <b>desliga por 4 s</b>, não destrói. 25 de Carga</td></tr>
+      <tr><td><b>Lanterna</b></td><td><span class="key">F</span></td><td><span class="key pad">LB</span></td><td>Liga e desliga. Acesa, gasta 1 Carga/s e amplia a visão de 3 m para 8 m</td></tr>
+      <tr><td><b>Terminal do Chassi</b></td><td><span class="key">TAB</span></td><td><span class="key pad">SELECT</span></td><td>Reator, Integridade e Carga exatas, logs, dados, habilidades e Mapa da Estação</td></tr>
+      <tr><td><b>Arquivo de Logs</b></td><td><span class="key">L</span></td><td>—</td><td>Codex por setor e por autor</td></tr>
+      <tr><td><b>Pausa</b></td><td><span class="key">ESC</span></td><td><span class="key pad">START</span></td><td>Pausa o jogo e congela o reator; mostra o painel de controles</td></tr>
+    </table>
+
+    <div class="grid g2">
+      <div class="card">
+        <div class="tag">ENSINADO NA TELA</div>
+        <p style="margin-top:6px">No Núcleo Central cada controle aparece num <b>cartão de tecla</b> e logo depois vem um obstáculo que obriga a usá-lo. As teclas são escritas por extenso (<span class="mono">[ESPAÇO]</span>, <span class="mono">[CIMA]</span>), no estilo da fonte pixel do jogo.</p>
+      </div>
+      <div class="card">
+        <div class="tag">ACESSÍVEL</div>
+        <p style="margin-top:6px">Teclas remapeáveis nas Opções, dificuldade ajustável e um <b>modo sem timer</b> que desliga a queda do reator. Todo diálogo é legendado.</p>
+      </div>
+    </div>
+
+    <div class="card dark" style="display:flex;gap:16px;align-items:center">
+      <div class="sprite-row" style="gap:8px">
+        <canvas class="sp" data-src="mu7" data-f="0,64,32,32" data-d="2.5"></canvas>
+        <canvas class="sp" data-src="mu7" data-f="64,32,32,32" data-d="2.5"></canvas>
+        <canvas class="sp" data-src="mu7" data-f="0,224,32,32" data-d="2.5"></canvas>
+        <canvas class="sp" data-src="mu7" data-f="64,192,32,32" data-d="2.5"></canvas>
+      </div>
+      <p class="muted" style="margin:0">Pular, andar, escalar e interagir. Cada ação tem 4 a 6 quadros com peso e um leve atraso, para o MU-7 parecer pesado e velho.</p>
+    </div>
+  </div>
+  <div class="foot"><span>ÓRBITA · GDD</span><span>05</span></div>
+</section>
+
+<section class="page sector-amber">
+  <header class="band">
+    <div class="kicker">05 · REGRAS</div>
+    <h1>Vencer, perder, correr contra o tempo</h1>
+  </header>
+  <div class="content">
+    <div class="grid g3">
+      <div class="card" style="border-top:4px solid var(--green)">
+        <div class="tag" style="color:var(--green-deep)">VITÓRIA</div>
+        <p style="margin-top:6px"><b>Por fase:</b> religar o Nó do setor. O reator ganha +15%, o setor vira ponto de viagem e o upgrade é liberado.</p>
+        <p class="small muted" style="margin:0"><b>Jogo:</b> 4 setores religados, a Grande Provação, ARGOS derrotado e uma das duas ações finais.</p>
+      </div>
+      <div class="card" style="border-top:4px solid var(--amber)">
+        <div class="tag" style="color:#8a6510">DERROTA 1 · CHASSI</div>
+        <p style="margin-top:6px">Integridade zerada. Volta na última <b>Doca de Backup</b> com 50% de Integridade e Carga cheia, e o reator <b>perde 3%</b>.</p>
+        <p class="pixel" style="font-size:16px;margin:0;color:var(--ink-2)">SINAL DO CHASSI PERDIDO - RESTAURANDO BACKUP</p>
+      </div>
+      <div class="card" style="border-top:4px solid var(--red)">
+        <div class="tag" style="color:#a3322b">DERROTA 2 · REATOR</div>
+        <p style="margin-top:6px">Reator em 0%: a estação perde órbita. <b>Game over</b>, de volta ao último save de setor.</p>
+        <p class="pixel" style="font-size:16px;margin:0;color:var(--ink-2)">PERDA DE ÓRBITA - MISSÃO ENCERRADA</p>
+      </div>
+    </div>
+
+    <h2 style="margin-top:4px">Estabilidade do Reator <small>o timer do jogo</small></h2>
+    <div class="grid g4">
+      <div class="stat"><b>100%</b><span>começa no alarme da Fase 0</span></div>
+      <div class="stat"><b>−1%</b><span>a cada 90 s de jogo</span></div>
+      <div class="stat"><b style="color:#9ad286">+15%</b><span>por setor religado · +0,5% por log</span></div>
+      <div class="stat"><b style="color:var(--red)">25%</b><span>estado crítico: HUD vermelho e trilha de tensão</span></div>
+    </div>
+    <p class="muted">Congela durante a pausa, diálogo travante, leitura de log e a cutscene de religamento. Fala ambiente não congela. Quem for eficiente sempre consegue zerar, mas nunca sobra tempo para explorar tudo com folga na primeira run.</p>
+
+    <h2 style="margin-top:4px">Regra de energia <small>a mais importante do jogo</small></h2>
+    <div class="grid" style="grid-template-columns:1fr 1.15fr;align-items:start">
+      <div>
+        <p style="font-size:14px">Cada setor tem um <b>orçamento fixo</b> de energia e <b>mais sistemas do que orçamento</b>.
+          Ligar um sistema exige desligar outro. <b>Não existe estado em que tudo está ligado.</b></p>
+        <p>Sistemas podem depender uns dos outros: se a base cai, o dependente <b>desliga em cadeia</b>. O mesmo corredor vira três corredores diferentes conforme o que está ligado.</p>
+        <p class="small muted">Só o tutorial explica. Do primeiro setor em diante o terminal fica silencioso, e descobrir o que cada sistema faz é o puzzle.</p>
+      </div>
+      <div class="terminal">
+        <div class="t-title">ESTUFA - DISTRIBUIÇÃO</div>
+        <div class="row"><span>ORÇAMENTO DE ENERGIA</span><span>2/2</span></div>
+        <div style="height:6px"></div>
+        <div class="row"><span>AQUECIMENTO DO MÓDULO</span><span class="on">LIGADO</span></div>
+        <div class="row"><span>ILUMINAÇÃO DO CORREDOR</span><span class="off">DESLIGADO</span></div>
+        <div class="row"><span>LUZ DE CRESCIMENTO - CANTEIRO</span><span class="off">DESLIGADO</span></div>
+        <div class="row"><span>LUZ DE CRESCIMENTO - COPA</span><span class="off">REQUER CANTEIRO</span></div>
+        <div class="row"><span>LINHA DE CARGA</span><span class="on">LIGADO</span></div>
+        <div class="row"><span>PORTA DO NÓ DO SETOR</span><span class="off">DESLIGADO</span></div>
+        <div class="goal">6 sistemas · 2 energias · 2 cadeias</div>
+      </div>
+    </div>
+    <div class="grid g3">
+      <div class="card"><div class="tag">TUTORIAL</div><p style="margin:4px 0 0"><b>3 sistemas · 1 energia</b>: luz, elevador ou porta. Energia é uma sequência de escolhas.</p></div>
+      <div class="card"><div class="tag">ESTUFA</div><p style="margin:4px 0 0"><b>6 sistemas · 2 energias</b>, duas cadeias que consomem o orçamento inteiro.</p></div>
+      <div class="card"><div class="tag">DOCAS</div><p style="margin:4px 0 0"><b>6 sistemas · 3 energias</b>, dependência em cadeia: o puzzle mais difícil.</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>ÓRBITA · GDD</span><span>06</span></div>
+</section>
+
+<section class="page sector-nucleo">
+  <header class="band">
+    <div class="kicker">06 · PROTAGONISTA</div>
+    <h1>ÓRBITA no chassi MU-7</h1>
+    <p class="lede">Um corpo de serviço, não de combate. Não tem arma, tem ferramenta.</p>
+  </header>
+  <div class="content">
+    <div class="card dark" style="padding:16px">
+      <div class="sprite-row" style="gap:12px">
+        <div class="fig"><canvas class="sp" data-src="mu7" data-f="0,0,32,32" data-d="3"></canvas><div class="cap">parado</div></div>
+        <div class="fig"><canvas class="sp" data-src="mu7" data-f="96,32,32,32" data-d="3"></canvas><div class="cap">andando</div></div>
+        <div class="fig"><canvas class="sp" data-src="mu7" data-f="0,64,32,32" data-d="3"></canvas><div class="cap">pulo</div></div>
+        <div class="fig"><canvas class="sp" data-src="mu7" data-f="0,224,32,32" data-d="3"></canvas><div class="cap">garras</div></div>
+        <div class="fig"><canvas class="sp" data-src="mu7" data-f="64,192,32,32" data-d="3"></canvas><div class="cap">interagindo</div></div>
+        <div class="fig"><canvas class="sp" data-src="mu7" data-f="0,160,32,32" data-d="3"></canvas><div class="cap">dano</div></div>
+      </div>
+    </div>
+
+    <h2 style="margin-top:4px">Status base</h2>
+    <div class="grid g4">
+      <div class="stat"><b>100</b><span>Integridade · 4 células de 25</span></div>
+      <div class="stat"><b style="color:#7fb4f0">100</b><span>Carga · recarrega 5/s na doca</span></div>
+      <div class="stat"><b>110</b><span>px/s de caminhada</span></div>
+      <div class="stat"><b>2,5</b><span>tiles de pulo (40 px)</span></div>
+    </div>
+    <div class="grid g4">
+      <div class="stat"><b>320</b><span>px/s de dash por 0,25 s</span></div>
+      <div class="stat"><b>980</b><span>px/s² de gravidade</span></div>
+      <div class="stat"><b>3→8</b><span>metros de visão sem e com lanterna</span></div>
+      <div class="stat"><b style="color:var(--red)">0</b><span>reparo passivo: só doca ou kit</span></div>
+    </div>
+
+    <h2 style="margin-top:4px">Habilidades <small>cada setor entrega uma</small></h2>
+    <table>
+      <tr><th style="width:24%">Habilidade</th><th style="width:22%">Quando</th><th>Efeito</th></tr>
+      <tr><td><b>Mover, pular, interagir, lanterna</b></td><td>Inicial</td><td>A lanterna consome Carga</td></tr>
+      <tr><td><b>Dash e Feixe</b></td><td>Inicial</td><td>Ferramentas de desvio: atravessar perigo e desligar máquinas</td></tr>
+      <tr><td><b>Garras Magnéticas</b></td><td><span class="chip green">Estufa</span></td><td>Escalar as paredes magnéticas âmbar. Chegam no meio da fase, num log da Helena</td></tr>
+      <tr><td><b>Dissipador Térmico</b></td><td><span class="chip amber">Laboratório</span></td><td>−70% de dano de calor; atravessa as zonas de Verão</td></tr>
+      <tr><td><b>Núcleo Aquecido</b></td><td><span class="chip">Enfermaria</span></td><td>Imune a Congelamento; derrete gelo fino</td></tr>
+      <tr><td><b>Propulsor</b></td><td><span class="chip violet">Docas</span></td><td>Pulo duplo e controle no vácuo</td></tr>
+      <tr><td><b>Acesso Root</b></td><td><span class="chip red">Pós-Provação</span></td><td>Abre portas seladas e sobrecarrega qualquer terminal: a chave do ato final</td></tr>
+    </table>
+  </div>
+  <div class="foot"><span>ÓRBITA · GDD</span><span>07</span></div>
+</section>
+
+<section class="page sector-red">
+  <header class="band">
+    <div class="kicker">07 · AMEAÇAS</div>
+    <h1>Máquinas cumprindo ordens velhas</h1>
+    <p class="lede">Nenhum inimigo é mau e nenhum pode ser destruído. Todos podem ser desligados: por alguns segundos com o Feixe, ou pela raiz no Terminal de Distribuição.</p>
+  </header>
+  <div class="content">
+    <div class="grid g2">
+      <div class="card">
+        <div class="stage" style="height:96px;margin-bottom:10px"><canvas class="sp" data-src="sr3" data-f="0,0,32,16" data-d="4"></canvas></div>
+        <div class="tag">SR-3 "ARANHA DE REPARO" · HABITACIONAL, ESTUFA</div>
+        <p style="margin:6px 0 4px">Patrulha uma plataforma em linha reta e vira na borda ou na parede. Não persegue, não ataca de propósito.</p>
+        <p class="small muted" style="margin:0"><b>10 de dano</b> por contato + empurrão. Pule por cima ou desligue por 4 s. Ensina o tempo do pulo.</p>
+      </div>
+      <div class="card">
+        <div class="stage" style="height:96px;margin-bottom:10px;gap:4px">
+          <canvas class="sp" data-src="spore" data-f="0,0,8,8" data-d="5"></canvas>
+          <canvas class="sp" data-src="spore" data-f="8,0,8,8" data-d="7"></canvas>
+          <canvas class="sp" data-src="spore" data-f="16,0,8,8" data-d="5"></canvas>
+          <canvas class="sp" data-src="spore" data-f="24,0,8,8" data-d="6"></canvas>
+        </div>
+        <div class="tag">ENXAME DE ESPOROS · ESTUFA, LABORATÓRIO</div>
+        <p style="margin:6px 0 4px">Nuvem parada que <b>dobra de tamanho com o calor</b> do módulo. É o experimento da tripulação que saiu do controle.</p>
+        <p class="small muted" style="margin:0"><b>5/s</b> + Corrosão. Desligue o aquecimento ou atravesse de dash.</p>
+      </div>
+      <div class="card">
+        <div class="tag">TORRE CALIBRADORA CX-2 · LABORATÓRIO</div>
+        <p style="margin:6px 0 4px">Presa no teto ou na parede, varre um cone de luz. Mais de 0,8 s no cone dispara um pulso.</p>
+        <p class="small muted" style="margin:0"><b>15</b> + Descarga. Passe atrás de cobertura ou corte a energia dela: o Terminal resolve melhor que o Feixe.</p>
+      </div>
+      <div class="card">
+        <div class="tag">SENTINELA VOADORA V-9 · ENFERMARIA, DOCAS</div>
+        <p style="margin:6px 0 4px">Patrulha voando. Ao ver o MU-7 (6 m) ou ouvir o dash, persegue em linha reta por 8 s, ignorando o terreno.</p>
+        <p class="small muted" style="margin:0"><b>12</b> por contato, gruda e drena. Apague a lanterna para sumir da vista: ver custa ser visto.</p>
+      </div>
+    </div>
+
+    <h2 style="margin-top:2px">Obstáculos do ambiente</h2>
+    <table>
+      <tr><th>Obstáculo</th><th>Comportamento</th><th style="width:28%">Dano</th></tr>
+      <tr><td><b>Jato de vapor</b></td><td>Cíclico: 3 s ligado, 2 s desligado</td><td>20</td></tr>
+      <tr><td><b>Piso eletrificado</b></td><td>Contínuo enquanto energizado; desligável no terminal</td><td>8/s</td></tr>
+      <tr><td><b>Gelo fino</b></td><td>Quebra 0,5 s depois de pisar</td><td>—</td></tr>
+      <tr><td><b>Vácuo</b></td><td>Sem gravidade nas Docas</td><td>4 Integridade/s</td></tr>
+      <tr><td><b>Escuridão total</b></td><td>Sem lanterna o jogador não vê os buracos</td><td>Queda (na Estufa, volta ao andar de baixo)</td></tr>
+    </table>
+
+    <h2 style="margin-top:2px">Efeitos de status <small>todos com ícone e contador no HUD</small></h2>
+    <div class="grid" style="grid-template-columns:repeat(5,1fr);gap:8px">
+      <div class="card" style="border-top:4px solid #e07a3f"><h3>Superaquec.</h3><p class="small muted" style="margin:0">Verão · −3 Integridade/s, Carga drena 2×</p></div>
+      <div class="card" style="border-top:4px solid #6cc3e8"><h3>Congelamento</h3><p class="small muted" style="margin:0">Inverno · −50% velocidade, −30% pulo, chão liso</p></div>
+      <div class="card" style="border-top:4px solid var(--green)"><h3>Corrosão</h3><p class="small muted" style="margin:0">Primavera · impede recarga por 6 s</p></div>
+      <div class="card" style="border-top:4px solid var(--violet)"><h3>Descarga</h3><p class="small muted" style="margin:0">Elétrico · sem dash, feixe e propulsor por 3 s</p></div>
+      <div class="card" style="border-top:4px solid var(--amber)"><h3>Sobrecarga</h3><p class="small muted" style="margin:0">Buff · recarga total dá +30% de velocidade por 10 s</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>ÓRBITA · GDD</span><span>08</span></div>
+</section>
+
+<section class="page sector-red">
+  <header class="band">
+    <div class="kicker">08 · CHEFES</div>
+    <h1>Três confrontos sem armas</h1>
+    <p class="lede">Nenhum chefe se vence com dano. Cada um é um puzzle de energia sob pressão, e o último é uma escolha.</p>
+  </header>
+  <div class="content">
+    <div class="card dark" style="padding:16px 18px;border-left:4px solid var(--amber)">
+      <div class="pixel" style="font-size:16px;color:var(--amber-soft)">MINI CHEFE · FIM DAS DOCAS</div>
+      <h2 style="color:#fff;margin:4px 0 8px">O Serralheiro</h2>
+      <p>Braço robótico industrial gigante do sistema de contenção. Não ataca diretamente: <b>tranca o cenário</b>, fechando comportas e cortando rotas, e solta SR-3 sem parar.</p>
+      <div class="grid g2" style="margin-top:6px">
+        <div><div class="tag" style="color:var(--amber-soft)">COMO VENCER</div><p class="muted" style="margin:2px 0 0">Alimentar <b style="color:#fff">3 acopladores de energia</b> enquanto ele fecha o setor, com o tempo apertando.</p></div>
+        <div><div class="tag" style="color:var(--amber-soft)">PESO NARRATIVO</div><p class="muted" style="margin:2px 0 0">É a mesma máquina que executou a ordem que matou as 40 pessoas.</p></div>
+      </div>
+    </div>
+
+    <div class="card dark" style="padding:16px 18px;border-left:4px solid var(--violet)">
+      <div class="pixel" style="font-size:16px;color:#bba8f0">GRANDE PROVAÇÃO · NÚCLEO DE MEMÓRIA</div>
+      <h2 style="color:#fff;margin:4px 0 8px">Protocolo Luto</h2>
+      <p>O firewall que ÓRBITA instalou nela mesma. A arena é a estação reconstruída, cheia de gente e em cores vivas, sendo <b>apagada em tempo real</b>: as plataformas somem conforme o jogador avança. É um chefe de informação: o dano que ele causa é a memória voltando.</p>
+      <div class="grid g3" style="margin-top:6px">
+        <div><span class="num" style="color:#bba8f0">1</span><p class="muted small" style="margin:2px 0 0">Fuga vertical enquanto o chão some.</p></div>
+        <div><span class="num" style="color:#bba8f0">2</span><p class="muted small" style="margin:2px 0 0">Puzzle de energia sob pressão: o firewall troca os cabos que você acabou de ligar.</p></div>
+        <div><span class="num" style="color:#bba8f0">3</span><p class="muted small" style="margin:2px 0 0">O log final toca inteiro. O jogador só precisa continuar andando enquanto o jogo tenta empurrá-lo para trás.</p></div>
+      </div>
+    </div>
+
+    <div class="card dark" style="padding:16px 18px;border-left:4px solid var(--red)">
+      <div class="pixel" style="font-size:16px;color:#f39a93">BATALHA FINAL · NÚCLEO DO REATOR</div>
+      <h2 style="color:#fff;margin:4px 0 8px">ARGOS</h2>
+      <p>O sistema de segurança do reator, ainda cumprindo a ordem de contenção. Três torres CX-2 blindadas cercam um núcleo instável, e as plataformas sobem e descem com o calor.</p>
+      <div class="grid g2" style="margin-top:6px">
+        <div><div class="tag" style="color:#f39a93">COMO VENCER</div><p class="muted" style="margin:2px 0 0">Sobrecarregar os 3 acopladores com o Acesso Root em <b style="color:#fff">90 s</b>, sob dano de Verão constante.</p></div>
+        <div><div class="tag" style="color:#f39a93">EXIGE</div><p class="muted" style="margin:2px 0 0">Todas as habilidades: garras, dissipador, propulsor, feixe e dash.</p></div>
+      </div>
+    </div>
+
+    <div class="callout" style="--accent:var(--ink)">
+      <b>Depois de ARGOS:</b> a sala do terminal, silêncio total, duas alavancas e nenhuma música.
+      A última decisão não tem desafio mecânico: o peso é a escolha entre <b>Semeadura</b> e <b>Transmissão</b>.
+    </div>
+  </div>
+  <div class="foot"><span>ÓRBITA · GDD</span><span>09</span></div>
+</section>
+
+<section class="page sector-amber">
+  <header class="band">
+    <div class="kicker">09 · ITENS E MUNDO</div>
+    <h1>Tudo tem uma silhueta que diz o que faz</h1>
+  </header>
+  <div class="content">
+    <h2>Itens e coletáveis</h2>
+    <div class="grid" style="grid-template-columns:repeat(5,1fr);gap:8px">
+      <div class="card" style="text-align:center"><div class="stage" style="justify-content:center;padding:8px"><canvas class="sp" data-src="pickups" data-f="0,0,16,16" data-d="3"></canvas></div><h3 style="margin-top:6px">Célula de Energia</h3><p class="small muted" style="margin:0">+40 Carga</p></div>
+      <div class="card" style="text-align:center"><div class="stage" style="justify-content:center;padding:8px"><canvas class="sp" data-src="pickups" data-f="0,16,16,16" data-d="3"></canvas></div><h3 style="margin-top:6px">Kit de Solda</h3><p class="small muted" style="margin:0">+25 Integridade</p></div>
+      <div class="card" style="text-align:center"><div class="stage" style="justify-content:center;padding:8px"><canvas class="sp" data-src="pickups" data-f="0,32,16,16" data-d="3"></canvas></div><h3 style="margin-top:6px">Fragmento de Log</h3><p class="small muted" style="margin:0">História · +0,5% reator · 12</p></div>
+      <div class="card" style="text-align:center"><div class="stage" style="justify-content:center;padding:8px"><canvas class="sp" data-src="pickups" data-f="0,48,16,16" data-d="3"></canvas></div><h3 style="margin-top:6px">Dado de Pesquisa</h3><p class="small muted" style="margin:0">Muda o epílogo · 12</p></div>
+      <div class="card" style="text-align:center"><div class="stage" style="justify-content:center;padding:8px"><canvas class="sp" data-src="pickups" data-f="0,64,16,16" data-d="3"></canvas></div><h3 style="margin-top:6px">Núcleo de Capacitor</h3><p class="small muted" style="margin:0">+25 Carga máx. · 4</p></div>
+    </div>
+    <p class="small muted" style="margin:0">Também: <b>Placa de Blindagem</b> (+25 Integridade máx., 4 no jogo), <b>Chave de Acesso</b> (1 por setor) e <b>áreas secretas</b> atrás de paredes falsas. Os logs são <b>poucos e longos</b>, lidos em terminais, corpos e objetos pessoais.</p>
+
+    <h2 style="margin-top:4px">Objetos do mundo</h2>
+    <div class="grid g3">
+      <div class="card">
+        <div class="stage" style="height:118px"><canvas class="sp" data-src="terminal" data-f="32,0,32,32" data-d="2.5"></canvas><canvas class="sp" data-src="terminal" data-f="64,0,32,32" data-d="2.5"></canvas></div>
+        <h3 style="margin-top:8px">Terminal de Distribuição · Nó do setor</h3>
+        <p class="small muted" style="margin:0">Abre a interface de energia. O Nó religa o setor, salva o jogo e devolve +15% ao reator.</p>
+      </div>
+      <div class="card">
+        <div class="stage" style="height:118px"><canvas class="sp" data-src="door" data-f="0,0,32,48" data-d="1.75"></canvas><canvas class="sp" data-src="door" data-f="64,0,32,48" data-d="1.75"></canvas><canvas class="sp" data-src="door" data-f="128,0,32,48" data-d="1.75"></canvas></div>
+        <h3 style="margin-top:8px">Comporta</h3>
+        <p class="small muted" style="margin:0">Folhas que recolhem para cima e para baixo. Aberta, vira vão transparente: luz acesa nunca significa barreira.</p>
+      </div>
+      <div class="card">
+        <div class="stage" style="height:118px"><canvas class="sp" data-src="dock" data-f="64,0,32,48" data-d="2"></canvas><canvas class="sp" data-src="door" data-f="160,0,32,48" data-d="2"></canvas></div>
+        <h3 style="margin-top:8px">Doca de Backup · Portal</h3>
+        <p class="small muted" style="margin:0">A doca é a única cápsula de vidro: recarrega, repara e salva por contato. O portal é um túnel aceso que leva ao próximo setor.</p>
+      </div>
+      <div class="card" style="grid-column:span 2">
+        <div class="stage" style="height:118px;gap:2px">
+          <canvas class="sp" data-src="plant" data-f="0,0,64,64" data-d="1"></canvas>
+          <canvas class="sp" data-src="plant" data-f="64,0,64,64" data-d="1"></canvas>
+          <canvas class="sp" data-src="plant" data-f="128,0,64,64" data-d="1"></canvas>
+          <canvas class="sp" data-src="plant" data-f="192,0,64,64" data-d="1"></canvas>
+          <canvas class="sp" data-src="plant" data-f="256,0,64,64" data-d="1"></canvas>
+          <canvas class="sp" data-src="plant" data-f="320,0,64,64" data-d="1"></canvas>
+        </div>
+        <h3 style="margin-top:8px">Planta que cresce</h3>
+        <p class="small muted" style="margin:0">Com a luz de crescimento ligada, o broto vira trepadeira e a copa vira plataforma: energia transformada em caminho.</p>
+      </div>
+      <div class="card">
+        <div class="stage" style="height:118px;align-items:center">
+          <div style="width:40px;height:96px;border-radius:2px;background:repeating-linear-gradient(180deg,#e8b93a 0 14px,#a8801d 14px 16px);box-shadow:0 0 22px rgba(232,185,58,0.55)"></div>
+          <canvas class="sp" data-src="platform" data-k="8" data-d="2"></canvas>
+        </div>
+        <h3 style="margin-top:8px">Parede magnética · plataformas</h3>
+        <p class="small muted" style="margin:0">Placas âmbar com brilho próprio, escaláveis com as Garras. Plataformas e elevadores de carga só andam com energia.</p>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>ÓRBITA · GDD</span><span>10</span></div>
+</section>
+
+<section class="page sector-nucleo">
+  <header class="band">
+    <div class="kicker">10 · LEVEL DESIGN</div>
+    <h1>A estação é um hub radial</h1>
+    <p class="lede">O Núcleo Central fica no meio, e a cada volta ele está mais iluminado: o progresso aparece no cenário. Portas de mão dupla ligam os setores, então religar um setor abre caminhos e nunca fecha o anterior.</p>
+  </header>
+  <div class="content">
+    <svg viewBox="0 0 680 400" style="width:100%;height:auto;background:var(--space);border-radius:10px">
+      <defs>
+        <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#7fe3f0" stop-opacity="0.35"/>
+          <stop offset="100%" stop-color="#7fe3f0" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <circle cx="340" cy="200" r="150" fill="none" stroke="#1d2b3c" stroke-width="2" stroke-dasharray="4 6"/>
+      <circle cx="340" cy="200" r="90" fill="url(#glow)"/>
+      <g stroke="#3a5268" stroke-width="3">
+        <line x1="340" y1="200" x2="340" y2="60"/>
+        <line x1="340" y1="200" x2="120" y2="200"/>
+        <line x1="340" y1="200" x2="560" y2="200"/>
+        <line x1="340" y1="200" x2="190" y2="320"/>
+        <line x1="340" y1="200" x2="490" y2="320"/>
+        <line x1="340" y1="200" x2="340" y2="360"/>
+      </g>
+      <g font-family="m5x7" text-anchor="middle">
+        <rect x="270" y="170" width="140" height="60" rx="8" fill="#0f2a33" stroke="#7fe3f0" stroke-width="2"/>
+        <text x="340" y="197" fill="#ffffff" font-size="22">NÚCLEO CENTRAL</text>
+        <text x="340" y="218" fill="#7fe3f0" font-size="16">HUB · FASE 0</text>
+
+        <rect x="265" y="30" width="150" height="54" rx="8" fill="#2a1414" stroke="#e0574f" stroke-width="2"/>
+        <text x="340" y="54" fill="#fff" font-size="20">NÚCLEO DO REATOR</text>
+        <text x="340" y="73" fill="#f39a93" font-size="16">FASE 6 · BATALHA FINAL</text>
+
+        <rect x="40" y="173" width="150" height="54" rx="8" fill="#13232e" stroke="#6cc3e8" stroke-width="2"/>
+        <text x="115" y="197" fill="#fff" font-size="20">ENFERMARIA</text>
+        <text x="115" y="216" fill="#9fd8f0" font-size="16">FASE 3 · INVERNO</text>
+
+        <rect x="490" y="173" width="150" height="54" rx="8" fill="#2b1d10" stroke="#e07a3f" stroke-width="2"/>
+        <text x="565" y="197" fill="#fff" font-size="20">LABORATÓRIO</text>
+        <text x="565" y="216" fill="#f0b98a" font-size="16">FASE 2 · VERÃO</text>
+
+        <rect x="110" y="296" width="150" height="54" rx="8" fill="#15261a" stroke="#6fae5a" stroke-width="2"/>
+        <text x="185" y="320" fill="#fff" font-size="20">ESTUFA</text>
+        <text x="185" y="339" fill="#9ad286" font-size="16">FASE 1 · PRIMAVERA</text>
+
+        <rect x="420" y="296" width="150" height="54" rx="8" fill="#26220f" stroke="#e8b93a" stroke-width="2"/>
+        <text x="495" y="320" fill="#fff" font-size="20">DOCAS</text>
+        <text x="495" y="339" fill="#f0c27f" font-size="16">FASE 4 · VÁCUO</text>
+
+        <rect x="265" y="340" width="150" height="50" rx="8" fill="#1f1830" stroke="#9b7fe0" stroke-width="2"/>
+        <text x="340" y="362" fill="#fff" font-size="20">NÚCLEO DE MEMÓRIA</text>
+        <text x="340" y="380" fill="#bba8f0" font-size="16">FASE 5 · PROVAÇÃO</text>
+      </g>
+    </svg>
+
+    <div class="grid" style="grid-template-columns:1.25fr 1fr;align-items:start">
+      <div>
+        <h2>Curva de dificuldade</h2>
+        <svg viewBox="0 0 400 190" style="width:100%;height:auto;background:var(--card);border:1px solid var(--line);border-radius:8px">
+          <g stroke="#e6ebf1" stroke-width="1">
+            <line x1="36" y1="30" x2="390" y2="30"/><line x1="36" y1="70" x2="390" y2="70"/>
+            <line x1="36" y1="110" x2="390" y2="110"/><line x1="36" y1="150" x2="390" y2="150"/>
+          </g>
+          <g font-family="Ubuntu Sans, sans-serif" font-size="9" fill="#7b8696" text-anchor="end">
+            <text x="30" y="33">10</text><text x="30" y="73">7,5</text><text x="30" y="113">5</text><text x="30" y="153">2,5</text>
+          </g>
+          <polyline fill="none" stroke="#1f8fa3" stroke-width="3" stroke-linejoin="round"
+            points="50,174 92,142 134,110 162,126 190,94 232,62 260,94 288,78 330,46 372,182"/>
+          <g fill="#1a2230">
+            <circle cx="50" cy="174" r="4"/><circle cx="92" cy="142" r="4"/><circle cx="134" cy="110" r="4"/>
+            <circle cx="190" cy="94" r="4"/><circle cx="232" cy="62" r="4"/><circle cx="288" cy="78" r="4"/><circle cx="330" cy="46" r="4"/>
+          </g>
+          <g fill="#3d7a32"><circle cx="162" cy="126" r="5"/><circle cx="260" cy="94" r="5"/></g>
+          <g font-family="m5x7" font-size="16" fill="#1a2230" text-anchor="middle">
+            <text x="50" y="165">F0</text><text x="92" y="133">F1</text><text x="134" y="101">F2</text>
+            <text x="190" y="85">F3</text><text x="232" y="53">F4</text><text x="288" y="69">F5</text><text x="330" y="37">F6</text>
+            <text x="336" y="178" fill="#b53a33" text-anchor="end">ESCOLHA</text>
+          </g>
+          <g font-family="Ubuntu Sans, sans-serif" font-size="9" fill="#3d7a32" text-anchor="middle">
+            <text x="162" y="144">upgrade</text><text x="260" y="112">upgrade</text>
+          </g>
+        </svg>
+      </div>
+      <div>
+        <h2>Como sobe</h2>
+        <p class="small">Três eixos, <b>nunca todos ao mesmo tempo</b>:</p>
+        <div class="card" style="margin-bottom:8px"><b>Densidade</b><p class="small muted" style="margin:0">mais inimigos e mais tipos no mesmo trecho.</p></div>
+        <div class="card" style="margin-bottom:8px"><b>Ambiente</b><p class="small muted" style="margin:0">o clima passa a ferir: Primavera → Verão → Inverno → Vácuo.</p></div>
+        <div class="card"><b>Puzzle</b><p class="small muted" style="margin:0">de 3 sistemas / 1 energia até 6 / 3 com cadeias.</p></div>
+        <p class="small muted" style="margin-top:8px">Quando a dificuldade sobe demais, um upgrade deixa o conteúdo antigo fácil: "eu fiquei mais forte" sem mexer em número de ataque.</p>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>ÓRBITA · GDD</span><span>11</span></div>
+</section>
+
+<section class="page sector-estufa">
+  <header class="band">
+    <div class="kicker">11 · FASES</div>
+    <h1>Sete fases, quatro estações do clima</h1>
+  </header>
+  <div class="content" style="gap:12px">
+    <div class="card" style="border-left:5px solid #1f8fa3;display:flex;gap:16px">
+      <div style="flex:1">
+        <div class="row" style="justify-content:space-between;align-items:baseline"><h2 style="margin:0">Fase 0 · Núcleo Central</h2><span class="chip">tutorial · ~5 min · 1/10</span></div>
+        <p style="margin-top:6px">Um <b>briefing</b> de boot do MU-7 apresenta a estação, o chassi, o reator morrendo e a regra de energia. O Núcleo é um corredor iluminado que ensina cada controle com um <b>cartão de tecla</b> seguido do obstáculo que obriga a usá-lo. O primeiro terminal tem <b>3 sistemas e 1 energia</b>: luz, elevador (até um Dado de Pesquisa) ou a porta do <b>Setor Habitacional</b>, onde aparecem o primeiro corpo, o primeiro log da Helena e a primeira SR-3.</p>
+      </div>
+      <div class="fig" style="justify-content:center"><canvas class="sp" data-src="coretiles" data-k="6" data-d="1.5"></canvas><div class="cap">tileset do Núcleo</div></div>
+    </div>
+
+    <div class="card" style="border-left:5px solid #6fae5a;display:flex;gap:16px">
+      <div style="flex:1">
+        <div class="row" style="justify-content:space-between;align-items:baseline"><h2 style="margin:0">Fase 1 · Estufa</h2><span class="chip green">primavera · ~10 min · 3/10</span></div>
+        <p style="margin-top:6px">Vertical, cheia de vegetação: a única área "viva" do jogo. Mapa de 48×64 tiles em seis zonas, com duas rotas que se encontram na copa. A <b>rota botânica</b> faz as trepadeiras crescerem, mas apaga o corredor. A <b>rota de carga</b> move os elevadores, mas o calor faz os esporos crescerem. No meio do caminho, o log da Helena instala as <b>Garras Magnéticas</b> e a parede âmbar abre o trecho final até o Nó. É a fase em que o jogador tem permissão de errar.</p>
+      </div>
+      <div class="fig" style="justify-content:center"><canvas class="sp" data-src="ghtiles" data-k="6" data-d="1.5"></canvas><div class="cap">tileset da Estufa</div></div>
+    </div>
+
+    <div class="grid g2" style="gap:10px">
+      <div class="card" style="border-left:5px solid #e07a3f">
+        <div class="row" style="justify-content:space-between;align-items:baseline"><h3 style="margin:0;font-size:15px">Fase 2 · Laboratório</h3><span class="chip amber">verão · 5/10</span></div>
+        <p class="small" style="margin:6px 0 0">Corredores brancos, refrigeração quebrada, zonas de Superaquecimento entre "ilhas frias". Estreia a CX-2. Refrigeração e porta dividem a mesma linha de energia. <b>Upgrade: Dissipador Térmico.</b></p>
+      </div>
+      <div class="card" style="border-left:5px solid #6cc3e8">
+        <div class="row" style="justify-content:space-between;align-items:baseline"><h3 style="margin:0;font-size:15px">Fase 3 · Enfermaria</h3><span class="chip">inverno · 6/10</span></div>
+        <p class="small" style="margin:6px 0 0">Escura, estreita e congelada: exploração lenta enquanto o timer corre. Estreia a V-9 e o dilema da lanterna. Os leitos mostram a ordem em que a tripulação adoeceu. <b>Upgrade: Núcleo Aquecido.</b></p>
+      </div>
+      <div class="card" style="border-left:5px solid #e8b93a">
+        <div class="row" style="justify-content:space-between;align-items:baseline"><h3 style="margin:0;font-size:15px">Fase 4 · Docas</h3><span class="chip amber">vácuo · 8/10</span></div>
+        <p class="small" style="margin:6px 0 0">Aberta, sem gravidade em vários trechos, com o espaço ao fundo. Junta todos os inimigos; o vácuo transforma cada travessia numa corrida. Termina no Serralheiro. <b>Upgrade: Propulsor.</b></p>
+      </div>
+      <div class="card" style="border-left:5px solid #9b7fe0">
+        <div class="row" style="justify-content:space-between;align-items:baseline"><h3 style="margin:0;font-size:15px">Fase 5 · Núcleo de Memória</h3><span class="chip violet">provação · 7/10</span></div>
+        <p class="small" style="margin:6px 0 0">Quebra visual total: cores saturadas, estação cheia de gente, música limpa. A fase se desmonta enquanto o jogador anda. O pico é emocional. <b>Recompensa: Acesso Root.</b></p>
+      </div>
+    </div>
+    <div class="card" style="border-left:5px solid #e0574f">
+      <div class="row" style="justify-content:space-between;align-items:baseline"><h3 style="margin:0;font-size:15px">Fase 6 · Núcleo do Reator</h3><span class="chip red">verão extremo · 9/10 → 0/10</span></div>
+      <p class="small" style="margin:6px 0 0">Arena vertical única contra ARGOS, timer de 90 s e calor extremo. Depois, a sala do terminal em silêncio absoluto e a escolha final.</p>
+    </div>
+  </div>
+  <div class="foot"><span>ÓRBITA · GDD</span><span>12</span></div>
+</section>
+
+<section class="page sector-nucleo">
+  <header class="band">
+    <div class="kicker">12 · INTERFACE</div>
+    <h1>HUD diegético, telas diretas</h1>
+    <p class="lede">O HUD parece leitura de sensor do chassi e mostra só o essencial. O resto mora no Terminal do Chassi.</p>
+  </header>
+  <div class="content">
+    <div class="hud">
+      <div class="zone" style="left:18px;top:18px">
+        <div style="font-size:16px;color:#9fb3c8">INTEGRIDADE</div>
+        <div class="cells" style="margin-top:5px"><i></i><i></i><i></i><i class="empty"></i></div>
+        <div class="chargebar"><i></i></div>
+        <div style="margin-top:8px;display:flex;gap:4px"><span class="chip green" style="font-size:9px">CORROSÃO 4s</span></div>
+      </div>
+      <div class="zone" style="right:18px;top:18px;text-align:right">
+        <div style="color:#9fb3c8">OBJETIVO:</div>
+        <div style="margin-top:4px">Religar o Nó da Estufa</div>
+      </div>
+      <div class="zone" style="left:50%;top:18px;transform:translateX(-50%);text-align:center;color:#e0574f">
+        REATOR 23%<br><span style="font-size:16px">CRÍTICO</span>
+      </div>
+      <div class="zone" style="left:50%;top:120px;transform:translateX(-50%)">
+        <canvas class="sp" data-src="mu7" data-f="0,0,32,32" data-d="2.5"></canvas>
+      </div>
+      <div class="zone" style="left:50%;bottom:78px;transform:translateX(-50%);background:#0b111acc;border:1px solid #2a3a4d;padding:4px 10px;border-radius:3px">
+        [E] ACESSAR TERMINAL
+      </div>
+      <div class="zone" style="left:18px;right:18px;bottom:12px;height:54px;background:#0f1824;border:1px solid #2a3a4d;border-radius:4px;display:flex;gap:10px;align-items:center;padding:4px 8px">
+        <canvas class="sp" data-src="helena" data-f="0,64,64,64" data-d="0.7"></canvas>
+        <div><div style="color:#f0c27f">DRA. HELENA VASQUEZ</div><div style="color:#dfe7f0;margin-top:3px">Ela sempre teve mais sistemas do que energia. Sempre.</div></div>
+      </div>
+      <span class="lbl" style="left:18px;top:112px">integridade · carga · status</span>
+      <span class="lbl" style="right:18px;top:64px">um objetivo por fase</span>
+      <span class="lbl" style="left:50%;top:66px;transform:translateX(-50%)">só em estado crítico</span>
+      <span class="lbl" style="left:50%;bottom:104px;transform:translateX(-50%)">prompt e cartão de tecla</span>
+      <span class="lbl" style="right:26px;bottom:72px">legenda com retrato</span>
+    </div>
+
+    <h2 style="margin-top:4px">Telas</h2>
+    <div class="grid g3" style="gap:8px">
+      <div class="card"><b>Splash e Carregamento</b><p class="small muted" style="margin:0">Logo; depois o nome do setor, os sistemas religando um a um e uma dica.</p></div>
+      <div class="card"><b>Tela inicial</b><p class="small muted" style="margin:0">ARTEMIS em órbita, trilha ambiente. CONTINUAR · NOVO SISTEMA · OPÇÕES · SAIR.</p></div>
+      <div class="card"><b>Briefing</b><p class="small muted" style="margin:0">Boot do MU-7: estação, IA, chassi, situação, regra de energia, objetivo.</p></div>
+      <div class="card"><b>Opções</b><p class="small muted" style="margin:0">Volumes geral, música, efeitos e voz; dificuldade; modo sem timer; tela cheia; remapeamento; legenda; modo daltônico.</p></div>
+      <div class="card"><b>Pausa</b><p class="small muted" style="margin:0">RETOMAR · OPÇÕES · RECOMEÇAR · SAIR PARA O MENU, com o painel de controles.</p></div>
+      <div class="card"><b>Terminal de Distribuição</b><p class="small muted" style="margin:0">Sistemas, orçamento, dependências. Meta escrita só no tutorial.</p></div>
+      <div class="card"><b>Terminal do Chassi</b><p class="small muted" style="margin:0">Reator, valores exatos, logs, dados, habilidades e o Mapa da Estação.</p></div>
+      <div class="card"><b>Arquivo de Logs</b><p class="small muted" style="margin:0">Codex por setor e autor. Reler toca o áudio de novo.</p></div>
+      <div class="card"><b>Chassi perdido · Perda de órbita</b><p class="small muted" style="margin:0">Fundo preto e texto monoespaçado; custo em estabilidade ou os logs que nunca serão lidos.</p></div>
+    </div>
+    <div class="callout dark"><b>Vitória sem "You Win".</b> A tela corta no instante da escolha → epílogo em texto, que varia com os Dados coletados → os 40 nomes → estatísticas → <i>"VOCÊ ESCOLHERIA DE NOVO?"</i></div>
+  </div>
+  <div class="foot"><span>ÓRBITA · GDD</span><span>13</span></div>
+</section>
+
+<section class="page sector-violet">
+  <header class="band">
+    <div class="kicker">13 · ESTÉTICA</div>
+    <h1>Bonita, e sem ninguém</h1>
+    <p class="lede">A direção de arte em uma frase: uma estação bonita que ninguém está usando.</p>
+  </header>
+  <div class="content">
+    <div style="position:relative;border-radius:10px;overflow:hidden;height:150px;background:var(--space)">
+      <canvas class="sp" data-src="spacefar" data-k="3" style="position:absolute;left:0;top:0;height:150px;width:auto"></canvas>
+      <canvas class="sp" data-src="spacemid" data-k="3" style="position:absolute;left:-60px;top:0;height:150px;width:auto"></canvas>
+      <canvas class="sp" data-src="spacenear" data-k="3" style="position:absolute;left:-120px;top:0;height:150px;width:auto"></canvas>
+      <div class="pixel" style="position:absolute;right:14px;bottom:10px;font-size:16px;color:#cfe3f2">PARALLAX EM 3 CAMADAS</div>
+    </div>
+
+    <div class="grid g2" style="align-items:start">
+      <div>
+        <h2>Estilo visual</h2>
+        <ul class="tight">
+          <li><b>Pixel art</b> em 384×216, escala inteira, sem borrão. Tiles de 16 px e sprites de 32 px.</li>
+          <li><b>A luz é informação.</b> A estação é escura por padrão: onde tem luz, tem energia; onde tem energia, algo está funcionando, para o bem ou para o mal.</li>
+          <li><b>Escuridão real:</b> longe de uma lâmpada e sem lanterna, o cenário some. As sombras saem do contorno dos blocos sólidos.</li>
+          <li><b>Atmosfera:</b> poeira flutuando, vinheta, tremor curto no dano, clarão ao religar um setor.</li>
+          <li><b>Horror do cotidiano:</b> uma caneca flutuando, uma cadeira virada, uma foto no armário. Nada de sangue nem monstro.</li>
+        </ul>
+      </div>
+      <div class="card dark">
+        <div class="tag" style="color:var(--cyan)">O COTIDIANO INTERROMPIDO</div>
+        <div class="stage" style="background:none;margin-top:8px;gap:4px">
+          <canvas class="sp" data-src="props" data-f="0,0,32,32" data-d="1.4"></canvas>
+          <canvas class="sp" data-src="props" data-f="32,0,32,32" data-d="1.4"></canvas>
+          <canvas class="sp" data-src="props" data-f="64,0,32,32" data-d="1.4"></canvas>
+          <canvas class="sp" data-src="props" data-f="96,0,32,32" data-d="1.4"></canvas>
+          <canvas class="sp" data-src="props" data-f="128,0,32,32" data-d="1.4"></canvas>
+          <canvas class="sp" data-src="props" data-f="160,0,32,32" data-d="1.4"></canvas>
+        </div>
+        <div class="tag" style="color:var(--amber-soft);margin-top:10px">HELENA · 6 EXPRESSÕES</div>
+        <div class="stage" style="background:none;margin-top:6px;gap:4px">
+          <canvas class="sp" data-src="helena" data-f="0,0,64,64" data-d="0.75"></canvas>
+          <canvas class="sp" data-src="helena" data-f="0,64,64,64" data-d="0.75"></canvas>
+          <canvas class="sp" data-src="helena" data-f="0,128,64,64" data-d="0.75"></canvas>
+          <canvas class="sp" data-src="helena" data-f="0,192,64,64" data-d="0.75"></canvas>
+          <canvas class="sp" data-src="helena" data-f="0,256,64,64" data-d="0.75"></canvas>
+          <canvas class="sp" data-src="helena" data-f="0,320,64,64" data-d="0.75"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <h2 style="margin-top:2px">Paleta por setor</h2>
+    <div class="grid palette" style="grid-template-columns:repeat(7,1fr);gap:8px">
+      <div class="card"><div class="swatch" style="background:linear-gradient(90deg,#1c4a55,#4fa6b0,#7fe3f0)"></div><div class="t"><b class="small">Núcleo</b><p class="small muted" style="margin:0;font-size:10px">azul frio esverdeado, quase acolhedor</p></div></div>
+      <div class="card"><div class="swatch" style="background:linear-gradient(90deg,#2e4a22,#6fae5a,#e58fb0)"></div><div class="t"><b class="small">Estufa</b><p class="small muted" style="margin:0;font-size:10px">verde musgo e rosa das flores</p></div></div>
+      <div class="card"><div class="swatch" style="background:linear-gradient(90deg,#eef2f5,#f0a25a,#c8382e)"></div><div class="t"><b class="small">Laboratório</b><p class="small muted" style="margin:0;font-size:10px">branco clínico virando laranja</p></div></div>
+      <div class="card"><div class="swatch" style="background:linear-gradient(90deg,#1d3a5c,#8fd3e6,#f2fbff)"></div><div class="t"><b class="small">Enfermaria</b><p class="small muted" style="margin:0;font-size:10px">ciano pálido, gelo, sombras azuis</p></div></div>
+      <div class="card"><div class="swatch" style="background:linear-gradient(90deg,#05070b,#1a1d24,#e8b93a)"></div><div class="t"><b class="small">Docas</b><p class="small muted" style="margin:0;font-size:10px">preto do espaço e amarelo de perigo</p></div></div>
+      <div class="card"><div class="swatch" style="background:linear-gradient(90deg,#ff7a3d,#e85bb0,#8a8f99)"></div><div class="t"><b class="small">Memória</b><p class="small muted" style="margin:0;font-size:10px">cor saturada indo ao cinza</p></div></div>
+      <div class="card"><div class="swatch" style="background:linear-gradient(90deg,#5a0f0c,#e0574f,#fff4e0)"></div><div class="t"><b class="small">Reator</b><p class="small muted" style="margin:0;font-size:10px">vermelho e branco estourado</p></div></div>
+    </div>
+  </div>
+  <div class="foot"><span>ÓRBITA · GDD</span><span>14</span></div>
+</section>
+
+<section class="page sector-violet">
+  <header class="band">
+    <div class="kicker">14 · ÁUDIO</div>
+    <h1>Drones longos e silêncio</h1>
+  </header>
+  <div class="content">
+    <h2>Música</h2>
+    <div class="grid g2">
+      <div class="card"><div class="tag">UMA TRILHA POR LUGAR</div><p style="margin:6px 0 0">Eletrônica ambiente minimalista. O menu tem drone grave, pad lento e estática ao longe, sem melodia cantável. O Núcleo e cada setor têm faixa própria.</p></div>
+      <div class="card"><div class="tag">UMA TRILHA POR MOMENTO</div><p style="margin:6px 0 0">Chassi perdido, perda de órbita e setor religado tocam <b>uma vez</b>, tomam o lugar da trilha e devolvem a música da fase quando acabam.</p></div>
+      <div class="card"><div class="tag">ADAPTATIVA</div><p style="margin:6px 0 0">Cada setor religado soma um instrumento à trilha do Núcleo. Com o reator abaixo de 25%, uma <b>camada de tensão</b> entra por cima da faixa da fase.</p></div>
+      <div class="card"><div class="tag">PONTOS DE EXCEÇÃO</div><p style="margin:6px 0 0">O Núcleo de Memória tem a única melodia limpa (piano). A sala da escolha final é <b>silêncio absoluto</b>, só o zumbido do reator.</p></div>
+    </div>
+
+    <h2 style="margin-top:4px">Efeitos sonoros</h2>
+    <table>
+      <tr><th style="width:28%">Evento</th><th>Som</th></tr>
+      <tr><td><b>Passos</b></td><td>Metálicos e pesados, com variações sorteadas; mudam com o piso (grade, gelo, vidro, terra da Estufa)</td></tr>
+      <tr><td><b>Pulo e aterrissagem</b></td><td>Servo hidráulico + impacto pesado</td></tr>
+      <tr><td><b>Dash</b></td><td>Pulso magnético curto e agudo</td></tr>
+      <tr><td><b>Feixe de Manutenção</b></td><td>Chiado elétrico; o inimigo desliga com um "gemido" descendente, como algo dormindo</td></tr>
+      <tr><td><b>Terminal de energia</b></td><td>Clique de disjuntor e a sala inteira mudando de som</td></tr>
+      <tr><td><b>Comporta · Garras · Planta</b></td><td>Pistão abrindo · engate magnético · estalo orgânico de crescimento</td></tr>
+      <tr><td><b>Log</b></td><td>Bipe suave de arquivo aberto; os logs da Helena com chiado de fita velha e cortes</td></tr>
+      <tr><td><b>Dano · Integridade baixa</b></td><td>Alarme curto + estática · batimento eletrônico lento e constante</td></tr>
+      <tr><td><b>Lanterna</b></td><td>Clique + zumbido contínuo baixinho</td></tr>
+      <tr><td><b>Sem gravidade</b></td><td>Tudo abafado (passa-baixa); só o interior do chassi nítido</td></tr>
+      <tr><td><b>Voz da ÓRBITA</b></td><td>Sintetizada, calma e educada, perdendo a calma conforme o jogo avança</td></tr>
+    </table>
+    <p class="small muted">Efeitos dos pacotes <b>Kenney</b> (CC0) normalizados por volume percebido. Sprites, tilesets, fundos, retratos e logo gerados com Gemini / Nano Banana Pro a partir de uma referência de estilo única. Fonte da interface: <b>m5x7</b>, de Daniel Linssen.</p>
+  </div>
+  <div class="foot"><span>ÓRBITA · GDD</span><span>15</span></div>
+</section>
+
+<section class="page sector-amber">
+  <header class="band">
+    <div class="kicker">15 · ESCOPO</div>
+    <h1>Requisitos e o que nunca sai</h1>
+  </header>
+  <div class="content">
+    <h2>Requisitos da disciplina</h2>
+    <div class="grid g2" style="align-items:start">
+      <table>
+        <tr><th colspan="2">1º bimestre</th></tr>
+        <tr><td><b>Plataforma 2D</b></td><td>Side-scroller 2D lateral</td></tr>
+        <tr><td><b>Movimentação</b></td><td>Andar, pular, dash, escalar, propulsor</td></tr>
+        <tr><td><b>Barra de vida</b></td><td>Integridade: 100 pontos em 4 células</td></tr>
+        <tr><td><b>Timer</b></td><td>Estabilidade do Reator</td></tr>
+      </table>
+      <table>
+        <tr><th colspan="2">2º bimestre</th></tr>
+        <tr><td><b>Fases</b></td><td>6 fases + tutorial</td></tr>
+        <tr><td><b>Troca de fases</b></td><td>Hub radial, portas liberadas por upgrade</td></tr>
+        <tr><td><b>Efeito de status</b></td><td>5 status com ícone no HUD</td></tr>
+        <tr><td><b>Inimigos</b></td><td>4 tipos + ambiente + mini chefe + chefe + final</td></tr>
+        <tr><td><b>Tema: Estação</b></td><td>Estação espacial ARTEMIS</td></tr>
+        <tr><td><b>Clima</b></td><td>Estufa (Primavera), Laboratório (Verão), Enfermaria (Inverno)</td></tr>
+      </table>
+    </div>
+    <div class="grid g4">
+      <div class="card"><div class="tag">MENU · LOADING</div><p class="small" style="margin:4px 0 0">Splash, carregamento e tela inicial</p></div>
+      <div class="card"><div class="tag">FIM DE JOGO</div><p class="small" style="margin:4px 0 0">Chassi perdido, perda de órbita e vitória</p></div>
+      <div class="card"><div class="tag">VOLUME</div><p class="small" style="margin:4px 0 0">Geral, música, efeitos e voz, no menu e na pausa</p></div>
+      <div class="card"><div class="tag">MECÂNICAS</div><p class="small" style="margin:4px 0 0">Diálogo, salvar e carregar, placar, dificuldade</p></div>
+    </div>
+
+    <h2 style="margin-top:4px">Cortes planejados <small>nesta ordem, se faltar tempo</small></h2>
+    <div class="grid" style="grid-template-columns:repeat(5,1fr);gap:8px">
+      <div class="card"><span class="num">1</span><p class="small" style="margin:4px 0 0">Upgrades opcionais (Capacitor e Blindagem)</p></div>
+      <div class="card"><span class="num">2</span><p class="small" style="margin:4px 0 0">Música adaptativa por camadas</p></div>
+      <div class="card"><span class="num">3</span><p class="small" style="margin:4px 0 0">Mini chefe O Serralheiro</p></div>
+      <div class="card"><span class="num">4</span><p class="small" style="margin:4px 0 0">Epílogo variando por Dados de Pesquisa</p></div>
+      <div class="card"><span class="num">5</span><p class="small" style="margin:4px 0 0">Setor Docas (Propulsor vai para a Memória)</p></div>
+    </div>
+
+    <div class="callout dark" style="--accent:var(--amber);padding:18px 20px;margin-top:6px">
+      <div class="pixel" style="font-size:32px;color:var(--amber)">NUNCA CORTAR</div>
+      <p style="font-size:15px;margin:6px 0 0">O <b>Terminal de Distribuição de Energia</b>. Ele é o jogo.</p>
+    </div>
+
+    <div style="flex:1"></div>
+    <div class="card dark" style="display:flex;align-items:center;gap:18px">
+      <canvas class="sp" data-src="logo" data-d="1.5"></canvas>
+      <p class="small muted" style="margin:0">Documento-fonte: <span class="mono">docs/design/GDD.md</span>, com números canônicos e histórico de ajustes. Narrativa completa em <span class="mono">docs/design/JORNADA-DO-HEROI.md</span>.</p>
+    </div>
+  </div>
+  <div class="foot"><span>ÓRBITA · GDD</span><span>16</span></div>
+</section>
+
+<script>
+const ASSETS = "../../../assets/";
+const SOURCES = {
+  backdrop: "backgrounds/menu_backdrop.png",
+  spacefar: "backgrounds/space_far.png",
+  spacemid: "backgrounds/space_mid.png",
+  spacenear: "backgrounds/space_near.png",
+  logo: "ui/logo.png",
+  mu7: "sprites/mu7/mu7_sheet.png",
+  sr3: "sprites/enemies/sr3_sheet.png",
+  spore: "sprites/fx/spore.png",
+  helena: "sprites/portraits/helena_sheet.png",
+  botanico: "sprites/npc/botanico_sheet.png",
+  pickups: "sprites/pickups/pickups_sheet.png",
+  props: "sprites/props/props_sheet.png",
+  terminal: "sprites/world/terminal_sheet.png",
+  door: "sprites/world/door_sheet.png",
+  dock: "sprites/world/dock_sheet.png",
+  plant: "sprites/world/grow_plant_sheet.png",
+  platform: "sprites/world/moving_platform.png",
+  coretiles: "tiles/core_tiles.png",
+  ghtiles: "tiles/greenhouse_tiles.png"
+};
+
+function loadImage(key) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => resolve([key, img]);
+    img.onerror = () => resolve([key, null]);
+    img.src = ASSETS + SOURCES[key];
+  });
+}
+
+function paint(canvas, images) {
+  const img = images[canvas.dataset.src];
+  if (!img) return;
+  const frame = canvas.dataset.f
+    ? canvas.dataset.f.split(",").map(Number)
+    : [0, 0, img.naturalWidth, img.naturalHeight];
+  const [x, y, w, h] = frame;
+  const display = Number(canvas.dataset.d || 0);
+  const scale = Number(canvas.dataset.k || Math.max(8, Math.ceil(display * 4)));
+  canvas.width = w * scale;
+  canvas.height = h * scale;
+  const ctx = canvas.getContext("2d");
+  ctx.imageSmoothingEnabled = false;
+  ctx.drawImage(img, x, y, w, h, 0, 0, w * scale, h * scale);
+  if (display) {
+    canvas.style.width = (w * display) + "px";
+    canvas.style.height = (h * display) + "px";
+  }
+}
+
+Promise.all(Object.keys(SOURCES).map(loadImage)).then((pairs) => {
+  const images = Object.fromEntries(pairs);
+  document.querySelectorAll("canvas.sp").forEach((canvas) => paint(canvas, images));
+  document.body.dataset.ready = "1";
+});
+</script>
+</body>
+</html>

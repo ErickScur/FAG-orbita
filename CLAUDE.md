@@ -190,6 +190,7 @@ Build/export: ver [F30](docs/features/F30-build-demo.md) (exige templates de exp
 | [`docs/TEMPLATE-FEATURE.md`](docs/TEMPLATE-FEATURE.md) | Template canônico de feature | sim |
 | [`docs/features/F<id>-*.md`](docs/features/) | Doc de cada feature + log de evolução | sim |
 | [`docs/design/GDD.md`](docs/design/GDD.md) | **Design e números canônicos** | **sim** |
+| [`docs/design/GDD.pdf`](docs/design/GDD.pdf) | Versão de apresentação do GDD. Fonte em `docs/design/gdd-pdf/`, regerada com `tools/render_gdd_pdf.sh` (Chromium headless) | sim |
 | [`docs/design/JORNADA-DO-HEROI.md`](docs/design/JORNADA-DO-HEROI.md) | **Narrativa canônica** | **sim** |
 
 Skills/comandos do projeto (`.claude/`): `/verify-gates`, `/update-feature-docs`, `/commit-feature`, skills `plan-feature`, `feature-loop`, `godot-qa`, `asset-request`.

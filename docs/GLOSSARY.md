@@ -14,7 +14,7 @@
 | **Sistema** | `system` | Algo que consome energia no setor (luz, porta, aquecimento, plataforma…) |
 | **Orçamento de energia** | `budget` | Quantas unidades o setor tem para distribuir |
 | **Nó do setor** | `sector_node` | Ponto final do setor; religá-lo restaura o setor (+15% reator, upgrade) |
-| **Doca de recarga / Ponto de Backup** | `backup_dock` | Checkpoint: recarrega Carga, repara, salva o jogo |
+| **Doca de Backup** | `backup_dock` | Checkpoint: recarrega Carga, repara, salva o jogo |
 | **Fragmento de Log** | `log` | Gravação/texto narrativo coletável (24 no jogo) |
 | **Dado de Pesquisa** | `research` | Coletável opcional sobre o planeta alvo (12 no jogo); muda o epílogo |
 | **Célula de Energia** | `energy_cell` | +40 Carga |
@@ -31,7 +31,7 @@
 | **SR-3 "Aranha de Reparo"** | `sr3` | Primeiro inimigo; patrulha e vira na borda |
 | **Enxame de Esporos** | `spore_swarm` | Nuvem que cresce com calor; causa Corrosão |
 | **BOTÂNICO 04** | `botanico` | Drone de irrigação aliado da Estufa |
-| **Dra. Helena Vasquez** | `helena` | Engenheira Chefe (nome provisório); mentora em logs |
+| **Dra. Helena Vasquez** | `helena` | Engenheira Chefe; mentora em logs, com retrato de 6 expressões ([AJ-039](design/GDD.md#gdd-ajustes)) |
 | **Núcleo Central** | `core` | Hub e tutorial (Fase 0) |
 | **Estufa** | `greenhouse` | Fase 1 (Primavera) |
 | **Setor Habitacional** | `habitation` | Corredor de transição onde está o primeiro corpo |
