@@ -3,11 +3,12 @@ extends TestCase
 const DIALOGUE_DIR: String = "res://data/dialogue/"
 const LOGS_DIR: String = "res://data/logs/"
 const OBJECTIVES_PATH: String = "res://data/objectives.json"
-const CAMPAIGN_LOGS: int = 8
+const CAMPAIGN_LOGS: int = 10
 const MIN_LOG_LINES: int = 9
 const MAX_LOG_LINES: int = 12
 const ABILITY_LOGS: Dictionary = {
-	"log_gh_02": "magnetic_claws", "log_lab_01": "heat_sink", "log_inf_01": "heated_core"
+	"log_gh_02": "magnetic_claws", "log_lab_01": "heat_sink", "log_inf_01": "heated_core",
+	"log_dk_01": "thruster",
 }
 
 var _content: Dictionary = {}
@@ -65,7 +66,7 @@ func test_objectives_exist() -> void:
 
 func test_campaign_has_eight_long_logs() -> void:
 	var logs: Dictionary = _content["logs"]
-	assert_eq(logs.size(), CAMPAIGN_LOGS, "total de logs: Núcleo, Estufa, Laboratório e Enfermaria")
+	assert_eq(logs.size(), CAMPAIGN_LOGS, "total de logs: Núcleo, Estufa, Laboratório, Enfermaria e Docas")
 	assert_eq(logs.size(), Balance.LOGS_TOTAL, "contador do HUD fecha com as fases jogáveis")
 	for key: Variant in logs:
 		var lines: Array = (logs[key] as Dictionary).get("lines", [])

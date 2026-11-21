@@ -72,6 +72,10 @@ res://scenes/levels/core_hub.tscn
 res://scenes/levels/greenhouse.tscn
 res://scenes/levels/lab.tscn
 res://scenes/levels/infirmary.tscn
+res://scenes/levels/docks.tscn
+res://scenes/world/vacuum_zone.tscn
+res://scenes/world/coupler.tscn
+res://scenes/world/escape_cradle.tscn
 res://tests/qa/scenes/chassis_probe.tscn
 res://scenes/fx/sector_cutscene.tscn
 res://tests/qa/scenes/cutscene_probe_core.tscn

@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://c0rbitadocks"]
+
+[ext_resource type="PackedScene" uid="uid://c0rbitalevelbase" path="res://scenes/levels/level_base.tscn" id="1_base"]
+[ext_resource type="Script" path="res://scenes/levels/sector_narrative.gd" id="2_narrative"]
+
+[node name="Docks" instance=ExtResource("1_base")]
+level_id = "docks"
+
+[node name="Narrative" type="Node" parent="."]
+script = ExtResource("2_narrative")
+sector_id = &"docks"
+ability_id = &"thruster"
+ability_dialogue = &"dk_thruster"
+ability_tutorial = &"tut_thruster"
+restored_dialogue = &"dk_restored"

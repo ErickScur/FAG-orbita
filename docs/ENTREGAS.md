@@ -78,7 +78,7 @@ Asset "definitivo" é trabalho paralelo do humano: assim que o Dia 1 terminar, o
 | Combate (não-letal) | [F31](features/F31-dash-feixe.md) (Feixe desliga inimigos) | Stretch | `[x]` |
 | Movimento aleatório de NPCs | [F34](features/F34-drone-botanico.md) (BOTÂNICO 04 vagueia ao acaso no corredor escuro da Estufa e segue o MU-7 iluminando os poços) | Stretch | `[x]` |
 | Missões secundárias | Coleta opcional de Dados de Pesquisa ([F20](features/F20-coletaveis-contadores.md)) + F66 | Final | `[ ]` |
-| Desenvolvimento de 4 fases com dificuldades diferentes | F60 `[x]`, F61 `[x]`, F62 (+ Estufa) | Final | `[ ]` |
+| Desenvolvimento de 4 fases com dificuldades diferentes | F43 Estufa `[x]`, F60 Laboratório `[x]`, F61 Enfermaria `[x]`, F62 Docas `[x]` (todas ligadas ao hub pela F45) | Final | `[x]` |
 | Chefão de nível (Boss) | F64, F65 | Final | `[ ]` |
 | Chefão de nível inferior (Mini-boss) | F63 | Final | `[ ]` |
 | Fim de jogo alternativo | F66 | Final | `[ ]` |

@@ -241,7 +241,7 @@
   {"frame": 6625, "action": "ui_accept", "pressed": false},
   {"frame": 6655, "action": "ui_accept", "pressed": true},
   {"frame": 6658, "action": "ui_accept", "pressed": false},
-  {"frame": 6990, "expect_scene": "res://scenes/ui/demo_end.tscn"},
+  {"frame": 6990, "expect_scene": "res://scenes/levels/core_hub.tscn"},
   {"frame": 7020, "screenshot": "23_tela_de_fim"},
   {"frame": 7040, "quit": true}
 ]

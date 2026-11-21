@@ -23,6 +23,11 @@ const MAGNETIC_SYMBOL: String = "M"
 const PLANT_SYMBOL: String = "g"
 const PLATFORM_SYMBOL: String = "m"
 const THIN_ICE_SYMBOL: String = "_"
+const VACUUM_SYMBOL: String = "V"
+const META_REACH: String = "reach"
+const REACH_DOUBLE_JUMP: String = "double_jump"
+const PROFILE_DOUBLE_JUMP: String = "double_jump_enabled"
+const DOUBLE_JUMP_DELAYS: Array[int] = [8, 16, 24]
 const PASSABLE_SYMBOLS: String = "|x"
 const PICKUP_SYMBOLS: String = "lrckC"
 const INTERACT_SYMBOLS: String = "TLED"
@@ -75,12 +80,21 @@ var _active_top: float = 0.0
 var _active_x: float = 0.0
 var _dash_enabled: bool = true
 var _dash_frames: int = 0
+var _double_jump: bool = false
+var _vacuum_zones: Array[Rect2i] = []
+var _vacuum_visited: Dictionary = {}
 
 
 static func analyze(text: String, meta: Dictionary = {}, profile: Dictionary = {}) -> Dictionary:
 	var parsed: Dictionary = LevelParser.parse(text, LevelBuilder.entity_chars())
 	var solver := LevelReachability.new()
 	var used: Dictionary = profile if not profile.is_empty() else default_profile()
+	if not used.has(PROFILE_DOUBLE_JUMP):
+		var reach: Variant = meta.get(META_REACH, {})
+		var enabled: bool = false
+		if reach is Dictionary:
+			enabled = bool((reach as Dictionary).get(REACH_DOUBLE_JUMP, false))
+		used[PROFILE_DOUBLE_JUMP] = enabled
 	return solver._run(parsed, meta, used)
 
 
@@ -354,6 +368,7 @@ func _run(parsed: Dictionary, meta: Dictionary, profile: Dictionary) -> Dictiona
 	_dt = 1.0 / float(profile.get("ticks", DEFAULT_TICKS))
 	_dash_enabled = bool(profile.get("dash_enabled", true))
 	_dash_frames = DashLogic.frames(Balance.DASH_TIME, _dt)
+	_double_jump = bool(profile.get(PROFILE_DOUBLE_JUMP, false))
 	_jump_velocity = PlatformerMath.jump_velocity(Balance.JUMP_HEIGHT, Balance.GRAVITY, _dt)
 	_wall_jump_velocity = -absf(
 		PlatformerMath.jump_velocity(Balance.JUMP_HEIGHT, Balance.GRAVITY)
@@ -366,6 +381,8 @@ func _run(parsed: Dictionary, meta: Dictionary, profile: Dictionary) -> Dictiona
 	else:
 		_simulate({"x": _column_center(spawn.x), "fy": spawn_feet, "on_floor": false})
 	_drain()
+	while _flood_vacuum():
+		_drain()
 	var plant_reports: Array[Dictionary] = []
 	for plant: Dictionary in _plants:
 		var top: int = int(roundf(float(plant["top"])))
@@ -408,6 +425,12 @@ func _build_grid(parsed: Dictionary, meta: Dictionary, profile: Dictionary) -> v
 			_cells[cell.y * _width + cell.x] = CELL_MAGNETIC
 		elif symbol == THIN_ICE_SYMBOL:
 			_cells[cell.y * _width + cell.x] = CELL_SOLID
+		elif symbol == VACUUM_SYMBOL:
+			var zone_params: Variant = meta_entities.get(LevelParser.cell_key(cell), {})
+			var zone_rect: Variant = []
+			if zone_params is Dictionary:
+				zone_rect = (zone_params as Dictionary).get("rect", [])
+			_vacuum_zones.append(Rect2i(cell, HeatZone.parse_rect(zone_rect, Vector2i.ONE)))
 		elif symbol == PLANT_SYMBOL:
 			var plant_offset: float = float(profile.get("plant_top_offset", -64.0))
 			_plants.append({
@@ -505,6 +528,7 @@ func _expand_stand(column: int, feet: float) -> void:
 			_enqueue_climb(wall, -direction, feet, x)
 	_simulate({"x": x, "fy": feet, "jump": true, "segment": segment, "start_fy": feet})
 	_dash_launches(column, x, feet, segment)
+	_double_jump_launches(column, x, feet, segment)
 	if _one_way_below(x, feet):
 		for direction: int in [-1, 0, 1]:
 			_simulate({"x": x, "fy": feet, "drop": true, "axis": direction})
@@ -545,6 +569,86 @@ func _dash_launches(column: int, x: float, feet: float, segment: Vector2i) -> vo
 			if can_run:
 				falling["vx"] = direction * Balance.WALK_SPEED
 			_simulate(falling)
+
+
+func _double_jump_launches(column: int, x: float, feet: float, segment: Vector2i) -> void:
+	if not _double_jump:
+		return
+	for direction: int in [-1, 0, 1]:
+		var can_run: bool = direction != 0 and _is_stand(column - direction, feet)
+		for delay: int in DOUBLE_JUMP_DELAYS:
+			for release: int in [-1, delay]:
+				if direction == 0 and release >= 0:
+					continue
+				var spec: Dictionary = {
+					"x": x, "fy": feet, "axis": direction, "jump": true, "double": delay,
+					"release": release, "segment": segment, "start_fy": feet,
+				}
+				_simulate(spec)
+				if can_run:
+					var running: Dictionary = spec.duplicate()
+					running["vx"] = direction * Balance.WALK_SPEED
+					_simulate(running)
+		if direction == 0 or _is_stand(column + direction, feet):
+			continue
+		if _overlaps_solid(x + direction * _tile, feet):
+			continue
+		for delay: int in DOUBLE_JUMP_DELAYS:
+			_simulate({
+				"x": x, "fy": feet, "axis": direction, "double": delay, "segment": segment,
+				"start_fy": feet, "vx": direction * Balance.WALK_SPEED,
+			})
+
+
+func _flood_vacuum() -> bool:
+	var grew: bool = false
+	for zone: Rect2i in _vacuum_zones:
+		var queue: Array[Vector2i] = []
+		for row: int in range(zone.position.y, zone.end.y):
+			for column: int in range(zone.position.x, zone.end.x):
+				if _touched[row * _width + column] == 0:
+					continue
+				for candidate: Vector2i in [Vector2i(column, row), Vector2i(column, row + 1)]:
+					if _vacuum_body_fits(zone, candidate) and not _vacuum_visited.has(candidate):
+						_vacuum_visited[candidate] = true
+						queue.append(candidate)
+		while not queue.is_empty():
+			var body: Vector2i = queue.pop_back()
+			grew = true
+			_vacuum_visit(zone, body, queue)
+	return grew
+
+
+func _vacuum_visit(zone: Rect2i, body: Vector2i, queue: Array[Vector2i]) -> void:
+	var x: float = _column_center(body.x)
+	var feet: float = (body.y + 1) * _tile
+	_touch(x, feet)
+	if _is_stand(body.x, feet):
+		_enqueue_stand(body.x, feet)
+	for step: Vector2i in [Vector2i.LEFT, Vector2i.RIGHT, Vector2i.UP, Vector2i.DOWN]:
+		var next: Vector2i = body + step
+		if zone.has_point(next):
+			if _vacuum_body_fits(zone, next) and not _vacuum_visited.has(next):
+				_vacuum_visited[next] = true
+				queue.append(next)
+			continue
+		var blocked: bool = _cell_kind(next.x, next.y - 1) == CELL_SOLID
+		if _cell_kind(next.x, next.y) != CELL_EMPTY or blocked:
+			continue
+		_simulate({
+			"x": x, "fy": feet, "on_floor": false, "axis": step.x,
+			"vx": step.x * Balance.VACUUM_PUSH_SPEED, "vy": step.y * Balance.VACUUM_PUSH_SPEED,
+		})
+
+
+func _vacuum_body_fits(zone: Rect2i, body: Vector2i) -> bool:
+	if not zone.has_point(body):
+		return false
+	for row: int in [body.y, body.y - 1]:
+		var kind: int = _cell_kind(body.x, row)
+		if kind == CELL_SOLID or kind == CELL_MAGNETIC:
+			return false
+	return true
 
 
 func _ledge_x(column: int, direction: int) -> float:
@@ -706,6 +810,7 @@ func _simulate(spec: Dictionary) -> void:
 	var dash_delay: int = int(spec.get("dash_delay", 0))
 	var dash_started: bool = dash_dir == 0
 	var dash_left: int = 0
+	var double_at: int = int(spec.get("double", -1))
 	var air_frames: int = 0
 	var start_x: float = x
 	var airborne: bool = not on_floor
@@ -766,6 +871,9 @@ func _simulate(spec: Dictionary) -> void:
 		vy = PlatformerMath.clamp_fall(vy + Balance.GRAVITY * _dt, Balance.MAX_FALL_SPEED)
 		if jump and frame == 0:
 			vy = _jump_velocity
+		if double_at >= 0 and air_frames == double_at and not on_floor:
+			vy = _jump_velocity
+			double_at = -1
 		var moved: Vector2 = _move_x(x, fy, vx * _dt)
 		if moved.y != 0.0:
 			vx = 0.0

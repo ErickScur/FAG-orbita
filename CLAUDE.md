@@ -87,9 +87,9 @@ scenes/
   ui/                     main_menu, options_menu, pause_menu, hud, dialogue_box, chassis_lost, game_over, demo_end, energy_terminal_ui, station_map, log_archive
   player/                 mu7.tscn + mu7.gd
   enemies/                sr3.tscn, spore_swarm.tscn
-  world/                  terminal, distribution_terminal, door, backup_dock, collectible, moving_platform, grow_plant, magnetic_wall, secret_wall, space_parallax, log_object, level_exit, sector_node, powered_lamp, steam_vent, electric_floor
+  world/                  terminal, distribution_terminal, door, backup_dock, collectible, moving_platform, grow_plant, magnetic_wall, secret_wall, space_parallax, log_object, level_exit, sector_node, powered_lamp, steam_vent, electric_floor, vacuum_zone, coupler, escape_cradle
   npc/                    botanico.tscn (F34)
-  levels/                 level_base.tscn, core_hub.tscn, greenhouse.tscn
+  levels/                 level_base.tscn, core_hub.tscn, greenhouse.tscn, lab.tscn, infirmary.tscn, docks.tscn
 data/
   levels/*.txt            fases em ASCII + legenda
   energy/*.json           definição dos terminais (orçamento, sistemas, efeitos)

@@ -126,6 +126,7 @@ func test_the_campaign_has_exactly_eight_research_data() -> void:
 		"res://data/levels/core_hub.json",
 		"res://data/levels/lab.json",
 		"res://data/levels/infirmary.json",
+		"res://data/levels/docks.json",
 	]:
 		var raw: Variant = JSON.parse_string(FileAccess.get_file_as_string(path))
 		if not (raw is Dictionary):
@@ -134,7 +135,7 @@ func test_the_campaign_has_exactly_eight_research_data() -> void:
 			var params: Dictionary = ((raw as Dictionary)["entities"] as Dictionary)[key]
 			if String(params.get("id", "")).begins_with("data_"):
 				total += 1
-	assert_eq(total, Balance.RESEARCH_TOTAL, "o placar de Dados fecha com a Enfermaria")
+	assert_eq(total, Balance.RESEARCH_TOTAL, "o placar de Dados fecha com as Docas")
 
 
 func test_the_level_has_two_secret_areas() -> void:

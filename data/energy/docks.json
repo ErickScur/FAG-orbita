@@ -1,0 +1,93 @@
+{
+  "id": "docks",
+  "title": "DOCAS - DISTRIBUIÇÃO",
+  "budget": 3,
+  "goal_text": "Abrir a comporta da antessala e religar o Nó",
+  "goal_done_text": "Comporta da antessala aberta. Falta religar o Nó",
+  "goal_systems": [
+    "node_door"
+  ],
+  "initial": [
+    "security",
+    "containment"
+  ],
+  "systems": [
+    {
+      "id": "security",
+      "name": "SEGURANÇA DAS DOCAS",
+      "tag": "PERIGO",
+      "description": "Mantém as torres, as sentinelas e os sinalizadores das docas.",
+      "effect_off": "Torres e sentinelas param; os sinalizadores apagam.",
+      "cost": 1,
+      "requires": [],
+      "locked": false,
+      "effects": []
+    },
+    {
+      "id": "containment",
+      "name": "CAMPO DE CONTENÇÃO",
+      "tag": "CLIMA",
+      "description": "Sela a baia aberta do hangar: ar e gravidade de volta.",
+      "effect_off": "O hangar volta ao vácuo.",
+      "cost": 1,
+      "requires": [],
+      "locked": false,
+      "effects": [
+        {
+          "target": "group:dk_vac_hangar",
+          "action": "invert"
+        }
+      ]
+    },
+    {
+      "id": "cargo_lift",
+      "name": "ELEVADOR DE CARGA",
+      "tag": "ROTA",
+      "description": "Puxa da linha da contenção. Move o elevador do hangar.",
+      "effect_off": "O elevador para onde estiver.",
+      "cost": 1,
+      "requires": [
+        "containment"
+      ],
+      "locked": false,
+      "effects": []
+    },
+    {
+      "id": "eva_door",
+      "name": "VESTIÁRIO EVA",
+      "tag": "ROTA",
+      "description": "Abre a porta do vestiário de trajes.",
+      "effect_off": "A porta do vestiário fecha.",
+      "cost": 1,
+      "requires": [],
+      "locked": false,
+      "effects": []
+    },
+    {
+      "id": "outer_hatch",
+      "name": "ECLUSA EXTERNA",
+      "tag": "ROTA",
+      "description": "Só abre com o hangar pressurizado. Leva ao anel externo.",
+      "effect_off": "A eclusa externa fecha.",
+      "cost": 1,
+      "requires": [
+        "containment"
+      ],
+      "locked": false,
+      "effects": []
+    },
+    {
+      "id": "node_door",
+      "name": "COMPORTA DA ANTESSALA",
+      "tag": "META",
+      "description": "Puxa da linha da eclusa. Abre a antessala do Nó do Setor.",
+      "effect_off": "A comporta da antessala fecha e o setor segue desligado.",
+      "cost": 1,
+      "requires": [
+        "outer_hatch"
+      ],
+      "locked": false,
+      "effects": []
+    }
+  ]
+}

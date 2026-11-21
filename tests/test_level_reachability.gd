@@ -1,7 +1,7 @@
 extends TestCase
 
 const LEVELS_DIR: String = "res://data/levels/"
-const CAMPAIGN_LEVELS: Array[String] = ["core_hub", "greenhouse"]
+const CAMPAIGN_LEVELS: Array[String] = ["core_hub", "greenhouse", "docks"]
 const SANDBOX_LEVELS: Array[String] = ["test_room"]
 const GOAL_SYMBOL: String = "c"
 const OLD_CHIMNEY_COLUMN: int = 43
@@ -266,3 +266,44 @@ func _goal_reached(result: Dictionary) -> bool:
 		fail("fixture deveria ter exatamente um alvo '%s'" % GOAL_SYMBOL)
 		return false
 	return LevelReachability.is_touched(result, goals[0].get("cell", Vector2i.ZERO))
+
+
+func test_a_vacuum_room_reaches_what_gravity_cannot() -> void:
+	var lines: PackedStringArray = [
+		"##########",
+		"#V       #",
+		"#    c   #",
+		"#        #",
+		"#        #",
+		"#        #",
+		"#        #",
+		"#        #",
+		"# P      #",
+		"##########",
+	]
+	var meta: Dictionary = {"entities": {"1,1": {"rect": [8, 8]}}}
+	var floating: Dictionary = LevelReachability.analyze("\n".join(lines), meta)
+	assert_true(_goal_reached(floating), "no vácuo o alvo alto é alcançável")
+	lines[1] = "#        #"
+	var falling: Dictionary = LevelReachability.analyze("\n".join(lines), {})
+	assert_false(_goal_reached(falling), "com gravidade o alvo alto não é")
+
+
+func test_a_four_tile_step_needs_the_double_jump() -> void:
+	var lines: PackedStringArray = [
+		"############",
+		"#          #",
+		"#       c  #",
+		"#     ######",
+		"#     ######",
+		"#     ######",
+		"# P   ######",
+		"############",
+	]
+	var profile: Dictionary = LevelReachability.default_profile()
+	profile[LevelReachability.PROFILE_DOUBLE_JUMP] = false
+	var without: Dictionary = LevelReachability.analyze("\n".join(lines), {}, profile)
+	assert_false(_goal_reached(without), "sem Propulsor 4 tiles não sobem")
+	var meta: Dictionary = {"reach": {"double_jump": true}}
+	var with_thruster: Dictionary = LevelReachability.analyze("\n".join(lines), meta)
+	assert_true(_goal_reached(with_thruster), "com o pulo duplo sobe")

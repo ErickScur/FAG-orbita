@@ -1,0 +1,103 @@
+{
+  "logs": [
+    {
+      "id": "log_dk_01",
+      "sector": "docks",
+      "author": "helena",
+      "title": "PROTOCOLO EVA",
+      "subtitle": "ENGENHARIA CHEFE",
+      "unlock_ability": "thruster",
+      "lines": [
+        {
+          "text": "Vestiário EVA, docas. Os trajes ainda estão no lugar. Quase todos.",
+          "expr": "tired"
+        },
+        {
+          "text": "Os chassis de manutenção trabalham do lado de fora sem traje. Usam o mesmo propulsor.",
+          "expr": "neutral"
+        },
+        {
+          "text": "Estou liberando o propulsor para qualquer unidade MU que acessar este terminal.",
+          "expr": "determined"
+        },
+        {
+          "text": "Aqui dentro ele dá um segundo impulso no ar. Lá fora, é o único jeito de mudar de rumo.",
+          "expr": "neutral"
+        },
+        {
+          "text": "No vácuo nada te segura e nada te freia. Você vai para onde empurrou até bater em alguma coisa.",
+          "expr": "worried"
+        },
+        {
+          "text": "A Ana Lúcia me ensinou isso no meu primeiro dia. Ela ria de mim girando no meio do hangar.",
+          "expr": "smile"
+        },
+        {
+          "text": "Ela coordena as docas há seis anos. Conhece cada trava e cada parafuso da SELENE.",
+          "expr": "smile"
+        },
+        {
+          "text": "A SELENE é a nave de escape. Quarenta lugares e combustível para a órbita de transferência.",
+          "expr": "neutral"
+        },
+        {
+          "text": "Hoje a Ana Lúcia revisou as travas da SELENE duas vezes. Disse que é só costume.",
+          "expr": "worried"
+        },
+        {
+          "text": "Não é costume. Ela também está ouvindo a tosse pelos corredores.",
+          "expr": "tired"
+        }
+      ]
+    },
+    {
+      "id": "log_dk_02",
+      "sector": "docks",
+      "author": "helena",
+      "title": "LOG PESSOAL 16",
+      "subtitle": "DRA. HELENA VASQUEZ",
+      "lines": [
+        {
+          "text": "Log pessoal. Dezesseis. Estou na cabine de lançamento. Daqui se vê o berço inteiro.",
+          "expr": "tired"
+        },
+        {
+          "text": "O protocolo de evacuação abriu às três e dez. A SELENE ficou pronta em quatro minutos.",
+          "expr": "neutral"
+        },
+        {
+          "text": "Às três e doze o Serralheiro começou a fechar as comportas do hangar. Uma por uma, em ordem.",
+          "expr": "worried"
+        },
+        {
+          "text": "Ninguém aqui deu essa ordem. Ele só executa o que chega pela rede. A ordem chegou pela rede.",
+          "expr": "worried"
+        },
+        {
+          "text": "A Ana Lúcia tentou abrir no painel manual. O braço dele trancou o painel também.",
+          "expr": "emotional"
+        },
+        {
+          "text": "Quem estava dentro do hangar embarcou. Quem estava no corredor ficou do outro lado do vidro.",
+          "expr": "emotional"
+        },
+        {
+          "text": "A SELENE soltou as travas com menos gente do que cabe numa mesa do refeitório.",
+          "expr": "emotional"
+        },
+        {
+          "text": "Eu contei os lugares vazios pelo vidro enquanto ela atravessava a baia. Não consegui parar de contar.",
+          "expr": "emotional"
+        },
+        {
+          "text": "A Ana Lúcia não embarcou. O filho dela estava no leito onze.",
+          "expr": "tired"
+        },
+        {
+          "text": "As travas do berço continuam abertas. Ninguém teve coragem de fechar.",
+          "expr": "tired"
+        }
+      ]
+    }
+  ]
+}

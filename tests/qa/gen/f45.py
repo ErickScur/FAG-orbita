@@ -9,7 +9,8 @@ HUB = "res://scenes/levels/core_hub.tscn"
 GH = "res://scenes/levels/greenhouse.tscn"
 FLAGS = {"dlg_core_wake": True, "dlg_core_alarm": True, "dlg_core_terminal_first": True,
          "dlg_core_lights_off": True, "dlg_hab_body": True, "dlg_hab_first_sr3": True,
-         "dlg_core_return": True, "dlg_core_return_lab": True, "dlg_gh_enter": True,
+         "dlg_core_return": True, "dlg_core_return_lab": True,
+         "dlg_core_return_infirmary": True, "dlg_gh_enter": True,
          "dlg_gh_claws": True, "dlg_gh_restored": True, "dlg_lab_enter": True,
          "dlg_inf_enter": True, "reactor_online": True}
 
@@ -83,10 +84,10 @@ def sealed_wing():
     r.at(340); r.call("GameState.new_game")
     r.call("GameState.from_dict", state(["greenhouse", "lab", "infirmary"],
                                         {"scene": HUB, "dock_id": "core_dock_wing"},
-                                        "obj_core_infirmary"))
+                                        "obj_core_docks"))
     r.scene(HUB)
     r.at(370); r.expect_scene(HUB)
-    r.at(420); r.expect(129, 12, "03_doca_da_rotunda"); r.shot("03_docas_abertas_vaga_reservada")
+    r.at(420); r.expect(129, 12, "03_doca_da_rotunda"); r.shot("03_docas_abertas_saida_viva")
     r.at(422); r.hold("move_right", 130)
     r.at(600); r.expect(142, 15, "04_comporta_da_memoria_selada"); r.shot("04_memoria_e_reator_selados")
     r.at(610); r.quit()

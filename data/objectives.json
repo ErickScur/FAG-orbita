@@ -4,5 +4,8 @@
   "obj_core_lab": "Chegar ao Laboratório",
   "obj_lab": "Religar o Laboratório",
   "obj_core_infirmary": "Chegar à Enfermaria",
-  "obj_infirmary": "Religar a Enfermaria"
+  "obj_infirmary": "Religar a Enfermaria",
+  "obj_core_docks": "Chegar às Docas",
+  "obj_docks": "Religar as Docas",
+  "obj_core_memory": "Ir ao Núcleo de Memória"
 }

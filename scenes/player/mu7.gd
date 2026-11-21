@@ -43,6 +43,14 @@ const BEAM_BLINK_PERIOD: float = 0.02
 const BEAM_DIM_RATIO: float = 0.5
 const TRAIL_COLOR: Color = Color(0.37, 0.91, 1.0, 0.7)
 const REFUSE_SFX: StringName = &"ui_error"
+const JET_SHEET: String = "res://assets/sprites/fx/thruster_jet.png"
+const JET_FRAMES: int = 4
+const JET_FPS: float = 16.0
+const JET_ORIGIN: Vector2 = Vector2(0, -12)
+const JET_DISTANCE: float = 10.0
+const JET_BURST_TIME: float = 0.25
+const JET_PARTICLE_COLOR: Color = Color(0.37, 0.91, 1.0, 0.8)
+const JET_PARTICLE_SPEED: float = 60.0
 
 @export var floor_sfx: StringName = &"step_metal"
 
@@ -82,6 +90,15 @@ var _dash_cooldown: float = 0.0
 var _dash_velocity: Vector2 = Vector2.ZERO
 var _air_dash_used: bool = false
 var _beam_flash_left: float = 0.0
+var _in_vacuum: bool = false
+var _vacuum_anchor: Vector2 = Vector2.ZERO
+var _double_jump_used: bool = false
+var _thrusting: bool = false
+var _jet_direction: Vector2 = Vector2.UP
+var _jet_left: float = 0.0
+var _jet_clock: float = 0.0
+var _jet_sprite: Sprite2D = null
+var _jet_particles: CPUParticles2D = null
 
 @onready var _sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var _camera: Camera2D = $Camera2D
@@ -106,6 +123,7 @@ func _ready() -> void:
 	_setup_flashlight()
 	_setup_beam()
 	_setup_dash_trail()
+	_setup_jet()
 	_camera.offset = Vector2.ZERO
 	_camera.position.y = Balance.CAMERA_OFFSET_Y
 	_camera.position_smoothing_speed = Balance.CAMERA_SMOOTHING
@@ -136,12 +154,17 @@ func _input(event: InputEvent) -> void:
 func _physics_process(delta: float) -> void:
 	_update_timers(delta)
 	_update_drop_through(delta)
+	_in_vacuum = _overlaps_vacuum()
+	_thrusting = false
 	_try_dash()
 	if _dashing:
 		_dash_step(delta)
 	elif _climbing:
 		_climb_step(delta)
+	elif _in_vacuum:
+		_vacuum_step(delta)
 	else:
+		_vacuum_anchor = Vector2.ZERO
 		_walk_step(delta)
 	_try_beam()
 	_process_hurtbox(delta)
@@ -150,6 +173,7 @@ func _physics_process(delta: float) -> void:
 	_update_shake(delta)
 	_update_flash(delta)
 	_update_beam_flash(delta)
+	_update_jet(delta)
 
 
 func _walk_step(delta: float) -> void:
@@ -168,6 +192,7 @@ func _walk_step(delta: float) -> void:
 		_land(fall_speed)
 	if is_on_floor():
 		_air_dash_used = false
+		_double_jump_used = false
 	_update_facing(axis)
 	if _try_grab(axis):
 		return
@@ -204,6 +229,7 @@ func _try_grab(axis: float) -> bool:
 		return false
 	_climbing = true
 	_air_dash_used = false
+	_double_jump_used = false
 	_wall_push = 0.0
 	velocity = Vector2.ZERO
 	_jump_assist.cancel()
@@ -278,6 +304,10 @@ func _has_heated_core() -> bool:
 	return FreezeRules.has_heated_core(GameState.abilities)
 
 
+func _has_thruster() -> bool:
+	return VacuumRules.has_thruster(GameState.abilities)
+
+
 func _jump_speed(step: float = 0.0) -> float:
 	var height: float = FreezeRules.jump_height(GameState.statuses.jump_multiplier())
 	return PlatformerMath.jump_velocity(height, Balance.GRAVITY, step)
@@ -297,6 +327,22 @@ func dash_cooldown_left() -> float:
 
 func is_air_dash_used() -> bool:
 	return _air_dash_used
+
+
+func is_in_vacuum() -> bool:
+	return _in_vacuum
+
+
+func is_anchored() -> bool:
+	return not _vacuum_anchor.is_zero_approx()
+
+
+func is_double_jump_used() -> bool:
+	return _double_jump_used
+
+
+func is_thrusting() -> bool:
+	return _thrusting
 
 
 func is_beam_visible() -> bool:
@@ -676,6 +722,8 @@ func _handle_jump(delta: float) -> void:
 	var pressed: bool = Input.is_action_just_pressed(&"jump")
 	if pressed and _try_drop_through():
 		return
+	if pressed and _try_double_jump(delta):
+		return
 	if pressed:
 		_jump_assist.press()
 	if _jump_assist.consume():
@@ -684,6 +732,158 @@ func _handle_jump(delta: float) -> void:
 		_set_state(State.JUMP)
 	if Input.is_action_just_released(&"jump"):
 		velocity.y = PlatformerMath.apply_jump_cut(velocity.y, Balance.JUMP_CUT_MULTIPLIER)
+
+
+func _try_double_jump(delta: float) -> bool:
+	var blocked: bool = GameState.statuses.blocks_abilities()
+	var allowed: bool = VacuumRules.can_double_jump(
+		_has_thruster(),
+		_double_jump_used,
+		is_on_floor(),
+		_jump_assist.coyote_left(),
+		_climbing,
+		blocked,
+		GameState.charge,
+		Balance.DOUBLE_JUMP_COST
+	)
+	if not allowed or not GameState.spend_charge(Balance.DOUBLE_JUMP_COST):
+		return false
+	_double_jump_used = true
+	_jump_assist.cancel()
+	velocity.y = _jump_speed(delta)
+	_jet_direction = Vector2.UP
+	_jet_left = JET_BURST_TIME
+	AudioManager.play_sfx(&"dash")
+	_set_state(State.JUMP)
+	return true
+
+
+func _vacuum_step(delta: float) -> void:
+	var input: Vector2 = _vacuum_input()
+	var pressed: bool = not _movement_blocked() and Input.is_action_just_pressed(&"jump")
+	_jump_assist.cancel()
+	_wall_push = 0.0
+	if is_on_floor():
+		_vacuum_anchor = Vector2.ZERO
+		_air_dash_used = false
+		_double_jump_used = false
+		if _hurt_timer <= 0.0:
+			_apply_horizontal(input.x, delta)
+		velocity.y = Balance.VACUUM_FLOOR_STICK
+		if pressed:
+			_vacuum_push(input, Vector2.UP)
+	elif is_anchored():
+		_air_dash_used = false
+		velocity = Vector2.ZERO
+		if pressed:
+			_vacuum_push(input, _vacuum_anchor)
+		elif input.dot(_vacuum_anchor) > 0.0:
+			_vacuum_thrust(input, delta)
+			if _thrusting:
+				_vacuum_anchor = Vector2.ZERO
+	else:
+		_vacuum_thrust(input, delta)
+	velocity = VacuumRules.clamp_drift(velocity, Balance.VACUUM_MAX_SPEED)
+	var drift: Vector2 = velocity
+	move_and_slide()
+	_vacuum_settle(drift)
+	_update_facing(input.x)
+	_update_state(input.x)
+	_update_look_ahead(input.x, delta)
+
+
+func _vacuum_input() -> Vector2:
+	if _movement_blocked():
+		return Vector2.ZERO
+	return Vector2(
+		Input.get_axis(&"move_left", &"move_right"), Input.get_axis(&"move_up", &"move_down")
+	)
+
+
+func _vacuum_push(input: Vector2, normal: Vector2) -> void:
+	velocity = VacuumRules.push_velocity(input, normal, Balance.VACUUM_PUSH_SPEED)
+	_vacuum_anchor = Vector2.ZERO
+	AudioManager.play_sfx(&"jump")
+	_set_state(State.JUMP)
+
+
+func _vacuum_thrust(input: Vector2, delta: float) -> void:
+	var blocked: bool = GameState.statuses.blocks_abilities()
+	if not VacuumRules.can_thrust(_has_thruster(), blocked, GameState.charge, input):
+		return
+	if not GameState.spend_charge(VacuumRules.thrust_cost(delta, Balance.THRUSTER_DRAIN)):
+		return
+	velocity = VacuumRules.thrust(
+		velocity, input, delta, Balance.THRUSTER_ACCEL, Balance.THRUSTER_SPEED
+	)
+	_thrusting = true
+	_jet_direction = input.normalized()
+
+
+func _vacuum_settle(drift: Vector2) -> void:
+	if is_on_floor():
+		_vacuum_anchor = Vector2.ZERO
+		return
+	var collision: KinematicCollision2D = get_last_slide_collision()
+	if collision == null or not VacuumRules.hits_surface(drift, collision.get_normal()):
+		return
+	_vacuum_anchor = collision.get_normal()
+	velocity = Vector2.ZERO
+
+
+func _overlaps_vacuum() -> bool:
+	if _hurtbox == null:
+		return false
+	for area: Area2D in _hurtbox.get_overlapping_areas():
+		if area is VacuumZone and (area as VacuumZone).is_active():
+			return true
+	return false
+
+
+func _setup_jet() -> void:
+	_jet_sprite = Sprite2D.new()
+	_jet_sprite.name = "ThrusterJet"
+	_jet_sprite.texture = AssetResolver.texture(JET_SHEET)
+	_jet_sprite.hframes = JET_FRAMES
+	_jet_sprite.z_index = -1
+	_jet_sprite.visible = false
+	_jet_sprite.material = _unshaded_material()
+	add_child(_jet_sprite)
+	_jet_particles = CPUParticles2D.new()
+	_jet_particles.name = "ThrusterExhaust"
+	_jet_particles.emitting = false
+	_jet_particles.local_coords = false
+	_jet_particles.amount = 12
+	_jet_particles.lifetime = 0.3
+	_jet_particles.spread = 12.0
+	_jet_particles.gravity = Vector2.ZERO
+	_jet_particles.initial_velocity_min = JET_PARTICLE_SPEED * 0.5
+	_jet_particles.initial_velocity_max = JET_PARTICLE_SPEED
+	_jet_particles.scale_amount_min = 1.0
+	_jet_particles.scale_amount_max = 2.0
+	_jet_particles.color = JET_PARTICLE_COLOR
+	_jet_particles.material = _unshaded_material()
+	add_child(_jet_particles)
+
+
+func _update_jet(delta: float) -> void:
+	if _jet_sprite == null:
+		return
+	_jet_left = maxf(0.0, _jet_left - delta)
+	var active: bool = (_thrusting or _jet_left > 0.0) and not _dead
+	_jet_sprite.visible = active
+	_jet_particles.emitting = active
+	if not active:
+		return
+	_jet_clock += delta
+	_jet_sprite.frame = int(_jet_clock * JET_FPS) % JET_FRAMES
+	var flame: Vector2 = -_jet_direction
+	if flame.is_zero_approx():
+		flame = Vector2.DOWN
+	_jet_sprite.position = JET_ORIGIN + flame * JET_DISTANCE
+	_jet_sprite.rotation = flame.angle() - PI * 0.5
+	_jet_particles.position = _jet_sprite.position
+	_jet_particles.direction = flame
 
 
 func _try_drop_through() -> bool:
@@ -738,6 +938,8 @@ func _process_hurtbox(delta: float) -> void:
 		_heat_accumulator = 0.0
 		return
 	var per_second: float = 0.0
+	if _in_vacuum:
+		per_second += Balance.VACUUM_DPS
 	var climate: Dictionary = {
 		"in_heat": false, "kind": HeatRules.KIND_WARM, "cooled": false,
 		"in_cold": false, "warmed": false,
@@ -1009,6 +1211,9 @@ func _on_player_died() -> void:
 		return
 	_dead = true
 	_cancel_dash()
+	_thrusting = false
+	_jet_left = 0.0
+	_vacuum_anchor = Vector2.ZERO
 	_climbing = false
 	_claw_blocked = false
 	_wall_push = 0.0
@@ -1033,6 +1238,8 @@ func _on_player_respawned() -> void:
 	_cancel_dash()
 	_dash_cooldown = 0.0
 	_air_dash_used = false
+	_double_jump_used = false
+	_vacuum_anchor = Vector2.ZERO
 	_climbing = false
 	_claw_blocked = false
 	_wall_push = 0.0

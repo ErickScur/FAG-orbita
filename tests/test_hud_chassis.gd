@@ -12,7 +12,7 @@ const PANEL_WIDTH: float = 368.0
 const PANEL_PADDING: float = 8.0
 const SCREEN_HEIGHT: float = 216.0
 const ALL_ABILITIES: Array[StringName] = [
-	&"dash", &"beam", &"magnetic_claws", &"heat_sink", &"heated_core"
+	&"dash", &"beam", &"magnetic_claws", &"heat_sink", &"heated_core", &"thruster"
 ]
 const REQUIRED_KEYS: Array[StringName] = [
 	&"title",

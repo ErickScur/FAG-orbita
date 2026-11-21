@@ -101,6 +101,9 @@ origem).
 - **Raio horizontal na altura do peito passa por cima da SR-3** (10 px de altura): o feixe sai a
   −8 px do pé e colide **só com corpos** — área de gatilho fica na camada 1 por padrão e bloquearia
   o raio (F31).
+- **Contato tangencial também é colisão**: o MU-7 deslizando rente ao teto no vácuo recebia
+  `get_last_slide_collision()` a cada quadro e se reancorava parado. Só trate como batida quando a
+  velocidade de antes do `move_and_slide` tinha componente contra a normal (F62).
 
 ## Energia (Terminal e grupo `powered`)
 - **Nó comandado por `invert` entra só por `group`**, nunca pelo par `terminal_id`/`system_id`
@@ -122,6 +125,11 @@ origem).
   `perl -e 'alarm N; exec @ARGV' "$GODOT" ...`. Sem `run/main_scene` o Godot **fica pendurado**.
 - O editor aberto pode sobrescrever `project.godot` ao salvar: peça para fechar antes de editar à
   mão (bootstrap).
+- **Godot que trava antes de abrir** (até `--headless --version` não volta, `sample <pid>` mostra
+  o processo parado em `_dyld_start`) é o macOS segurando o lançamento (serviço de assinatura),
+  não o projeto: cada nova tentativa empilha mais um processo preso. Teste antes com
+  `perl -e 'alarm 20; exec @ARGV' "$GODOT" --headless --version`, mate o que travar e avise o
+  humano; não mexa em quarentena nem em segurança do sistema (F62).
 - UID inventado à mão em `.tscn` não pode ter `z`: o alfabeto de UID do Godot é `a`–`y` + `0`–`9`
   (F60).
 

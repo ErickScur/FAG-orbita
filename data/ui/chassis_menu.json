@@ -16,6 +16,7 @@
   "ability_heated_core": "NÚCLEO AQUECIDO",
   "ability_dash": "IMPULSO MAGNÉTICO",
   "ability_beam": "FEIXE DE MANUTENÇÃO",
+  "ability_thruster": "PROPULSOR",
   "ability_cost": "%d CARGA",
   "locked_title": "ESTAÇÃO ARTEMIS",
   "map_label": "MAPA DA ESTAÇÃO",

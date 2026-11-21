@@ -6,6 +6,7 @@ const LEVEL_BASE: String = "res://scenes/levels/level_base.tscn"
 const BRIEFING_SCENE: String = "res://scenes/boot/briefing.tscn"
 const BRIEFING_SCRIPT: String = "res://scenes/boot/briefing.gd"
 const LEVELS_DIR: String = "res://data/levels/"
+const SCENES_DIR: String = "res://scenes/levels/"
 const REQUIRED_IDS: Array[String] = [
 	"tut_move",
 	"tut_pause",
@@ -18,6 +19,7 @@ const REQUIRED_IDS: Array[String] = [
 	"tut_climb",
 	"tut_beam",
 	"tut_dash",
+	"tut_thruster",
 ]
 
 var _catalog: Dictionary = {}
@@ -54,6 +56,7 @@ func test_every_card_completes_with_the_key_it_shows() -> void:
 		&"tut_climb": [&"move_up"],
 		&"tut_beam": [&"beam"],
 		&"tut_dash": [&"dash"],
+		&"tut_thruster": [&"jump"],
 	}
 	for tutorial_id: Variant in expected:
 		var actions: Array[StringName] = TutorialData.actions_of(tutorial_id, _catalog)
@@ -126,6 +129,14 @@ func test_every_card_is_used_by_some_level() -> void:
 			var tutorial: String = String((value as Dictionary).get("tutorial", ""))
 			if not tutorial.is_empty():
 				used[tutorial] = true
+	for file_name: String in DirAccess.get_files_at(SCENES_DIR):
+		if not file_name.ends_with(".tscn"):
+			continue
+		var state: SceneState = (load(SCENES_DIR + file_name) as PackedScene).get_state()
+		for index: int in range(state.get_node_count()):
+			for property: int in range(state.get_node_property_count(index)):
+				if state.get_node_property_name(index, property) == &"ability_tutorial":
+					used[String(state.get_node_property_value(index, property))] = true
 	for tutorial_id: String in REQUIRED_IDS:
 		assert_true(used.has(tutorial_id), "cartão '%s' sem gatilho em nenhuma fase" % tutorial_id)
 

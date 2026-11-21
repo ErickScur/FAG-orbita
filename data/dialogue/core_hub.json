@@ -172,6 +172,34 @@
           "text": "A comporta da Enfermaria respondeu. Próxima parada."
         }
       ]
+    },
+    "core_return_infirmary": {
+      "mode": "blocking",
+      "once": true,
+      "lines": [
+        {
+          "speaker": "orbita",
+          "text": "O Núcleo sentiu a Enfermaria. O frio recuou dos corredores."
+        },
+        {
+          "speaker": "orbita",
+          "text": "A comporta das Docas respondeu. Próxima parada."
+        }
+      ]
+    },
+    "core_return_docks": {
+      "mode": "blocking",
+      "once": true,
+      "lines": [
+        {
+          "speaker": "orbita",
+          "text": "O Núcleo sentiu as Docas. Quase toda a luz voltou."
+        },
+        {
+          "speaker": "orbita",
+          "text": "Uma comporta que eu não reconheço respondeu. Núcleo de Memória."
+        }
+      ]
     }
   }
 }

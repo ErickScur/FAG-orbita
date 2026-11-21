@@ -133,3 +133,11 @@ Saída no scratchpad da sessão, nunca no repo.
   roteiro que para dentro de um cone para fotografar passa numa rodada e perde o trilho na
   outra. Rode roteiro longo **pelo menos duas vezes** antes de concluir, e calibre trecho dentro
   da rodada encadeada, não a partir de estado montado.
+- **(F62)** **`GameState.new_game` + `from_dict` + `scene` no meio do roteiro não calam a fala que o
+  trecho anterior deixou tocando**: o `DialogueManager` é autoload e segue com a sequência. No
+  `f61_hub_return` a fala de entrada da Enfermaria (trecho 1) apareceu no hub do trecho 2 e os
+  `ui_accept` contados para a fala do hub foram gastos nela. Marque a fala do trecho anterior como
+  vista nas `flags` (`dlg_<id>`) ou espere ela acabar antes de trocar de estado.
+- **(F62)** Quem entra numa fase **por uma porta** nasce **no portal de volta** (`<x>_exit_core`),
+  não no `P` (ADR-F45-002): nas Docas o MU-7 chega em 1,48, duas colunas antes do `P` (3,48). O marco
+  de chegada vale o portal; o `P` só vale para jogo novo direto na cena.

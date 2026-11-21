@@ -7,6 +7,9 @@ const DEMO_IDS: Array[StringName] = [
 	&"obj_lab",
 	&"obj_core_infirmary",
 	&"obj_infirmary",
+	&"obj_core_docks",
+	&"obj_docks",
+	&"obj_core_memory",
 ]
 const LEVEL_OBJECTIVES: Dictionary = {
 	"res://data/levels/core_hub.json": "obj_core_hub",

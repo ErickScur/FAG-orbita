@@ -73,7 +73,7 @@ func test_stats_report_secrets_over_total() -> void:
 	assert_eq(int(stats.get("secrets", 0)), 1)
 	assert_eq(int(stats.get("secrets_total", 0)), Balance.SECRETS_TOTAL)
 	var lines: PackedStringArray = stats.get("lines", PackedStringArray())
-	assert_true("\n".join(lines).contains("SEGREDOS   1/4"))
+	assert_true("\n".join(lines).contains("SEGREDOS   1/%d" % Balance.SECRETS_TOTAL))
 
 
 func test_walls_share_one_group_per_secret() -> void:

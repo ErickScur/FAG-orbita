@@ -68,8 +68,12 @@ func test_closing_text_follows_the_last_restored_sector() -> void:
 		"A ENFERMARIA AQUECEU. A ESTAÇÃO AINDA NÃO.", "Enfermaria"
 	)
 	assert_eq(
+		String(script.call(&"closing_text", [&"greenhouse", &"lab", &"infirmary", &"docks"])),
+		"AS DOCAS SEGURARAM O AR. A ESTAÇÃO AINDA NÃO.", "Docas"
+	)
+	assert_eq(
 		String(script.call(&"closing_text", [])),
-		"A ENFERMARIA AQUECEU. A ESTAÇÃO AINDA NÃO.", "padrão"
+		"AS DOCAS SEGURARAM O AR. A ESTAÇÃO AINDA NÃO.", "padrão: o último setor pronto"
 	)
 
 

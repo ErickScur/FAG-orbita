@@ -137,7 +137,7 @@ de sobreposição também com o piso de partida (validação no Godot, 2026-11-2
 
 | Setor | Cena | Comporta (selada até) | Vaga da saída (x,y) | Doca que recebe o backup |
 |---|---|---|---|---|
-| Docas | `res://scenes/levels/docks.tscn` | `door_docks` 121,11 (`infirmary`) | **125,11** | `core_dock_wing` 129,11 |
+| Docas | `res://scenes/levels/docks.tscn` | `door_docks` 121,11 (`infirmary`) | ~~125,11~~ **ligada** (2026-11-21) | `core_dock_wing` 129,11 |
 | Núcleo de Memória | `res://scenes/levels/memory_core.tscn` | `door_memory` 143,14 (`docks`) | **146,14** | `core_dock_wing` 129,11 |
 | Núcleo do Reator | `res://scenes/levels/reactor_core.tscn` | `door_reactor` 143,5 (`memory`) | **146,5** | `core_dock_wing` 129,11 |
 
@@ -288,3 +288,18 @@ Nenhuma.
 - **Fora do alcance:** `f28_core_hub`, `f36_tutorial`, `f53_portal_saida` e `f53_porta_comum` são
   roteiros antigos sem marco (só capturas, dependem de `--scene`); o trecho do hub que eles cobrem
   não mudou. A sonda `f53_probe_exit.tscn` hoje enquadra o Habitacional, não o portal.
+
+### 2026-11-21 — Integração com as Docas (F62)
+- **Quem**: agente de integração (branch `final/integracao`) · **O que**: a F62 foi feita sobre a
+  `main` anterior à F45 e chegou com o `docks.tscn` pronto; `test_reserved_exits_wait_for_their_scenes`
+  reprovou como previsto. Ligação pela §6.4: `E` em 125,11 no `core_hub.txt`, entrada movida de
+  `reserved_exits` para `entities` (`core_hub_exit_docks`, `sector: docks`), Docas em
+  `HUB_EXITS`/`SECTOR_RETURNS`. **A vaga 125,11 foi consumida**; restam 146,14 (Memória) e 146,5 (Reator).
+- **Revisita do hub**: criada a entrada `after_sector: infirmary` (objetivo `obj_core_docks`,
+  `#4a637a`, fala `core_return_infirmary`) entre a do Laboratório (`#3b5266`) e a das Docas
+  (`#58748a`, `obj_core_memory`); ordem de luma crescente conferida pelo teste.
+- **QA**: `f45_c_ala_selada` atualizado (o 2º trecho tem a Enfermaria religada: objetivo das Docas
+  e a captura `03_docas_abertas_saida_viva` mostra a comporta aberta e o portal com a placa da
+  âncora); `f45_a`/`f45_b` regenerados (só a flag da fala nova) e verdes; roteiro novo
+  `f62_hub_docks` (hub → Docas → hub).
+

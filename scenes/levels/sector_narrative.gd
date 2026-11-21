@@ -6,6 +6,7 @@ const CUTSCENE_GROUP: StringName = &"sector_cutscene"
 @export var sector_id: StringName = &""
 @export var ability_id: StringName = &""
 @export var ability_dialogue: StringName = &""
+@export var ability_tutorial: StringName = &""
 @export var restored_dialogue: StringName = &""
 @export_file("*.tscn") var next_scene: String = ""
 
@@ -32,6 +33,8 @@ func _on_ability_unlocked(unlocked_id: StringName) -> void:
 	if ability_id == &"" or unlocked_id != ability_id:
 		return
 	DialogueManager.play(ability_dialogue)
+	if ability_tutorial != &"":
+		EventBus.tutorial_requested.emit(ability_tutorial)
 
 
 func _on_sector_restored(restored_id: StringName) -> void:

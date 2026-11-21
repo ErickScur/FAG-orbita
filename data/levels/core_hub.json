@@ -27,6 +27,24 @@
       "on_enter_dialogue": "core_return_lab",
       "reactor_online": true,
       "triggers": []
+    },
+    {
+      "after_sector": "infirmary",
+      "spawn_dock": "hab_dock_02",
+      "objective": "obj_core_docks",
+      "ambient_color": "#4a637a",
+      "on_enter_dialogue": "core_return_infirmary",
+      "reactor_online": true,
+      "triggers": []
+    },
+    {
+      "after_sector": "docks",
+      "spawn_dock": "hab_dock_02",
+      "objective": "obj_core_memory",
+      "ambient_color": "#58748a",
+      "on_enter_dialogue": "core_return_docks",
+      "reactor_online": true,
+      "triggers": []
     }
   ],
   "terminals": [
@@ -177,6 +195,11 @@
       "sealed_until_sector": "infirmary",
       "sector": "docks"
     },
+    "125,11": {
+      "id": "core_hub_exit_docks",
+      "target": "res://scenes/levels/docks.tscn",
+      "sector": "docks"
+    },
     "129,11": {
       "id": "core_dock_wing"
     },
@@ -204,11 +227,6 @@
     }
   },
   "reserved_exits": {
-    "125,11": {
-      "id": "core_hub_exit_docks",
-      "target": "res://scenes/levels/docks.tscn",
-      "sector": "docks"
-    },
     "146,14": {
       "id": "core_hub_exit_memory",
       "target": "res://scenes/levels/memory_core.tscn",

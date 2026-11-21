@@ -55,6 +55,16 @@
       "danger": "#E0B43C",
       "light": "#D7E3E8",
       "outline": "#10161C"
+    },
+    "docks": {
+      "base": "#0E1218",
+      "secondary": "#454E58",
+      "tile": "#8C96A0",
+      "tile_back": "#3A424C",
+      "accent": "#5FE8FF",
+      "danger": "#F2C230",
+      "light": "#D7E3E8",
+      "outline": "#0E1218"
     }
   },
   "images": [
@@ -324,6 +334,56 @@
       "palette": "ui",
       "final": true,
       "seed": 117
+    },
+    {
+      "id": "TIL-DOCKS",
+      "path": "tiles/docks_tiles.png",
+      "frame": [16, 16],
+      "grid": [8, 4],
+      "shape": "tileset",
+      "palette": "docks",
+      "seed": 125
+    },
+    {
+      "id": "SPR-PROPS-DOCKS",
+      "path": "sprites/props/docks_props_sheet.png",
+      "frame": [32, 32],
+      "grid": [4, 2],
+      "frames": [4, 4],
+      "shape": "rect_index",
+      "palette": "docks",
+      "body": "#8C96A0",
+      "seed": 126
+    },
+    {
+      "id": "SPR-CRADLE",
+      "path": "sprites/world/escape_cradle.png",
+      "frame": [128, 64],
+      "grid": [1, 1],
+      "shape": "rect_border",
+      "palette": "docks",
+      "body": "#5E6873",
+      "seed": 127
+    },
+    {
+      "id": "SPR-COUPLER",
+      "path": "sprites/world/coupler_sheet.png",
+      "frame": [32, 32],
+      "grid": [4, 1],
+      "shape": "rect_index",
+      "palette": "docks",
+      "body": "#454E58",
+      "seed": 128
+    },
+    {
+      "id": "FX-THRUSTER",
+      "path": "sprites/fx/thruster_jet.png",
+      "frame": [16, 16],
+      "grid": [4, 1],
+      "shape": "radial",
+      "palette": "docks",
+      "body": "#5FE8FF",
+      "seed": 129
     }
   ]
 }

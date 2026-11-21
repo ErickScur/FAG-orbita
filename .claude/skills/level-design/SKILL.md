@@ -111,3 +111,10 @@ O modelo é generoso com energia (toda porta aberta, toda planta crescida, garra
   corredor da ala, andar até o Laboratório disparava a Estufa. Quem volta aparece na saída cujo
   `target` é a fase de origem (`ArrivalRoute`); fase nova liga ao hub pela tabela da F45 §6.4, e
   `test_reserved_exits_wait_for_their_scenes` reprova cena nova com a vaga ainda reservada.
+- **(F62)** **Zona de vácuo encostada num salto obrigatório** deixa o MU-7 entrar no ar e flutuar à
+  deriva até a próxima parede: comece o vácuo pelo menos 2 colunas depois do pouso do último pulo
+  e faça a entrada andando pelo piso.
+- **(F62)** Vácuo + rota longa somam muito dano (4/s): ponha doca no caminho de cada travessia e
+  conte o tempo no vácuo do roteiro de QA; o primeiro roteiro morreu no vestíbulo sem nenhum inimigo.
+- **(F62)** Dois jatos de vapor num duto de 3 tiles matam: sem altura para esperar fora do jato,
+  só o dash passa, e a Carga do dash concorre com o pulo duplo e o Propulsor.

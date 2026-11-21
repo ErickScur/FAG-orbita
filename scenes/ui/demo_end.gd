@@ -5,8 +5,9 @@ const CLOSING_TEXTS: Dictionary = {
 	&"greenhouse": "A ESTUFA VOLTOU A RESPIRAR. A ESTAÇÃO AINDA NÃO.",
 	&"lab": "O LABORATÓRIO ESFRIOU. A ESTAÇÃO AINDA NÃO.",
 	&"infirmary": "A ENFERMARIA AQUECEU. A ESTAÇÃO AINDA NÃO.",
+	&"docks": "AS DOCAS SEGURARAM O AR. A ESTAÇÃO AINDA NÃO.",
 }
-const DEFAULT_SECTOR: StringName = &"infirmary"
+const DEFAULT_SECTOR: StringName = &"docks"
 const ROW_LABEL_COLOR: Color = Color(0.541176, 0.607843, 0.658824)
 const ROW_VALUE_COLOR: Color = Color(0.372549, 0.831373, 0.784314)
 const ROW_HEIGHT: int = 14

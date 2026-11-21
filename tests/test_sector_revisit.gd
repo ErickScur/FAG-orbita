@@ -120,7 +120,7 @@ func test_exit_scene_closes_after_the_sector() -> void:
 	exit.free()
 
 
-func test_greenhouse_and_lab_return_to_the_core_and_infirmary_ends() -> void:
+func test_sectors_return_to_the_core_until_the_docks_end() -> void:
 	var greenhouse: Dictionary = _narrative(GREENHOUSE_SCENE)
 	assert_eq(greenhouse.get("sector_id"), &"greenhouse", "setor da Estufa")
 	assert_eq(greenhouse.get("ability_id"), ClimbLogic.ABILITY_ID, "garras")
@@ -137,7 +137,7 @@ func test_greenhouse_and_lab_return_to_the_core_and_infirmary_ends() -> void:
 	assert_eq(infirmary.get("ability_id"), FreezeRules.ABILITY_ID, "Núcleo Aquecido")
 	assert_eq(infirmary.get("ability_dialogue"), &"inf_heated_core", "fala do upgrade")
 	assert_eq(infirmary.get("restored_dialogue"), &"inf_restored", "fala de fechamento")
-	assert_eq(String(infirmary.get("next_scene", "")), "", "sem próxima cena: tela de fim")
+	assert_eq(String(infirmary.get("next_scene", "")), CORE_SCENE, "a Enfermaria volta ao Núcleo")
 
 
 func test_revisit_list_uses_the_last_restored_entry() -> void:

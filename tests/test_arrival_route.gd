@@ -9,11 +9,13 @@ const HUB_EXITS: Dictionary = {
 	"res://scenes/levels/greenhouse.tscn": "core_hub_exit",
 	"res://scenes/levels/lab.tscn": "core_hub_exit_lab",
 	"res://scenes/levels/infirmary.tscn": "core_hub_exit_infirmary",
+	"res://scenes/levels/docks.tscn": "core_hub_exit_docks",
 }
 const SECTOR_RETURNS: Dictionary = {
 	"greenhouse": "gh_exit_core",
 	"lab": "lab_exit_core",
 	"infirmary": "inf_exit_core",
+	"docks": "dk_exit_core",
 }
 const ICON_SIZE: int = 7
 

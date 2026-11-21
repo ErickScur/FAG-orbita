@@ -6,7 +6,7 @@ OUT = os.path.join(ROOT, "tests", "qa", "f61_hub_return.json")
 from qa_build import R
 FLAGS = {"dlg_core_wake": True, "dlg_core_alarm": True, "dlg_core_terminal_first": True,
          "dlg_core_lights_off": True, "dlg_hab_body": True, "dlg_hab_first_sr3": True,
-         "dlg_core_return": True, "reactor_online": True}
+         "dlg_core_return": True, "dlg_inf_enter": True, "reactor_online": True}
 r = R()
 r.call("Settings.set", "difficulty", "normal")
 r.call("GameState.new_game")
@@ -43,5 +43,27 @@ r.at(740); r.expect(117, 12, "07b_no_portal_da_enfermaria"); r.shot("07b_no_port
 r.at(742); r.interact()
 r.at(950); r.expect_scene("res://scenes/levels/infirmary.tscn")
 r.at(970); r.shot("08_chegada_a_enfermaria")
-r.at(980); r.quit()
+INF = "res://scenes/levels/infirmary.tscn"
+HUB = "res://scenes/levels/core_hub.tscn"
+INF_FLAGS = dict(FLAGS, dlg_core_return_lab=True, dlg_inf_enter=True, dlg_inf_heated_core=True,
+                 dlg_inf_restored=True)
+r.at(990); r.call("GameState.new_game")
+r.call("GameState.from_dict", {"flags": INF_FLAGS,
+       "abilities": ["magnetic_claws", "heat_sink", "heated_core"],
+       "sectors_restored": ["greenhouse", "lab", "infirmary"],
+       "energy_states": {"core_hub": ["door_habitat"]},
+       "checkpoint": {"scene": HUB, "dock_id": ""},
+       "current_objective": "obj_infirmary"})
+r.scene(INF)
+r.at(1010); r.expect_scene(INF)
+r.at(1060); r.call("SceneManager.goto", HUB)
+r.at(1225); r.expect_scene(HUB)
+r.at(1230); r.expect(117, 12, "09_volta_da_enfermaria_pela_porta_dela"); r.shot("09_fala_core_return_infirmary")
+r.at(1232); r.accept(4, 10)
+r.at(1320); r.add(expect_call="GameState.get", args=["current_objective"], equals="Chegar às Docas",
+                  label="10_objetivo_chegar_as_docas")
+r.shot("10_objetivo_docas_nucleo_mais_claro")
+r.at(1322); r.hold("move_right", 70)
+r.at(1420); r.expect(125, 12, "11_comporta_das_docas_aberta_portal"); r.shot("11_portal_das_docas")
+r.at(1430); r.quit()
 r.save(OUT)

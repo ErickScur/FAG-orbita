@@ -527,8 +527,8 @@ Toda vez que a dificuldade sobe demais, o jogador ganha um upgrade que faz o con
 | `ENERGY_CELL_CHARGE` | 40 | Carga | 2.6.3 |
 | `REPAIR_KIT_INTEGRITY` | 25 | pts | 2.6.3 |
 | `CAPACITOR_BONUS` | 25 | Carga máx. | 2.6.3 |
-| `LOGS_TOTAL` | 8 | un. | AJ-045 |
-| `RESEARCH_TOTAL` | 8 | un. | AJ-045 |
+| `LOGS_TOTAL` | 10 | un. | AJ-048 |
+| `RESEARCH_TOTAL` | 10 | un. | AJ-048 |
 | `DIFFICULTY_DAMAGE_MULT` | {easy: 0.5, normal: 1.0, hard: 1.5} | fator | AJ-003 |
 | `DIFFICULTY_REACTOR_MULT` | {easy: 0.5, normal: 1.0, hard: 1.5} | fator | AJ-003 |
 | `RESPAWN_CHARGE_RATIO` | 1.0 | fração | AJ-006 |
@@ -677,7 +677,7 @@ Toda vez que a dificuldade sobe demais, o jogador ganha um upgrade que faz o con
 | `PLATFORM_WAIT` | 0.6 | s | AJ-012 |
 | `SECRET_WALL_FADE_TIME` | 0.3 | s | AJ-012 |
 | `SECRET_WALL_ALPHA` | 0.25 | alfa | AJ-012 |
-| `SECRETS_TOTAL` | 4 | un. (jogo completo; 1 na demo) | AJ-012 |
+| `SECRETS_TOTAL` | 5 | un. (jogo completo; 1 na demo) | AJ-048 |
 | `STEAM_WARN_TIME` | 0.5 | s | AJ-012 |
 | `DRONE_SPEED` | 45 | px/s | AJ-012 |
 | `DRONE_WANDER_RADIUS` | 64 | px | AJ-012 |
@@ -724,6 +724,13 @@ Toda vez que a dificuldade sobe demais, o jogador ganha um upgrade que faz o con
 | `THIN_ICE_REFORM_TIME` | 3.0 | s | AJ-044 |
 | `ICE_MELT_TIME` | 0.5 | s | AJ-044 |
 | `V9_ALERT_TIME` | 0.4 | s | AJ-046 |
+| `VACUUM_DPS` | 4 | pts/s | 2.6.2-E |
+| `VACUUM_PUSH_SPEED` | 100 | px/s | AJ-047 |
+| `VACUUM_MAX_SPEED` | 160 | px/s | AJ-047 |
+| `VACUUM_FLOOR_STICK` | 30 | px/s | AJ-047 |
+| `THRUSTER_ACCEL` | 320 | px/s² | AJ-047 |
+| `THRUSTER_SPEED` | 120 | px/s | AJ-047 |
+| `THRUSTER_DRAIN` | 6 | Carga/s | AJ-047 |
 
 <a id="gdd-p-dificuldade"></a>
 ### Multiplicadores de dificuldade (AJ-003)
@@ -769,6 +776,9 @@ Toda vez que a dificuldade sobe demais, o jogador ganha um upgrade que faz o con
 | AJ-044 | 2026-10-27 | 2.6.2-E · 2.6.2-F · 2.6.1 · 2.3 · GDD-P | **Gelo em duas formas e chão escorregadio.** "Gelo fino" é a **plataforma** que racha e cai 0,5 s depois de pisada (GDD) e se refaz em 3 s. A **parede de gelo** bloqueia passagem: derrete em 0,5 s enquanto o aquecedor do grupo dela está ligado e recongela quando ele desliga (o exemplo do GDD-2.3), ou derrete para sempre quando o MU-7 com **Núcleo Aquecido** encosta nela (o "derrete gelo fino" do GDD-2.6.1). O "chão escorregadio" do CONGELAMENTO multiplica a desaceleração por 0,2 | O GDD usa "gelo fino" para duas coisas incompatíveis: uma que se quebra sozinha e outra que o upgrade derrete. Separar as duas mantém as três frases do GDD verdadeiras |
 | AJ-045 | 2026-10-27 | 2.7 · 2.6.3 · GDD-P | **Religar o Laboratório também volta ao Núcleo**, que fica mais claro outra vez, troca o objetivo e destrava a comporta da Enfermaria; a saída para o Laboratório fecha até a F45. A revisita do Núcleo passa a ser uma lista (vale a última entrada já cumprida). Religar a Enfermaria leva à tela de fim, com a frase de fechamento do último setor religado. A Enfermaria traz 2 logs e 2 dados: `LOGS_TOTAL` 6→8 e `RESEARCH_TOTAL` 6→8 | Mesmo padrão do AJ-041; decisão do humano de fazer a próxima fase completa |
 | AJ-046 | 2026-10-27 | 2.6.2-C · GDD-P | **A V-9 avisa antes de perseguir.** Ao detectar o MU-7 ela para no ar por 0,4 s com a lente âmbar e um som de alerta; só então persegue. A visão também exige linha livre (parede corta), e a perseguição atravessa o cenário como o GDD pede | Playtest da demo reprovou inimigo sem aviso; 0,4 s é curto para a V-9 continuar perigosa e longo para o jogador ler o alerta e apagar a lanterna |
+| AJ-047 | 2026-11-20 | 2.6.1 · 2.6.2-E · 2.4 · GDD-P | **Vácuo e Propulsor em números.** No vácuo a gravidade é zero e não há atrito: o MU-7 segue na velocidade que tinha (deriva), com teto de 160 px/s, e perde 4 de Integridade/s (GDD). As botas magnéticas o mantêm de pé no piso (30 px/s de aderência), então andar continua igual; encostar em parede ou teto o **ancora** e o pulo vira **impulso** de 100 px/s na direção das setas (sem seta, para longe da superfície). Sem o Propulsor, a deriva só muda de rumo encostando em algo ou com o dash. **Com o Propulsor**, segurar uma direção no vácuo acelera 320 px/s² até 120 px/s nela, gastando 6 de Carga/s; fora do vácuo ele vira o **pulo duplo** (GDD), um por salto, com a mesma altura do pulo e o custo de 15 de Carga já previsto no GDD-2.4. DESCARGA bloqueia os dois usos. O custo aparece no Terminal do Chassi, não na HUD | O GDD dava só "sem gravidade", "4 Integridade/s" e "pulo duplo e controle no vácuo". Sem inércia o vácuo seria só um corredor que fere; sem um jeito de atravessá-lo sem o upgrade, a primeira metade das Docas não teria vácuo |
+| AJ-048 | 2026-11-20 | 2.7 · 2.6.3 · GDD-P | **Religar a Enfermaria volta ao Núcleo** (como o Laboratório) e a tela de fim passa a vir **depois das Docas** (provisório até a F66). As Docas trazem 2 logs, 2 dados e 1 área secreta: `LOGS_TOTAL` 8→10, `RESEARCH_TOTAL` 8→10 e `SECRETS_TOTAL` 4→5 (a área secreta das Docas guarda o 4º Núcleo de Capacitor) | Contrato da rodada final: cada fase nova soma a sua parte e move o gatilho do fim para depois dela |
+| AJ-049 | 2026-11-20 | 2.7-F4 · 2.6.2-G | **Docas: o vácuo é estado, não lugar.** O hangar só é vácuo com o **Campo de Contenção** desligado (o Terminal de Distribuição muda a gravidade do corredor, como o GDD-2.6.1 promete); a galeria rompida e o anel externo são vácuo sempre. O puzzle é 6 sistemas / 3 energias com a cadeia `node_door` → `outer_hatch` → `containment` (a eclusa só abre com o hangar pressurizado, e a comporta da antessala puxa da linha da eclusa), que sozinha ocupa o orçamento inteiro. O Propulsor vem **no meio da fase** (log do vestiário EVA), não ao vencer o Serralheiro, para a segunda metade e a arena já pedirem pulo duplo. A fase fecha hoje na antessala com o Nó do setor; o Serralheiro (F63) ocupa essa arena depois | GDD-2.7-curva pede 6/3 com dependência em cadeia nas Docas; o upgrade no fim da fase não mudaria nada dentro dela |
 | AJ-050 | 2026-11-20 | 2.7 · 2.5 | **Portas de mão dupla.** Todo setor tem, na entrada, uma porta de volta ao Núcleo Central que funciona a qualquer momento; quem volta aparece na frente da porta daquele setor. As saídas do hub **não fecham** mais depois de religar: o setor religado reabre claro, com o Nó religado e a energia como foi deixada, sem repetir fala nem cutscene, e com as patrulhas de volta. Portal de setor se atravessa com **interagir**, não por contato | GDD-2.7 (hub radial, "o jogador sempre volta ao centro") e F69 (upgrades escondidos em setores já religados). Com todas as saídas abertas, portal por contato seria disparado só de passar por ele no corredor da ala |
 | AJ-051 | 2026-11-20 | 2.7 · 2.5 | **Ala de setores e viagem rápida.** O hub ganha a ala de setores no extremo leste: corredor com Estufa, Laboratório, Enfermaria e Docas (selada até a Enfermaria) e uma rotunda com o Núcleo do Reator **em cima** (selado até a Memória) e o Núcleo de Memória **embaixo** (selado até as Docas). Cada porta tem placa com ícone e cor do setor (GDD-2.9) e LED verde quando o setor foi religado. "Setor vira ponto de viagem rápida" = portal sempre aberto na ala + chegada na porta do setor de origem; sem console de teleporte | Leitura radial do GDD-2.7 num corredor lateral sem mudar o enquadramento da câmera do tutorial; HUD não cresce |
 | AJ-052 | 2026-11-20 | 2.4 · 2.8 (telas 3 e 4) | **O Mapa é a segunda página do Terminal do Chassi.** `[TAB]` abre o diagnóstico (F44); `[TAB]` de novo mostra o MAPA; `[TAB]` no mapa ou `[ESC]` fecham. A pausa ganha **MAPA** e **ARQUIVO DE LOGS** (RETOMAR / MAPA / ARQUIVO DE LOGS / OPÇÕES / RECOMEÇAR / SAIR PARA O MENU). No mapa: religado = branco com corredor aceso; visitado sem energia = cinza; porta selada = cadeado (mesma regra das comportas do hub); setor de porta aberta e nunca visitado = contorno tracejado e `SEM DADOS`; o setor atual pisca com `VOCÊ ESTÁ AQUI`; por setor, `LOGS x/y` e `DADOS x/y` encontrados. O Núcleo Central conta como religado quando a Estufa é religada (o hub acende e o reator entra em linha) | O humano pediu o mapa dentro do Terminal do Chassi (F44); `TAB` continua sendo a tecla do mapa, a dois toques, sem ação nova nem HUD maior |

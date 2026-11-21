@@ -64,5 +64,11 @@
     "text": "IMPULSO MAGNÉTICO",
     "hint": "atravessa vãos largos",
     "actions": ["dash"]
+  },
+  "tut_thruster": {
+    "key": "[ESPAÇO] NO AR",
+    "text": "PULO DUPLO",
+    "hint": "no vácuo, as setas pilotam",
+    "actions": ["jump"]
   }
 }

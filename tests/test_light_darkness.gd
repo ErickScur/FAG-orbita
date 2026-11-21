@@ -1,12 +1,15 @@
 extends TestCase
 
 const LEVELS_DIR: String = "res://data/levels/"
-const PLAYABLE_LEVELS: PackedStringArray = ["core_hub", "greenhouse", "lab", "infirmary"]
+const PLAYABLE_LEVELS: PackedStringArray = [
+	"core_hub", "greenhouse", "lab", "infirmary", "docks"
+]
 const TILESETS: Dictionary = {
 	"core_hub": "res://assets/tiles/core_tiles.png",
 	"greenhouse": "res://assets/tiles/greenhouse_tiles.png",
 	"lab": "res://assets/tiles/lab_tiles.png",
 	"infirmary": "res://assets/tiles/infirmary_tiles.png",
+	"docks": "res://assets/tiles/docks_tiles.png",
 }
 const SOLID_TILE_ROWS: int = 2
 const TILE_SIZE: int = 16

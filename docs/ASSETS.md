@@ -37,11 +37,16 @@
 | [SPR-STEAM](#spr-steam) | Sprite | Bocal do jato de vapor | B | IA | **integrado (IA)** | F60 |
 | [SPR-V9](#spr-v9) | Sprite sheet | Sentinela Voadora V-9 (inimigo da Enfermaria) | A | IA | **integrado (IA)** | F61 |
 | [SPR-ICE](#spr-ice) | Sprite sheet | Gelo fino e parede de gelo | A | IA | **integrado (IA)** | F61 |
+| [SPR-PROPS-DOCKS](#spr-props-docks) | Sprite sheet | Objetos das Docas (caixa, traje, poltronas…) | B | IA | **integrado (IA)** | F62 |
+| [SPR-CRADLE](#spr-cradle) | Sprite | Berço vazio da nave de escape SELENE | A | IA | **integrado (IA)** | F62 |
+| [SPR-COUPLER](#spr-coupler) | Sprite sheet | Acoplador de energia (4 estados; F63 reaproveita) | A | IA | **integrado (IA)** | F62, F63 |
+| [FX-THRUSTER](#fx-thruster) | Sprite sheet | Jato do Propulsor | B | IA | **integrado (IA)** | F62 |
 | [SPR-PROPS-INF](#spr-props-inf) | Sprite sheet | Objetos da Enfermaria (leitos, maca, soro, cápsula…) | B | IA | **integrado (IA)** | F61 |
 | [TIL-CORE](#til-core) | Tileset | Núcleo Central | A | Grátis + IA | **integrado** | F21, F28 |
 | [TIL-GREENHOUSE](#til-greenhouse) | Tileset | Estufa | A | Grátis + IA | **integrado** | F21, F29 |
 | [TIL-LAB](#til-lab) | Tileset | Laboratório (Verão) | A | IA | **integrado (IA)** | F60 |
 | [TIL-INFIRMARY](#til-infirmary) | Tileset | Enfermaria (Inverno) | A | IA | **integrado (IA)** | F61 |
+| [TIL-DOCKS](#til-docks) | Tileset | Docas (Vácuo) | A | IA | **integrado (IA)** | F62 |
 | [BG-SPACE](#bg-space) | Camadas parallax | Espaço pelas janelas + menu | A | Grátis ou IA | **integrado** | F26, F07 |
 | [UI-LOGO](#ui-logo) | Imagem | Logo ÓRBITA (splash + menu) | A | IA | **integrado** | F03, F07 |
 | [UI-FONT](#ui-font) | Fonte | Fonte pixel de toda a UI | A | Grátis | integrado | F05, F07 |
@@ -52,6 +57,7 @@
 | [MUS-GREENHOUSE](#mus-greenhouse) | Música | Trilha da Estufa | A | Grátis | **integrado** | F29 |
 | [MUS-LAB](#mus-lab) | Música | Trilha do Laboratório | A | IA ou Grátis | pendente | F60 |
 | [MUS-INFIRMARY](#mus-infirmary) | Música | Trilha da Enfermaria | A | IA ou Grátis | pendente | F61 |
+| [MUS-DOCKS](#mus-docks) | Música | Trilha das Docas | A | IA ou Grátis | pendente | F62 |
 | [MUS-CHASSIS](#mus-chassis) | Música | Momento CHASSI PERDIDO (one-shot) | B | Grátis | pendente | F46 |
 | [MUS-GAMEOVER](#mus-gameover) | Música | Momento PERDA DE ÓRBITA (one-shot) | B | Grátis | pendente | F46 |
 | [MUS-SECTOR](#mus-sector) | Música | Momento do religamento do setor (one-shot) | B | Grátis | pendente | F46 |
@@ -645,6 +651,161 @@ IMPORTANT RULE: deliver a GRID OF SEPARATE TILES, not a finished picture. Do not
 No text, no letters, no numbers, no labels, no grid lines, no watermark.
 ```
 
+<a id="til-docks"></a>
+### TIL-DOCKS — Tileset Docas
+
+| Campo | Valor |
+|---|---|
+| Caminho final | `assets/tiles/docks_tiles.png` + `assets/tiles/docks_tileset.tres` |
+| Contrato | **Mesmo atlas do TIL-INFIRMARY**: 128×64, 8×4 de 16×16, mesmas coordenadas. Linhas 0–1: as 16 máscaras 4-dir, opacas. Linha 2: (0,2) passarela one-way só no topo (4 px + 1 px de sombra) · (1,2) parede de fundo opaca · (2,2) janela com miolo transparente · (3,2) grade de ventilação · (4,2) cano de combustível com válvula · (5,2) cano vertical · (6,2) sinalizador âmbar aceso (quadro 22) · (7,2) faixa de perigo. Linha 3: (0,3) **parede magnética amarela** · (1,3) sinalizador apagado (quadro 25) · (2..7,3) lateral de contêiner, painel de volante de eclusa, junção com manômetros, remendo de casco, placa de trava de atracação, grelha de piso com argolas. O `.tres` é cópia do `infirmary_tileset.tres` com a textura trocada |
+| Paleta | GDD-2.9 (preto do espaço + amarelo de perigo): casco aço médio `#8C96A0`, moldura `#454E58`, contorno `#0E1218`, amarelo `#F2C230` com preto; paleta `docks` no `tools/placeholders.json` |
+| Placeholder gerado | `assets/placeholder/tiles/docks_tiles.png` (128×64) |
+| Fonte | **IA — geração de imagem do Codex CLI**, 2026-11-20, 2 variações (as duas 8×4 exatas), escolhida a **1ª**: piso com a faixa de perigo fina no topo e menos marcas soltas. Referências: `infirmary_tiles.png` e `lab_tiles.png` |
+| Montagem | Receita da Enfermaria (script do agente, PIL): redução por média com alfa pré-multiplicado; as 16 máscaras são a célula "interior" com faixas coladas (topo 5 px da célula "piso", baixo 4 px do "teto", lados 2 px das bordas). Passarela one-way montada da faixa de piso. Ganho ×1,12 com joelho nos claros: luma dos sólidos **0,550** (Enfermaria 0,552). 0 px semitransparentes |
+| Status | **integrado (IA)** em 2026-11-20; `tests/test_level_tileset.gd` confere as Docas papel por papel |
+
+**Prompt (Codex, com os dois tilesets anexados):**
+```
+Pixel art TILE SET for a 2D side-view space station platformer: the station's DOCKS, a huge cargo and launch bay whose hull is breached to open space. Heavy riveted gunmetal hull plates, yellow-and-black hazard markings, cold and industrial.
+
+STYLE MUST MATCH THE ATTACHED REFERENCE IMAGES (the existing station tilesets): same 16-bit worn look, panel seams, rivets, scratched paint, grime in recesses, hard pixels, no anti-aliasing, no soft gradients.
+
+Palette (16 colors max): medium steel-grey hull plates (#8C96A0 body, #B4BEC8 highlight, #5E6873 shading), darker gunmetal frame (#454E58, #2C333B), dark navy outline (#0E1218), bold hazard yellow (#F2C230) with black (#1A1D21) diagonal stripes only on trims and markings, a little warning red-orange (#E0663A) only on small lamps. Keep the base tiles MEDIUM-BRIGHT: the engine darkens the scene with lighting, so do NOT bake shadows, glow or vignettes into tiles.
+
+Layout: a strict grid of SQUARE tiles, 8 columns and 4 rows, all the same size, separated by flat magenta (#FF00FF) gaps. Each tile filled EDGE TO EDGE with artwork inside its own square (except where a tile is told to have magenta).
+Row 1:
+ 1. wall block INTERIOR: riveted steel-grey hull plates, seamless on all four sides, no border, plate seams and a few rivets.
+ 2. the same block seen as a FLOOR TOP: a thick gunmetal deck plate along the TOP edge with a thin yellow-and-black hazard stripe, the hull plates below.
+ 3. the same block as a CEILING UNDERSIDE: darker gunmetal lip along the BOTTOM edge with bolts.
+ 4. the same block with a gunmetal edge trim along the LEFT side only.
+ 5. the same block with a gunmetal edge trim along the RIGHT side only.
+ 6. a single isolated block with trim on all four sides.
+ 7. a THIN ONE-WAY steel grating catwalk filling only the TOP QUARTER of the square, the rest flat magenta.
+ 8. a dark recessed BACKGROUND wall (deep gunmetal #3A424C and #2A3038, clearly darker than the blocks), seamless, large plain panels.
+Row 2:
+ 1. a square WINDOW FRAME: thick gunmetal frame with hazard-yellow corner brackets, the center fully flat magenta (#FF00FF).
+ 2. a ventilation grille with horizontal slats.
+ 3. a horizontal fuel pipe with a valve.
+ 4. a vertical fuel pipe.
+ 5. a caged hazard beacon lamp, ON, glass lit warm amber.
+ 6. the same caged beacon lamp, OFF, glass dark grey.
+ 7. a yellow-and-black diagonal HAZARD stripe panel.
+ 8. a climbable MAGNETIC wall panel with bold diagonal YELLOW (#E8C15A) and dark grey stripes, steel frame.
+Row 3: docks details, each a full square tile: the corrugated side of a cargo container, an airlock wheel-valve panel, a pipe junction with gauges (no numbers), a hull patch plate welded over a crack, a docking clamp plate, a cargo net strapped over panels, a floor grate with tie-down rings, a stencil-less warning panel with a big chevron arrow.
+Row 4: eight more variations of the row-1 interior hull block (different plate layout, a dent, scorch marks, a missing rivet), each seamless.
+
+IMPORTANT RULE: deliver a GRID OF SEPARATE TILES, not a finished picture. Do not draw a room, a level or a composed scene; do not draw characters, creatures, ships or props resting on the tiles.
+No text, no letters, no numbers, no labels, no grid lines, no watermark.
+```
+
+<a id="spr-props-docks"></a>
+### SPR-PROPS-DOCKS — Objetos das Docas
+
+| Campo | Valor |
+|---|---|
+| Caminho final | `assets/sprites/props/docks_props_sheet.png` (carregado pelo `o` com `"sheet"` + `"frame"`) |
+| Contrato | Folha **128×64 = 4 col × 2 lin de 32×32**, fundo transparente, objeto apoiado no pé do quadro e centrado. Quadros: 0 caixas de carga · 1 suporte de cilindros de combustível · 2 traje EVA vazio pendurado · 3 carrinho de ferramentas · 4 empilhadeira · 5 duas poltronas da nave de escape · 6 cabeço de amarração com cabo cortado · 7 painel de partidas |
+| Placeholder gerado | `assets/placeholder/sprites/props/docks_props_sheet.png` |
+| Fonte | **IA — geração de imagem do Codex CLI**, 2026-11-20, 2 variações (as duas com os 8 objetos na ordem), escolhida a **1ª** (quadros de tamanho mais parecido). Referências: `mu7_sheet.png` e `infirmary_props_sheet.png` |
+| Montagem | Escala comum tirada do objeto mais alto (31 px), limitada a 31 px de largura nos compridos; alinhados pelo pé |
+| Status | **integrado (IA)** em 2026-11-20 |
+
+**Prompt (Codex):**
+```
+Pixel art sprite sheet of EIGHT abandoned objects from the DOCKS of a melancholic 2D side-view space station game, "a beautiful station nobody is using": the cargo and launch bay where the escape ship left almost empty. Side view.
+
+STYLE MUST MATCH THE ATTACHED REFERENCE IMAGES (the MU-7 robot and the station objects): same worn 16-bit look, hard pixels, dark 1-pixel outline, scratched paint. MEDIUM brightness, no baked glow, no cast shadows.
+
+Palette: steel grey (#8C96A0, #B4BEC8 highlight, #5E6873 shading), gunmetal (#454E58, #2C333B), hazard yellow (#F2C230) with black (#1A1D21) stripes, a little orange (#E0663A), pale cyan glass (#9FE3F0), dark navy outline (#0E1218).
+
+Layout: a grid of SQUARE frames, 4 columns and 2 rows, the same size each, every object STANDING ON THE BOTTOM EDGE of its own frame, centered horizontally.
+Row 1:
+ 1. a CARGO CRATE: a chunky square metal crate with reinforced corners and a hazard-yellow stripe, a smaller crate stacked on top slightly offset.
+ 2. a FUEL CANISTER rack: three tall cylindrical canisters strapped in a low steel rack, orange caps.
+ 3. an empty SPACESUIT hanging on a wall-less standing rack: bulky white-grey EVA suit with a dark visor, empty and limp, NO person inside.
+ 4. a TOOL CART: low wheeled cart with a toolbox and a coiled cable on top.
+Row 2:
+ 5. a small CARGO LOADER: a squat wheeled loader with a short lifting fork, hazard stripes.
+ 6. a row of two empty PASSENGER SEATS from an escape ship, bolted to a short floor rail, harness straps hanging loose.
+ 7. a TIE-DOWN BOLLARD: a short thick mooring post with a cut steel cable coiled at its base.
+ 8. a tall DEPARTURE PANEL on a pole: a dark screen (no text, no numbers) with one amber light, slightly tilted.
+
+Chunky readable shapes only: no thin 1-pixel details, everything must still read when each frame is shrunk to 32x32 pixels. Keep relative sizes realistic: the crate and loader are wide, the canister rack, spacesuit and departure panel are tall and narrow.
+
+IMPORTANT RULE FOR EVERY FRAME: draw ONLY the object described. Never draw walls, floors, ground, ceilings, rooms, scenery, characters, bodies, cast shadows or any other object. Each object floats on the flat magenta background, resting on the bottom edge of its frame.
+
+Solid flat magenta background (#FF00FF) everywhere else, with clear magenta gaps between frames. No text, no letters, no labels, no numbers, no grid lines, no frame borders, no watermark.
+```
+
+<a id="spr-cradle"></a>
+### SPR-CRADLE — Berço vazio da SELENE
+
+| Campo | Valor |
+|---|---|
+| Caminho final | `assets/sprites/world/escape_cradle.png` (cena `scenes/world/escape_cradle.tscn`, usada pelo `o` com `"scene"`) |
+| Contrato | **128×64**, um quadro, apoiado no pé, sem colisão (cenário); marco visual do hangar |
+| Placeholder gerado | `assets/placeholder/sprites/world/escape_cradle.png` |
+| Fonte | **IA — geração de imagem do Codex CLI**, 2026-11-20, 2 variações, escolhida a **1ª**: garras curvas abertas leem "algo grande estava aqui"; a 2ª parecia uma prensa. Referências: `infirmary_props_sheet.png` e `lab_tiles.png` |
+| Status | **integrado (IA)** em 2026-11-20 |
+
+**Prompt (Codex):**
+```
+Pixel art of ONE large object for a melancholic 2D side-view space station platformer: the EMPTY LAUNCH CRADLE of an escape ship that already left. Side view, the object is about twice as wide as it is tall.
+
+STYLE MUST MATCH THE ATTACHED REFERENCE IMAGES (the station objects and tiles): same worn 16-bit look, hard pixels, dark 1-pixel outline, scratched paint, rivets. MEDIUM brightness, no baked glow, no cast shadows.
+
+The cradle: a massive low steel cradle base resting on the ground, with two big curved CLAMP ARMS rising from each end and OPEN outward, holding nothing — the ship is gone, the space between the arms is empty. Thick hydraulic pistons under each arm, hazard yellow-and-black stripes along the base, a few severed umbilical hoses and cables hanging loose from the arms, an unlit amber beacon on one arm. It must read clearly as "something big used to sit here".
+
+Palette: steel grey (#8C96A0, #B4BEC8 highlight, #5E6873 shading), gunmetal (#454E58, #2C333B), hazard yellow (#F2C230) with black (#1A1D21) stripes, orange (#E0663A) hoses, dark navy outline (#0E1218).
+
+Chunky readable shapes: it will be shown at 128x64 pixels in game, so no thin 1-pixel details. The cradle stands on the bottom edge of the image and fills the width.
+
+IMPORTANT: draw ONLY the cradle. No ship, no person, no robot, no walls, no floor, no ground line, no room, no stars, no cast shadow. Solid flat magenta background (#FF00FF) everywhere else. No text, no letters, no numbers, no labels, no watermark.
+```
+
+<a id="spr-coupler"></a>
+### SPR-COUPLER — Acoplador de energia
+
+| Campo | Valor |
+|---|---|
+| Caminho final | `assets/sprites/world/coupler_sheet.png` (cena `scenes/world/coupler.tscn`, `A` no ASCII) |
+| Contrato | **128×32 = 4 quadros de 32×32**, apoiados no pé: 0 desligado · 1 carregando (núcleo meio ciano) · 2 alimentado (núcleo branco-ciano) · 3 trancado pelo Serralheiro (barra e luz laranja). A F63 usa os quatro |
+| Placeholder gerado | `assets/placeholder/sprites/world/coupler_sheet.png` |
+| Fonte | **IA — geração de imagem do Codex CLI**, 2026-11-20, 2 variações da folha "máquinas das Docas" (linha 1 acoplador, linha 2 jato); acopladores da **2ª** (estados mais distintos, barra de trava legível). Referências: `mu7_sheet.png` e `cx2_sheet.png` |
+| Status | **integrado (IA)** em 2026-11-20 |
+
+**Prompt (Codex, mesma folha do FX-THRUSTER):**
+```
+Pixel art sprite sheet for a melancholic 2D side-view space station platformer, the DOCKS sector. Side view.
+
+STYLE MUST MATCH THE ATTACHED REFERENCE IMAGES (the MU-7 robot and station machines): same worn 16-bit look, hard pixels, dark 1-pixel outline, scratched paint. No cast shadows.
+
+Layout: a grid of SQUARE frames, 4 columns and 2 rows, all the same size.
+Row 1: four states of the same ENERGY COUPLER, a squat floor-mounted machine: a heavy steel base with a vertical power socket in the middle holding a round glass energy core, hazard-yellow stripes on the base, cables going out of both sides at the bottom. Every frame STANDS ON THE BOTTOM EDGE of its own frame, same size and same position in each frame.
+ 1. OFF: core dark grey, no light.
+ 2. CHARGING: core half lit cyan (#5FE8FF) at the bottom, a few cyan sparks.
+ 3. POWERED: core fully lit bright cyan-white, glowing ring around the socket.
+ 4. SEALED: the same coupler locked shut by a big clamp bar across the core, red-orange (#E0663A) lock light, core dark.
+Row 2: four animation frames of a small THRUSTER JET flame seen from the side, pointing STRAIGHT DOWN from the top center of each frame: a short bright cyan-white core (#E8FFFF) with a blue (#5FE8FF, #2E7BD6) outer flame, each frame slightly different length and flicker; the flame occupies only the top half of its frame and is centered horizontally.
+
+Palette: steel grey (#8C96A0, #B4BEC8, #5E6873), gunmetal (#454E58, #2C333B), hazard yellow (#F2C230) with black (#1A1D21), cyan energy (#5FE8FF, #E8FFFF), dark navy outline (#0E1218).
+
+Chunky readable shapes only: no thin 1-pixel details. The coupler must still read at 32x32 pixels and the flame at 16x16 pixels.
+
+IMPORTANT: draw ONLY the objects described. Never draw walls, floors, ground, rooms, characters or any other object. Solid flat magenta background (#FF00FF) everywhere else, with clear magenta gaps between frames. No text, no letters, no numbers, no labels, no grid lines, no frame borders, no watermark.
+```
+
+<a id="fx-thruster"></a>
+### FX-THRUSTER — Jato do Propulsor
+
+| Campo | Valor |
+|---|---|
+| Caminho final | `assets/sprites/fx/thruster_jet.png` (filho `ThrusterJet` do MU-7, girado no sentido oposto ao empuxo) |
+| Contrato | **64×16 = 4 quadros de 16×16**, chama apontando para baixo a partir do topo do quadro, centrada; desenhada sem luz de cena |
+| Placeholder gerado | `assets/placeholder/sprites/fx/thruster_jet.png` |
+| Fonte | **IA — geração de imagem do Codex CLI**, 2026-11-20: linha 2 da **1ª** variação da folha do SPR-COUPLER (chamas mais grossas, legíveis a 16 px). Prompt na ficha SPR-COUPLER |
+| Status | **integrado (IA)** em 2026-11-20 |
+
 <a id="bg-space"></a>
 ### BG-SPACE — Espaço (parallax)
 
@@ -862,6 +1023,22 @@ Instrumental seamless loop, 2 minutes 30 seconds, dark ambient for a 2D sci-fi g
 **Prompt (Stable Audio — preferido para loop; Suno com "instrumental" marcado):**
 ```
 Instrumental seamless loop, 2 minutes 30 seconds, dark ambient for a 2D sci-fi game level: the frozen, abandoned infirmary of a space station, where the crew fell ill one by one and the heating died. Cold, empty and still. A high, glassy, icy pad in a minor key with long silences between notes, very little bass, around 50 BPM with no clear beat. The slow mechanical breathing of a hospital ventilator that is still running in an empty room, air in, air out, every few seconds. A distant, rare monitor beep with no rhythm, faint creaks of ice on metal, long reverb of a tiled room. Mixed quiet. No drums, no percussion groove, no vocals, no choir, no melody that can be sung. Start and end at the same intensity, no fade-in, no fade-out, so it loops seamlessly.
+```
+
+<a id="mus-docks"></a>
+### MUS-DOCKS — Docas
+
+| Campo | Valor |
+|---|---|
+| Caminho final | `assets/audio/music/docks.ogg` (**loop** sem fade nas pontas, 2–3 min) |
+| Direção | Mesmo universo do MUS-CORE, mas **aberto e sem ar**: o hangar vazio de onde a nave de escape partiu. Pad grave e largo, quase parado, com um pulso lento de baixo como respiração de máquina de atracação; sinos metálicos distantes e espaçados; um alarme de doca abafado, raro, que nunca completa a frase. Modo menor, ~60 BPM sem bateria, muito reverb e silêncio. **Sem voz** ([GDD-2.9](design/GDD.md#gdd-2-9-musica)) |
+| Termos de busca | `space ambient drone` · `empty hangar ambient` · `dark sci-fi ambient loop` · `zero gravity ambient` |
+| Placeholder | nenhum: até o arquivo chegar a fase toca `core` |
+| Status | **pendente** — o humano gera ou baixa e entrega |
+
+**Prompt (Stable Audio — preferido para loop; Suno com "instrumental" marcado):**
+```
+Instrumental seamless loop, 2 minutes 30 seconds, dark ambient for a 2D sci-fi game level: the empty docking bay of a space station, its hull open to space, the escape ship already gone. Wide, slow, airless. A deep sustained pad in a minor key, a slow sub-bass pulse like distant docking machinery breathing, sparse far-away metallic chimes, a muffled dock alarm that starts and never finishes, long reverb, lots of silence. Around 60 BPM with no drums. Mixed quiet. No vocals, no choir, no melody that can be sung. Start and end at the same intensity, no fade-in, no fade-out, so it loops seamlessly.
 ```
 
 <a id="mus-chassis"></a>

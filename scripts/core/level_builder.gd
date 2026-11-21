@@ -177,6 +177,18 @@ const LEGEND: Dictionary = {
 		"anchor": &"center",
 		"feature": "F61",
 	},
+	"V": {
+		"name": "zona de vácuo",
+		"scene": "res://scenes/world/vacuum_zone.tscn",
+		"anchor": &"center",
+		"feature": "F62",
+	},
+	"A": {
+		"name": "acoplador de energia",
+		"scene": "res://scenes/world/coupler.tscn",
+		"anchor": &"feet",
+		"feature": "F62",
+	},
 }
 const COLLECTIBLE_KINDS: Array[StringName] = [
 	&"log", &"research", &"cell", &"repair_kit", &"capacitor"

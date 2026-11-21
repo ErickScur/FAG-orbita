@@ -1,6 +1,6 @@
 extends TestCase
 
-const LEGEND_CHARS: String = "DTLlrckC|ESM~mgx@obvzXhiY_I"
+const LEGEND_CHARS: String = "DTLlrckC|ESM~mgx@obvzXhiY_IVA"
 const ROOM: String = "#####\n#P  #\n#####"
 
 

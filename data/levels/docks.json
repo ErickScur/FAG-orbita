@@ -1,0 +1,406 @@
+{
+  "id": "docks",
+  "name": "Docas",
+  "tileset": "res://assets/tiles/docks_tileset.tres",
+  "entity_tiles": "res://assets/tiles/docks_tiles.png",
+  "ambient_color": "#080b10",
+  "ambient_restored": "#4a5560",
+  "ambient_motes": "#d7e3e8",
+  "parallax": true,
+  "floor_sfx": "step_metal",
+  "music": "core",
+  "reactor_online": true,
+  "objective": "obj_docks",
+  "on_enter_dialogue": "dk_enter",
+  "reach": {
+    "double_jump": true
+  },
+  "revisit": [
+    {
+      "after_sector": "docks",
+      "ambient_color": "#4a5560",
+      "objective": "",
+      "on_enter_dialogue": ""
+    }
+  ],
+  "terminals": [
+    "docks"
+  ],
+  "entities": {
+    "68,2": {
+      "terminal_id": "docks",
+      "system_id": "security",
+      "id": "dk_cx2_duct"
+    },
+    "80,2": {
+      "id": "dk_lamp_duct",
+      "color": "#bfe6ff",
+      "radius": 48.0,
+      "energy": 0.9
+    },
+    "87,2": {
+      "id": "dk_vac_outer",
+      "rect": [
+        31,
+        15
+      ]
+    },
+    "114,3": {
+      "id": "data_dk_02"
+    },
+    "40,4": {
+      "id": "dk_vent_01",
+      "phase": 0.0
+    },
+    "82,4": {
+      "id": "dk_dock_04"
+    },
+    "85,4": {
+      "terminal_id": "docks",
+      "system_id": "outer_hatch",
+      "id": "dk_outer_hatch"
+    },
+    "101,6": {
+      "terminal_id": "docks",
+      "system_id": "security",
+      "id": "dk_cx2_outer"
+    },
+    "21,7": {
+      "id": "dk_lamp_eva",
+      "color": "#bfe6ff",
+      "radius": 80.0,
+      "energy": 1.0
+    },
+    "94,7": {
+      "id": "cell_dk_05"
+    },
+    "17,8": {
+      "id": "cell_dk_04"
+    },
+    "97,13": {
+      "terminal_id": "docks",
+      "system_id": "security",
+      "id": "dk_v9_outer",
+      "path": [
+        [
+          0,
+          0
+        ],
+        [
+          8,
+          0
+        ]
+      ]
+    },
+    "36,14": {
+      "id": "dk_vac_hangar",
+      "rect": [
+        43,
+        27
+      ],
+      "group": "dk_vac_hangar",
+      "system_id": ""
+    },
+    "40,15": {
+      "terminal_id": "docks",
+      "system_id": "security",
+      "id": "dk_beacon_hangar_nw",
+      "color": "#ffb46a",
+      "radius": 80.0,
+      "energy": 1.1
+    },
+    "66,15": {
+      "terminal_id": "docks",
+      "system_id": "security",
+      "id": "dk_beacon_hangar_ne",
+      "color": "#ffb46a",
+      "radius": 80.0,
+      "energy": 1.1
+    },
+    "24,16": {
+      "terminal_id": "docks",
+      "system_id": "containment",
+      "id": "dk_signal_field_b",
+      "color": "#5fe8ff",
+      "radius": 48.0,
+      "energy": 0.9
+    },
+    "26,16": {
+      "terminal_id": "docks",
+      "system_id": "outer_hatch",
+      "id": "dk_signal_hatch_b",
+      "color": "#ffb46a",
+      "radius": 48.0,
+      "energy": 0.9
+    },
+    "109,18": {
+      "terminal_id": "docks",
+      "system_id": "security",
+      "id": "dk_beacon_vestibule",
+      "color": "#ffb46a",
+      "radius": 64.0,
+      "energy": 1.1
+    },
+    "79,19": {
+      "id": "dk_secret_01_upper",
+      "secret_id": "dk_secret_01"
+    },
+    "18,20": {
+      "id": "log_dk_01",
+      "prompt_text": "LER PROTOCOLO"
+    },
+    "20,20": {
+      "id": "dk_suit_01",
+      "sheet": "res://assets/sprites/props/docks_props_sheet.png",
+      "frame": 2
+    },
+    "22,20": {
+      "id": "dk_suit_02",
+      "sheet": "res://assets/sprites/props/docks_props_sheet.png",
+      "frame": 2
+    },
+    "25,20": {
+      "id": "dk_console_b",
+      "terminal": "docks"
+    },
+    "29,20": {
+      "id": "dk_dock_03"
+    },
+    "34,20": {
+      "terminal_id": "docks",
+      "system_id": "eva_door",
+      "id": "dk_eva_door"
+    },
+    "38,20": {
+      "id": "cell_dk_03"
+    },
+    "56,20": {
+      "terminal_id": "docks",
+      "system_id": "cargo_lift",
+      "id": "dk_cargo_lift",
+      "path": [
+        [
+          0,
+          0.75
+        ],
+        [
+          0,
+          20.75
+        ]
+      ],
+      "wait": 0.6,
+      "freight": true
+    },
+    "77,20": {
+      "id": "dk_bollard_02",
+      "sheet": "res://assets/sprites/props/docks_props_sheet.png",
+      "frame": 6
+    },
+    "79,20": {
+      "id": "dk_secret_01_lower",
+      "secret_id": "dk_secret_01"
+    },
+    "81,20": {
+      "id": "capacitor_dk_01"
+    },
+    "83,20": {
+      "id": "log_dk_02",
+      "prompt_text": "LER REGISTRO"
+    },
+    "85,20": {
+      "id": "dk_departure_01",
+      "sheet": "res://assets/sprites/props/docks_props_sheet.png",
+      "frame": 7
+    },
+    "103,21": {
+      "id": "dk_console_c",
+      "terminal": "docks"
+    },
+    "95,23": {
+      "terminal_id": "docks",
+      "system_id": "node_door",
+      "id": "dk_lamp_passage",
+      "color": "#ffb46a",
+      "radius": 48.0,
+      "energy": 1.0
+    },
+    "71,24": {
+      "terminal_id": "docks",
+      "system_id": "security",
+      "id": "dk_v9_hangar_02",
+      "path": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          9
+        ]
+      ]
+    },
+    "99,25": {
+      "terminal_id": "docks",
+      "system_id": "node_door",
+      "id": "dk_node_door"
+    },
+    "101,25": {
+      "id": "kit_dk_03"
+    },
+    "114,25": {
+      "id": "dk_dock_05"
+    },
+    "116,25": {
+      "id": "dk_sr3_vestibule"
+    },
+    "66,29": {
+      "id": "data_dk_01"
+    },
+    "24,31": {
+      "id": "dk_vac_breach",
+      "rect": [
+        6,
+        18
+      ]
+    },
+    "95,31": {
+      "terminal_id": "docks",
+      "system_id": "node_door",
+      "id": "dk_lamp_arena_w",
+      "color": "#ffb46a",
+      "radius": 80.0,
+      "energy": 1.0
+    },
+    "25,32": {
+      "id": "cell_dk_02"
+    },
+    "46,32": {
+      "terminal_id": "docks",
+      "system_id": "security",
+      "id": "dk_v9_hangar_01",
+      "path": [
+        [
+          0,
+          0
+        ],
+        [
+          7,
+          0
+        ]
+      ]
+    },
+    "32,34": {
+      "id": "dk_dock_02"
+    },
+    "42,34": {
+      "terminal_id": "docks",
+      "system_id": "security",
+      "id": "dk_beacon_hangar_low",
+      "color": "#ffb46a",
+      "radius": 64.0,
+      "energy": 1.1
+    },
+    "115,36": {
+      "terminal_id": "docks",
+      "system_id": "node_door",
+      "id": "dk_node_lamp",
+      "color": "#ffb46a",
+      "radius": 96.0,
+      "energy": 1.4
+    },
+    "44,37": {
+      "terminal_id": "docks",
+      "system_id": "eva_door",
+      "id": "dk_signal_eva_a",
+      "color": "#7fe3a0",
+      "radius": 48.0,
+      "energy": 0.9
+    },
+    "101,37": {
+      "terminal_id": "docks",
+      "system_id": "",
+      "id": "dk_coupler_02",
+      "coupler_id": "dk_coupler_02"
+    },
+    "40,40": {
+      "id": "dk_crate_01",
+      "sheet": "res://assets/sprites/props/docks_props_sheet.png",
+      "frame": 0
+    },
+    "47,40": {
+      "id": "dk_console_a",
+      "terminal": "docks"
+    },
+    "52,40": {
+      "id": "dk_loader_01",
+      "sheet": "res://assets/sprites/props/docks_props_sheet.png",
+      "frame": 4
+    },
+    "60,40": {
+      "id": "dk_bollard_01",
+      "sheet": "res://assets/sprites/props/docks_props_sheet.png",
+      "frame": 6
+    },
+    "66,40": {
+      "id": "dk_cradle",
+      "scene": "res://scenes/world/escape_cradle.tscn"
+    },
+    "74,40": {
+      "id": "kit_dk_02"
+    },
+    "115,40": {
+      "id": "dk_sector_node",
+      "scene": "res://scenes/world/sector_node.tscn",
+      "sector_id": "docks"
+    },
+    "12,43": {
+      "terminal_id": "docks",
+      "system_id": "security",
+      "id": "dk_beacon_gallery",
+      "color": "#ffb46a",
+      "radius": 56.0,
+      "energy": 1.1
+    },
+    "16,43": {
+      "terminal_id": "docks",
+      "system_id": "security",
+      "id": "dk_cx2_gallery"
+    },
+    "5,44": {
+      "id": "dk_lamp_gallery",
+      "color": "#bfe6ff",
+      "radius": 64.0,
+      "energy": 1.0
+    },
+    "14,44": {
+      "id": "dk_sr3_gallery"
+    },
+    "17,44": {
+      "id": "cell_dk_01"
+    },
+    "88,44": {
+      "terminal_id": "docks",
+      "system_id": "",
+      "id": "dk_coupler_01",
+      "coupler_id": "dk_coupler_01"
+    },
+    "106,44": {
+      "terminal_id": "docks",
+      "system_id": "",
+      "id": "dk_coupler_03",
+      "coupler_id": "dk_coupler_03"
+    },
+    "1,48": {
+      "id": "dk_exit_core",
+      "target": "res://scenes/levels/core_hub.tscn",
+      "sector": "core"
+    },
+    "6,48": {
+      "id": "dk_dock_01"
+    },
+    "22,48": {
+      "id": "kit_dk_01"
+    }
+  },
+  "triggers": []
+}
