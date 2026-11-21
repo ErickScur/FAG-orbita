@@ -157,3 +157,4 @@ O modelo é generoso com energia (toda porta aberta, toda planta crescida, garra
 - **(F65)** **Sistema `locked` nunca liga**, nem no `initial` (`EnergyGrid.set_state` pula o que
   `can_power` recusa): "ligado e travado" não existe. O que o terminal não pode desligar fica fora
   dele (`system_id: ""`), comandado pela própria cena.
+- Chefe flutuante desenhado na frente do cenário cobre a HUD ou a rota: no poço da Memória o espaço entre a faixa da HUD (40 px) e a cabeça do MU-7 (92 px) é menor que o sprite de 64 px → ancore o chefe na tela (canvas transform), desenhe-o atrás do `Solid` (z entre −10 e 0) e, em salão horizontal de chefe, trave a câmera vertical em exatamente uma tela (F64).

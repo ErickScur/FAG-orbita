@@ -79,12 +79,17 @@ os lampejos da tripulação; a cutscene devolvendo as cores; o sinal da Terra.
 | Fase | Onde | O que o jogador faz | Pressão | Falha |
 |---|---|---|---|---|
 | 1 — Fuga vertical | poço x 27–44, y 10–55 | sobe 46 linhas: zigue-zague de passarelas, parede magnética (garras), plataforma de 4 tiles (pulo duplo) | a estática sobe a 22 px/s, 2 s depois de entrar no poço, e nunca fica mais de 88 px abaixo do pé | encostar na estática: 15 de Integridade, lampejo, volta à doca do refeitório com o poço refeito |
-| 2 — Firewall | salão x 45–99, y 3–12 | puzzle de energia (abaixo) para abrir a porta do salão, mover a passarela sobre o vão e abrir o arquivo | a estática varre da esquerda a 8 px/s (para quando o MU-7 está num console); o firewall rouba o último cabo de cada sessão | encostar na estática ou cair no vão: o mesmo, de volta à doca do salão |
+| 2 — Firewall | salão x 45–99, y 3–12 | puzzle de energia (abaixo) para passar da porta do salão (ou subir pela galeria), mover a passarela sobre o vão e abrir o arquivo | a estática varre da esquerda a 8 px/s (para quando o MU-7 está num console); o firewall rouba o último cabo de cada sessão | encostar na estática ou cair no vão: o mesmo, de volta à doca do salão |
 | 3 — Lembrar | corredor x 47–122, y 26–30 | segurar para a esquerda enquanto o log final aparece linha a linha | empuxo de 75 px/s para trás; cada linha nova é um lampejo (clarão com um tripulante, tremor, tranco) | não há: não mata e não volta além de 48 px da última linha aberta |
 
 O olho do Protocolo acompanha: na fase 1 paira acima do MU-7 olhando para baixo; na fase 2 segue o
-MU-7 pelo teto do salão e **mira com um feixe rosa** o objeto do cabo que vai roubar; na fase 3 fica
-no fim do corredor e **fecha** quando a última linha termina. Cor: dessaturação 0 → 0,3 → 0,6 → 0,9 e
+MU-7 pelo alto do salão, 6 tiles atrás dele, e **mira com um feixe rosa** o objeto do cabo que vai
+roubar (o mais perto do MU-7); na fase 3 fica no fim do corredor e **fecha** quando a última linha
+termina. O olho é desenhado **atrás do cenário** (z −5: plataformas, paredes e o MU-7 passam na
+frente) e nunca sobe acima de 74 px do topo da tela (`LutoEye.SCREEN_MIN_CENTER_Y`): fica sempre
+abaixo da faixa da HUD (40 px). No salão a câmera trava na vertical (`firewall.camera` = linhas 2 a
+15,5, a altura exata da tela) enquanto o MU-7 está na moldura `firewall.frame`: o salão inteiro, do
+teto ao piso, cabe na tela, e a faixa da HUD cai sobre o teto. Cor: dessaturação 0 → 0,3 → 0,6 → 0,9 e
 ambiente `#f4ece6` → `#e2d6d2` → `#9c98a4` → `#151922`; ao religar, tudo volta em 1,5 s.
 
 ### Puzzle sob pressão (terminal `memory_core`, orçamento 3, inicial `[party_lights, luto]`)
@@ -101,7 +106,16 @@ ambiente `#f4ece6` → `#e2d6d2` → `#9c98a4` → `#151922`; ao religar, tudo v
 naquela sessão pisca 1,6 s (o olho mira nele) e cai; a unidade vai para `luto` (se couber). Desligar
 não conta, religar o mesmo sistema o move para o fim da fila, e as trocas do próprio firewall não contam.
 
-**Sequência que resolve:**
+**Duas rotas a partir do console A** (o salão não é mais "liga, atravessa, abre"):
+- **Pela porta** (a óbvia): exige `hall_door` + `walkway` + isca, ou seja, desligar o `luto` também.
+- **Pela galeria** (lateral, opcional): a parede magnética (x 56, y 6–8) logo à direita do console
+  só se alcança com **pulo duplo + garras**; dela se sobe ao lintel sobre a porta (x 57–59, y 7) e se
+  desce pelo vão x 60–61, já do outro lado da porta fechada. Quem sobe economiza a porta: no console
+  basta `walkway` + isca (1 desligar, 2 ligar) e a unidade do `luto` nem precisa sair. É de mão
+  única (o pilar x 62 y 3–9 impede pular da galeria para a passarela fina do Dado, e de baixo não se
+  volta), e a estática que vem da esquerda apaga a galeria quando passa por ela.
+
+**Sequência que resolve (pela porta):**
 1. Console A: desligar `luto` e `party_lights`; ligar `hall_door`, `walkway` e, **por último**,
    `party_lights` (a isca). O olho rouba as luzes → `[hall_door, walkway, luto]`.
 2. Atravessar o vão na passarela (o Dado fica numa passarela fina acima do meio do vão: só com
@@ -109,9 +123,19 @@ não conta, religar o mesmo sistema o move para o fim da fila, e as trocas do pr
 3. Console B: desligar `walkway` e `luto`; ligar `archive_door` e, por último, `party_lights`.
    O olho rouba as luzes de novo → `[hall_door, archive_door, luto]`, meta cumprida.
 
+**Sequência que resolve (pela galeria):** A: desligar `party_lights`; ligar `walkway` e, por último,
+`party_lights` → `[walkway, luto]`. Galeria → passarela → B: desligar `walkway`; ligar `archive_door`
+e, por último, `party_lights` → `[archive_door, luto]`, meta cumprida sem nunca abrir a porta do salão.
+
 **Por que a solução ingênua falha:** ligar só o que se precisa faz o firewall levar exatamente esse
-cabo — `hall_door` + `walkway` perde a passarela; `walkway` + `hall_door` perde a porta; em B,
-`archive_door` sozinha cai. Mínimo de 2 sessões com troca, uma por console (`test_level_memory.gd`).
+cabo — `hall_door` + `walkway` perde a passarela; `walkway` + `hall_door` perde a porta; pela galeria,
+`walkway` sozinha cai; em B, `archive_door` sozinha cai. Mínimo de 2 sessões com troca, uma por
+console, nas duas rotas (`test_level_memory.gd`).
+
+**O roubo se vê do console:** a passarela parada fica a 9 tiles do console A, a porta do salão a 4;
+de B, a passarela do outro lado fica a 5 e a porta do arquivo a 7; cada console tem uma luz da festa
+à vista (W em 52,9 junto de A; E em 84,9 junto de B), na linha 9, abaixo da faixa da HUD
+(`test_what_the_firewall_steals_is_seen_from_the_console`).
 
 **Fragmentos e segredo:**
 - `log_mem_01` (REGISTRO DE ROTINA 4.002, a festa da sonda nove) — alcova na parede esquerda do
@@ -128,10 +152,11 @@ cabo — `hall_door` + `walkway` perde a passarela; `walkway` + `hall_door` perd
 - **Poço** (x 27–44, y 10–55): passarelas P1 r54 · P2 r52 · P3 r50 · P4 r48 (x 28–39, kit) · parede
   magnética x 27 y 33–46 · P5 r33 · P6 r31 · P7 r29 · L8 sólida r25 x 39–44 (pulo duplo) · P9 r23 ·
   P10 r21 · P11 r19 (célula) · P12 r17 · P13 r15 · borda sólida r13 x 40–44. Alcova do log x 22–26, y 22–24.
-- **Salão** (x 45–99, y 3–12): `mem_dock_02` (47,12), console A (51,12), porta do salão (56,12),
-  tripulantes, luzes da festa (58,6) e (80,6), passarela `m` (63,12, trilho de 13 tiles), vão x 62–77
-  (vazio de estática y 14–20), passarela fina do Dado x 66–72 r10, console B (81,12), porta do
-  arquivo (88,12), `mem_dock_03` (94,12).
+- **Salão** (x 45–99, y 3–12): `mem_dock_02` (47,12), tripulante (50,12), console A (54,12), porta
+  do salão (58,12) sob o lintel x 57–59 r7, parede magnética x 56 y 6–8 (galeria), vão de descida
+  x 60–61, pilar x 62 y 3–9, tripulante (60,12), luzes da festa (52,9) e (84,9), passarela `m` (63,12,
+  trilho de 13 tiles), vão x 62–77 (vazio de estática y 14–20), passarela fina do Dado x 66–72 r10,
+  console B (81,12), porta do arquivo (88,12), `mem_dock_03` (94,12).
 - **Arquivo** (x 100–121, y 8–12): kit, dois tripulantes, janela; poço de queda x 119–121 até o corredor.
 - **Corredor** (x 47–122, y 26–30): cinco luzes apagadas (acendem na cutscene), cinco "ecos" da
   tripulação, o Nó `mem_sector_node` (51,30); linhas do log de x 117 a x 55.
@@ -176,7 +201,8 @@ Nenhum sinal novo. Usa `energy_changed`, `player_respawned`, `sector_restored`,
 leitura). `GameState.flags`: `mem_protocol` (fases vencidas), `earth_signal`. `GameState.unlock_ability(&"root_access")`.
 
 ### Dados (`data/`)
-- `levels/memory_core.{txt,json}` com bloco `protocol` (regiões, gatilhos, docas, olho, ambientes, vazio do vão)
+- `levels/memory_core.{txt,json}` com bloco `protocol` (regiões, gatilhos, docas, olho, ambientes, vazio do vão,
+  moldura e faixa de câmera do salão)
 - `energy/memory_core.json`, `logs/memory_core.json`, `dialogue/memory_core.json`
 - `dialogue/speakers.json`: falante `luto`; `dialogue/core_hub.json`: `core_return_memory`
 - `objectives.json`: `obj_memory`, `obj_core_reactor`
@@ -207,7 +233,9 @@ Nenhuma que bloqueie. Pendente: a faixa MUS-MEMORY.
 
 - **Testes:** `test_memory_protocol.gd` (frentes, firewall, recall, máquina de estados, progresso salvo),
   `test_level_memory.gd` (mapa, contagens, ids únicos na campanha, alcançabilidade com pulo duplo, o vão
-  exige a passarela, puzzle com firewall: ingênuo falha e isca resolve nos dois consoles, consoles nos
+  exige a passarela, a galeria pula a porta fechada e exige garras e pulo duplo, a galeria é de mão
+  única, a rota da galeria ainda exige a isca, o que o firewall rouba fica à vista do console, câmera
+  do salão com a altura da tela e o olho abaixo da HUD, puzzle com firewall: ingênuo falha e isca resolve nos dois consoles, consoles nos
   lados certos do vão, bloco `protocol` dentro do mapa e saída/doca da entrada fora do apagamento,
   logs/falas de marco, cena, hub), `test_level_reachability.gd`, `test_light_crowding.gd`, paridade GDD-P.
 - **Roteiros** (gerador em `tests/qa/gen/`):
@@ -222,6 +250,10 @@ Nenhuma que bloqueie. Pendente: a faixa MUS-MEMORY.
   - `f64_hub_volta.json` — Continuar depois da Memória: fala de volta, objetivo do Reator, Root; portal
     da Memória → fase religada, colorida, sem protocolo e sem nada apagado (10 marcos).
   - `f64_tour.json` — visita por teleporte (8 marcos), usada para ler a arte.
+  - `f64_rota_lateral.json` — começa na doca do salão (fase 1 vencida): console A só com passarela +
+    isca, pulo duplo até a parede magnética, garras, galeria sobre a porta fechada, desce do outro
+    lado, passarela, console B com a isca, passa pela porta do arquivo; a porta do salão nunca abre
+    (19 marcos, inclusive câmera travada no salão e olho fora da HUD).
 - **Playtest humano:** a estática pressiona sem frustrar? A isca é descoberta em 2–3 tentativas? O log
   final emociona lido andando?
 
@@ -336,3 +368,32 @@ Nenhuma que bloqueie. Pendente: a faixa MUS-MEMORY.
   dela. Sem mudar código: `earth_signal.gd` e o `protocol_luto.gd` ficaram como estavam.
 - **QA**: `f64_memory` 32/32 (marco novo `painel_junto_da_fala` confere o texto da fala com o painel
   visível); `f64_hub_volta` 10/10.
+### 2026-11-21 — Salão do firewall não linear e roubo visível (agente de correção B2)
+- **Por quê** (revisão de design): a fase 2 tinha a forma reprovada "console A → atravessa → console
+  B → porta"; o feixe roubava as luzes em (58,6)/(80,6), dentro da faixa da HUD; a passarela ficava a
+  12 tiles do console A, na borda da tela; o olho cobria "OBJETIVO"/"INTEGRIDADE" nas três fases; o
+  `f64_tour` teleportava para dentro da rocha (96,20) e reprovava 2 marcos.
+- **Rota lateral:** galeria sobre a porta do salão — parede magnética x 56 y 6–8 (só com pulo duplo +
+  garras), lintel x 57–59 r7, descida x 60–61, pilar x 62 y 3–9. Muda o plano de energia: pela porta
+  são `hall_door` + `walkway` + isca; pela galeria basta `walkway` + isca. A isca continua obrigatória
+  nos dois consoles. Console A 51 → 54, porta 56 → 58 (sob o lintel), tripulante 58 → 50.
+- **Roubo visível:** luzes da festa descem para (52,9) e (84,9); o feixe mira o objeto do cabo **mais
+  perto do MU-7** (antes, o primeiro do grupo, que podia estar do outro lado do salão).
+- **Olho fora da HUD:** câmera do salão travada na vertical pela fase (bloco `firewall.frame`/`camera`
+  no JSON, aplicado por `set_camera_limits` só enquanto a próxima fase é o firewall e o MU-7 está na
+  moldura); `LutoEye` nunca sobe acima de 74 px do topo da tela e é desenhado atrás do cenário; na
+  fase 2 segue 6 tiles atrás do MU-7, com margem de 112 px na região (não some atrás da parede da
+  saída do poço). Olho da fase 3 47 → 48 (não fica atrás da parede do corredor).
+- **QA (capturas lidas):** `f64_rota_lateral` 19/19 (duas rodadas), `f64_memory` 36/36 (duas
+  rodadas; marcos novos: câmera travada no salão e solta no corredor, olho fora da HUD no poço, no
+  salão e no corredor), `f64_tour` 8/8 (teleporte do arquivo agora no poço de queda, 120,20),
+  `f64_morte` 13/13, `f64_hub_entrada` 8/8, `f64_hub_volta` 10/10, `review_campaign_05_memoria`
+  45/45 (regenerado pelo gerador), `review_campaign_continuar` 71/71. O estado `s05` capturado no
+  fim do trecho 05 só difere no `play_time` (0,4 s): não foi recapturado.
+- **Armadilha nova:** **olho/chefe flutuante desenhado na frente do cenário vira tampa da HUD ou da
+  rota**: no poço o espaço livre entre a HUD (40 px) e a cabeça do MU-7 (92 px) é menor que o sprite
+  de 64 px. Prenda o chefe à tela (`lowest_center` a partir do `canvas_transform`), não ao pé do MU-7,
+  e desenhe-o atrás do `Solid` (z entre o `Background` −10 e 0). Em sala de chefe horizontal, trave a
+  câmera na vertical com a altura exata da tela.
+- **Portões:** `tools/gates.sh` completo verde — 1177 testes, 114 cenas.
+

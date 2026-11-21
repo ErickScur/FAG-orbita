@@ -18,7 +18,13 @@ const OCCLUDER_REBUILD_TIME: float = 0.25
 const BODY_CENTER: Vector2 = Vector2(0, -12)
 const HEADER_SEPARATOR: String = " · "
 const EYE_ABOVE: float = 104.0
-const EYE_MARGIN: float = 48.0
+const EYE_MARGIN: float = 112.0
+const EYE_TRAIL: float = 96.0
+const EYE_CONTENT_HALF_HEIGHT: float = 28.0
+const HUD_BAND_BOTTOM: float = 40.0
+const FRAME_UNKNOWN: int = -1
+const FRAME_LEVEL: int = 0
+const FRAME_HALL: int = 1
 
 var _level: Node2D = null
 var _solid: TileMapLayer = null
@@ -51,6 +57,7 @@ var _overlay: MemoryOverlay = null
 var _signal: EarthSignal = null
 var _ambient_tween: Tween = null
 var _ready_done: bool = false
+var _frame_state: int = FRAME_UNKNOWN
 
 
 func _ready() -> void:
@@ -73,6 +80,7 @@ func _physics_process(delta: float) -> void:
 			_step_firewall(player, delta)
 		MemoryProtocol.Phase.RECALL:
 			_step_recall(player, delta)
+	_frame_camera(player)
 	_drift_eye(player, delta)
 	_tick_occluders(delta)
 
@@ -120,6 +128,23 @@ func final_log_collected() -> bool:
 
 func signal_visible() -> bool:
 	return _signal != null and _signal.visible
+
+
+func is_hall_framed() -> bool:
+	return _frame_state == FRAME_HALL
+
+
+func eye_screen_top() -> float:
+	if _eye == null:
+		return -1.0
+	var view: Transform2D = get_viewport().get_canvas_transform()
+	return (view * _eye.global_position).y - EYE_CONTENT_HALF_HEIGHT
+
+
+func eye_clear_of_hud() -> bool:
+	if _eye == null or not _eye.visible:
+		return true
+	return eye_screen_top() >= HUD_BAND_BOTTOM
 
 
 func _setup() -> void:
@@ -573,8 +598,26 @@ func _start_warning(target: StringName) -> void:
 	_blinking = _bound_nodes(target)
 	_blink_clock = 0.0
 	AudioManager.play_sfx(WARNING_SFX)
-	if not _blinking.is_empty() and _blinking[0] is Node2D:
-		_eye.aim((_blinking[0] as Node2D).global_position)
+	var target_node: Node2D = _nearest_to_player(_blinking)
+	if target_node != null:
+		_eye.aim(target_node.global_position)
+
+
+func _nearest_to_player(nodes: Array[Node]) -> Node2D:
+	var player: CharacterBody2D = _player()
+	var best: Node2D = null
+	var best_distance: float = INF
+	for node: Node in nodes:
+		var item := node as Node2D
+		if item == null:
+			continue
+		var distance: float = 0.0
+		if player != null:
+			distance = item.global_position.distance_squared_to(player.global_position)
+		if best == null or distance < best_distance:
+			best = item
+			best_distance = distance
+	return best
 
 
 func _update_blink(delta: float) -> void:
@@ -683,10 +726,38 @@ func _drift_eye(player: CharacterBody2D, delta: float) -> void:
 		MemoryProtocol.Phase.FIREWALL:
 			var area: Rect2 = (_fronts[MemoryProtocol.Phase.FIREWALL] as EraseFront).region_px()
 			var margin: float = EYE_MARGIN
-			target.x = clampf(player.global_position.x, area.position.x + margin, area.end.x - margin)
+			var behind: float = player.global_position.x - EYE_TRAIL
+			target.x = clampf(behind, area.position.x + margin, area.end.x - margin)
 		_:
 			return
 	_eye.drift_to(target, delta)
+
+
+func _frame_camera(player: CharacterBody2D) -> void:
+	var wanted: int = FRAME_HALL if _wants_hall_frame(player) else FRAME_LEVEL
+	if wanted == _frame_state:
+		return
+	_frame_state = wanted
+	if not player.has_method(&"set_camera_limits") or not _level.has_method(&"camera_rect"):
+		return
+	var rect: Rect2i = _level.call(&"camera_rect")
+	if wanted == FRAME_HALL:
+		var rows: Array = _phase_config(MemoryProtocol.Phase.FIREWALL).get("camera", []) as Array
+		var tile: float = float(Balance.TILE_SIZE)
+		var top: int = int(float(rows[0]) * tile)
+		var bottom: int = int(float(rows[1]) * tile)
+		rect = Rect2i(rect.position.x, top, rect.size.x, bottom - top)
+	player.call(&"set_camera_limits", rect)
+
+
+func _wants_hall_frame(player: CharacterBody2D) -> bool:
+	if _protocol.next_phase() != MemoryProtocol.Phase.FIREWALL:
+		return false
+	var block: Dictionary = _phase_config(MemoryProtocol.Phase.FIREWALL)
+	var rows: Variant = block.get("camera", [])
+	if not (rows is Array) or (rows as Array).size() < 2:
+		return false
+	return _inside(block.get("frame", []), _feet(player))
 
 
 func _eye_cell(stage: int) -> Vector2:
@@ -707,6 +778,7 @@ func _on_energy_changed(terminal_id: StringName, system_id: StringName, on: bool
 
 
 func _on_player_respawned() -> void:
+	_frame_state = FRAME_UNKNOWN
 	if _protocol == null or not _protocol.is_active():
 		return
 	var which: int = _protocol.phase

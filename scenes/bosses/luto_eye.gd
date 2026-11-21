@@ -16,6 +16,8 @@ const LIGHT_RADIUS: float = 72.0
 const LIGHT_ENERGY_IDLE: float = 0.6
 const LIGHT_ENERGY_POWERED: float = 1.3
 const SINGLE_FRAMES: Dictionary = {&"alert": 0, &"attack": 1, &"hurt": 2, &"closed": 3}
+const Z_BEHIND_WORLD: int = -5
+const SCREEN_MIN_CENTER_Y: float = 74.0
 
 var powered: bool = false
 
@@ -31,7 +33,7 @@ var _hold: StringName = &""
 
 func _ready() -> void:
 	add_to_group(GROUP)
-	z_index = 30
+	z_index = Z_BEHIND_WORLD
 	_build()
 	_anchor = position
 	_play(&"idle")
@@ -39,7 +41,8 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	_elapsed += delta
-	position = Vector2(_anchor.x, _anchor.y + roundf(sin(_elapsed * BOB_SPEED) * BOB_HEIGHT))
+	var bob: float = roundf(sin(_elapsed * BOB_SPEED) * BOB_HEIGHT)
+	position = Vector2(_anchor.x, maxf(_anchor.y, lowest_center()) + bob)
 	if _beam_on:
 		_beam.points = PackedVector2Array([Vector2.ZERO, to_local(_beam_target)])
 		_beam.default_color.a = 0.55 + 0.45 * absf(sin(_elapsed * 18.0))
@@ -93,6 +96,17 @@ func close_eye() -> void:
 	_play(&"closed")
 	if _light != null:
 		_light.energy = 0.0
+
+
+func lowest_center() -> float:
+	var viewport: Viewport = get_viewport()
+	if viewport == null:
+		return -INF
+	var view: Transform2D = viewport.get_canvas_transform()
+	var scale_y: float = view.get_scale().y
+	if is_zero_approx(scale_y):
+		return -INF
+	return -view.origin.y / scale_y + SCREEN_MIN_CENTER_Y
 
 
 func current_animation() -> StringName:

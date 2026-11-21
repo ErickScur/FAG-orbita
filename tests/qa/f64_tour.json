@@ -30,7 +30,7 @@
   {"frame": 510, "call": "MemoryCore/Player.set_indexed", "args": ["global_position:x", 1352]},
   {"frame": 510, "call": "MemoryCore/Player.set_indexed", "args": ["global_position:y", 207]},
   {"frame": 530, "screenshot": "09_console_b"},
-  {"frame": 540, "call": "MemoryCore/Player.set_indexed", "args": ["global_position:x", 1544]},
+  {"frame": 540, "call": "MemoryCore/Player.set_indexed", "args": ["global_position:x", 1928]},
   {"frame": 540, "call": "MemoryCore/Player.set_indexed", "args": ["global_position:y", 335]},
   {"frame": 600, "expect_call": "MemoryCore/Protocol.completed_phases", "equals": 2, "label": "fase_2_feita"},
   {"frame": 610, "screenshot": "10_corredor"},

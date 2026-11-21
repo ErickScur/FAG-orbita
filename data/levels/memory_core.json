@@ -101,7 +101,17 @@
       "dock": "mem_dock_02",
       "eye": [
         60,
-        7
+        6
+      ],
+      "frame": [
+        40,
+        3,
+        82,
+        18
+      ],
+      "camera": [
+        2,
+        15.5
       ]
     },
     "recall": {
@@ -124,13 +134,13 @@
       "line_end": 55,
       "log": "log_mem_final",
       "eye": [
-        47,
+        48,
         28
       ]
     }
   },
   "entities": {
-    "58,6": {
+    "52,9": {
       "id": "mem_party_lamp_w",
       "terminal_id": "memory_core",
       "system_id": "party_lights",
@@ -138,16 +148,16 @@
       "radius": 80.0,
       "energy": 1.2
     },
-    "80,6": {
+    "69,9": {
+      "id": "data_mem_01"
+    },
+    "84,9": {
       "id": "mem_party_lamp_e",
       "terminal_id": "memory_core",
       "system_id": "party_lights",
       "color": "#ffd36a",
       "radius": 80.0,
       "energy": 1.2
-    },
-    "69,9": {
-      "id": "data_mem_01"
     },
     "110,9": {
       "id": "mem_lamp_archive",
@@ -158,20 +168,20 @@
     "47,12": {
       "id": "mem_dock_02"
     },
-    "51,12": {
-      "id": "mem_console_a",
-      "terminal": "memory_core"
-    },
-    "56,12": {
-      "terminal_id": "memory_core",
-      "system_id": "hall_door",
-      "id": "mem_door_hall"
-    },
-    "58,12": {
+    "50,12": {
       "id": "mem_crew_06",
       "sheet": "res://assets/sprites/props/memory_crew_sheet.png",
       "frame": 5,
       "group": "mem_crew"
+    },
+    "54,12": {
+      "id": "mem_console_a",
+      "terminal": "memory_core"
+    },
+    "58,12": {
+      "terminal_id": "memory_core",
+      "system_id": "hall_door",
+      "id": "mem_door_hall"
     },
     "60,12": {
       "id": "mem_crew_07",

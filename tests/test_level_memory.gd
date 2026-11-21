@@ -22,8 +22,15 @@ const MAP_WIDTH: int = 126
 const MAP_HEIGHT: int = 60
 const EXPECTED_COUNTS: Dictionary = {
 	"E": 1, "P": 1, "T": 2, "|": 2, "D": 3, "L": 1, "l": 0, "r": 1, "c": 2, "k": 2, "m": 1,
-	"M": 14, "@": 11, "C": 0, "S": 0, "X": 0, "Y": 0,
+	"M": 17, "@": 11, "C": 0, "S": 0, "X": 0, "Y": 0,
 }
+const DOCKS_ABILITIES: Array[String] = ["magnetic_claws", "heat_sink", "heated_core", "thruster"]
+const LOCKED_FOR_TEST: String = "test_hall_door_locked"
+const SEEN_FROM_CONSOLE_TILES: int = 9
+const HUD_BAND_LAST_ROW: int = 7
+const HUD_BAND_HEIGHT: float = 40.0
+const EYE_CONTENT_HALF_HEIGHT: float = 28.0
+const VIEWPORT_HEIGHT_SETTING: String = "display/window/size/viewport_height"
 const MILESTONES: Array[String] = ["mem_enter", "mem_luto", "mem_restored"]
 const FINAL_LOG: String = "log_mem_final"
 const PARTY_LOG: String = "log_mem_01"
@@ -104,6 +111,79 @@ func test_the_pit_needs_the_walkway() -> void:
 	)
 
 
+func test_the_gallery_skips_the_hall_door() -> void:
+	var beyond: Vector2i = _find("mem_door_hall") + Vector2i(2, 0)
+	var locked: Dictionary = _analyze_with_locked_door(DOCKS_ABILITIES)
+	assert_true(
+		LevelReachability.can_stand_at(locked, beyond),
+		"com a porta do salão fechada, a galeria leva ao outro lado"
+	)
+	assert_true(
+		LevelReachability.can_interact_with(locked, _find("mem_console_b")),
+		"pela galeria, a passarela ainda leva ao console B"
+	)
+	var no_claws: Array[String] = DOCKS_ABILITIES.duplicate()
+	no_claws.erase("magnetic_claws")
+	assert_false(
+		LevelReachability.can_stand_at(_analyze_with_locked_door(no_claws), beyond),
+		"sem as garras a galeria não existe"
+	)
+	var no_thruster: Array[String] = DOCKS_ABILITIES.duplicate()
+	no_thruster.erase("thruster")
+	assert_false(
+		LevelReachability.can_stand_at(_analyze_with_locked_door(no_thruster), beyond),
+		"sem o pulo duplo não se alcança a parede magnética"
+	)
+
+
+func test_the_gallery_is_one_way() -> void:
+	var meta: Dictionary = _meta.duplicate(true)
+	var hall: Vector2i = _find("mem_door_hall")
+	var lines: PackedStringArray = _text.split("\n")
+	for index: int in range(lines.size()):
+		lines[index] = lines[index].replace("P", " ")
+	var start: Vector2i = hall + Vector2i(3, 0)
+	lines[start.y] = lines[start.y].substr(0, start.x) + "P" + lines[start.y].substr(start.x + 1)
+	var door: Dictionary = (meta["entities"] as Dictionary)[LevelParser.cell_key(hall)]
+	door["requires_ability"] = LOCKED_FOR_TEST
+	var result: Dictionary = LevelReachability.analyze_with_abilities(
+		"\n".join(lines), meta, DOCKS_ABILITIES
+	)
+	assert_false(
+		LevelReachability.can_interact_with(result, _find("mem_console_a")),
+		"de volta pela galeria não se sobe: com a porta fechada o console A fica para trás"
+	)
+
+
+func test_what_the_firewall_steals_is_seen_from_the_console() -> void:
+	var console_a: Vector2i = _find("mem_console_a")
+	var console_b: Vector2i = _find("mem_console_b")
+	var walkway: Vector2i = _find(WALKWAY_ID)
+	var path: Array = (_entity_params(WALKWAY_ID).get("path", []) as Array)
+	var travel: int = int((path[path.size() - 1] as Array)[0]) if not path.is_empty() else 0
+	assert_true(walkway.x - console_a.x <= SEEN_FROM_CONSOLE_TILES, "A vê a passarela parada")
+	var far_end: int = walkway.x + travel
+	assert_true(console_b.x - far_end <= SEEN_FROM_CONSOLE_TILES, "B vê a passarela do outro lado")
+	assert_true(_find("mem_door_hall").x - console_a.x <= SEEN_FROM_CONSOLE_TILES, "A vê a porta")
+	var archive_gap: int = _find("mem_door_archive").x - console_b.x
+	assert_true(archive_gap <= SEEN_FROM_CONSOLE_TILES, "B vê a porta do arquivo")
+	var lamps: Array[Vector2i] = []
+	for key: Variant in _meta.get("entities", {}):
+		var params: Dictionary = (_meta["entities"] as Dictionary)[key]
+		if String(params.get("system_id", "")) != "party_lights":
+			continue
+		var parts: PackedStringArray = String(key).split(",")
+		lamps.append(Vector2i(int(parts[0]), int(parts[1])))
+	assert_eq(lamps.size(), 2, "duas luzes da festa")
+	for console: Vector2i in [console_a, console_b]:
+		var seen: bool = false
+		for lamp: Vector2i in lamps:
+			seen = seen or absi(lamp.x - console.x) <= SEEN_FROM_CONSOLE_TILES
+		assert_true(seen, "uma luz da festa à vista do console em %s" % console)
+	for lamp: Vector2i in lamps:
+		assert_true(lamp.y > HUD_BAND_LAST_ROW, "a luz %s fica abaixo da faixa da HUD" % lamp)
+
+
 func test_terminal_is_mute_and_starts_unsolved() -> void:
 	assert_not_null(_grid, "terminal carregou")
 	if _grid == null:
@@ -150,6 +230,21 @@ func test_feeding_the_firewall_a_decoy_solves_both_consoles() -> void:
 	assert_false(naive_b.has(&"archive_door"), "B ingênuo: a porta do arquivo cai")
 
 
+func test_the_gallery_route_still_needs_the_decoy() -> void:
+	if _grid == null:
+		return
+	_grid.reset_to_initial()
+	var naive: Array[StringName] = _session([], [&"walkway"])
+	assert_false(naive.has(&"walkway"), "pela galeria, a passarela sozinha é roubada")
+	_grid.reset_to_initial()
+	var at_a: Array[StringName] = _session([&"party_lights"], [&"walkway", &"party_lights"])
+	assert_true(at_a.has(&"walkway"), "pela galeria basta a isca: a passarela fica")
+	assert_false(at_a.has(&"hall_door"), "a porta do salão nem foi ligada")
+	var at_b: Array[StringName] = _session([&"walkway"], [&"archive_door", &"party_lights"])
+	assert_true(at_b.has(&"archive_door"), "B: a porta do arquivo fica aberta")
+	assert_true(_grid.goal_met(), "meta cumprida sem a porta do salão")
+
+
 func test_consoles_sit_on_each_side_of_the_pit() -> void:
 	var pit: Rect2i = _void_rect()
 	var console_a: Vector2i = _find("mem_console_a")
@@ -178,6 +273,21 @@ func test_protocol_block_fits_the_map() -> void:
 		var dock: String = String(block.get("dock", ""))
 		if not dock.is_empty():
 			assert_ne(_find(dock), Vector2i(-1, -1), "%s: doca %s existe" % [key, dock])
+	var firewall: Dictionary = protocol.get("firewall", {})
+	assert_true(bounds.encloses(_rect(firewall.get("frame", []))), "moldura do salão no mapa")
+	var camera: Array = firewall.get("camera", [])
+	assert_eq(camera.size(), 2, "faixa vertical da câmera no salão")
+	if camera.size() == 2:
+		var tile: float = float(Balance.TILE_SIZE)
+		var screen: float = float(ProjectSettings.get_setting(VIEWPORT_HEIGHT_SETTING))
+		var top: float = float(camera[0]) * tile
+		var band: float = float(camera[1]) * tile - top
+		assert_almost_eq(band, screen, 0.01, "a faixa tem a altura da tela")
+		var eye: Array = firewall.get("eye", [])
+		var eye_top: float = float(eye[1]) * tile + tile * 0.5 - EYE_CONTENT_HALF_HEIGHT - top
+		assert_true(eye_top >= HUD_BAND_HEIGHT, "o olho do salão fica abaixo da HUD")
+		var floor_row: int = _find("mem_console_a").y + 1
+		assert_true(float(floor_row + 1) * tile <= top + screen, "o piso do salão aparece na tela")
 	var recall: Dictionary = protocol.get("recall", {})
 	var line_start: int = int(recall.get("line_start", 0))
 	var line_end: int = int(recall.get("line_end", 0))
@@ -252,6 +362,21 @@ func _session(turn_off: Array[StringName], turn_on: Array[StringName]) -> Array[
 		else:
 			_grid.power_on(system_id)
 	return _grid.get_state()
+
+
+func _analyze_with_locked_door(abilities: Array[String]) -> Dictionary:
+	var meta: Dictionary = _meta.duplicate(true)
+	var key: String = LevelParser.cell_key(_find("mem_door_hall"))
+	(meta["entities"] as Dictionary)[key]["requires_ability"] = LOCKED_FOR_TEST
+	return LevelReachability.analyze_with_abilities(_text, meta, abilities)
+
+
+func _entity_params(entity_id: String) -> Dictionary:
+	for key: Variant in _meta.get("entities", {}):
+		var params: Dictionary = (_meta["entities"] as Dictionary)[key]
+		if String(params.get("id", "")) == entity_id:
+			return params
+	return {}
 
 
 func _void_rect() -> Rect2i:

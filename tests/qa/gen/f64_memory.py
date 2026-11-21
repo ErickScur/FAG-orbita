@@ -61,6 +61,7 @@ jump()
 if STAGE == 1:
     done()
 walk("left", 95, 4)
+r.add(expect_call=PROTOCOL + ".eye_clear_of_hud", equals=True, label="olho_fora_da_hud_no_poco")
 r.shot("02_subindo_com_a_estatica")
 r.press("move_left"); r.press("move_up")
 r.wait(8); r.release("move_left")
@@ -88,8 +89,9 @@ r.add(expect_call=PROTOCOL + ".completed_phases", equals=1, label="fase_1_vencid
 phase_is(2, "fase_2_ativa")
 if STAGE == 4:
     done()
-walk("right", 84)
-r.expect(51, 12, "console_a")
+r.add(expect_call=PROTOCOL + ".is_hall_framed", equals=True, label="camera_no_salao")
+walk("right", 110)
+r.expect(54, 12, "console_a")
 r.interact(30)
 r.shot("06_console_a")
 sel = [0]
@@ -100,24 +102,27 @@ def toggle(row):
         r.tap("move_down", 3, 8); sel[0] += 1
     while sel[0] > row:
         r.tap("move_up", 3, 8); sel[0] -= 1
+    pressed = r.f
     r.interact(14)
+    return pressed
 
 
-toggle(2); toggle(4); toggle(0); toggle(1); toggle(2)
+toggle(2); toggle(4); toggle(0); WALK_ON = toggle(1); toggle(2)
 r.shot("07_console_a_isca_por_ultimo")
 r.tap("ui_cancel", 3, 40)
 r.add(expect_call=PROTOCOL + ".pending_swap", equals="party_lights", label="firewall_mira_as_luzes")
+r.add(expect_call=PROTOCOL + ".eye_clear_of_hud", equals=True, label="olho_fora_da_hud_no_salao")
 r.shot("08_firewall_mira_as_luzes")
 r.wait(80)
 r.add(expect_call="MemoryCore/Entities/MovingPlatform.get", args=["powered"], equals=True,
       label="passarela_continua_ligada")
 r.shot("09_luzes_roubadas")
-walk("right", 91, 4)
+walk("right", 65, 4)
 r.expect(61, 12, "beira_do_vao"); r.shot("10_beira_do_vao")
-r.at(2672); r.hold("move_right", 14)
+r.at(WALK_ON + 666); r.hold("move_right", 14)
 r.wait(20); r.shot("11_na_passarela")
-r.at(2900); r.shot("12_atravessando_o_vao")
-r.at(3024); r.hold("move_right", 46); r.wait(10)
+r.at(WALK_ON + 894); r.shot("12_atravessando_o_vao")
+r.at(WALK_ON + 1018); r.hold("move_right", 46); r.wait(10)
 r.expect(81, 12, "console_b")
 r.interact(30)
 sel[0] = 0
@@ -139,11 +144,13 @@ if STAGE == 6:
 A = r.f
 r.press("move_left")
 r.at(A + 40); r.shot("16_primeira_linha")
+r.add(expect_call=PROTOCOL + ".is_hall_framed", equals=False, label="camera_solta_no_corredor")
 r.at(A + 300); r.shot("17_lampejo")
 r.at(A + 640); r.add(expect_call=PROTOCOL + ".recall_opened", equals=4, label="quatro_linhas_andando")
 r.at(A + 700); r.shot("18_selei_o_lado_errado")
 r.at(A + 1500); r.shot("19_helena_no_interfone")
 r.at(A + 2100); r.shot("20_leito_doze")
+r.at(A + 2540); r.add(expect_call=PROTOCOL + ".eye_clear_of_hud", equals=True, label="olho_fora_da_hud_no_corredor")
 r.at(A + 2560); r.release("move_left")
 r.wait(30)
 r.add(expect_call=PROTOCOL + ".completed_phases", equals=3, label="log_final_inteiro")

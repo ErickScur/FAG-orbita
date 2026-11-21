@@ -168,3 +168,4 @@ Saída no scratchpad da sessão, nunca no repo.
   15, Feixe 25): o 3º Feixe do Reator falhou sem Carga até o roteiro recarregar na doca.
 - **(F65)** Troca de cena depois de cutscene longa: conte cutscene + silêncio + tela de
   carregamento (≥ 1,6 s) antes do `expect_scene`; o roteiro do Reator pegou a tela de loading duas vezes.
+- Para o roteiro escalar parede magnética: pare a ≤10 px da parede sem ficar embaixo dela (o pulo bate na quina), pulo duplo segurando só cima, e o lado só no salto do topo (F64).
