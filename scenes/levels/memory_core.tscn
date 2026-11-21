@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://c0rbitamemory"]
+
+[ext_resource type="PackedScene" uid="uid://c0rbitalevelbase" path="res://scenes/levels/level_base.tscn" id="1_base"]
+[ext_resource type="Script" path="res://scenes/levels/sector_narrative.gd" id="2_narrative"]
+[ext_resource type="PackedScene" uid="uid://c0rbitaluto" path="res://scenes/bosses/protocol_luto.tscn" id="3_protocol"]
+
+[node name="MemoryCore" instance=ExtResource("1_base")]
+level_id = "memory_core"
+
+[node name="Narrative" type="Node" parent="."]
+script = ExtResource("2_narrative")
+sector_id = &"memory"
+restored_dialogue = &"mem_restored"
+next_scene = "res://scenes/levels/core_hub.tscn"
+demo_end_until = "res://scenes/levels/reactor_core.tscn"
+
+[node name="Protocol" parent="." instance=ExtResource("3_protocol")]

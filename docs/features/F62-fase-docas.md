@@ -89,9 +89,9 @@ bloqueia. Custo no Terminal do Chassi (`HudModel.ABILITY_COSTS`), cartão `tut_t
 (`scenes/world/coupler.tscn`) e o berço vazio (`scenes/world/escape_cradle.tscn`).
 
 **E. Ligação** — religar a Enfermaria volta ao Núcleo (`next_scene`); religar as Docas → cutscene →
-fala → tela de fim (provisório até a F66). Entrada `revisit` `after_sector: docks` no Núcleo
-(objetivo `obj_core_memory`, fala `core_return_docks`, Núcleo mais claro) para quando a F64 trocar o
-fim das Docas pela volta ao Núcleo.
+fala → **volta ao Núcleo** (`next_scene`, desde a F64; antes era a tela de fim). Entrada `revisit`
+`after_sector: docks` no Núcleo (objetivo `obj_core_memory`, fala `core_return_docks`, Núcleo mais
+claro), que abre a comporta da Memória.
 
 ### Não inclui
 - O Serralheiro (F63): a antessala fica pronta, sem chefe.
@@ -404,3 +404,8 @@ Nenhuma que bloqueie. Pendente: a faixa `docks` (ficha MUS-DOCKS).
   primeira vez (`SELADA - ACESSO ROOT`) e pede a volta depois do Núcleo de Memória.
 - **QA com marcos**: `f62_docks` 41/41, `f62_tour` 4/4, `f62_hub_docks` 9/9 (capturas lidas: a
   passagem com a doca nova e a SR-3 do outro lado do bloco).
+
+### 2026-11-21 — As Docas voltam ao Núcleo (integração da F64)
+- Religar as Docas → cutscene → fala → **volta ao Núcleo** (`next_scene` no `docks.tscn`), com a
+  revisita `after_sector: docks` abrindo a comporta da Memória. O `f62_docks` (gerador da F63, com a
+  luta do Serralheiro) termina em `core_hub.tscn`: 41/41 marcos.

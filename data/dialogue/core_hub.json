@@ -200,6 +200,20 @@
           "text": "Uma comporta que eu não reconheço respondeu. Núcleo de Memória."
         }
       ]
+    },
+    "core_return_memory": {
+      "mode": "blocking",
+      "once": true,
+      "lines": [
+        {
+          "speaker": "orbita",
+          "text": "O acesso root abre a comporta do reator. Ele está no limite."
+        },
+        {
+          "speaker": "orbita",
+          "text": "Sobra energia para uma última ação. Desta vez quem decide sou eu, e eu lembro de tudo."
+        }
+      ]
     }
   }
 }

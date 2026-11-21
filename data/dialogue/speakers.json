@@ -7,6 +7,7 @@
       "degraded": true,
       "portrait": "res://assets/sprites/portraits/helena_sheet.png"
     },
-    "system": { "name": "ARTEMIS", "color": "#c8c8c8", "degraded": false }
+    "system": { "name": "ARTEMIS", "color": "#c8c8c8", "degraded": false },
+    "luto": { "name": "PROTOCOLO LUTO", "color": "#ff5fa8", "degraded": true }
   }
 }

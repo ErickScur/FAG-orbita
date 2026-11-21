@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0rbitaluto"]
+
+[ext_resource type="Script" path="res://scenes/bosses/protocol_luto.gd" id="1_protocol"]
+
+[node name="ProtocolLuto" type="Node2D"]
+script = ExtResource("1_protocol")

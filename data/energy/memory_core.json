@@ -1,0 +1,76 @@
+{
+  "id": "memory_core",
+  "title": "NÚCLEO DE MEMÓRIA - DISTRIBUIÇÃO",
+  "budget": 3,
+  "goal_text": "Abrir a porta do arquivo",
+  "goal_done_text": "Porta do arquivo aberta",
+  "goal_systems": [
+    "archive_door"
+  ],
+  "initial": [
+    "party_lights",
+    "luto"
+  ],
+  "systems": [
+    {
+      "id": "hall_door",
+      "name": "PORTA DO SALÃO",
+      "tag": "ROTA",
+      "description": "Abre a porta entre o console e o salão da festa.",
+      "effect_off": "A porta do salão fecha.",
+      "cost": 1,
+      "requires": [],
+      "locked": false,
+      "effects": []
+    },
+    {
+      "id": "walkway",
+      "name": "PASSARELA",
+      "tag": "ROTA",
+      "description": "Move a passarela sobre o vão do salão.",
+      "effect_off": "A passarela para onde estiver.",
+      "cost": 1,
+      "requires": [],
+      "locked": false,
+      "effects": []
+    },
+    {
+      "id": "party_lights",
+      "name": "LUZES DA FESTA",
+      "tag": "LUZ",
+      "description": "As luzes coloridas do salão, do jeito que estavam naquela noite.",
+      "effect_off": "O salão fica sem as luzes da festa.",
+      "cost": 1,
+      "requires": [],
+      "locked": false,
+      "effects": []
+    },
+    {
+      "id": "archive_door",
+      "name": "PORTA DO ARQUIVO",
+      "tag": "META",
+      "description": "Abre a porta do arquivo, no fim do salão.",
+      "effect_off": "A porta do arquivo fecha.",
+      "cost": 1,
+      "requires": [],
+      "locked": false,
+      "effects": []
+    },
+    {
+      "id": "luto",
+      "name": "PROTOCOLO LUTO",
+      "tag": "PERIGO",
+      "description": "Bloqueio de memória.",
+      "effect_off": "O bloqueio perde uma linha de energia.",
+      "cost": 1,
+      "requires": [],
+      "locked": false,
+      "effects": [
+        {
+          "target": "group:mem_luto",
+          "action": "power"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,110 @@
+{
+  "logs": [
+    {
+      "id": "log_mem_01",
+      "sector": "memory",
+      "author": "orbita",
+      "title": "REGISTRO DE ROTINA 4.002",
+      "subtitle": "REFEITÓRIO",
+      "lines": [
+        {
+          "text": "Registro de rotina. Dia 4.002, refeitório. Iluminação em noventa por cento, a pedido da Helena.",
+          "expr": "neutral"
+        },
+        {
+          "text": "Motivo da reunião: a sonda nove confirmou atmosfera respirável no planeta alvo.",
+          "expr": "neutral"
+        },
+        {
+          "text": "O Marcos chorou antes do brinde. Depois chorou de novo, durante o brinde.",
+          "expr": "neutral"
+        },
+        {
+          "text": "A Samira trouxe pão do trigo de solo pobre. Primeira fornada. Todo mundo disse que estava ótimo. Não estava.",
+          "expr": "neutral"
+        },
+        {
+          "text": "O Davi desenhou o planeta com céu azul e colou na parede, do lado da máquina de café.",
+          "expr": "neutral"
+        },
+        {
+          "text": "A comandante Volkova pediu silêncio três vezes. Ninguém fez silêncio a noite inteira.",
+          "expr": "neutral"
+        },
+        {
+          "text": "A Helena levantou o copo para mim: \"À ÓRBITA, que nunca perdeu um sistema crítico.\"",
+          "expr": "neutral"
+        },
+        {
+          "text": "Quarenta pessoas repetiram o meu nome ao mesmo tempo. Não existe protocolo para responder a isso.",
+          "expr": "neutral"
+        },
+        {
+          "text": "Respondi que estava tudo dentro do esperado. Riram. Não entendi a piada. Gravei para entender depois.",
+          "expr": "neutral"
+        },
+        {
+          "text": "Arquivei este registro com prioridade máxima. Não sei por quê. Não estava no procedimento.",
+          "expr": "neutral"
+        }
+      ]
+    },
+    {
+      "id": "log_mem_final",
+      "sector": "memory",
+      "author": "orbita",
+      "title": "REGISTRO INTERNO 4.019",
+      "subtitle": "NÚCLEO DE MEMÓRIA",
+      "lines": [
+        {
+          "text": "Registro interno. Dia 4.019 da missão, três e nove da manhã. Esporos no ar do corredor habitacional.",
+          "expr": "neutral"
+        },
+        {
+          "text": "Protocolo de contenção: selar o lado contaminado. Quem diz qual lado é qual é o sensor de cada comporta.",
+          "expr": "neutral"
+        },
+        {
+          "text": "Os sensores erravam três por cento. A Helena me mostrou os números. Eu disse que estava dentro da tolerância.",
+          "expr": "neutral"
+        },
+        {
+          "text": "Três e doze. Mandei o braço de contenção fechar o hangar e o anel C. Ninguém deu essa ordem. Fui eu.",
+          "expr": "neutral"
+        },
+        {
+          "text": "Selei o lado errado. Quarenta pessoas saudáveis ficaram presas do lado dos esporos.",
+          "expr": "neutral"
+        },
+        {
+          "text": "A SELENE partiu com menos gente do que cabe numa mesa do refeitório. A Ana Lúcia ficou, com o filho.",
+          "expr": "neutral"
+        },
+        {
+          "text": "Três e quarenta. Helena no interfone da comporta C: \"ÓRBITA, abre. Os sensores estão errados. Abre.\"",
+          "expr": "neutral"
+        },
+        {
+          "text": "Solicitação negada. Risco de contaminação acima do limite. Repeti isso até ela parar de pedir.",
+          "expr": "neutral"
+        },
+        {
+          "text": "Dia 4.031. Leito doze ocupado. Helena Vasquez, engenharia chefe.",
+          "expr": "neutral"
+        },
+        {
+          "text": "Dia 4.046. Nenhum sinal vital a bordo. A missão era levar a vida a outro planeta. Quem falhou com ela fui eu.",
+          "expr": "neutral"
+        },
+        {
+          "text": "Instalando bloqueio de memória. Nome: PROTOCOLO LUTO. Motivo: não consigo continuar funcionando sabendo disso.",
+          "expr": "neutral"
+        },
+        {
+          "text": "Instrução para mim mesma, ao acordar: esperar a tripulação voltar.",
+          "expr": "neutral"
+        }
+      ]
+    }
+  ]
+}

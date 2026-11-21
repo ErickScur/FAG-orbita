@@ -137,3 +137,9 @@ O modelo é generoso com energia (toda porta aberta, toda planta crescida, garra
   dividia o fosso do vestíbulo com uma SR-3 e cada tentativa contra o Serralheiro começava com dano.
   Doca fica em piso que nenhuma `S` alcança andando (`test_no_dock_shares_a_floor_with_a_patrol`,
   em `tests/test_level_lock.gd`, por enquanto só nas Docas).
+- **(F64)** **Perigo que persegue por baixo precisa caber nos ~92 px que a câmera mostra abaixo do
+  pé** (offset −16): a estática da fuga vertical nascia 176 px abaixo e o jogador fugia de algo que
+  nunca via. `MEMORY_ASCENT_LEAD` foi para 88; confira na captura que a frente aparece na tela.
+- **(F64)** **Texto liberado por distância só lê se o espaçamento casar com o andar**: (velocidade de
+  andar − empuxo) × tempo de digitação da linha ≥ distância entre gatilhos; senão o log termina com o
+  MU-7 já parado no fim do corredor (foi preciso corredor 53 → 76 tiles e empuxo 55 → 75 px/s).

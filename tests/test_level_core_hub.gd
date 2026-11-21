@@ -69,7 +69,7 @@ func test_map_is_tall_enough_for_the_viewport() -> void:
 
 func test_single_spawn_and_one_exit_per_sector() -> void:
 	assert_eq(_count_symbol("P"), 1, "exatamente um spawn")
-	assert_eq(_count_symbol("E"), 4, "uma saída por setor pronto: Estufa, Lab, Enfermaria, Docas")
+	assert_eq(_count_symbol("E"), 5, "uma saída por setor pronto, da Estufa à Memória")
 	assert_eq(_count_symbol("T"), 1, "exatamente um terminal de distribuição")
 	assert_eq(_count_symbol("|"), 6, "a porta do Habitacional e as cinco comportas de setor")
 	assert_eq(_count_symbol("S"), 1, "exatamente uma SR-3")

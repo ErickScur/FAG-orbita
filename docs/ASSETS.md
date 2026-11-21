@@ -52,6 +52,10 @@
 | [TIL-LAB](#til-lab) | Tileset | Laboratório (Verão) | A | IA | **integrado (IA)** | F60 |
 | [TIL-INFIRMARY](#til-infirmary) | Tileset | Enfermaria (Inverno) | A | IA | **integrado (IA)** | F61 |
 | [TIL-DOCKS](#til-docks) | Tileset | Docas (Vácuo) | A | IA | **integrado (IA)** | F62 |
+| [TIL-MEMORY](#til-memory) | Tileset | Núcleo de Memória (a estação lembrada, cores vivas) | A | IA | **integrado (IA)** | F64 |
+| [SPR-CREW-MEMORY](#spr-crew-memory) | Sprite sheet | Tripulação lembrada, 8 poses do cotidiano | A | IA | **integrado (IA)** | F64 |
+| [FX-ERASURE](#fx-erasure) | Sprite sheet | Apagamento: estática e bloco se desfazendo | A | IA | **integrado (IA)** | F64 |
+| [SPR-LUTO](#spr-luto) | Sprite sheet | PROTOCOLO LUTO, o olho do firewall (8 quadros 64×64) | A | IA | **integrado (IA)** | F64 |
 | [BG-SPACE](#bg-space) | Camadas parallax | Espaço pelas janelas + menu | A | Grátis ou IA | **integrado** | F26, F07 |
 | [UI-LOGO](#ui-logo) | Imagem | Logo ÓRBITA (splash + menu) | A | IA | **integrado** | F03, F07 |
 | [UI-FONT](#ui-font) | Fonte | Fonte pixel de toda a UI | A | Grátis | integrado | F05, F07 |
@@ -64,6 +68,7 @@
 | [MUS-INFIRMARY](#mus-infirmary) | Música | Trilha da Enfermaria | A | IA ou Grátis | pendente | F61 |
 | [MUS-DOCKS](#mus-docks) | Música | Trilha das Docas | A | IA ou Grátis | pendente | F62 |
 | [MUS-SERRALHEIRO](#mus-serralheiro) | Música | Luta contra o Serralheiro (loop tenso) | A | IA ou Grátis | pendente | F63 |
+| [MUS-MEMORY](#mus-memory) | Música | Trilha do Núcleo de Memória (piano limpo) | A | IA ou Grátis | pendente | F64 |
 | [MUS-CHASSIS](#mus-chassis) | Música | Momento CHASSI PERDIDO (one-shot) | B | Grátis | pendente | F46 |
 | [MUS-GAMEOVER](#mus-gameover) | Música | Momento PERDA DE ÓRBITA (one-shot) | B | Grátis | pendente | F46 |
 | [MUS-SECTOR](#mus-sector) | Música | Momento do religamento do setor (one-shot) | B | Grátis | pendente | F46 |
@@ -921,6 +926,132 @@ Chunky readable shapes only: no thin 1-pixel details. The coupler must still rea
 IMPORTANT: draw ONLY the objects described. Never draw walls, floors, ground, rooms, characters or any other object. Solid flat magenta background (#FF00FF) everywhere else, with clear magenta gaps between frames. No text, no letters, no numbers, no labels, no grid lines, no frame borders, no watermark.
 ```
 
+<a id="til-memory"></a>
+### TIL-MEMORY — Tileset Núcleo de Memória
+
+| Campo | Valor |
+|---|---|
+| Caminho final | `assets/tiles/memory_tiles.png` + `assets/tiles/memory_tileset.tres` |
+| Contrato | **Mesmo atlas do TIL-DOCKS**: 128×64, 8×4 de 16×16. Linhas 0–1: as 16 máscaras 4-dir, opacas. Linha 2: (0,2) passarela one-way dourada só no topo (4 px + 1 px de sombra) · (1,2) parede de fundo ameixa · (2,2) janela de moldura dourada com miolo transparente · (3,2) grade de ventilação · (4,2) mural de recados · (5,2) planta na prateleira · (6,2) luminária redonda acesa (quadro 22) · (7,2) faixa festiva rosa e dourada. Linha 3: (0,3) **parede magnética** listrada amarela · (1,3) luminária apagada (quadro 25) · (2..7,3) desenhos colados, máquina de café, armários com adesivos, relógio, mural do planeta, varal de luzes. O `.tres` é cópia do `docks_tileset.tres` com a textura trocada |
+| Paleta | GDD-2.9 (explosão de cor saturada e quente): coral `#F2735A`, dourado `#FFC94A`, turquesa `#2EC4B6`, creme `#FFF1D6`, contorno ameixa `#3A1E3F`; o motor dessatura na luta |
+| Fonte | **IA — geração de imagem do Codex CLI**, 2026-11-21, 2 variações (as duas 8×4 exatas), escolhida a **1ª** (mural do planeta e passarela treliçada mais legíveis). Referências: `docks_tiles.png` e `core_tiles.png` |
+| Montagem | Script do agente (PIL, receita das Docas): grade achada pelas faixas magenta, chave por "magentice", redução por média com alfa pré-multiplicado e alfa binário; 16 máscaras = interior com faixas coladas (topo 5 px do "piso", baixo 4 px do "teto", lados 2 px); one-way montada da faixa de piso. Luma dos sólidos **0,560**; 0 px semitransparentes |
+| Status | **integrado (IA)** em 2026-11-21 |
+
+**Prompt (Codex, com os dois tilesets anexados):**
+```
+Pixel art TILE SET for a 2D side-view space station platformer: the station's MEMORY CORE, which shows the station AS THE AI REMEMBERS IT: brand new, clean, warm and full of life, the day before everything went wrong. Smooth enamel panels in saturated warm colors, polished trims, small colorful details. It must feel like a bright happy memory, the total opposite of the cold rusty station.
+
+STYLE MUST MATCH THE ATTACHED REFERENCE IMAGES (the existing station tilesets): same 16-bit pixel look, same panel seams and rivets vocabulary, hard pixels, no anti-aliasing, no soft gradients. But CLEAN: no rust, no grime, no scratches, no cracks.
+
+Palette (16 colors max, saturated and warm): coral panels (#F2735A body, #FF9C7A highlight, #C4503E shading), golden yellow trims (#FFC94A, #E09A2A), teal accents (#2EC4B6, #1A8A86), soft cream (#FFF1D6), deep plum outline (#3A1E3F), a little hot pink (#FF5FA8) and sky blue (#5AB8FF) only on small lights and stickers. Keep the base tiles MEDIUM-BRIGHT: do NOT bake shadows, glow or vignettes into tiles.
+
+Layout: a strict grid of SQUARE tiles, 8 columns and 4 rows, all the same size, separated by flat magenta (#FF00FF) gaps. Each tile filled EDGE TO EDGE with artwork inside its own square (except where a tile is told to have magenta).
+Row 1:
+ 1. wall block INTERIOR: smooth coral enamel panels, seamless on all four sides, no border, panel seams and a few round rivets.
+ 2. the same block seen as a FLOOR TOP: a thick golden deck trim along the TOP edge with a thin teal line, the coral panels below.
+ 3. the same block as a CEILING UNDERSIDE: a teal lip along the BOTTOM edge with small round bolts.
+ 4. the same block with a golden edge trim along the LEFT side only.
+ 5. the same block with a golden edge trim along the RIGHT side only.
+ 6. a single isolated block with golden trim on all four sides.
+ 7. a THIN ONE-WAY golden catwalk filling only the TOP QUARTER of the square, the rest flat magenta.
+ 8. a recessed BACKGROUND wall: warm plum and dusty rose panels (#7A3E6E and #5E2F57, clearly darker than the blocks), seamless, large plain panels with one tiny round light.
+Row 2:
+ 1. a square WINDOW FRAME: thick golden rounded frame, the center fully flat magenta (#FF00FF).
+ 2. a ventilation grille with horizontal teal slats.
+ 3. a colorful bulletin board with pinned paper notes and a little drawing (no readable text).
+ 4. a potted green plant on a shelf.
+ 5. a round wall lamp, ON, glowing warm cream glass.
+ 6. the same round wall lamp, OFF, glass dark plum.
+ 7. a festive striped panel with pink and gold diagonal stripes.
+ 8. a climbable MAGNETIC wall panel with bold diagonal YELLOW (#E8C15A) and dark plum stripes, golden frame.
+Row 3: station life details, each a full square tile: a wall with crayon drawings taped on it, a coffee machine panel, a row of colorful lockers with stickers, a wall clock panel without numbers, a photo collage of tiny colorful rectangles, a mural of a green planet with a blue sky, a teal door control panel with a green light, a wall with a hanging string of small colorful lights.
+Row 4: eight more variations of the row-1 interior coral block (different panel layout, a small round porthole, a sticker, a vent), each seamless.
+
+IMPORTANT RULE: deliver a GRID OF SEPARATE TILES, not a finished picture. Do not draw a room, a level or a composed scene; do not draw characters, people or props resting on the tiles.
+No text, no letters, no numbers, no labels, no grid lines, no watermark.
+```
+
+<a id="spr-crew-memory"></a>
+### SPR-CREW-MEMORY — Tripulação lembrada
+
+| Campo | Valor |
+|---|---|
+| Caminho final | `assets/sprites/props/memory_crew_sheet.png` (carregado pelo `o` com `"sheet"` + `"frame"` e pelo lampejo da F64) |
+| Contrato | Folha **128×64 = 4 col × 2 lin de 32×32**, fundo transparente, pessoa apoiada no pé do quadro e centrada. Quadros: 0 mulher andando com caneca · 1 homem sentado lendo tablet · 2 mulher acenando · 3 homem rindo · 4 mecânico com chave · 5 botânica com vaso · 6 piloto com capacete · 7 médica com prancheta |
+| Fonte | **IA — geração de imagem do Codex CLI**, 2026-11-21, 2 variações, escolhida a **1ª** (formas mais grossas a 32 px). Referência: `mu7_sheet.png` |
+| Montagem | Escala comum tirada da maior pessoa (31 px), alinhadas pelo pé; alfa binário |
+| Status | **integrado (IA)** em 2026-11-21 |
+
+**Prompt (Codex):**
+```
+Pixel art sprite sheet of EIGHT CREW MEMBERS of a space station, for a 2D side-view platformer. These people are a MEMORY: they are rendered in bright saturated colors, alive and busy in everyday moments. Side view, each person facing right, full body, standing on the bottom of the cell.
+
+STYLE MUST MATCH THE ATTACHED REFERENCE IMAGE (the small MU-7 maintenance robot): same 16-bit pixel look, chunky readable shapes, dark 1-pixel outline, hard pixels, no anti-aliasing. Each person is about as tall as the robot, simple round head, no detailed face (two dot eyes at most), BOLD THICK SHAPES that stay readable when reduced to 32x32 pixels.
+
+Each person wears a station jumpsuit in a DIFFERENT saturated color with a contrasting belt or patch: coral (#F2735A), teal (#2EC4B6), golden yellow (#FFC94A), hot pink (#FF5FA8), sky blue (#5AB8FF), lime green (#9BE15D), violet (#A97BFF), orange (#FF9A3C). Skin tones varied. Deep plum outline (#3A1E3F).
+
+Layout: a strict grid of 4 columns and 2 rows of SQUARE cells, all the same size, solid flat magenta (#FF00FF) background everywhere, one person centered in each cell with their feet on the bottom of the cell:
+Row 1: 1. a woman walking and holding a steaming mug, 2. a man sitting on a small stool reading a tablet (draw the small stool), 3. a woman waving hello with one raised arm, 4. a man laughing holding his belly.
+Row 2: 1. a mechanic holding a big wrench on the shoulder, 2. a botanist hugging a potted plant, 3. a pilot standing proudly with a helmet under the arm, 4. a doctor holding a clipboard.
+
+Only the people (and the small stool and held objects). NO wall, NO floor, NO background scenery, NO shadows on the ground.
+No text, no letters, no numbers, no labels, no grid lines, no watermark.
+```
+
+<a id="fx-erasure"></a>
+### FX-ERASURE — Apagamento (estática e bloco se desfazendo)
+
+| Campo | Valor |
+|---|---|
+| Caminho final | `assets/sprites/fx/memory_static.png` (128×32: 4 quadros 32×32 de estática que se repete lado a lado) e `assets/sprites/fx/memory_erase_sheet.png` (128×16: 4 quadros 32×16, o tile na metade esquerda e os pixels voando para a direita) |
+| Contrato | Estática opaca de borda a borda (o `StaticField` repete a textura na região engolida a 12 fps); o bloco coral se desfaz em 4 quadros em 0,4 s sobre cada tile apagado |
+| Fonte | **IA — geração de imagem do Codex CLI**, 2026-11-21, 2 variações, escolhida a **1ª** (bloco coral igual ao TIL-MEMORY). Referência: `core_tiles.png` |
+| Montagem | Linha 1 cortada pela grade e reduzida a 32×32; linha 2 cortada com a mesma caixa do quadro 1 (o bloco fica registrado entre os quadros) e reduzida a 32×16 |
+| Status | **integrado (IA)** em 2026-11-21 |
+
+**Prompt (Codex):**
+```
+Pixel art EFFECT sprite sheet for a 2D side-view platformer: DIGITAL ERASURE. A memory being deleted in real time: pixels breaking apart into glitch static.
+
+STYLE MUST MATCH THE ATTACHED REFERENCE IMAGE (the station tileset): same 16-bit pixel look, hard square pixels, no anti-aliasing, no soft glow, no blur.
+
+Palette: white (#FFFFFF), pale grey (#C8C8D0), mid grey (#6E6E7A), near black (#14121A), with small accents of hot pink (#FF5FA8) and cyan (#5FE8FF). The static must read as GREY TV NOISE with a few pink and cyan glitch pixels.
+
+Layout: a strict grid of 4 columns and 2 rows of SQUARE cells, all the same size, separated by flat magenta (#FF00FF) gaps.
+Row 1: four frames of an animated TV STATIC square that fills its whole cell EDGE TO EDGE: dense random grey and white square pixels with a few horizontal glitch bands, each frame a different random pattern, seamless so it can tile.
+Row 2: four frames of a single square colorful wall block (coral #F2735A with a golden top trim #FFC94A) DISINTEGRATING: frame 1 the block whole with a few grey static pixels at its edge, frame 2 the block one-third broken into flying grey and white square pixels, frame 3 the block mostly broken into scattered pixels, frame 4 only a few scattered grey pixels left. In row 2 the empty parts of each cell are flat magenta.
+
+No text, no letters, no numbers, no labels, no grid lines, no watermark.
+```
+
+<a id="spr-luto"></a>
+### SPR-LUTO — PROTOCOLO LUTO (o olho do firewall)
+
+| Campo | Valor |
+|---|---|
+| Caminho final | `assets/sprites/bosses/luto_sheet.png` |
+| Contrato | Folha **256×128 = 4 col × 2 lin de 64×64**, fundo transparente, olho centrado. Linha 0: `idle` (4 quadros, anéis girando). Linha 1: `alert` · `attack` (pupila rosa acesa, usado com o feixe) · `hurt` (anéis rachados, lampejo da fase 3) · `closed` (fechado, fim da luta) |
+| Fonte | **IA — geração de imagem do Codex CLI**, 2026-11-21, 2 variações, escolhida a **1ª** (o ataque branco e rosa lê melhor que o da 2ª). Referências: `cx2_sheet.png` e `mu7_sheet.png` |
+| Montagem | Escala comum tirada do quadro mais largo (60 px), centrado; alfa binário |
+| Status | **integrado (IA)** em 2026-11-21 |
+
+**Prompt (Codex):**
+```
+Pixel art sprite sheet of a BOSS for a 2D side-view platformer: "PROTOCOLO LUTO" (GRIEF PROTOCOL), a FIREWALL that a station AI installed inside its own mind to stop itself from remembering. It is NOT a monster and NOT a robot: it is a giant floating ABSTRACT EYE made of concentric rings of chunky code-like blocks, like a camera iris crossed with a lock, cold and sad. It hovers in the air.
+
+STYLE MUST MATCH THE ATTACHED REFERENCE IMAGES (the station robots): same 16-bit pixel look, chunky readable shapes, dark 1-pixel outline, hard pixels, no anti-aliasing, no soft gradients. BOLD THICK SHAPES that stay readable when reduced to 64x64 pixels.
+
+Palette: cold desaturated grey-blue rings (#8A93A6, #B9C0CF, #4A5163), near black outline (#14121A), a single bright pupil in white (#FFFFFF) with a hot pink (#FF5FA8) inner ring, and small square pixels of static around it.
+
+Layout: a strict grid of 4 columns and 2 rows of SQUARE cells, all the same size, solid flat magenta (#FF00FF) background everywhere, the eye centered in each cell and filling about 80% of it:
+Row 1: four frames of IDLE: the eye half-open and slowly pulsing, the rings rotating slightly between frames, a few static pixels orbiting.
+Row 2: 1. ALERT: the eye fully open, pupil small and staring. 2. ATTACK: the eye fully open, the inner ring and pupil glowing hot pink, rings sharp and bright. 3. HURT: the rings cracked and offset like a glitch, pieces drifting apart. 4. CLOSED: the eye shut into a thin horizontal line, the rings dim grey, at rest.
+
+Only the eye. NO wall, NO floor, NO background scenery.
+No text, no letters, no numbers, no labels, no grid lines, no watermark.
+```
+
 <a id="fx-thruster"></a>
 ### FX-THRUSTER — Jato do Propulsor
 
@@ -1221,6 +1352,22 @@ Instrumental seamless loop, 2 minutes 30 seconds, dark ambient for a 2D sci-fi g
 **Prompt (Stable Audio — preferido para loop; Suno com "instrumental" marcado):**
 ```
 Instrumental seamless loop, 2 minutes 30 seconds, dark ambient for a 2D sci-fi game level: the frozen, abandoned infirmary of a space station, where the crew fell ill one by one and the heating died. Cold, empty and still. A high, glassy, icy pad in a minor key with long silences between notes, very little bass, around 50 BPM with no clear beat. The slow mechanical breathing of a hospital ventilator that is still running in an empty room, air in, air out, every few seconds. A distant, rare monitor beep with no rhythm, faint creaks of ice on metal, long reverb of a tiled room. Mixed quiet. No drums, no percussion groove, no vocals, no choir, no melody that can be sung. Start and end at the same intensity, no fade-in, no fade-out, so it loops seamlessly.
+```
+
+<a id="mus-memory"></a>
+### MUS-MEMORY — Núcleo de Memória
+
+| Campo | Valor |
+|---|---|
+| Caminho final | `assets/audio/music/memory.ogg` (**loop** sem fade nas pontas, 2–3 min) |
+| Direção | A **única trilha com melodia limpa** do jogo ([GDD-2.9](design/GDD.md#gdd-2-9-musica)): piano solo, quente, em tom maior que escorrega para o menor, como uma lembrança boa que dói. Lento (~70 BPM), sem bateria, pouco reverb (é dentro da cabeça da ÓRBITA, não num salão). **Sem voz** |
+| Termos de busca | `solo piano melancholic loop` · `nostalgic piano ambient` · `memory piano loop` |
+| Placeholder | nenhum: até o arquivo chegar a fase toca em **silêncio** (o diretor do Protocolo para a trilha ao entrar) |
+| Status | **pendente** — o humano gera ou baixa e entrega; ligar em `memory_core.json` → `"music": "memory"` |
+
+**Prompt (Stable Audio — preferido para loop; Suno com "instrumental" marcado):**
+```
+Instrumental seamless loop, 2 minutes 30 seconds, solo piano for an emotional moment in a 2D sci-fi game: a station AI finally remembering the crew it lost, the warm and busy days before everything went wrong. A simple, clean, tender piano melody in a major key that slowly leans into minor, around 70 BPM, close and intimate, light room reverb, gentle sustain pedal. No drums, no strings, no synth pads, no vocals. Start and end at the same intensity, no fade-in, no fade-out, so it loops seamlessly.
 ```
 
 <a id="mus-docks"></a>

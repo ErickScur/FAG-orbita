@@ -138,7 +138,7 @@ de sobreposição também com o piso de partida (validação no Godot, 2026-11-2
 | Setor | Cena | Comporta (selada até) | Vaga da saída (x,y) | Doca que recebe o backup |
 |---|---|---|---|---|
 | Docas | `res://scenes/levels/docks.tscn` | `door_docks` 121,11 (`infirmary`) | ~~125,11~~ **ligada** (2026-11-21) | `core_dock_wing` 129,11 |
-| Núcleo de Memória | `res://scenes/levels/memory_core.tscn` | `door_memory` 143,14 (`docks`) | **146,14** | `core_dock_wing` 129,11 |
+| Núcleo de Memória | `res://scenes/levels/memory_core.tscn` | `door_memory` 143,14 (`docks`) | ~~146,14~~ **ligada** (F64, 2026-11-21) | `core_dock_wing` 129,11 |
 | Núcleo do Reator | `res://scenes/levels/reactor_core.tscn` | `door_reactor` 143,5 (`memory`) | **146,5** | `core_dock_wing` 129,11 |
 
 Passos, para cada fase nova (o teste `test_reserved_exits_wait_for_their_scenes` **reprova** o
@@ -160,8 +160,8 @@ Passos, para cada fase nova (o teste `test_reserved_exits_wait_for_their_scenes`
    `tests/test_level_core_hub.gd` já cobre as três vagas.
 5. **Reator + Acesso Root (F69)**: a comporta `door_reactor` abre só por `sealed_until_sector:
    memory`. Para exigir também o Acesso Root, a F69 acrescenta à `Door` uma condição de
-   habilidade (ex.: `requires_ability: root_access`) e a põe no JSON da comporta; o desenho do
-   hub não muda.
+   habilidade (`requires_ability: root_access`, feito) e a põe no JSON da comporta; o desenho do
+   hub não muda. A F64 concede o Root ao religar a Memória (`GameState.unlock_ability`).
 6. **Hub mais claro**: a F62 acrescenta só a entrada `revisit` `after_sector: docks` com
    `ambient_color` mais claro que a do Laboratório (`#3b5266`); o teste de luma em
    `test_level_core_hub` exige a ordem crescente.

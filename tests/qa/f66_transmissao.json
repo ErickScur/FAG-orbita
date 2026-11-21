@@ -1,7 +1,7 @@
 [
   {"frame": 1, "call": "Settings.set", "args": ["difficulty", "normal"]},
   {"frame": 1, "call": "GameState.new_game", "args": []},
-  {"frame": 1, "call": "GameState.from_dict", "args": [{"research_collected": ["qa_f66_research_00", "qa_f66_research_01", "qa_f66_research_02", "qa_f66_research_03", "qa_f66_research_04", "qa_f66_research_05", "qa_f66_research_06", "qa_f66_research_07"], "collected_ids": ["qa_f66_research_00", "qa_f66_research_01", "qa_f66_research_02", "qa_f66_research_03", "qa_f66_research_04", "qa_f66_research_05", "qa_f66_research_06", "qa_f66_research_07"], "flags": {}}]},
+  {"frame": 1, "call": "GameState.from_dict", "args": [{"research_collected": ["qa_f66_research_00", "qa_f66_research_01", "qa_f66_research_02", "qa_f66_research_03", "qa_f66_research_04", "qa_f66_research_05", "qa_f66_research_06", "qa_f66_research_07", "qa_f66_research_08", "qa_f66_research_09", "qa_f66_research_10"], "collected_ids": ["qa_f66_research_00", "qa_f66_research_01", "qa_f66_research_02", "qa_f66_research_03", "qa_f66_research_04", "qa_f66_research_05", "qa_f66_research_06", "qa_f66_research_07", "qa_f66_research_08", "qa_f66_research_09", "qa_f66_research_10"], "flags": {}}]},
   {"frame": 1, "scene": "res://scenes/levels/command_room.tscn"},
   {"frame": 40, "expect_scene": "res://scenes/levels/command_room.tscn"},
   {"frame": 40, "screenshot": "01_entrada_fala_da_orbita"},

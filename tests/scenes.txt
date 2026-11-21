@@ -104,3 +104,5 @@ res://scenes/ui/ending_epilogue.tscn
 res://scenes/ui/credits.tscn
 res://scenes/world/electric_floor.tscn
 res://scenes/dev/hazard_test.tscn
+res://scenes/bosses/protocol_luto.tscn
+res://scenes/levels/memory_core.tscn

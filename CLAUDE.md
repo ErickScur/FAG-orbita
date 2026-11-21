@@ -83,6 +83,7 @@ scripts/core/
   status_effects.gd       lógica pura de efeitos de status
   upgrade_rules.gd        class_name UpgradeRules — capacitores/placas x/4, células da HUD, flag da porta ROOT (F69)
   lock_encounter.gd       class_name LockEncounter — máquina de estados pura do Serralheiro (F63)
+  memory_protocol.gd      fases do Protocolo Luto (F64) · erase_front/firewall_logic/recall_logic: estática, firewall e log final
   station_map_model.gd    estado dos setores no mapa (F67) · log_catalog.gd: codex de logs (F33)
 scenes/
   boot/                   splash.tscn, loading.tscn
@@ -90,10 +91,10 @@ scenes/
                           ending_cutscene, ending_epilogue, credits (F66: corte, epílogo, 40 nomes, estatísticas, créditos)
   player/                 mu7.tscn + mu7.gd
   enemies/                sr3.tscn, spore_swarm.tscn
-  bosses/                 serralheiro.tscn (mini-boss das Docas, `K` no ASCII, F63)
+  bosses/                 serralheiro.tscn (mini-boss das Docas, `K` no ASCII, F63), protocol_luto.tscn (diretor do Protocolo Luto, F64) + luto_eye, static_field, memory_tint, memory_overlay, earth_signal
   world/                  terminal, distribution_terminal, door, backup_dock, collectible, moving_platform, grow_plant, magnetic_wall, secret_wall, space_parallax, log_object, level_exit, sector_node, powered_lamp, steam_vent, electric_floor, vacuum_zone, coupler, escape_cradle, root_plate (placa da porta ROOT, F69), energy_network, lock_gate (comporta soldável do Serralheiro, F63)
   npc/                    botanico.tscn (F34)
-  levels/                 level_base.tscn, core_hub.tscn, greenhouse.tscn, lab.tscn, infirmary.tscn, docks.tscn, command_room.tscn (sala da escolha final, F66)
+  levels/                 level_base.tscn, core_hub.tscn, greenhouse.tscn, lab.tscn, infirmary.tscn, docks.tscn, memory_core.tscn (F64), command_room.tscn (sala da escolha final, F66)
 data/
   levels/*.txt            fases em ASCII + legenda
   energy/*.json           definição dos terminais (orçamento, sistemas, efeitos)

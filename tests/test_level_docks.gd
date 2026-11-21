@@ -152,13 +152,13 @@ func test_the_second_half_opens_with_the_double_jump() -> void:
 	assert_true(LevelReachability.is_touched(result, _find("data_dk_01")), "Dado do berço")
 
 
-func test_the_scene_wires_the_thruster_and_ends_the_demo() -> void:
+func test_the_scene_wires_the_thruster_and_returns_to_the_core() -> void:
 	var state: SceneState = (load(SCENE_PATH) as PackedScene).get_state()
 	var narrative: Dictionary = _node_properties(state, "Narrative")
 	assert_eq(String(narrative.get("sector_id", "")), "docks", "setor")
 	assert_eq(String(narrative.get("ability_id", "")), String(VacuumRules.ABILITY_ID), "propulsor")
 	assert_eq(String(narrative.get("ability_tutorial", "")), "tut_thruster", "cartão do propulsor")
-	assert_eq(String(narrative.get("next_scene", "")), "", "as Docas fecham a demo (até a F64)")
+	assert_eq(String(narrative.get("next_scene", "")), CORE_HUB_SCENE, "as Docas voltam ao Núcleo")
 	var infirmary: Dictionary = _node_properties(
 		(load(INFIRMARY_SCENE) as PackedScene).get_state(), "Narrative"
 	)

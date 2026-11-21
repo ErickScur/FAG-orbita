@@ -136,7 +136,7 @@
   {"frame": 3111, "action": "ui_accept", "pressed": false},
   {"frame": 3125, "action": "ui_accept", "pressed": true},
   {"frame": 3128, "action": "ui_accept", "pressed": false},
-  {"frame": 3302, "expect_scene": "res://scenes/ui/demo_end.tscn"},
-  {"frame": 3312, "screenshot": "18_tela_de_fim"},
+  {"frame": 3302, "expect_scene": "res://scenes/levels/core_hub.tscn"},
+  {"frame": 3312, "screenshot": "18_de_volta_ao_nucleo"},
   {"frame": 3332, "quit": true}
 ]

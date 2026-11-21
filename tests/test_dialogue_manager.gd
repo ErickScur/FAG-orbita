@@ -1,8 +1,8 @@
 extends TestCase
 
-const DEMO_SEQUENCES: int = 30
-const DEMO_LOGS: int = 10
-const DEMO_SPEAKERS: int = 3
+const DEMO_SEQUENCES: int = 34
+const DEMO_LOGS: int = 12
+const DEMO_SPEAKERS: int = 4
 const TYPICAL_LINE_CHARS: int = 84
 const AMBIENT_HOLD_MIN: float = 1.5
 const AMBIENT_HOLD_MAX: float = 2.5

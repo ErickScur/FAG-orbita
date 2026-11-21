@@ -10,13 +10,16 @@ const HUB_EXITS: Dictionary = {
 	"res://scenes/levels/lab.tscn": "core_hub_exit_lab",
 	"res://scenes/levels/infirmary.tscn": "core_hub_exit_infirmary",
 	"res://scenes/levels/docks.tscn": "core_hub_exit_docks",
+	"res://scenes/levels/memory_core.tscn": "core_hub_exit_memory",
 }
 const SECTOR_RETURNS: Dictionary = {
 	"greenhouse": "gh_exit_core",
 	"lab": "lab_exit_core",
 	"infirmary": "inf_exit_core",
 	"docks": "dk_exit_core",
+	"memory_core": "mem_exit_core",
 }
+const SECTOR_OF_LEVEL: Dictionary = {"memory_core": "memory"}
 const ICON_SIZE: int = 7
 
 var _state: Node = null
@@ -78,7 +81,7 @@ func test_every_live_hub_exit_has_a_way_back() -> void:
 func test_restored_sector_revisit_is_bright_and_silent() -> void:
 	for level_id: Variant in SECTOR_RETURNS:
 		var raw: Dictionary = _meta(String(level_id))
-		var restored: Array = [StringName(String(level_id))]
+		var restored: Array = [StringName(String(SECTOR_OF_LEVEL.get(level_id, level_id)))]
 		var meta: Dictionary = SectorRevisit.apply(raw, restored)
 		assert_eq(
 			String(meta.get("ambient_color", "")), String(raw.get("ambient_restored", "")),

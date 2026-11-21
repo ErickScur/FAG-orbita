@@ -157,3 +157,7 @@ Saída no scratchpad da sessão, nunca no repo.
   carrega a fase antes do `new_game`/`from_dict`, a fala de entrada dispara com o estado zerado e
   continua bloqueando depois que o roteiro recarrega a cena; os marcos falham com o MU-7 parado
   (`f69_f_placa_docas` na fala `dk_enter`).
+- **(F64)** **Setor novo na campanha quebra roteiros antigos do hub que montam `sectors_restored`
+  com ele**: a revisita nova (`core_return_<setor>`) dispara a fala ao entrar e o MU-7 fica parado
+  (`f69_c_comporta_reator` falhou 3 marcos). Ponha a flag `dlg_core_return_<setor>` no `from_dict`
+  de todo roteiro que já tinha o setor religado.

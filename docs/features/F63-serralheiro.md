@@ -312,3 +312,7 @@ Nenhuma que bloqueie. Pendente: a faixa `MUS-SERRALHEIRO`.
   `--scene`.
 - **Pendências**: `MUS-SERRALHEIRO`; a F64 troca o fim das Docas pela volta ao Núcleo (os roteiros
   `f63_serralheiro` e `f62_docks` esperam `demo_end.tscn`).
+
+### 2026-11-21 — Fim das Docas pela volta ao Núcleo (integração da F64)
+- `f63_serralheiro` e `f62_docks` regenerados pelos geradores: o último marco agora é
+  `core_hub.tscn` (25/25 e 41/41); `f63_serralheiro_morte` 23/23 sem mudança.

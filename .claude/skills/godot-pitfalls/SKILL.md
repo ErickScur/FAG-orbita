@@ -79,6 +79,10 @@ origem).
   final (F71).
 - **`ScrollContainer` com `follow_focus` empurra o título da seção para fora** ao focar o 1º
   botão; volte o scroll ao topo com `call_deferred` depois de dar o foco (F71).
+- **Ruído desenhado por código lê como texto embaralhado em 384 × 216**: um ponto aleatório a cada
+  2 px, redesenhado todo quadro, vira "letras" sobre o rótulo do sinal da Terra. Use uma portadora
+  regular (senoide de 1 px), linhas primitivas (`draw_polyline` com largura −1) e caixa fora da
+  faixa da HUD (y > 32) (F64).
 
 ## Pausa, Tween e diálogo
 - **Tween de nó comum é `TWEEN_PAUSE_BOUND`** e congela durante fala travante (o diálogo pausa a

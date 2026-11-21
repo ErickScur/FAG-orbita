@@ -345,7 +345,7 @@
   {"frame": 7586, "action": "ui_accept", "pressed": false},
   {"frame": 7600, "action": "ui_accept", "pressed": true},
   {"frame": 7603, "action": "ui_accept", "pressed": false},
-  {"frame": 7777, "expect_scene": "res://scenes/ui/demo_end.tscn"},
-  {"frame": 7787, "screenshot": "36_tela_de_fim"},
+  {"frame": 7777, "expect_scene": "res://scenes/levels/core_hub.tscn"},
+  {"frame": 7787, "screenshot": "36_de_volta_ao_nucleo"},
   {"frame": 7807, "quit": true}
 ]

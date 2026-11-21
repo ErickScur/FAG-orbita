@@ -71,9 +71,14 @@ func test_closing_text_follows_the_last_restored_sector() -> void:
 		String(script.call(&"closing_text", [&"greenhouse", &"lab", &"infirmary", &"docks"])),
 		"AS DOCAS SEGURARAM O AR. A ESTAÇÃO AINDA NÃO.", "Docas"
 	)
+	var memory: Array = [&"greenhouse", &"lab", &"infirmary", &"docks", &"memory"]
+	assert_eq(
+		String(script.call(&"closing_text", memory)),
+		"A MEMÓRIA VOLTOU INTEIRA. A ESTAÇÃO AINDA NÃO.", "Memória"
+	)
 	assert_eq(
 		String(script.call(&"closing_text", [])),
-		"AS DOCAS SEGURARAM O AR. A ESTAÇÃO AINDA NÃO.", "padrão: o último setor pronto"
+		"A MEMÓRIA VOLTOU INTEIRA. A ESTAÇÃO AINDA NÃO.", "padrão: o último setor pronto"
 	)
 
 

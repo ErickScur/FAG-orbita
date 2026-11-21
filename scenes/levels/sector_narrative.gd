@@ -9,6 +9,7 @@ const CUTSCENE_GROUP: StringName = &"sector_cutscene"
 @export var ability_tutorial: StringName = &""
 @export var restored_dialogue: StringName = &""
 @export_file("*.tscn") var next_scene: String = ""
+@export_file("*.tscn") var demo_end_until: String = ""
 
 var _ending: bool = false
 var _closing: bool = false
@@ -27,6 +28,12 @@ func is_ending() -> bool:
 
 func has_next_scene() -> bool:
 	return not next_scene.is_empty()
+
+
+func ends_demo_here() -> bool:
+	if not has_next_scene():
+		return true
+	return not demo_end_until.is_empty() and not ResourceLoader.exists(demo_end_until)
 
 
 func _on_ability_unlocked(unlocked_id: StringName) -> void:
@@ -73,7 +80,7 @@ func _play_closing() -> void:
 func _finish() -> void:
 	_ending = false
 	_closing = false
-	if has_next_scene():
+	if not ends_demo_here():
 		SceneManager.goto(next_scene)
 		return
 	EventBus.demo_completed.emit()

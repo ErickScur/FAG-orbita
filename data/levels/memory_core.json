@@ -1,0 +1,372 @@
+{
+  "id": "memory_core",
+  "name": "Núcleo de Memória",
+  "tileset": "res://assets/tiles/memory_tileset.tres",
+  "entity_tiles": "res://assets/tiles/memory_tiles.png",
+  "ambient_color": "#f4ece6",
+  "ambient_restored": "#f4ece6",
+  "ambient_motes": "#ffd9e8",
+  "parallax": true,
+  "floor_sfx": "step_metal",
+  "music": "",
+  "reactor_online": true,
+  "objective": "obj_memory",
+  "on_enter_dialogue": "mem_enter",
+  "reach": {
+    "double_jump": true
+  },
+  "revisit": [
+    {
+      "after_sector": "memory",
+      "ambient_color": "#f4ece6",
+      "objective": "",
+      "on_enter_dialogue": ""
+    }
+  ],
+  "terminals": [
+    "memory_core"
+  ],
+  "protocol": {
+    "terminal": "memory_core",
+    "luto_system": "luto",
+    "consoles": [
+      "mem_console_a",
+      "mem_console_b"
+    ],
+    "ambient": {
+      "dormant": "#f4ece6",
+      "ascent": "#e2d6d2",
+      "firewall": "#9c98a4",
+      "recall": "#151922",
+      "restored": "#f4ece6"
+    },
+    "ascent": {
+      "region": [
+        10,
+        10,
+        35,
+        50
+      ],
+      "axis": "up",
+      "start": 60,
+      "limit": 14,
+      "trigger": [
+        28,
+        10,
+        17,
+        46
+      ],
+      "finish": [
+        40,
+        3,
+        60,
+        10
+      ],
+      "dock": "mem_dock_01",
+      "eye": [
+        36,
+        12
+      ]
+    },
+    "firewall": {
+      "region": [
+        40,
+        3,
+        55,
+        18
+      ],
+      "axis": "right",
+      "start": 40,
+      "limit": 94,
+      "trigger": [
+        40,
+        3,
+        55,
+        10
+      ],
+      "finish": [
+        119,
+        13,
+        3,
+        13
+      ],
+      "void": [
+        [
+          62,
+          14,
+          16,
+          7
+        ]
+      ],
+      "dock": "mem_dock_02",
+      "eye": [
+        60,
+        7
+      ]
+    },
+    "recall": {
+      "region": [
+        47,
+        26,
+        76,
+        5
+      ],
+      "axis": "left",
+      "start": 123,
+      "limit": 53,
+      "trigger": [
+        47,
+        26,
+        76,
+        5
+      ],
+      "line_start": 117,
+      "line_end": 55,
+      "log": "log_mem_final",
+      "eye": [
+        47,
+        28
+      ]
+    }
+  },
+  "entities": {
+    "58,6": {
+      "id": "mem_party_lamp_w",
+      "terminal_id": "memory_core",
+      "system_id": "party_lights",
+      "color": "#ff8fc8",
+      "radius": 80.0,
+      "energy": 1.2
+    },
+    "80,6": {
+      "id": "mem_party_lamp_e",
+      "terminal_id": "memory_core",
+      "system_id": "party_lights",
+      "color": "#ffd36a",
+      "radius": 80.0,
+      "energy": 1.2
+    },
+    "69,9": {
+      "id": "data_mem_01"
+    },
+    "110,9": {
+      "id": "mem_lamp_archive",
+      "color": "#ffd9a0",
+      "radius": 80.0,
+      "energy": 1.0
+    },
+    "47,12": {
+      "id": "mem_dock_02"
+    },
+    "51,12": {
+      "id": "mem_console_a",
+      "terminal": "memory_core"
+    },
+    "56,12": {
+      "terminal_id": "memory_core",
+      "system_id": "hall_door",
+      "id": "mem_door_hall"
+    },
+    "58,12": {
+      "id": "mem_crew_06",
+      "sheet": "res://assets/sprites/props/memory_crew_sheet.png",
+      "frame": 5,
+      "group": "mem_crew"
+    },
+    "60,12": {
+      "id": "mem_crew_07",
+      "sheet": "res://assets/sprites/props/memory_crew_sheet.png",
+      "frame": 4,
+      "group": "mem_crew"
+    },
+    "63,12": {
+      "terminal_id": "memory_core",
+      "system_id": "walkway",
+      "id": "mem_walkway",
+      "path": [
+        [
+          0,
+          0.75
+        ],
+        [
+          13,
+          0.75
+        ]
+      ],
+      "wait": 0.6
+    },
+    "81,12": {
+      "id": "mem_console_b",
+      "terminal": "memory_core"
+    },
+    "84,12": {
+      "id": "mem_crew_08",
+      "sheet": "res://assets/sprites/props/memory_crew_sheet.png",
+      "frame": 6,
+      "group": "mem_crew"
+    },
+    "88,12": {
+      "terminal_id": "memory_core",
+      "system_id": "archive_door",
+      "id": "mem_door_archive"
+    },
+    "94,12": {
+      "id": "mem_dock_03"
+    },
+    "104,12": {
+      "id": "kit_mem_02"
+    },
+    "108,12": {
+      "id": "mem_crew_09",
+      "sheet": "res://assets/sprites/props/memory_crew_sheet.png",
+      "frame": 1,
+      "group": "mem_crew"
+    },
+    "112,12": {
+      "id": "mem_crew_10",
+      "sheet": "res://assets/sprites/props/memory_crew_sheet.png",
+      "frame": 7,
+      "group": "mem_crew"
+    },
+    "36,18": {
+      "id": "cell_mem_02"
+    },
+    "24,24": {
+      "id": "log_mem_01",
+      "prompt_text": "LER REGISTRO"
+    },
+    "60,27": {
+      "id": "mem_lamp_hall_5",
+      "color": "#bfe6ff",
+      "radius": 80.0,
+      "energy": 1.0,
+      "powered": false
+    },
+    "74,27": {
+      "id": "mem_lamp_hall_4",
+      "color": "#bfe6ff",
+      "radius": 80.0,
+      "energy": 1.0,
+      "powered": false
+    },
+    "88,27": {
+      "id": "mem_lamp_hall_3",
+      "color": "#bfe6ff",
+      "radius": 80.0,
+      "energy": 1.0,
+      "powered": false
+    },
+    "102,27": {
+      "id": "mem_lamp_hall_2",
+      "color": "#bfe6ff",
+      "radius": 80.0,
+      "energy": 1.0,
+      "powered": false
+    },
+    "116,27": {
+      "id": "mem_lamp_hall_1",
+      "color": "#bfe6ff",
+      "radius": 80.0,
+      "energy": 1.0,
+      "powered": false
+    },
+    "51,30": {
+      "id": "mem_sector_node",
+      "scene": "res://scenes/world/sector_node.tscn",
+      "sector_id": "memory"
+    },
+    "58,30": {
+      "id": "mem_echo_05",
+      "sheet": "res://assets/sprites/props/memory_crew_sheet.png",
+      "frame": 6,
+      "group": "mem_echo"
+    },
+    "69,30": {
+      "id": "mem_echo_04",
+      "sheet": "res://assets/sprites/props/memory_crew_sheet.png",
+      "frame": 3,
+      "group": "mem_echo"
+    },
+    "83,30": {
+      "id": "mem_echo_03",
+      "sheet": "res://assets/sprites/props/memory_crew_sheet.png",
+      "frame": 5,
+      "group": "mem_echo"
+    },
+    "97,30": {
+      "id": "mem_echo_02",
+      "sheet": "res://assets/sprites/props/memory_crew_sheet.png",
+      "frame": 2,
+      "group": "mem_echo"
+    },
+    "111,30": {
+      "id": "mem_echo_01",
+      "sheet": "res://assets/sprites/props/memory_crew_sheet.png",
+      "frame": 0,
+      "group": "mem_echo"
+    },
+    "6,47": {
+      "id": "mem_lamp_mess_w",
+      "color": "#ffd9a0",
+      "radius": 96.0,
+      "energy": 1.0
+    },
+    "15,47": {
+      "id": "mem_lamp_mess_c",
+      "color": "#ffb8d0",
+      "radius": 96.0,
+      "energy": 1.0
+    },
+    "24,47": {
+      "id": "mem_lamp_mess_e",
+      "color": "#ffd9a0",
+      "radius": 96.0,
+      "energy": 1.0
+    },
+    "31,47": {
+      "id": "kit_mem_01"
+    },
+    "2,55": {
+      "id": "mem_exit_core",
+      "target": "res://scenes/levels/core_hub.tscn",
+      "sector": "core"
+    },
+    "7,55": {
+      "id": "mem_dock_01"
+    },
+    "11,55": {
+      "id": "mem_crew_01",
+      "sheet": "res://assets/sprites/props/memory_crew_sheet.png",
+      "frame": 1,
+      "group": "mem_crew"
+    },
+    "13,55": {
+      "id": "mem_crew_02",
+      "sheet": "res://assets/sprites/props/memory_crew_sheet.png",
+      "frame": 3,
+      "group": "mem_crew"
+    },
+    "16,55": {
+      "id": "mem_crew_03",
+      "sheet": "res://assets/sprites/props/memory_crew_sheet.png",
+      "frame": 0,
+      "group": "mem_crew"
+    },
+    "20,55": {
+      "id": "mem_crew_04",
+      "sheet": "res://assets/sprites/props/memory_crew_sheet.png",
+      "frame": 2,
+      "group": "mem_crew"
+    },
+    "23,55": {
+      "id": "mem_crew_05",
+      "sheet": "res://assets/sprites/props/memory_crew_sheet.png",
+      "frame": 7,
+      "group": "mem_crew"
+    },
+    "25,55": {
+      "id": "cell_mem_01"
+    }
+  },
+  "triggers": []
+}

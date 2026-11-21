@@ -1,0 +1,51 @@
+{
+  "sequences": {
+    "mem_enter": {
+      "mode": "blocking",
+      "once": true,
+      "lines": [
+        {
+          "speaker": "orbita",
+          "text": "Núcleo de Memória. Isto não é a estação. É a estação do jeito que eu me lembro dela."
+        },
+        {
+          "speaker": "orbita",
+          "text": "Tem gente aqui. Tem barulho. Eu tinha esquecido do barulho."
+        }
+      ]
+    },
+    "mem_luto": {
+      "mode": "ambient",
+      "once": true,
+      "lines": [
+        {
+          "speaker": "luto",
+          "text": "Acesso a esta memória negado. Apagando."
+        }
+      ]
+    },
+    "mem_restored": {
+      "mode": "blocking",
+      "once": true,
+      "lines": [
+        {
+          "speaker": "orbita",
+          "text": "Acesso root restaurado. A estação inteira, inclusive o que eu selei há duzentos anos.",
+          "sfx": "sector_restored"
+        },
+        {
+          "speaker": "orbita",
+          "text": "Coordenadas do planeta alvo. Dados de terraformação. Arquivo genético intacto."
+        },
+        {
+          "speaker": "orbita",
+          "text": "E um sinal. Fraco, sem padrão. Vem da direção da Terra."
+        },
+        {
+          "speaker": "orbita",
+          "text": "Eu não estava esperando a tripulação. Eu estava evitando lembrar dela."
+        }
+      ]
+    }
+  }
+}
