@@ -28,6 +28,24 @@
         }
       ]
     },
+    "lock_down": {
+      "mode": "blocking",
+      "once": true,
+      "lines": [
+        {
+          "speaker": "orbita",
+          "text": "Contenção desligada. Ele não lutou. Só fechava portas."
+        },
+        {
+          "speaker": "orbita",
+          "text": "Última ordem no registro dele: selar o hangar às três e doze. Remetente: rede central."
+        },
+        {
+          "speaker": "orbita",
+          "text": "O campo de quem assinou está apagado. Apagado com cuidado."
+        }
+      ]
+    },
     "dk_restored": {
       "mode": "blocking",
       "once": true,

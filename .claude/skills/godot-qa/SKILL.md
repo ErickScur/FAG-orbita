@@ -148,3 +148,12 @@ Saída no scratchpad da sessão, nunca no repo.
   dificuldade). Hoje `Settings.save_settings()` não grava com `--qa`; teste usa caminho próprio.
 - **(F71)** `tools/gates.sh` usa `$TMPDIR/orbita-gates`, **compartilhado entre worktrees**: dois
   portões ao mesmo tempo misturam logs e relatórios. Rode com `TMPDIR=<scratchpad>/gates-<nome>`.
+- **(F63)** **Luta reaproveitável entre roteiros**: escreva a luta como função com quadros relativos
+  ao pouso (`tests/qa/gen/f63_fight.py`, usada pelo `f63_serralheiro` e pelo `f62_docks`) e **alinhe
+  o MU-7 contra uma parede** antes do primeiro trecho: o ponto de pouso muda de um roteiro para o
+  outro e a parede apaga a diferença. Para provar o fim por tempo sem esperar o relógio inteiro,
+  `call` em `<nó>.set_indexed` com `"_fight:time_left"` (propriedade de um objeto filho).
+- **(F63/F69)** **Roteiro que monta o save (`from_dict`) roda sem `--scene`**: o `--scene=<fase>`
+  carrega a fase antes do `new_game`/`from_dict`, a fala de entrada dispara com o estado zerado e
+  continua bloqueando depois que o roteiro recarrega a cena; os marcos falham com o MU-7 parado
+  (`f69_f_placa_docas` na fala `dk_enter`).

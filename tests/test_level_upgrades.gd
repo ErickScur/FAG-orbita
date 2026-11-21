@@ -14,6 +14,7 @@ const UPGRADES: Dictionary = {
 	"plate_core_01": {"level": "core_hub", "symbol": PLATE_SYMBOL, "needs": &"magnetic_claws"},
 	"plate_gh_01": {"level": "greenhouse", "symbol": PLATE_SYMBOL, "needs": &"root_access"},
 	"plate_lab_01": {"level": "lab", "symbol": PLATE_SYMBOL, "needs": &"root_access"},
+	"plate_dk_01": {"level": "docks", "symbol": PLATE_SYMBOL, "needs": &"root_access"},
 	"capacitor_gh_01": {"level": "greenhouse", "symbol": "C", "needs": &""},
 	"capacitor_lab_01": {"level": "lab", "symbol": "C", "needs": &""},
 	"capacitor_inf_01": {"level": "infirmary", "symbol": "C", "needs": &"heated_core"},
@@ -27,7 +28,8 @@ const ABILITY_SOURCE: Dictionary = {
 	&"thruster": "docks",
 	&"root_access": "memory_core",
 }
-const ROOT_DOOR_MINIMUM: int = 2
+const ROOT_DOOR_MINIMUM: int = 3
+const ROOT_DOOR_LEVELS: Array[String] = ["greenhouse", "lab", "docks"]
 
 var _cache: Dictionary = {}
 
@@ -55,7 +57,7 @@ func test_upgrade_totals_never_pass_the_gdd() -> void:
 	assert_true(capacitors <= Balance.CAPACITORS_TOTAL, "%d capacitores" % capacitors)
 	assert_true(plates <= Balance.ARMOR_PLATES_TOTAL, "%d placas" % plates)
 	assert_eq(capacitors, Balance.CAPACITORS_TOTAL, "o das Docas é o 4º capacitor")
-	assert_true(plates >= Balance.ARMOR_PLATES_TOTAL - 1, "só a das Docas pode faltar")
+	assert_eq(plates, Balance.ARMOR_PLATES_TOTAL, "a das Docas é a 4ª placa")
 
 
 func test_each_upgrade_is_reachable_with_every_ability() -> void:
@@ -100,7 +102,7 @@ func test_at_least_two_upgrades_sit_behind_root_doors() -> void:
 		if (UPGRADES[item_id] as Dictionary)["needs"] == &"root_access":
 			behind_root += 1
 	assert_true(behind_root >= ROOT_DOOR_MINIMUM, "%d upgrades atrás de ROOT" % behind_root)
-	for level: String in ["greenhouse", "lab"]:
+	for level: String in ROOT_DOOR_LEVELS:
 		var doors: int = 0
 		for key: Variant in _meta(level).get("entities", {}):
 			var params: Dictionary = (_meta(level)["entities"] as Dictionary)[key]
@@ -133,7 +135,7 @@ func test_reactor_needs_root_in_the_hub_geometry() -> void:
 func test_the_campaign_route_still_works_without_root() -> void:
 	var without: Array[StringName] = ALL_ABILITIES.duplicate()
 	without.erase(&"root_access")
-	for level: String in ["greenhouse", "lab"]:
+	for level: String in ROOT_DOOR_LEVELS:
 		var result: Dictionary = _analyze(level, without)
 		for entry: Dictionary in LevelReachability.entities(result, "o"):
 			var params: Dictionary = (_meta(level).get("entities", {}) as Dictionary).get(

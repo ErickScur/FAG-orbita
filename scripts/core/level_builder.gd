@@ -197,6 +197,12 @@ const LEGEND: Dictionary = {
 		"anchor": &"feet",
 		"feature": "F62",
 	},
+	"K": {
+		"name": "o Serralheiro",
+		"scene": "res://scenes/bosses/serralheiro.tscn",
+		"anchor": &"center",
+		"feature": "F63",
+	},
 }
 const COLLECTIBLE_KINDS: Array[StringName] = [
 	&"log", &"research", &"cell", &"repair_kit", &"capacitor", &"armor_plate"

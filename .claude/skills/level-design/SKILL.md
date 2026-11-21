@@ -126,3 +126,14 @@ O modelo é generoso com energia (toda porta aberta, toda planta crescida, garra
   dicionário `LEGEND` ficou com a chave duas vezes, sem erro (o acoplador venceu). Hoje
   `test_no_legend_letter_is_declared_twice` lê o código e reprova; em fase nova, confira a
   `LEGEND` inteira antes de escolher letra.
+- **(F63)** **Arena de chefe mais alta que a tela esconde o chefe**: com o MU-7 no chão a câmera
+  mostra só ~124 px acima do pé; na antessala de 15 linhas o trilho do teto ficava fora do quadro e
+  o braço sumia. Baixe o teto (foi para 13 linhas), limite a câmera pelo piso enquanto o MU-7 está
+  na arena (`set_camera_limits`) e estacione o chefe **dentro da tela da entrada**, senão o
+  "acordar" acontece fora do quadro.
+- **(F63)** Vão de 1 tile entre plataforma fina e bloco sólido no mesmo nível derruba o MU-7 que só
+  anda (corpo 14 px < vão 16 px): emende o degrau no bloco.
+- **(F63)** **Doca de renascimento no piso de uma patrulha** vira castigo em loop: a `dk_dock_05`
+  dividia o fosso do vestíbulo com uma SR-3 e cada tentativa contra o Serralheiro começava com dano.
+  Doca fica em piso que nenhuma `S` alcança andando (`test_no_dock_shares_a_floor_with_a_patrol`,
+  em `tests/test_level_lock.gd`, por enquanto só nas Docas).

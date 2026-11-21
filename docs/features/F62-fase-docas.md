@@ -176,8 +176,9 @@ depois dela).
   doca (82,4), eclusa externa (85,4).
 - **Anel externo** (vácuo permanente, x 87–117, y 2–16): 4 destroços, V-9, CX-2 (101,6),
   Dado (114,3); tubo de atracação no casco (x 108–113, y 17).
-- **Vestíbulo** (x 98–117, y 18–25): SR-3 (116,25), doca `dk_dock_05`, bloco de **C** x 102–105
-  (C em (103,21)), comporta da antessala (99,25), kit (101,25).
+- **Vestíbulo** (x 98–117, y 18–25): SR-3 (116,25) no fosso leste (x 106–117), bloco de **C**
+  x 102–105 (C em (103,21)), comporta da antessala (99,25), kit (101,25). A doca `dk_dock_05` fica
+  na **passagem** (96,25), do outro lado da comporta, longe da patrulha (integração F63).
 - **Volta ao Núcleo** (padrão da F45): portal `E` `dk_exit_core` junto do nascimento e bloco
   `revisit` `after_sector: docks` no `docks.json` (fase mais clara na revisita). No Núcleo, a
   comporta `door_docks` (121,11, selada até a Enfermaria) e o portal `core_hub_exit_docks` (125,11)
@@ -186,17 +187,23 @@ depois dela).
 
 ## 4.3 Gancho para a F63 (O Serralheiro)
 
-- **Arena:** `x 84–117, y 30–44` (34 × 15 tiles = 544 × 240 px), piso na linha 45, teto na 29.
-  Entrada única por cima: passagem `x 90–97, y 23–25` e poço `x 90–92, y 26–29` (cai na arena; não
-  há volta — morrer leva à doca `dk_dock_05`, no vestíbulo).
+Estado atual, depois da F63 (detalhes em [F63 §4](F63-serralheiro.md#4-escopo)):
+
+- **Arena:** `x 84–117, y 32–44` (34 × 13 tiles = 544 × 208 px), piso na linha 45, **teto na 31**
+  (desceu duas linhas para o trilho do braço caber na câmera, ADR-F63-004). Entrada única por cima:
+  passagem `x 90–97, y 23–25` (doca `dk_dock_05` em 96,25) e poço `x 90–92, y 26–31`, com a
+  escotilha da F63 na linha 31. Não há volta: morrer leva à doca `dk_dock_05`.
+- **O Serralheiro:** `K` em **(103,32)**, braço estacionado à vista do pouso; parâmetros no
+  `docks.json` (`couplers`, `node`, `arena`, `trigger`, `rail`, `gate`, `hatch`, `vent`, `bays`).
 - **Nó do setor:** `dk_sector_node` em **(115,40)**, sobre o estrado sólido `x 111–117, y 41–44`
-  (4 tiles acima do piso: pulo duplo). Luz `dk_node_lamp` em (115,36).
+  (pulo duplo), coberto pela placa soldada até o braço desligar. Luz `dk_node_lamp` em (115,36).
 - **Acopladores** (`A`, `scenes/world/coupler.tscn`, classe `Coupler`, grupo `coupler`):
-  `dk_coupler_01` (88,44) no piso, `dk_coupler_02` (101,37) sobre a plataforma fina `x 98–104, y 38`,
-  `dk_coupler_03` (106,44) no piso. Estados `OFF / CHARGING / POWERED / SEALED` (`set_state`), com
-  `set_powered`; hoje não ligam a nenhum sistema (`system_id: ""`).
-- Plataforma fina extra `x 86–90, y 40`. Espaço livre do teto (linha 30) para o braço gigante.
-- Luzes da antessala ligadas a `node_door`. A F63 decide se o Nó fica atrás do chefe.
+  `dk_coupler_01` **(87,44)** no piso oeste, `dk_coupler_02` **(100,37)** na passarela `=`
+  x 93–106 y 38, `dk_coupler_03` **(112,40)** no estrado. Estados `OFF / CHARGING / POWERED /
+  SEALED`; a F63 somou o soquete de **segurar** (`set_armed`, `is_held`, carga com 3 pontos).
+  Seguem sem sistema de energia (`system_id: ""`).
+- Plataforma de pouso `=` x 89–94 y 41; degrau `=` x 105–110 y 41 emendado ao estrado; comporta do
+  piso da F63 em x 95, y 39–44. Luzes da antessala ligadas a `node_door`.
 
 ## 5. Critérios de aceite
 
@@ -383,3 +390,17 @@ Nenhuma que bloqueie. Pendente: a faixa `docks` (ficha MUS-DOCKS).
 - **Nota**: quem entra pela porta nasce no portal de volta (ADR-F45-002), não no `P`.
 - **Portões**: `tools/gates.sh` completo verde — 1010 testes, 96 cenas no smoke.
 
+### 2026-11-21 — Integração com a F63 (O Serralheiro) sobre F66/F69/F68
+- **Quem**: agente de integração (branch `final/integracao`) · **O que**: a arena da F63 ocupa a
+  antessala; a §4.3 acima descreve o estado novo (teto na 31, arena y 32–44, A2 (100,37), A3
+  (112,40), `K` (103,32)).
+- **Doca do vestíbulo**: `dk_dock_05` saiu do fosso (114,25), onde a SR-3 (116,25) patrulha, e foi
+  para a passagem (96,25), entre a comporta da antessala e o poço. Antes, a cada tentativa contra o
+  Serralheiro o MU-7 renascia colado à SR-3 e levava dano antes de se mexer (checklist §4.7: morrer
+  não pode virar castigo em loop). A SR-3 continua guardando o fosso na primeira passagem; o bloco
+  de **C** e a comporta a separam da doca. A doca segue no caminho (checkpoint por contato).
+- **4ª Placa (F69)**: `plate_dk_01` em (32,40), num cofre x 31–34 × 38–40 cavado na parede oeste do
+  hangar, atrás da porta ROOT `dk_root_door` (35,40). Fica à vista de quem cai no hangar pela
+  primeira vez (`SELADA - ACESSO ROOT`) e pede a volta depois do Núcleo de Memória.
+- **QA com marcos**: `f62_docks` 41/41, `f62_tour` 4/4, `f62_hub_docks` 9/9 (capturas lidas: a
+  passagem com a doca nova e a SR-3 do outro lado do bloco).

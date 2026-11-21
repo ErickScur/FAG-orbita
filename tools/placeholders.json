@@ -413,6 +413,106 @@
       "palette": "docks",
       "body": "#5FE8FF",
       "seed": 129
+    },
+    {
+      "id": "SPR-SERRALHEIRO",
+      "path": "sprites/bosses/serralheiro_trolley.png",
+      "frame": [64, 40],
+      "grid": [2, 1],
+      "shape": "rect_index",
+      "palette": "docks",
+      "body": "#F2C230",
+      "seed": 160
+    },
+    {
+      "id": "SPR-SERRALHEIRO",
+      "path": "sprites/bosses/serralheiro_upper.png",
+      "frame": [96, 28],
+      "grid": [1, 1],
+      "shape": "rect_border",
+      "palette": "docks",
+      "body": "#8C96A0",
+      "seed": 161
+    },
+    {
+      "id": "SPR-SERRALHEIRO",
+      "path": "sprites/bosses/serralheiro_lower.png",
+      "frame": [96, 20],
+      "grid": [1, 1],
+      "shape": "rect_border",
+      "palette": "docks",
+      "body": "#5E6873",
+      "seed": 162
+    },
+    {
+      "id": "SPR-SERRALHEIRO",
+      "path": "sprites/bosses/serralheiro_claw.png",
+      "frame": [48, 48],
+      "grid": [4, 1],
+      "shape": "rect_index",
+      "palette": "docks",
+      "body": "#8C96A0",
+      "seed": 163
+    },
+    {
+      "id": "SPR-LOCK-PROPS",
+      "path": "sprites/world/lock_bay.png",
+      "frame": [32, 32],
+      "grid": [2, 1],
+      "shape": "rect_index",
+      "palette": "docks",
+      "body": "#454E58",
+      "seed": 164
+    },
+    {
+      "id": "SPR-LOCK-PROPS",
+      "path": "sprites/world/lock_gate.png",
+      "frame": [16, 48],
+      "grid": [1, 1],
+      "shape": "rect_border",
+      "palette": "docks",
+      "body": "#5E6873",
+      "seed": 165
+    },
+    {
+      "id": "SPR-LOCK-PROPS",
+      "path": "sprites/world/lock_hatch.png",
+      "frame": [48, 16],
+      "grid": [1, 1],
+      "shape": "rect_border",
+      "palette": "docks",
+      "body": "#5E6873",
+      "seed": 166
+    },
+    {
+      "id": "SPR-LOCK-PROPS",
+      "path": "sprites/world/lock_plate.png",
+      "frame": [32, 32],
+      "grid": [1, 1],
+      "shape": "rect_border",
+      "palette": "docks",
+      "body": "#F2C230",
+      "seed": 167
+    },
+    {
+      "id": "SPR-LOCK-PROPS",
+      "path": "sprites/world/lock_rail.png",
+      "frame": [32, 16],
+      "grid": [1, 1],
+      "shape": "rect_border",
+      "palette": "docks",
+      "body": "#454E58",
+      "seed": 168
+    },
+    {
+      "id": "SPR-LOCK-PROPS",
+      "path": "sprites/world/lock_lamp.png",
+      "frame": [8, 8],
+      "grid": [2, 1],
+      "shape": "rect_index",
+      "palette": "docks",
+      "body": "#FF4A3A",
+      "seed": 169
     }
   ]
 }

@@ -151,6 +151,7 @@ Ordem do `_ready()`: 1) carrega `.txt`/`.json`; 2) `LevelParser.parse` (erro →
 | `I` | Parede de gelo | `scenes/world/ice_wall.tscn` | centro | F61 |
 | `V` | Zona de vácuo | `scenes/world/vacuum_zone.tscn` | centro | F62 |
 | `A` | Acoplador de energia | `scenes/world/coupler.tscn` | pés | F62 |
+| `K` | O Serralheiro (mini-boss; parâmetros no JSON da fase) | `scenes/bosses/serralheiro.tscn` | centro | F63 |
 
 Cada letra vale para **uma** entidade: `test_no_legend_letter_is_declared_twice` (`tests/test_level_parser.gd`) lê o `LEGEND` do código e reprova letra repetida ou que também seja tile (a F69 e a F62 pegaram o `A` ao mesmo tempo; a placa foi para `B`).
 

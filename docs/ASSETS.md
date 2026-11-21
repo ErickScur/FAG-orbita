@@ -42,6 +42,8 @@
 | [SPR-CRADLE](#spr-cradle) | Sprite | Berço vazio da nave de escape SELENE | A | IA | **integrado (IA)** | F62 |
 | [SPR-COUPLER](#spr-coupler) | Sprite sheet | Acoplador de energia (4 estados; F63 reaproveita) | A | IA | **integrado (IA)** | F62, F63 |
 | [FX-THRUSTER](#fx-thruster) | Sprite sheet | Jato do Propulsor | B | IA | **integrado (IA)** | F62 |
+| [SPR-SERRALHEIRO](#spr-serralheiro) | Sprites em partes | O Serralheiro: carro do trilho, dois segmentos do braço, garra (4 estados) | A | IA | **integrado (IA)** | F63 |
+| [SPR-LOCK-PROPS](#spr-lock-props) | Sprites | Arena do Serralheiro: baia de SR-3, comporta, escotilha, placa soldada, trilho, luz da contenção | A | IA | **integrado (IA)** | F63 |
 | [SPR-PROPS-INF](#spr-props-inf) | Sprite sheet | Objetos da Enfermaria (leitos, maca, soro, cápsula…) | B | IA | **integrado (IA)** | F61 |
 | [SPR-CMD](#spr-cmd) | Sprite sheet | Sala de comando: baia da cápsula, transmissor e os dois consoles de alavanca | A | IA | **integrado (IA)** | F66 |
 | [SPR-ENDING](#spr-ending) | Sprite sheet | Cutscene final: ARTEMIS por fora, cápsula em voo, planeta-alvo, Terra, clarão e onda do sinal | A | IA | **integrado (IA)** | F66 |
@@ -61,6 +63,7 @@
 | [MUS-LAB](#mus-lab) | Música | Trilha do Laboratório | A | IA ou Grátis | pendente | F60 |
 | [MUS-INFIRMARY](#mus-infirmary) | Música | Trilha da Enfermaria | A | IA ou Grátis | pendente | F61 |
 | [MUS-DOCKS](#mus-docks) | Música | Trilha das Docas | A | IA ou Grátis | pendente | F62 |
+| [MUS-SERRALHEIRO](#mus-serralheiro) | Música | Luta contra o Serralheiro (loop tenso) | A | IA ou Grátis | pendente | F63 |
 | [MUS-CHASSIS](#mus-chassis) | Música | Momento CHASSI PERDIDO (one-shot) | B | Grátis | pendente | F46 |
 | [MUS-GAMEOVER](#mus-gameover) | Música | Momento PERDA DE ÓRBITA (one-shot) | B | Grátis | pendente | F46 |
 | [MUS-SECTOR](#mus-sector) | Música | Momento do religamento do setor (one-shot) | B | Grátis | pendente | F46 |
@@ -929,6 +932,78 @@ IMPORTANT: draw ONLY the objects described. Never draw walls, floors, ground, ro
 | Fonte | **IA — geração de imagem do Codex CLI**, 2026-11-20: linha 2 da **1ª** variação da folha do SPR-COUPLER (chamas mais grossas, legíveis a 16 px). Prompt na ficha SPR-COUPLER |
 | Status | **integrado (IA)** em 2026-11-20 |
 
+<a id="spr-serralheiro"></a>
+### SPR-SERRALHEIRO — O Serralheiro (braço de contenção)
+
+| Campo | Valor |
+|---|---|
+| Caminho final | `assets/sprites/bosses/serralheiro_trolley.png` (**128×40** = 2 quadros 64×40: acordado com olho âmbar · desligado), `serralheiro_upper.png` (**96×28**, segmento de cima na horizontal, juntas a 12 px de cada ponta), `serralheiro_lower.png` (**96×20**, segmento de baixo, idem), `serralheiro_claw.png` (**192×48** = 4 quadros 48×48 com o pulso no **topo-centro**: aberta · segurando a placa · soldando · desligada) — cena `scenes/bosses/serralheiro.tscn`, montado e animado por código (trilho, cinemática de dois segmentos e haste telescópica) |
+| Placeholder gerado | `assets/placeholder/sprites/bosses/` (mesmos nomes e dimensões) |
+| Fonte | **IA — geração de imagem do Codex CLI**, 2026-11-21, 2 variações; escolhida a **1ª** (formas mais grossas, garra maior, placa legível a 48 px). Referências de estilo: `assets/sprites/mu7/mu7_sheet.png` e `assets/sprites/world/coupler_sheet.png`. Fatiamento próprio (chave por magentice + *unmix*, alfa binário, garra alinhada pelo topo e mesma escala nos 4 quadros, segmentos esticados na própria caixa) |
+| Status | **integrado (IA)** em 2026-11-21 |
+
+**Prompt (Codex):**
+```
+Pixel art sprite sheet for a melancholic 2D side-view space station platformer, the DOCKS sector. Parts of ONE giant industrial robotic arm called THE LOCKSMITH: a ceiling-mounted containment arm that welds blast doors shut. The parts will be assembled and animated by code, so each part is drawn ALONE, centered in its own frame.
+
+STYLE MUST MATCH THE ATTACHED REFERENCE IMAGES (the MU-7 robot and the docks machines): same worn 16-bit look, hard pixels, dark 1-pixel outline, scratched industrial paint. No cast shadows.
+
+Layout: a grid of SQUARE frames, 4 columns and 2 rows, all the same size.
+Row 1:
+ 1. RAIL TROLLEY, awake: a heavy armored carriage that hangs from a ceiling rail, four steel wheels on top, wide body with hazard-yellow and black diagonal stripes, a big round shoulder joint hub at the bottom center, and ONE large round amber sensor eye (#FFB46A) glowing on its front. Wider than tall (about 2:1), centered in the frame.
+ 2. RAIL TROLLEY, shut down: exactly the same carriage, same size and position, but the eye is dark grey and unlit, paint looks dimmer.
+ 3. UPPER ARM SEGMENT drawn HORIZONTALLY across the middle of the frame: a thick hydraulic boom, round steel joint at the left end and at the right end, a chrome piston along it, hazard-yellow band in the middle. Long and thick (about 5:1), centered.
+ 4. LOWER ARM SEGMENT drawn HORIZONTALLY across the middle of the frame: a slightly thinner boom with round joints at both ends, a cable bundle along it, gunmetal paint. Long (about 6:1), centered.
+Row 2: four states of the same heavy GRIPPER CLAW that hangs DOWN from a round wrist joint at the TOP CENTER of the frame. Same size and same wrist position in every frame.
+ 5. CLAW OPEN: two big curved steel jaws spread apart, a welding torch nozzle between them, dark tip.
+ 6. CLAW HOLDING A PLATE: jaws closed around a square steel plate with hazard-yellow and black stripes.
+ 7. CLAW WELDING: jaws closed, the torch tip blazing bright white-orange (#FFF2C0, #FF8A3A) with a few chunky sparks.
+ 8. CLAW SHUT DOWN: jaws hanging half open and limp, torch dark, paint dim.
+
+Palette: steel grey (#8C96A0, #B4BEC8, #5E6873), gunmetal (#454E58, #2C333B), hazard yellow (#F2C230) with black (#1A1D21), amber eye (#FFB46A), weld orange (#FF8A3A, #FFF2C0), dark navy outline (#0E1218).
+
+Chunky readable shapes only: no thin 1-pixel details. The trolley must read at 64x32 pixels, the segments at 96x24 pixels, the claw at 48x48 pixels.
+
+IMPORTANT: draw ONLY the parts described. Never draw walls, floors, ceilings, rails, rooms, characters or any other object. Solid flat magenta background (#FF00FF) everywhere else, with clear magenta gaps between frames. No text, no letters, no numbers, no labels, no grid lines, no frame borders, no watermark.
+```
+
+<a id="spr-lock-props"></a>
+### SPR-LOCK-PROPS — Arena do Serralheiro
+
+| Campo | Valor |
+|---|---|
+| Caminho final | `assets/sprites/world/lock_bay.png` (**64×32** = 2 quadros 32×32 presos pelo topo: baia de SR-3 fechada · aberta), `lock_gate.png` (**16×48**: tampa / meio repetível / pé listrado, 16 px cada — `scenes/world/lock_gate.tscn` vertical), `lock_hatch.png` (**48×16**, escotilha horizontal e tampa da purga), `lock_plate.png` (**32×32**, placa soldada sobre o Nó), `lock_rail.png` (**32×16**, trilho repetível), `lock_lamp.png` (**16×8** = 2 quadros 8×8: luz da contenção apagada · acesa; o âmbar é tingido por código) |
+| Placeholder gerado | `assets/placeholder/sprites/world/lock_*.png` |
+| Fonte | **IA — geração de imagem do Codex CLI**, 2026-11-21, 2 variações; escolhida a **1ª** (comporta maciça; na 2ª ela era uma moldura oca, que lia como porta aberta). Referências: `door_sheet.png`, `docks_tiles.png`, `coupler_sheet.png` |
+| Status | **integrado (IA)** em 2026-11-21 |
+
+**Prompt (Codex):**
+```
+Pixel art sprite sheet for a melancholic 2D side-view space station platformer, the DOCKS sector: the fixtures of a containment arena controlled by a giant welding arm. Side view.
+
+STYLE MUST MATCH THE ATTACHED REFERENCE IMAGES (the docks door, coupler and tiles): same worn 16-bit look, hard pixels, dark 1-pixel outline, scratched industrial paint. No cast shadows.
+
+Layout: a grid of SQUARE frames, 4 columns and 2 rows, all the same size. Each object is centered in its own frame.
+Row 1:
+ 1. SPIDER-BOT BAY, closed: a squat armored dispenser box mounted under a ceiling, its mounting bracket touching the TOP edge of the frame, a heavy shutter at the bottom, closed, hazard stripes on the shutter, a small dark lamp.
+ 2. SPIDER-BOT BAY, open: the same box, same size and position, the bottom shutter slid open showing a dark opening, the lamp glowing amber (#FFB46A).
+ 3. BLAST GATE: a tall narrow vertical heavy steel shutter (about 1 wide by 3 tall), thick riveted frame, hazard-yellow and black stripes across the bottom edge, a glowing orange weld seam (#FF8A3A) along both long sides.
+ 4. HATCH: a wide short horizontal heavy steel hatch slab (about 3 wide by 1 tall), riveted, hazard stripes along its lower edge, orange weld seam along the top edge.
+Row 2:
+ 5. WELDED PLATE: a square thick steel plate with hazard-yellow and black diagonal stripes, four big bolts in the corners, orange weld beads along its four edges.
+ 6. CEILING RAIL: a horizontal heavy steel I-beam rail running across the whole frame width, with two mounting brackets going up to the top edge, tileable left to right.
+ 7. WARNING LAMP OFF: a small chunky square warning lamp in a steel housing, glass dark red.
+ 8. WARNING LAMP ON: the same lamp, same size and position, glass glowing bright red (#FF4A3A) with a hot white center.
+
+Palette: steel grey (#8C96A0, #B4BEC8, #5E6873), gunmetal (#454E58, #2C333B), hazard yellow (#F2C230) with black (#1A1D21), amber (#FFB46A), weld orange (#FF8A3A, #FFF2C0), alarm red (#FF4A3A), dark navy outline (#0E1218).
+
+Chunky readable shapes only: no thin 1-pixel details. The bay must read at 32x32 pixels, the gate at 16x48 pixels, the hatch at 48x16 pixels, the plate at 32x32, the rail at 16x16, the lamp at 8x8 pixels.
+
+IMPORTANT: draw ONLY the objects described. Never draw walls, floors, rooms, characters or any other object. Solid flat magenta background (#FF00FF) everywhere else, with clear magenta gaps between frames. No text, no letters, no numbers, no labels, no grid lines, no frame borders, no watermark.
+```
+
+Faíscas da solda: `CPUParticles2D` por código (sem textura), sem asset.
+
 <a id="bg-space"></a>
 ### BG-SPACE — Espaço (parallax)
 
@@ -1163,6 +1238,17 @@ Instrumental seamless loop, 2 minutes 30 seconds, dark ambient for a 2D sci-fi g
 ```
 Instrumental seamless loop, 2 minutes 30 seconds, dark ambient for a 2D sci-fi game level: the empty docking bay of a space station, its hull open to space, the escape ship already gone. Wide, slow, airless. A deep sustained pad in a minor key, a slow sub-bass pulse like distant docking machinery breathing, sparse far-away metallic chimes, a muffled dock alarm that starts and never finishes, long reverb, lots of silence. Around 60 BPM with no drums. Mixed quiet. No vocals, no choir, no melody that can be sung. Start and end at the same intensity, no fade-in, no fade-out, so it loops seamlessly.
 ```
+
+<a id="mus-serralheiro"></a>
+### MUS-SERRALHEIRO — Luta contra o Serralheiro
+
+| Campo | Valor |
+|---|---|
+| Caminho final | `assets/audio/music/serralheiro.ogg` (**loop** sem fade nas pontas, 1–2 min) |
+| Direção | Mesma paleta do MUS-DOCKS, agora com pressa: pulso mecânico de 100–110 BPM como um motor de trilho, golpes metálicos secos (a solda), um alarme de contenção que sobe meio tom a cada volta. Tensão sem heroísmo: a máquina não é má, só cumpre uma ordem. **Sem voz** ([GDD-2.9](design/GDD.md#gdd-2-9-musica)) |
+| Termos de busca | `industrial boss loop` · `mechanical tension ambient` · `sci-fi alarm loop` |
+| Placeholder | nenhum: até o arquivo chegar a luta toca a trilha da fase |
+| Status | **pendente** — o humano gera ou baixa e entrega; tocar com `AudioManager.play_layer` na entrada da arena |
 
 <a id="mus-chassis"></a>
 ### MUS-CHASSIS — Chassi perdido

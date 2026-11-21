@@ -4,6 +4,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.a
 sys.path.insert(0, os.path.join(ROOT, "tools"))
 OUT = os.path.join(ROOT, "tests", "qa", "f62_docks.json")
 from qa_build import R
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from f63_fight import fight
 STAGE = int(sys.argv[1]) if len(sys.argv) > 1 else 99
 r = R()
 
@@ -124,12 +126,10 @@ r.shot("28_comporta_aberta")
 E = r.f
 r.press("move_left")
 r.at(E + 60); r.shot("29_passagem")
-r.at(E + 140); r.release("move_left")
-r.at(E + 200); r.shot("30_antessala")
-r.at(E + 210); r.expect(90, 39, "antessala")
-climb("move_right", 150)
-r.press("move_right"); r.wait(20); r.release("move_right"); r.wait(20)
-r.expect(115, 40, "no_do_setor"); r.shot("31_no_do_setor")
+r.at(E + 112); r.release("move_left")
+r.at(E + 160); r.expect(91, 40, "antessala", 2); r.shot("30_antessala")
+fight(r, E + 160, shots=False)
+r.shot("31_no_do_setor")
 r.interact(30)
 r.shot("32_religando")
 F = r.f

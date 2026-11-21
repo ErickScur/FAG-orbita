@@ -80,7 +80,7 @@ Asset "definitivo" é trabalho paralelo do humano: assim que o Dia 1 terminar, o
 | Missões secundárias | Coleta opcional de Dados de Pesquisa ([F20](features/F20-coletaveis-contadores.md)) que muda o epílogo em três faixas ([F66](features/F66-finais-epilogo-creditos.md)) | Final | `[x]` |
 | Desenvolvimento de 4 fases com dificuldades diferentes | F43 Estufa `[x]`, F60 Laboratório `[x]`, F61 Enfermaria `[x]`, F62 Docas `[x]` (todas ligadas ao hub pela F45) | Final | `[x]` |
 | Chefão de nível (Boss) | F64, F65 | Final | `[ ]` |
-| Chefão de nível inferior (Mini-boss) | F63 | Final | `[ ]` |
+| Chefão de nível inferior (Mini-boss) | [F63](features/F63-serralheiro.md) (o Serralheiro tranca as Docas: segurar os acopladores sob o braço que sela, contenção com tempo) | Final | `[x]` |
 | Fim de jogo alternativo | [F66](features/F66-finais-epilogo-creditos.md) (sala de comando: SEMEADURA ou TRANSMISSÃO, cutscene que corta no instante da execução, epílogo, 40 nomes, créditos; entra pela `argos_defeated` da F65) | Final | `[x]` |
 | Nível (progressão) | [F69](features/F69-upgrades-root.md) (Integridade/Carga máximas crescem com as placas e capacitores; Acesso Root abre o que estava selado) | Final | `[x]` |
 | Scanner | [F67](features/F67-mapa-estacao.md) (mapa da estação: TAB duas vezes ou pausa → MAPA) | Final | `[x]` |

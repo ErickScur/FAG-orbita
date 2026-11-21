@@ -12,7 +12,7 @@ const MAP_WIDTH: int = 120
 const MAP_HEIGHT: int = 50
 const SOLID: String = "#"
 const EXPECTED_COUNTS: Dictionary = {
-	"E": 1, "T": 3, "|": 3, "D": 5, "L": 2, "l": 0, "r": 2, "C": 1, "x": 2, "c": 5, "k": 3,
+	"E": 1, "T": 3, "|": 4, "B": 1, "D": 5, "L": 2, "l": 0, "r": 2, "C": 1, "x": 2, "c": 5, "k": 3,
 	"V": 3, "A": 3, "S": 2, "X": 3, "Y": 3, "m": 1, "v": 1,
 }
 const NODE_ID: String = "dk_sector_node"

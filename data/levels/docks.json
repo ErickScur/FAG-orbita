@@ -247,7 +247,7 @@
     "101,25": {
       "id": "kit_dk_03"
     },
-    "114,25": {
+    "96,25": {
       "id": "dk_dock_05"
     },
     "116,25": {
@@ -263,7 +263,7 @@
         18
       ]
     },
-    "95,31": {
+    "84,35": {
       "terminal_id": "docks",
       "system_id": "node_door",
       "id": "dk_lamp_arena_w",
@@ -316,7 +316,7 @@
       "radius": 48.0,
       "energy": 0.9
     },
-    "101,37": {
+    "100,37": {
       "terminal_id": "docks",
       "system_id": "",
       "id": "dk_coupler_02",
@@ -378,13 +378,13 @@
     "17,44": {
       "id": "cell_dk_01"
     },
-    "88,44": {
+    "87,44": {
       "terminal_id": "docks",
       "system_id": "",
       "id": "dk_coupler_01",
       "coupler_id": "dk_coupler_01"
     },
-    "106,44": {
+    "112,40": {
       "terminal_id": "docks",
       "system_id": "",
       "id": "dk_coupler_03",
@@ -400,6 +400,68 @@
     },
     "22,48": {
       "id": "kit_dk_01"
+    },
+    "103,32": {
+      "id": "lock_serralheiro",
+      "couplers": [
+        "dk_coupler_01",
+        "dk_coupler_02",
+        "dk_coupler_03"
+      ],
+      "node": "dk_sector_node",
+      "arena": [
+        84,
+        32,
+        34,
+        13
+      ],
+      "trigger": [
+        84,
+        33,
+        34,
+        12
+      ],
+      "rail": [
+        84,
+        117
+      ],
+      "gate": [
+        95,
+        39,
+        1,
+        6
+      ],
+      "hatch": [
+        90,
+        31,
+        3,
+        1
+      ],
+      "vent": [
+        101,
+        31
+      ],
+      "bays": [
+        [
+          101,
+          32
+        ],
+        [
+          86,
+          32
+        ],
+        [
+          114,
+          32
+        ]
+      ]
+    },
+    "35,40": {
+      "id": "dk_root_door",
+      "requires_ability": "root_access"
+    },
+    "32,40": {
+      "id": "plate_dk_01"
     }
   },
   "triggers": []

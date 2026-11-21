@@ -69,7 +69,7 @@ estava ao lado da doca desde o tutorial leva a um cofre com uma Placa; a HUD gan
 
 ### Não inclui
 - A fase que dá o Root (F64) nem a ARGOS (F65).
-- A 4ª Placa (Docas — ver pendências). O 4º Capacitor é o `capacitor_dk_01` da F62.
+- O 4º Capacitor é o `capacitor_dk_01` da F62. A 4ª Placa entrou na integração com a F63.
 - Som próprio de upgrade (usa `pickup` + `power_on`; trilha nova fora do escopo desta rodada).
 
 ### Onde está cada upgrade
@@ -83,11 +83,12 @@ estava ao lado da doca desde o tutorial leva a um cofre com uma Placa; a HUD gan
 | Núcleo de Capacitor | `capacitor_lab_01` | Laboratório | 41,15 | sótão quente + parede falsa `lab_secret_01` (F60) | — (segredo) |
 | Núcleo de Capacitor | `capacitor_inf_01` | Enfermaria | 67,5 | desvio gelado: parede de gelo + parede falsa `inf_secret_01` (F61) | Núcleo Aquecido (da própria Enfermaria) |
 | Núcleo de Capacitor | `capacitor_dk_01` | Docas | 81,20 | F62 | — (alcançável com todas as habilidades) |
-| Placa de Blindagem | — | Docas | **pendente** | — | sugestão: Propulsor ou Root |
+| Placa de Blindagem | `plate_dk_01` | Docas | 32,40 | hangar: piso oeste, junto do console A → porta ROOT `dk_root_door` (35,40) na parede oeste → cofre (31-34, 38-40) | Acesso Root (Memória) |
 
 Provas: `tests/test_level_upgrades.gd` (cada um alcançável com todas as habilidades e **inalcançável
-sem a habilidade da tabela**; placas novas pedem habilidade de setor posterior; ≥ 2 atrás de ROOT;
-Reator fechado sem Root; Nó da Estufa e do Laboratório alcançáveis sem Root).
+sem a habilidade da tabela**; 4 placas e 4 capacitores nos mapas; placas novas pedem habilidade de
+setor posterior; ≥ 3 atrás de ROOT, uma porta ROOT em Estufa, Laboratório e Docas; Reator fechado
+sem Root; Nó da Estufa, do Laboratório e das Docas alcançáveis sem Root).
 
 ## 5. Critérios de aceite
 
@@ -283,3 +284,17 @@ Nenhuma.
 - **Pendência:** a **4ª Placa nas Docas** fica para depois da F63 (que edita `data/levels/docks.*`);
   até lá `test_upgrade_totals_never_pass_the_gdd` aceita 3 placas ("só a das Docas pode faltar").
 
+### 2026-11-21 — 4ª Placa nas Docas (integração com a F63)
+- **Quem**: agente de integração (branch `final/integracao`) · **O que**: `plate_dk_01` (`B` em
+  32,40) num cofre x 31–34 × 38–40 cavado na parede oeste do hangar, atrás da porta ROOT
+  `dk_root_door` (`|` em 35,40, `requires_ability: root_access`). Fora da rota principal, mas à
+  vista: quem cai no hangar pela primeira vez passa ao lado da porta violeta `SELADA - ACESSO ROOT`
+  a caminho do console A. A volta com o Root é curta (galeria → brecha → corredor → hangar). O cofre
+  fica fora dos dois vácuos (brecha x 24–29, hangar x 36–78).
+- **Testes**: `test_level_upgrades` exige 4 placas (era "só a das Docas pode faltar"), ≥ 3 upgrades
+  atrás de ROOT e uma porta ROOT nas Docas também; o Nó das Docas segue alcançável sem Root.
+  `test_level_docks` conta 4 `|` e 1 `B`.
+- **QA**: `f69_f_placa_docas` 9/9 (novo; save com Root e 3 placas → porta barra o MU-7 em 36,40 →
+  abre com `[E] ACESSO ROOT` → placa → `plates_installed` 4, Integridade máxima 200, HUD com 8
+  células, Terminal do Chassi `4/4 200/200`). Capturas lidas.
+- **Pendência fechada**: a 4ª Placa. Continua: a F64 dá o Root (`unlock_ability`).
