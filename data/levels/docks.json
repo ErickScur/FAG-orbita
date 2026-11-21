@@ -368,7 +368,7 @@
     },
     "5,44": {
       "id": "dk_lamp_gallery",
-      "color": "#bfe6ff",
+      "color": "#ffd25a",
       "radius": 64.0,
       "energy": 1.0
     },
@@ -378,7 +378,7 @@
     "17,44": {
       "id": "cell_dk_01"
     },
-    "87,44": {
+    "87,43": {
       "terminal_id": "docks",
       "system_id": "",
       "id": "dk_coupler_01",
@@ -401,7 +401,7 @@
     "22,48": {
       "id": "kit_dk_01"
     },
-    "103,32": {
+    "98,32": {
       "id": "lock_serralheiro",
       "couplers": [
         "dk_coupler_01",
@@ -413,14 +413,15 @@
         84,
         32,
         34,
-        13
+        12
       ],
       "trigger": [
         84,
         33,
         34,
-        12
+        11
       ],
+      "framing_floor": 41,
       "rail": [
         84,
         117
@@ -429,7 +430,7 @@
         95,
         39,
         1,
-        6
+        5
       ],
       "hatch": [
         90,
@@ -462,6 +463,26 @@
     },
     "32,40": {
       "id": "plate_dk_01"
+    },
+    "8,48": {
+      "id": "dk_bollard_03",
+      "sheet": "res://assets/sprites/props/docks_props_sheet.png",
+      "frame": 6
+    },
+    "26,48": {
+      "id": "dk_crate_02",
+      "sheet": "res://assets/sprites/props/docks_props_sheet.png",
+      "frame": 0
+    },
+    "108,25": {
+      "id": "dk_bollard_04",
+      "sheet": "res://assets/sprites/props/docks_props_sheet.png",
+      "frame": 6
+    },
+    "112,25": {
+      "id": "dk_crate_03",
+      "sheet": "res://assets/sprites/props/docks_props_sheet.png",
+      "frame": 0
     }
   },
   "triggers": []

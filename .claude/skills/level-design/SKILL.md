@@ -131,6 +131,11 @@ O modelo é generoso com energia (toda porta aberta, toda planta crescida, garra
   dicionário `LEGEND` ficou com a chave duas vezes, sem erro (o acoplador venceu). Hoje
   `test_no_legend_letter_is_declared_twice` lê o código e reprova; em fase nova, confira a
   `LEGEND` inteira antes de escolher letra.
+- **(F63, revisão B1)** **Arena quase da altura da tela deixa o chefe do teto sob a HUD**: com o
+  limite de baixo no piso, o topo da tela cai no trilho e o carro fica nos 40 px dos rótulos. Enquadre
+  pela altura do pé (limite de baixo mais alto enquanto o MU-7 está no piso principal, `ArenaFraming`,
+  `framing_floor` no JSON) e, se houver fosso, raso o bastante para o quadro alto ainda mostrar o que
+  há nele; no acordar, câmera temporária no chefe (`BossFocusCamera`). Prova: `test_boss_framing.gd`.
 - **(F63)** **Arena de chefe mais alta que a tela esconde o chefe**: com o MU-7 no chão a câmera
   mostra só ~124 px acima do pé; na antessala de 15 linhas o trilho do teto ficava fora do quadro e
   o braço sumia. Baixe o teto (foi para 13 linhas), limite a câmera pelo piso enquanto o MU-7 está

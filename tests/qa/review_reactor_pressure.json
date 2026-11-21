@@ -1,0 +1,19 @@
+[
+  {"frame": 1, "call": "Settings.set", "args": ["difficulty", "normal"]},
+  {"frame": 1, "call": "Settings.set", "args": ["no_timer", false]},
+  {"frame": 1, "call": "GameState.new_game", "args": []},
+  {"frame": 1, "call": "GameState.from_dict", "args": [{"flags": {"reactor_online": true, "dlg_dk_enter": true, "visited_docks": true}, "abilities": ["dash", "beam", "magnetic_claws", "heat_sink", "heated_core"]}]},
+  {"frame": 1, "scene": "res://scenes/levels/docks.tscn"},
+  {"frame": 30, "expect_scene": "res://scenes/levels/docks.tscn"},
+  {"frame": 40, "expect_tile": [3, 48], "tolerance": 1, "label": "parado_na_galeria"},
+  {"frame": 40, "expect_call": "GameState.is_reactor_running", "equals": true, "label": "relogio_correndo"},
+  {"frame": 40, "screenshot": "01_inicio"},
+  {"frame": 6040, "expect_tile": [3, 48], "tolerance": 1, "label": "ainda_parado"},
+  {"frame": 6040, "expect_call": "GameState.is_reactor_running", "equals": true, "label": "ainda_correndo"},
+  {"frame": 6040, "action": "map", "pressed": true},
+  {"frame": 6043, "action": "map", "pressed": false},
+  {"frame": 6063, "screenshot": "02_terminal_do_chassi_depois_de_100_s"},
+  {"frame": 6063, "action": "ui_cancel", "pressed": true},
+  {"frame": 6066, "action": "ui_cancel", "pressed": false},
+  {"frame": 6096, "quit": true}
+]

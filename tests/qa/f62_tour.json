@@ -48,7 +48,7 @@
   {"frame": 508, "call": "Docks/Player.set_indexed", "args": ["global_position:y", 415]},
   {"frame": 538, "screenshot": "10_vestibulo"},
   {"frame": 543, "call": "Docks/Player.set_indexed", "args": ["global_position:x", 1608]},
-  {"frame": 543, "call": "Docks/Player.set_indexed", "args": ["global_position:y", 719]},
+  {"frame": 543, "call": "Docks/Player.set_indexed", "args": ["global_position:y", 703]},
   {"frame": 573, "screenshot": "11_antessala"},
   {"frame": 578, "call": "Docks/Player.set_indexed", "args": ["global_position:x", 1800]},
   {"frame": 578, "call": "Docks/Player.set_indexed", "args": ["global_position:y", 655]},

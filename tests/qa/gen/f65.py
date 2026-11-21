@@ -17,6 +17,9 @@ PAD_STEP = 18
 LEDGE_STEP = 8
 BEAM_APEX = 14
 ARGOS = "ReactorCore/Argos"
+ROOT = os.path.dirname(os.path.dirname(QA))
+DIALOGUE = os.path.join(ROOT, "data", "dialogue", "reactor_core.json")
+ARGOS_LINE = json.load(open(DIALOGUE))["sequences"]["rc_argos"]["lines"][0]["text"]
 
 
 class Script:
@@ -82,11 +85,19 @@ def tour():
     for name, cell in stops:
         s.teleport(frame, cell)
         s.add(frame + 30, screenshot=name)
+        if name == "06_escada":
+            s.add(frame + 31, expect_call="DialogueManager.current_text", equals=ARGOS_LINE,
+                  label="fala_do_argos_na_escada")
+            s.add(frame + 240, expect_call="DialogueManager.is_active", equals=False,
+                  label="fala_acabou_antes_da_doca")
+            frame += 220
         frame += 40
     s.add(frame, expect_call=ARGOS + ".state_name", equals="idle", label="arena_parada")
     s.teleport(frame + 2, (38, 31))
     s.add(frame + 40, expect_call=ARGOS + ".state_name", equals="active", label="luta_comecou")
     s.add(frame + 42, screenshot="09_arena_oeste")
+    s.add(frame + 43, expect_call="DialogueManager.is_active", equals=False,
+          label="arena_sem_fala_empilhada")
     frame += 60
     arena = [
         ("10_acoplador_oeste", (41, 27)),
@@ -215,6 +226,8 @@ def reactor():
     s.add(frame + 30, expect_tile=[39, 31], tolerance=0, label="no_console_b")
     s.press(frame + 32, "interact")
     s.add(frame + 50, screenshot="08_terminal_da_arena")
+    s.add(frame + 51, expect_call="DialogueManager.is_box_visible", equals=False,
+          label="terminal_sem_legenda_por_cima")
     s.press(frame + 55, "interact")
     s.press(frame + 65, "move_down")
     s.press(frame + 75, "interact")
@@ -315,9 +328,18 @@ def timeout():
     s.add(160, screenshot="01_ilha_fria_no_piso")
     start = 102
     s.add(start + 45 * 60, expect_call=ARGOS + ".lit_segments", equals=5, label="metade_das_lampadas")
+    s.add(start + 45 * 60 + 1, expect_call=ARGOS + ".gauge_lit", args=[0], equals=5,
+          label="painel_do_piso_na_metade")
+    s.add(start + 45 * 60 + 1, expect_call=ARGOS + ".is_urgent", equals=False,
+          label="ainda_sem_urgencia")
     s.add(start + 45 * 60 + 2, screenshot="02_metade_do_tempo")
     s.add(start + 75 * 60, expect_call=ARGOS + ".lit_segments", equals=2, label="duas_lampadas")
+    s.add(start + 75 * 60 + 1, expect_call=ARGOS + ".is_urgent", equals=True,
+          label="ultimos_20_s_em_vermelho")
+    s.add(start + 75 * 60 + 1, expect_call=ARGOS + ".gauge_lit", args=[1], equals=2,
+          label="painel_leste_com_duas")
     s.add(start + 75 * 60 + 2, screenshot="03_alarme_vermelho")
+    s.add(start + 76 * 60 + 2, screenshot="03b_alarme_pulso")
     s.add(start + 89 * 60, screenshot="04_ultimo_segundo")
     s.add(start + 91 * 60, screenshot="05_nucleo_estoura")
     after = start + 91 * 60 + 300

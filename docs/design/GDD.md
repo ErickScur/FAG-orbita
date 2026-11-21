@@ -121,7 +121,7 @@ Mapeamento remapeável no menu (jogo completo).
 <a id="gdd-2-5-timer"></a>
 ### Regra do timer (Estabilidade do Reator)
 
-- Começa em **100%**, cai **1% a cada 90 s** de gameplay.
+- Começa em **100%**, cai **1% a cada 45 s** de gameplay (era 90 s; [AJ-078](#gdd-ajustes)).
 - **Não cai** durante pause, diálogo ou leitura de log.
 - Religar um setor devolve **+15%**. Cada log lido devolve **+0,5%**.
 - O jogador **sempre** pode zerar se for eficiente, mas nunca sobra tempo para explorar tudo com folga na primeira run.
@@ -512,7 +512,7 @@ Toda vez que a dificuldade sobe demais, o jogador ganha um upgrade que faz o con
 | `VISION_RADIUS_OFF` | 48 | px | 3 m (AJ-002) |
 | `VISION_RADIUS_ON` | 128 | px | 8 m (AJ-002) |
 | `REACTOR_START` | 100 | % | 2.5 |
-| `REACTOR_DECAY_INTERVAL` | 90 | s por 1% | 2.5 |
+| `REACTOR_DECAY_INTERVAL` | 45 | s por 1% | 2.5 · AJ-078 |
 | `REACTOR_SECTOR_BONUS` | 15 | % | 2.5 |
 | `REACTOR_LOG_BONUS` | 0.5 | % | 2.6.3 |
 | `REACTOR_DEATH_PENALTY` | 3 | % | 2.5 |
@@ -745,7 +745,7 @@ Toda vez que a dificuldade sobe demais, o jogador ganha um upgrade que faz o con
 | `LOCK_PURGE_DPS` | 25 | pts/s (contenção completa) | AJ-055 |
 | `LOCK_CHARGE_TIME` | 3.0 | s segurando o acoplador | AJ-054 |
 | `LOCK_CHARGE_DECAY` | 0.25 | fração/s ao soltar | AJ-054 |
-| `LOCK_WAKE_TIME` | 1.5 | s | AJ-054 |
+| `LOCK_WAKE_TIME` | 2.0 | s | AJ-054 · AJ-078 |
 | `LOCK_ARM_SPEED` | 48 | px/s | AJ-054 |
 | `LOCK_ARM_RUSH_SPEED` | 120 | px/s | AJ-054 |
 | `LOCK_ARM_ALIGN` | 4 | px | AJ-054 |
@@ -881,3 +881,4 @@ Toda vez que a dificuldade sobe demais, o jogador ganha um upgrade que faz o con
 | AJ-075 | 2026-11-21 | 2.7 · 2.8 | **O FIM DA DEMO sai do jogo.** Com as seis fases no hub, nenhum setor termina em tela de fim: cada um volta ao Núcleo e o único fim de vitória é ARGOS → sala de comando → final escolhido → epílogo com estatísticas → créditos → menu (F66). Os fins de derrota (chassi perdido, perda de órbita) ficam como estão. A tela "FIM DA DEMO" do AJ-004 continua na tag `v0.1-demo` | Integração da F65: o fim provisório (`demo_end_until`, AJ-064) só existia enquanto faltava o Reator |
 | AJ-076 | 2026-11-21 | Jornada §6 · F64 · F66 | **"40" é a tripulação inteira, não os saudáveis presos.** A Jornada diz que ÓRBITA "isolou 40 pessoas saudáveis do lado errado", mas a ARTEMIS tem 40 pessoas no total (`crew.json`, epílogo, "PARA OS 40."), os leitos 1–11 já estavam ocupados antes do selamento (LOG 14) e a SELENE partiu com gente (LOG 16). O log final diz agora *"Selei o lado errado. Quem estava saudável ficou preso do lado dos esporos."*; o 40 fica para a tripulação. No mesmo acerto, a Ana Lúcia sai do leito 10 do LOG 14 (no LOG 16, posterior, ela está no painel manual do hangar): o leito 11 é do **Davi**, filho dela, e o leito 10 é só mais um do setor B. `test_the_logs_keep_the_crew_facts_straight` trava as duas regressões | Revisão de design da campanha: o número e o lugar da Ana Lúcia não fechavam |
 | AJ-077 | 2026-11-21 | 2.8 | **Prompt junto do MU-7 e interação honesta.** O prompt de interação sai do centro inferior e flutua 40 px acima do pé do MU-7, centrado nele e preso à tela (4 px de margem, nunca acima de y = 56, a faixa da HUD; sem espaço em cima, desce para baixo do pé). Interagível que não faz nada ao `[E]` (porta selada sem Root, acoplador trancado ou sem energia, terminal sem energia, nó já religado) mostra só o estado, sem a tecla, e perde a disputa de alvo para qualquer um que age. A comporta ROOT abrível vence o que estiver ao lado | Revisão da campanha: no canto do hub e na arena do Serralheiro o prompt fixo ficava longe do MU-7 ou cobria o acoplador; `[E] PORTA SELADA` prometia ação que não existia; a comporta ROOT do Laboratório perdia para o log ao lado |
+| AJ-078 | 2026-11-21 | 2.5 · 2.6.2-I · 2.7-F4 · 2.7-F6 · 2.9 · GDD-P | **Pressão e leitura do fim do jogo.** (1) **O reator volta a pressionar:** `REACTOR_DECAY_INTERVAL` 90 → **45 s** por 1 % no Normal (Fácil ×0,5 e Difícil ×1,5 seguem; o modo sem timer continua ×0). Simulação no ritmo da GDD-2.7 (5+10+12+12+15+8+7 = 69 min, +15 % por setor religado, teto 100 %): com 90 s o Normal terminava em 95 % e nunca descia de 90 %; com 45 s termina em **83 %**, mínimo de **73 %** (fim das Docas), e um jogador 1,5× mais lento chega ao Reator com **37 %**. No Difícil o ritmo da GDD termina em 37 % e o lento perde a órbita; no Fácil, 95 % (mín. 90 %). Teste `test_reactor_pressure.gd`. (2) **O Serralheiro acorda à vista:** estacionado a 7 tiles do pouso (era 12), `LOCK_WAKE_TIME` 1,5 → **2,0 s** e, durante o despertar, a câmera desliza até enquadrar o braço inteiro e o MU-7, com o carro a 48 px do topo, e volta; na luta a câmera mantém o carro abaixo da faixa da HUD enquanto o MU-7 está no piso principal e só desce quando ele cai no fosso (o fosso tem 2 linhas, era 3). (3) **O relógio de ARGOS se lê de qualquer andar:** as 9 lâmpadas viram lâmpadas de 6 px com soquete e brilho de sprite numa ferradura **abaixo** do núcleo (que desceu 2 tiles), e duas cópias do mostrador ficam no piso L0 (uma para cada lado); nos últimos 20 s as lâmpadas acesas piscam em vermelho e a vinheta da tela pulsa vermelha a cada alarme. (4) **ARGOS sem número novo:** o roteiro vence em ~15 s, mas a solução pede 2 consoles, 3 andares, as 3 torres e calor constante (0,9/s com o Dissipador); estimativa de um humano que já conhece a solução: 45–60 s, primeira tentativa costuma falhar (raciocínio na F65) | Revisão de design 2026-11-21: a campanha inteira (632 s) ficou entre 99,5 % e 100 % de reator, contra a GDD-2.5 ("nunca sobra tempo para explorar tudo com folga"); o Serralheiro acordava fora da tela e sob o `OBJETIVO`; as lâmpadas de ARGOS eram pontos de 2–3 px que sumiam da tela no piso e sob a HUD nas plataformas |

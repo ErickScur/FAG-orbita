@@ -24,6 +24,7 @@ var _ambient_timer: float = 0.0
 var _started_frame: int = -1
 var _blocking_active: bool = false
 var _paused_world: bool = false
+var _ambient_held: bool = false
 var _box: CanvasLayer = null
 
 
@@ -38,6 +39,8 @@ func _process(delta: float) -> void:
 	if _current.is_empty():
 		return
 	if _line_index < 0:
+		return
+	if _ambient_held and not _is_blocking():
 		return
 	var length: int = _current_text().length()
 	if _typed_chars < float(length):
@@ -134,6 +137,28 @@ func clear() -> void:
 
 func is_active() -> bool:
 	return not _current.is_empty()
+
+
+func hold_ambient(held: bool) -> void:
+	if _ambient_held == held:
+		return
+	_ambient_held = held
+	if _current.is_empty() or _is_blocking() or _line_index < 0:
+		return
+	if held:
+		if _box != null:
+			_box.call("hide_box")
+		return
+	_present_line()
+	_update_box_progress()
+
+
+func is_ambient_held() -> bool:
+	return _ambient_held
+
+
+func is_box_visible() -> bool:
+	return _box != null and _box.visible
 
 
 func freezes_timer() -> bool:
@@ -290,8 +315,18 @@ func _show_line(index: int) -> void:
 	var sfx: String = String(line.get("sfx", ""))
 	if not sfx.is_empty():
 		AudioManager.play_sfx(StringName(sfx))
-	if _box == null:
+	if _ambient_held and not _is_blocking():
+		if _box != null:
+			_box.call("hide_box")
 		return
+	_present_line()
+	_update_box_progress()
+
+
+func _present_line() -> void:
+	if _box == null or _line_index < 0 or _line_index >= _lines.size():
+		return
+	var line: Dictionary = _lines[_line_index]
 	var speaker_id: StringName = StringName(String(line.get("speaker", "")))
 	_box.call(
 		"show_line",
@@ -301,7 +336,6 @@ func _show_line(index: int) -> void:
 		_is_blocking(),
 		StringName(String(line.get("expr", DialogueData.DEFAULT_EXPRESSION)))
 	)
-	_update_box_progress()
 
 
 func _speaker_data(speaker_id: StringName) -> Dictionary:

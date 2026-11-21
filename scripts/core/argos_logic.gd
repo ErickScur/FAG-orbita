@@ -34,6 +34,10 @@ static func segments_for(seconds_left: float) -> int:
 	return clampi(ceili(seconds_left / step - 0.0001), 0, count)
 
 
+static func is_urgent(seconds_left: float) -> bool:
+	return seconds_left <= Balance.ARGOS_ALARM_FAST_TIME
+
+
 static func alarm_interval(seconds_left: float) -> float:
 	if seconds_left <= Balance.ARGOS_ALARM_FAST_TIME:
 		return Balance.ARGOS_ALARM_FAST_INTERVAL

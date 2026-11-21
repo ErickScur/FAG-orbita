@@ -93,7 +93,7 @@ apaga em silêncio e a sala de comando abre.
 
 | Peça | Onde | Papel |
 |---|---|---|
-| Núcleo ARGOS | (800, 440) px, centro da arena | 9 lâmpadas = 90 s; fornalha 4×4 em volta |
+| Núcleo ARGOS | (800, 472) px, centro da arena (AJ-078: desceu 2 tiles) | 9 lâmpadas = 90 s em ferradura **abaixo** do núcleo; fornalha 4×4 em volta |
 | Calor de Verão | a arena inteira (`h` warm) | SUPERAQUECIMENTO constante (0,9/s com Dissipador) |
 | Console B | plataforma oeste L1 (39,31) | primeira escolha de energia |
 | Console A | piso oeste L0 (39,44) | segunda escolha |
@@ -321,3 +321,40 @@ Nenhuma. Pendente: MUS-REACTOR.
   `f65_mapa_fim` 9/9; `f64_memory` 31/31, `f64_hub_volta` 10/10, `f64_hub_entrada` 8/8, `f64_morte`
   13/13, `f62_docks` 41/41, `f62_hub_docks` 9/9, `f63_serralheiro` 25/25, `f66_semeadura` 23/23,
   `f66_transmissao` 22/22, `f69_c_comporta_reator` 6/6, `f67_map_hub` 23/23, `f45_c_ala_selada` 6/6.
+
+### 2026-11-21 — Revisão de design: relógio legível, fala fora do caminho, dificuldade (grupo B1)
+- **P2 — relógio de 90 s:** as 9 lâmpadas eram pontos de 2–3 px que liam como brasas. Agora são
+  `ArgosTimerLamps` (`scenes/bosses/argos_timer_lamps.gd`): lâmpada de 6 px num soquete de 10 px,
+  brilho por `Sprite2D` aditivo (nenhuma `PointLight2D` nova, limite de luzes intacto), clarão branco
+  quando uma apaga. No núcleo ficam numa **ferradura de 200° abaixo** dele (nenhuma no alto, perto da
+  HUD), e o núcleo desceu 2 tiles (`core` 440 → 472, fornalha `rc_heat_core` 26 → 28): do alto da
+  plataforma térmica o centro do núcleo fica a ~52 px do topo e as lâmpadas abaixo de 40 px. Duas
+  **cópias do mostrador** em placa com borda âmbar ficam no piso L0 (`argos.gauges`: x 680 e 920,
+  3,5 tiles acima do piso): do console A, da ilha fria e do acoplador 1 um painel inteiro aparece
+  (`test_every_floor_station_sees_a_whole_timer_gauge`). Nos últimos 20 s (`ArgosLogic.is_urgent`)
+  as lâmpadas acesas piscam em vermelho e a **vinheta da fase pulsa vermelha** a cada alarme
+  (`Vignette.apply`, sem camada nova); volta ao normal no reset e na vitória.
+- **P3 — texto empilhado:** `rc_argos` dispara no pé da escada da aproximação (gatilho `rc_t_argos`,
+  x 5–10, linhas 19–25), ~28 tiles antes da `rc_dock_02`: termina antes do `BACKUP SALVO`
+  (`test_the_reactor_line_plays_before_the_dock`). O `_start` do encontro ainda chama a fala, mas
+  `has_played` a pula; só roteiro que teleporta direto para a doca a vê na arena. O Terminal de
+  Distribuição segura a fala ambiente enquanto aberto (`DialogueManager.hold_ambient`): a caixa
+  some e o relógio da fala para; ao fechar, ela volta de onde parou (`tests/test_dialogue_hold.gd`).
+- **P5 — ARGOS fácil demais? Não mexi em número.** O roteiro vence em ~15 s porque teleporta e
+  conhece tudo. A solução pede: 1ª leitura do console B (mudo, o relógio corre: ~5–8 s), Feixe na
+  torre 1 + 1,5 s de sobrecarga no poleiro (~5 s), descer pelas plataformas (ciclo de 6 s, até 6 s
+  de espera) e atravessar o piso eletrificado ou contorná-lo (~6–8 s), Feixe na torre 3 + 1,5 s
+  (~4 s), voltar ao console A e trocar as linhas (~6–8 s), subir pela plataforma, R1 e a parede
+  magnética até R2 (~22 linhas, ~8–10 s) e acertar o Feixe no pulo sob a torre 2 (~4 s). Soma de um
+  humano que **já sabe** a solução: ~45–60 s, com SUPERAQUECIMENTO de 0,9/s o tempo todo (54 de
+  Integridade em 60 s, mais 15 por pulso de torre). A primeira tentativa tende a falhar (descobrir a
+  troca de linhas e a parede do leste), e a segunda fecha com folga curta: é o 9/10 da curva sem
+  ser injusto. Endurecer (ex.: 75 s ou torres mais rápidas) tiraria a folga de quem aprende; fica
+  para o playtest humano decidir, com `ARGOS_TIME` e `ARGOS_PHASE_SPEEDUP` como alavancas.
+- **Testes:** `tests/test_boss_framing.gd` (ferradura, painéis do piso, urgência, núcleo abaixo da
+  HUD do alto da plataforma), `tests/test_dialogue_hold.gd`.
+- **QA:** `f65_falha_tempo` com marcos novos (`painel_do_piso_na_metade` = 5, `ultimos_20_s_em_vermelho`,
+  `painel_leste_com_duas` = 2) e capturas `03_alarme_vermelho`/`03b_alarme_pulso` (borda vermelha e
+  lâmpadas vermelhas no painel do piso); `f65_tour` passa pela escada (`fala_do_argos_na_escada`,
+  `fala_acabou_antes_da_doca`, `arena_sem_fala_empilhada`); `f65_reactor` ganha
+  `terminal_sem_legenda_por_cima`.

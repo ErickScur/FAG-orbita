@@ -1,7 +1,7 @@
 extends TestCase
 
 const GAME_STATE_SCRIPT: String = "res://autoload/game_state.gd"
-const NINETY_SECONDS: float = 90.0
+const DECAY_STEP: float = Balance.REACTOR_DECAY_INTERVAL
 
 var _tree: SceneTree = null
 var _level: Node = null
@@ -50,25 +50,25 @@ func test_new_game_starts_offline() -> void:
 
 
 func test_offline_does_not_decay() -> void:
-	_state._process(NINETY_SECONDS)
+	_state._process(DECAY_STEP)
 	assert_almost_eq(_state.reactor_percent, Balance.REACTOR_START, 0.0001, "sem queda")
 
 
 func test_decay_normal_after_alarm() -> void:
 	_state.set_reactor_online(true)
 	assert_true(_state.is_reactor_running(), "timer ligado em fase")
-	_state._process(NINETY_SECONDS)
-	assert_almost_eq(_state.reactor_percent, 99.0, 0.05, "99% após 90 s")
+	_state._process(DECAY_STEP)
+	assert_almost_eq(_state.reactor_percent, 99.0, 0.05, "cai 1% a cada intervalo")
 
 
 func test_decay_easy_and_hard() -> void:
 	_state.set_reactor_online(true)
 	Settings.difficulty = &"easy"
-	_state._process(NINETY_SECONDS)
+	_state._process(DECAY_STEP)
 	assert_almost_eq(_state.reactor_percent, 99.5, 0.05, "fácil cai metade")
 	_state.reactor_percent = Balance.REACTOR_START
 	Settings.difficulty = &"hard"
-	_state._process(NINETY_SECONDS)
+	_state._process(DECAY_STEP)
 	assert_almost_eq(_state.reactor_percent, 98.5, 0.05, "difícil cai 1,5%")
 
 
@@ -78,7 +78,7 @@ func test_no_timer_never_decays() -> void:
 	for difficulty: StringName in [&"easy", &"normal", &"hard"]:
 		Settings.difficulty = difficulty
 		_state.reactor_percent = Balance.REACTOR_START
-		_state._process(NINETY_SECONDS)
+		_state._process(DECAY_STEP)
 		assert_almost_eq(
 			_state.reactor_percent, Balance.REACTOR_START, 0.0001, "sem timer em %s" % difficulty
 		)
@@ -88,7 +88,7 @@ func test_pause_freezes_decay() -> void:
 	_state.set_reactor_online(true)
 	EventBus.game_paused.emit(true)
 	assert_true(_state.is_timer_frozen(), "pausado congela")
-	_state._process(NINETY_SECONDS)
+	_state._process(DECAY_STEP)
 	EventBus.game_paused.emit(false)
 	assert_almost_eq(_state.reactor_percent, Balance.REACTOR_START, 0.0001, "congelado no pause")
 
@@ -96,11 +96,11 @@ func test_pause_freezes_decay() -> void:
 func test_dialogue_and_log_freeze_decay() -> void:
 	_state.set_reactor_online(true)
 	EventBus.dialogue_started.emit()
-	_state._process(NINETY_SECONDS)
+	_state._process(DECAY_STEP)
 	EventBus.dialogue_finished.emit()
 	assert_almost_eq(_state.reactor_percent, Balance.REACTOR_START, 0.0001, "diálogo congela")
 	EventBus.log_opened.emit(&"log_core_01")
-	_state._process(NINETY_SECONDS)
+	_state._process(DECAY_STEP)
 	EventBus.log_closed.emit(&"log_core_01")
 	assert_almost_eq(_state.reactor_percent, Balance.REACTOR_START, 0.0001, "log congela")
 
@@ -108,7 +108,7 @@ func test_dialogue_and_log_freeze_decay() -> void:
 func test_outside_level_does_not_decay() -> void:
 	_state.set_reactor_online(true)
 	_tree.current_scene = null
-	_state._process(NINETY_SECONDS)
+	_state._process(DECAY_STEP)
 	_tree.current_scene = _level
 	assert_almost_eq(_state.reactor_percent, Balance.REACTOR_START, 0.0001, "menu não decai")
 
@@ -161,8 +161,8 @@ func test_zero_emits_game_over_once() -> void:
 	EventBus.game_over.connect(handler)
 	_state.set_reactor_online(true)
 	_state.reactor_percent = 0.2
-	_state._process(NINETY_SECONDS)
-	_state._process(NINETY_SECONDS)
+	_state._process(DECAY_STEP)
+	_state._process(DECAY_STEP)
 	EventBus.game_over.disconnect(handler)
 	_restore_game_over(saved)
 	assert_almost_eq(_state.reactor_percent, 0.0, 0.0001, "chegou a zero")
@@ -179,7 +179,7 @@ func test_reactor_changed_uses_display_steps() -> void:
 	for frame: int in range(60):
 		_state._process(1.0 / 60.0)
 	assert_eq(values.size(), 0, "sem emissão enquanto o inteiro não muda")
-	_state._process(NINETY_SECONDS)
+	_state._process(DECAY_STEP)
 	assert_eq(values.size(), 1, "emite ao mudar o inteiro exibido")
 	EventBus.reactor_changed.disconnect(handler)
 

@@ -72,8 +72,8 @@ na passarela, **A3** (112,40) no estrado. **Nó** (115,40) no estrado, coberto p
 
 | Fase | O que o jogador vê | O que o braço faz |
 |---|---|---|
-| Dormente | Arena escura, braço apagado estacionado à direita da entrada (103,32), placa no Nó | nada |
-| Acordar (1,5 s) | A escotilha sela atrás do MU-7, faíscas, tremor, o olho âmbar acende; as 12 luzes do trilho ficam âmbar; os acopladores **piscam** com 3 pontos apagados acima | — |
+| Dormente | Arena escura, braço apagado estacionado à direita da entrada (98,32), placa no Nó | nada |
+| Acordar (2,0 s, câmera no braço) | A escotilha sela atrás do MU-7, faíscas, tremor, o olho âmbar acende; as 12 luzes do trilho ficam âmbar; os acopladores **piscam** com 3 pontos apagados acima | — |
 | 0/3 | `[E] SEGURAR PARA ACOPLAR` em cima de cada acoplador | anda atrás do acoplador **mais perto do MU-7** (48 px/s), desce a garra com a placa (0,8 s) e **trava** por 5 s (quem carregava perde a carga), descansa 3 s; SR-3: primeira 3 s depois de acordar, depois a cada 7 s |
 | 1/3 | luz 1 da placa do Nó acende | trava 1,2 s (faíscas), corre (120 px/s) e **solda a comporta do piso**: a rota oeste↔centro passa a ser por cima (pulo duplo até a plataforma, pulo duplo pela passarela) |
 | 2/3 | luz 2 acende | trava, corre e **arranca a tampa de purga**: a arena inteira vira **vácuo** (estrelas, borda amarela, 4 de Integridade/s, deriva; o Propulsor pilota) |
@@ -147,7 +147,7 @@ scenes/world/lock_gate.tscn (+gd)   class_name LockGate — comporta/escotilha s
 scenes/world/coupler.gd             + soquete Interactable, "armado" (pisca), carga com 3 pontos, is_held()
 scripts/core/level_builder.gd       + legenda `K` (o Serralheiro)
 ```
-- O Serralheiro é a entidade `K` em (103,32) com os parâmetros no `docks.json`
+- O Serralheiro é a entidade `K` em (98,32) com os parâmetros no `docks.json`
   (`couplers`, `node`, `arena`, `trigger`, `rail`, `gate`, `hatch`, `vent`, `bays`).
 - Caminho fixo para QA: `Docks/Entities/Serralheiro` (`phase_name`, `powered_count`, `time_left`,
   `alive_spawns`, `is_gate_closed`, `is_entry_sealed`, `is_vented`, `is_node_unlocked`,
@@ -316,3 +316,24 @@ Nenhuma que bloqueie. Pendente: a faixa `MUS-SERRALHEIRO`.
 ### 2026-11-21 — Fim das Docas pela volta ao Núcleo (integração da F64)
 - `f63_serralheiro` e `f62_docks` regenerados pelos geradores: o último marco agora é
   `core_hub.tscn` (25/25 e 41/41); `f63_serralheiro_morte` 23/23 sem mudança.
+
+### 2026-11-21 — Revisão de design: o Serralheiro acorda à vista (grupo B1)
+- **P1 — acordar fora da tela:** em (103,32) o braço ficava a 12–13 tiles do pouso (91,40) e a câmera
+  centrada no MU-7 mostra ±12: no acordar só um pedaço do braço aparecia na borda e o carro e o olho
+  ficavam sob o `OBJETIVO`. Agora o `K` está em **(98,32)**, `LOCK_WAKE_TIME` 1,5 → **2,0 s** (AJ-078)
+  e, no acordar, uma `BossFocusCamera` (`scenes/bosses/boss_focus_camera.gd`, câmera temporária como a
+  da vitória do ARGOS) desliza 0,4 s até o ponto entre o MU-7 e o braço com o carro a 48 px do topo
+  (`ArenaFraming.focus_between`), segura 1,2 s e devolve ao MU-7 (o tremor do chassi segue na câmera
+  temporária). Morrer no meio solta a câmera (`_release_wake_camera` no reset).
+- **P8 — carro sob a HUD na luta:** `TROLLEY_DROP` 22 → 30 e enquadramento por altura do pé
+  (`framing_floor: 41` no JSON): no piso principal e nas passarelas o limite de baixo da câmera fica em
+  696 px e o carro aparece a 42 px do topo; quando o MU-7 cai no fosso o limite desliza (240 px/s) até
+  o fundo da arena. Para caber, o fosso perdeu uma linha (piso em y 44, arena `[84, 32, 34, 12]`,
+  comporta `[95, 39, 1, 5]`, acoplador 1 em (87,43)).
+- **Testes:** `tests/test_boss_framing.gd` (estacionado a ≤ 8 tiles do pouso, despertar com carro e
+  MU-7 inteiros abaixo da HUD, quadro da luta), `test_level_lock.gd` com a arena nova.
+- **QA:** `review_design_serralheiro_wake` agora tem gerador (`tests/qa/gen/review_design_serralheiro_wake.py`)
+  e marcos `camera_no_braco`, `braco_inteiro_abaixo_da_hud`, `olho_ainda_no_quadro`,
+  `camera_volta_ao_mu7`, `carro_abaixo_da_hud_na_luta` (`Serralheiro.is_boss_in_frame(40)`);
+  `f63_serralheiro` 25/25 e `f63_serralheiro_morte` 23/23 regenerados (pouso no fosso em (87,43); o
+  `acordou_de_novo` espera os 2,0 s).

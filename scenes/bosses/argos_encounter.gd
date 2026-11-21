@@ -35,9 +35,12 @@ const RING_WIDTH: float = 2.0
 const RING_COLOR: Color = Color("ff9a4a")
 const RING_FALL: float = 24.0
 const SEGMENT_RADIUS: float = 60.0
-const SEGMENT_HALF: float = 2.0
-const SEGMENT_ON: Color = Color("ffe8c8")
-const SEGMENT_OFF: Color = Color("4a2420")
+const SEGMENT_SPREAD_DEGREES: float = 200.0
+const GAUGE_SPACING: float = 12.0
+const DANGER_EDGE: Color = Color("ff2414")
+const DANGER_EDGE_STRENGTH: float = 0.8
+const DANGER_EDGE_REST: float = 0.35
+const DANGER_EDGE_DECAY: float = 0.5
 const CORE_LIGHT_RADIUS: float = 150.0
 const CORE_LIGHT_ENERGY: float = 1.3
 const CORE_LIGHT_COLOR: Color = Color("ff7a2a")
@@ -62,7 +65,11 @@ var _alarm_group: StringName = &""
 var _core: Sprite2D = null
 var _core_light: PointLight2D = null
 var _rings: Array[Node2D] = []
-var _segments: Array[Polygon2D] = []
+var _ring_lamps: ArgosTimerLamps = null
+var _gauges: Array[ArgosTimerLamps] = []
+var _gauge_points: Array[Vector2] = []
+var _vignette: Vignette = null
+var _danger_left: float = 0.0
 var _embers: CPUParticles2D = null
 var _ambient: CanvasModulate = null
 var _ambient_base: Color = Color.BLACK
@@ -139,6 +146,36 @@ func core_position() -> Vector2:
 	return _core_position
 
 
+func timer_lamps() -> Array[ArgosTimerLamps]:
+	var found: Array[ArgosTimerLamps] = []
+	if _ring_lamps != null:
+		found.append(_ring_lamps)
+	found.append_array(_gauges)
+	return found
+
+
+func gauge_count() -> int:
+	return _gauges.size()
+
+
+func gauge_lit(index: int) -> int:
+	if index < 0 or index >= _gauges.size():
+		return -1
+	return _gauges[index].lit_count()
+
+
+func ring_lit() -> int:
+	return _ring_lamps.lit_count() if _ring_lamps != null else -1
+
+
+func is_urgent() -> bool:
+	return _ring_lamps != null and _ring_lamps.is_urgent()
+
+
+func danger_edge() -> float:
+	return _danger_left
+
+
 func couplers() -> Array[RootCoupler]:
 	var found: Array[RootCoupler] = []
 	for node: Node in _level_nodes(COUPLER_GROUP):
@@ -180,6 +217,9 @@ func reset_encounter() -> void:
 	if _ambient != null:
 		_ambient.color = _ambient_base
 	_shown_segments = -1
+	_danger_left = 0.0
+	_set_urgent(false)
+	_restore_vignette()
 	encounter_reset.emit()
 
 
@@ -209,6 +249,12 @@ func _configure() -> void:
 	_ambient = level.get_node_or_null(^"CanvasModulate") as CanvasModulate
 	if _ambient != null:
 		_ambient_base = _ambient.color
+	for child: Node in level.get_children():
+		if child is Vignette:
+			_vignette = child
+	_gauge_points.clear()
+	for value: Variant in meta.get("gauges", []) as Array:
+		_gauge_points.append(_vector(value))
 	_build_core()
 	for coupler: RootCoupler in couplers():
 		coupler.overloaded.connect(_on_coupler_overloaded)
@@ -301,6 +347,8 @@ func _begin_victory() -> void:
 	_focus_core()
 	_count_down_segments()
 	_kill_tween()
+	_set_urgent(false)
+	_restore_vignette()
 	_tween = create_tween()
 	var step: float = Balance.ARGOS_SHUTDOWN_TIME / 3.0
 	_tween.tween_callback(_set_core_frame.bind(CRACK_FRAMES[CRACK_FRAMES.size() - 1]))
@@ -339,21 +387,19 @@ func _focus_core() -> void:
 
 
 func _count_down_segments() -> void:
-	if _segments.is_empty():
-		return
+	var count: int = maxi(1, Balance.ARGOS_SEGMENTS)
 	var countdown: Tween = create_tween()
-	var step: float = Balance.ARGOS_SHUTDOWN_TIME / float(_segments.size())
-	for index: int in range(_segments.size() - 1, -1, -1):
+	var step: float = Balance.ARGOS_SHUTDOWN_TIME / float(count)
+	for lit: int in range(count - 1, -1, -1):
 		countdown.tween_interval(step)
-		countdown.tween_property(_segments[index], "color", SEGMENT_OFF, 0.0)
+		countdown.tween_callback(_set_lamps.bind(lit, true))
 
 
 func _silence() -> void:
 	AudioManager.stop_all()
 	if _embers != null:
 		_embers.emitting = false
-	for segment: Polygon2D in _segments:
-		segment.color = SEGMENT_OFF
+	_set_lamps(0, false)
 
 
 func _finish_victory() -> void:
@@ -373,8 +419,7 @@ func _apply_dead_state() -> void:
 		_embers.emitting = false
 	for ring: Node2D in _rings:
 		ring.modulate.a = 0.0
-	for segment: Polygon2D in _segments:
-		segment.color = SEGMENT_OFF
+	_set_lamps(0, false)
 	if _ambient != null:
 		_ambient.color = DEAD_TINT
 
@@ -427,6 +472,8 @@ func _update_alarm(delta: float) -> void:
 		return
 	_alarm_left = ArgosLogic.alarm_interval(_logic.time_left)
 	AudioManager.play_sfx(&"reactor_alarm")
+	if ArgosLogic.is_urgent(_logic.time_left):
+		_danger_left = DANGER_EDGE_DECAY
 
 
 func _update_visuals(delta: float) -> void:
@@ -449,9 +496,39 @@ func _update_visuals(delta: float) -> void:
 			AudioManager.play_sfx(&"power_off")
 			_shake(SEGMENT_SHAKE)
 		_shown_segments = lit
-		for index: int in range(_segments.size()):
-			_segments[index].color = SEGMENT_ON if index < lit else SEGMENT_OFF
+		_set_lamps(lit, _logic.is_active())
+	_set_urgent(_logic.is_active() and ArgosLogic.is_urgent(_logic.time_left))
+	_update_danger_edge(delta)
 	_update_ambient()
+
+
+func _set_lamps(lit: int, animated: bool) -> void:
+	for lamps: ArgosTimerLamps in timer_lamps():
+		lamps.set_lit(lit, animated)
+
+
+func _set_urgent(urgent: bool) -> void:
+	for lamps: ArgosTimerLamps in timer_lamps():
+		lamps.set_urgent(urgent)
+
+
+func _update_danger_edge(delta: float) -> void:
+	if _vignette == null:
+		return
+	if not _logic.is_active() or not ArgosLogic.is_urgent(_logic.time_left):
+		if _danger_left > 0.0:
+			_danger_left = 0.0
+			_restore_vignette()
+		return
+	_danger_left = maxf(0.0, _danger_left - delta)
+	var beat: float = _danger_left / DANGER_EDGE_DECAY
+	var strength: float = lerpf(DANGER_EDGE_REST, DANGER_EDGE_STRENGTH, beat)
+	_vignette.apply(DANGER_EDGE, strength)
+
+
+func _restore_vignette() -> void:
+	if _vignette != null:
+		_vignette.apply(Balance.VIGNETTE_COLOR, Balance.VIGNETTE_STRENGTH)
 
 
 func _update_ambient() -> void:
@@ -492,18 +569,20 @@ func _build_core() -> void:
 	_core.hframes = SHEET_COLUMNS
 	_core.vframes = SHEET_ROWS
 	holder.add_child(_core)
-	for index: int in range(Balance.ARGOS_SEGMENTS):
-		var segment := Polygon2D.new()
-		var angle: float = -PI * 0.5 + TAU * float(index) / float(Balance.ARGOS_SEGMENTS)
-		segment.position = Vector2.RIGHT.rotated(angle) * SEGMENT_RADIUS
-		segment.polygon = PackedVector2Array([
-			Vector2(-SEGMENT_HALF, -SEGMENT_HALF), Vector2(SEGMENT_HALF, -SEGMENT_HALF),
-			Vector2(SEGMENT_HALF, SEGMENT_HALF), Vector2(-SEGMENT_HALF, SEGMENT_HALF),
-		])
-		segment.color = SEGMENT_ON
-		segment.material = HeatZone.unshaded_material()
-		holder.add_child(segment)
-		_segments.append(segment)
+	var count: int = maxi(1, Balance.ARGOS_SEGMENTS)
+	_ring_lamps = ArgosTimerLamps.new()
+	_ring_lamps.name = "TimerRing"
+	holder.add_child(_ring_lamps)
+	_ring_lamps.configure(
+		ArgosTimerLamps.horseshoe(count, SEGMENT_RADIUS, deg_to_rad(SEGMENT_SPREAD_DEGREES)), false
+	)
+	for index: int in range(_gauge_points.size()):
+		var gauge := ArgosTimerLamps.new()
+		gauge.name = "TimerGauge%d" % (index + 1)
+		gauge.position = _gauge_points[index]
+		add_child(gauge)
+		gauge.configure(ArgosTimerLamps.row(count, GAUGE_SPACING), true)
+		_gauges.append(gauge)
 	_embers = CPUParticles2D.new()
 	_embers.name = "Embers"
 	_embers.amount = EMBER_AMOUNT

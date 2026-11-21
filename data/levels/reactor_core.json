@@ -19,7 +19,7 @@
     "terminal": "reactor_core",
     "core": [
       800,
-      440
+      472
     ],
     "arena": [
       37,
@@ -30,7 +30,17 @@
     "heat_group": "rc_heat",
     "tower_group": "argos_tower",
     "floor_group": "argos_floor",
-    "alarm_group": "rc_alarm"
+    "alarm_group": "rc_alarm",
+    "gauges": [
+      [
+        680,
+        664
+      ],
+      [
+        920,
+        664
+      ]
+    ]
   },
   "revisit": [
     {
@@ -119,7 +129,7 @@
       "kind": "warm",
       "group": "rc_heat"
     },
-    "48,26": {
+    "48,28": {
       "id": "rc_heat_core",
       "rect": [
         4,
@@ -306,5 +316,17 @@
       "group": "argos_floor"
     }
   },
-  "triggers": []
+  "triggers": [
+    {
+      "id": "rc_t_argos",
+      "rect": [
+        5,
+        19,
+        6,
+        7
+      ],
+      "dialogue": "rc_argos",
+      "once": true
+    }
+  ]
 }

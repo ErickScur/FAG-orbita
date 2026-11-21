@@ -15,7 +15,7 @@ const DOCK_SYMBOL: String = "D"
 const PATROL_SYMBOL: String = "S"
 const DOOR_SYMBOL: String = "|"
 const LANDING: Vector2i = Vector2i(91, 40)
-const CENTER_FLOOR: Vector2i = Vector2i(100, 44)
+const CENTER_FLOOR: Vector2i = Vector2i(100, 43)
 
 var _lines: PackedStringArray = []
 var _meta: Dictionary = {}
@@ -42,7 +42,7 @@ func test_the_boss_sits_on_the_rail_of_the_arena() -> void:
 	assert_ne(_boss_cell, Vector2i(-1, -1), "Serralheiro no JSON")
 	assert_eq(_char(_boss_cell), BOSS_SYMBOL, "'K' no mapa")
 	var arena: Rect2i = _rect("arena")
-	assert_eq(arena, Rect2i(84, 32, 34, 13), "a antessala da F62 com o teto do trilho")
+	assert_eq(arena, Rect2i(84, 32, 34, 12), "a antessala da F62 com o teto do trilho")
 	assert_true(arena.has_point(_boss_cell), "estacionado dentro da arena")
 	assert_eq(_boss_cell.y, arena.position.y, "no trilho do teto")
 	var couplers: Array = _boss.get("couplers", [])

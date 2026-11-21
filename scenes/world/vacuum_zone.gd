@@ -8,8 +8,23 @@ const BACKDROP_Z: int = -9
 const BORDER_Z: int = 5
 const STARS_SCROLL: float = 0.92
 const STARS_OPEN: Color = Color(1.0, 1.0, 1.0, 1.0)
-const STARS_SEALED: Color = Color(0.35, 0.62, 0.78, 0.3)
-const FIELD_COLOR: Color = Color(0.37, 0.91, 1.0, 0.16)
+const STARS_SEALED: Color = Color(0.35, 0.62, 0.78, 0.0)
+const FIELD_COLOR: Color = Color(0.37, 0.91, 1.0, 0.05)
+const HULL_COLOR: Color = Color("141c25")
+const HULL_RIB: Color = Color("0b1016")
+const HULL_RIB_LIGHT: Color = Color("223040")
+const HULL_RIB_STEP: float = 48.0
+const HULL_SEAM_STEP: float = 64.0
+const HULL_LAMP_STEP: float = 64.0
+const HULL_LAMP_SIZE: Vector2 = Vector2(6.0, 2.0)
+const HULL_LAMP_DROP: float = 6.0
+const HULL_LAMP_COLOR: Color = Color("ffd98a")
+const HULL_GLOW_COLOR: Color = Color(1.0, 0.82, 0.5, 0.12)
+const HULL_GLOW_SIZE: Vector2 = Vector2(28.0, 14.0)
+const HAZARD_YELLOW: Color = Color("f2c230")
+const HAZARD_DARK: Color = Color("14110a")
+const HAZARD_LENGTH: float = 12.0
+const HAZARD_STRIPE: float = 3.0
 const BORDER_OPEN: Color = Color("f2c230")
 const BORDER_SEALED: Color = Color(0.37, 0.91, 1.0, 0.55)
 const BORDER_WIDTH: float = 1.0
@@ -38,6 +53,8 @@ var _backdrop: Sprite2D = null
 var _field: ColorRect = null
 var _debris: CPUParticles2D = null
 var _border: Node2D = null
+var _hull: Node2D = null
+var _hull_glow: Node2D = null
 var _seal: float = 0.0
 
 @onready var _shape: CollisionShape2D = $CollisionShape2D
@@ -78,6 +95,8 @@ func set_powered(on: bool) -> void:
 		return
 	powered = on
 	AudioManager.play_sfx(&"power_off" if on else &"power_on")
+	if on:
+		AudioManager.play_sfx(&"spores")
 	_debris.emitting = on
 	_kill_tween()
 	_tween = create_tween()
@@ -105,6 +124,18 @@ func contains_point(point: Vector2) -> bool:
 	return world_rect().has_point(point)
 
 
+func seal_amount() -> float:
+	return _seal
+
+
+func stars_alpha() -> float:
+	return _backdrop.modulate.a if _backdrop != null else 0.0
+
+
+func hull_alpha() -> float:
+	return _hull.modulate.a if _hull != null else 0.0
+
+
 func _build_visuals() -> void:
 	_backdrop = Sprite2D.new()
 	_backdrop.name = "Stars"
@@ -115,6 +146,18 @@ func _build_visuals() -> void:
 	_backdrop.texture = AssetResolver.texture(STARS_TEXTURE)
 	_backdrop.material = _unshaded(CanvasItemMaterial.BLEND_MODE_MIX)
 	add_child(_backdrop)
+	_hull = Node2D.new()
+	_hull.name = "Hull"
+	_hull.z_index = BACKDROP_Z
+	_hull.material = _unshaded(CanvasItemMaterial.BLEND_MODE_MIX)
+	_hull.draw.connect(_draw_hull)
+	add_child(_hull)
+	_hull_glow = Node2D.new()
+	_hull_glow.name = "HullGlow"
+	_hull_glow.z_index = BACKDROP_Z
+	_hull_glow.material = _unshaded(CanvasItemMaterial.BLEND_MODE_ADD)
+	_hull_glow.draw.connect(_draw_hull_glow)
+	add_child(_hull_glow)
 	_field = ColorRect.new()
 	_field.name = "Field"
 	_field.z_index = BACKDROP_Z
@@ -164,6 +207,8 @@ func _apply_layout() -> void:
 	_debris.amount = clampi(tiles / DEBRIS_TILES_PER_PARTICLE, 1, DEBRIS_MAX)
 	_debris.position = _rect.get_center()
 	_debris.emission_rect_extents = _rect.size * 0.5
+	_hull.queue_redraw()
+	_hull_glow.queue_redraw()
 	_scroll_stars()
 
 
@@ -184,6 +229,11 @@ func _set_seal(value: float) -> void:
 		_backdrop.modulate = STARS_OPEN.lerp(STARS_SEALED, _seal)
 	if _field != null:
 		_field.modulate = Color(1.0, 1.0, 1.0, _seal)
+	if _hull != null:
+		_hull.modulate = Color(1.0, 1.0, 1.0, _seal)
+		_hull.visible = _seal > 0.0
+		_hull_glow.modulate = Color(1.0, 1.0, 1.0, _seal)
+		_hull_glow.visible = _seal > 0.0
 	if _border != null:
 		_border.queue_redraw()
 
@@ -207,6 +257,64 @@ func _draw_border() -> void:
 			_border.draw_line(start, finish, color, BORDER_WIDTH)
 		else:
 			_border.draw_dashed_line(start, finish, color, BORDER_WIDTH, BORDER_DASH)
+	if _seal < 0.5:
+		for index: int in range(corners.size()):
+			_draw_hazard_corner(corners[index], index, color.a)
+
+
+func _draw_hazard_corner(corner: Vector2, index: int, alpha: float) -> void:
+	var horizontal: float = 1.0 if index == 0 or index == 3 else -1.0
+	var vertical: float = 1.0 if index == 0 or index == 1 else -1.0
+	var stripes: int = int(HAZARD_LENGTH / HAZARD_STRIPE)
+	for step: int in range(stripes):
+		var color: Color = HAZARD_YELLOW if step % 2 == 0 else HAZARD_DARK
+		color.a *= alpha
+		var along: float = HAZARD_STRIPE * float(step)
+		var across := Rect2(
+			corner + Vector2(horizontal * along, 0.0) - Vector2(
+				0.0 if horizontal > 0.0 else HAZARD_STRIPE, 0.0 if vertical > 0.0 else 2.0
+			),
+			Vector2(HAZARD_STRIPE, 2.0)
+		)
+		_border.draw_rect(across, color)
+		var down := Rect2(
+			corner + Vector2(0.0, vertical * along) - Vector2(
+				0.0 if horizontal > 0.0 else 2.0, 0.0 if vertical > 0.0 else HAZARD_STRIPE
+			),
+			Vector2(2.0, HAZARD_STRIPE)
+		)
+		_border.draw_rect(down, color)
+
+
+func _draw_hull() -> void:
+	_hull.draw_rect(_rect, HULL_COLOR)
+	var x: float = _rect.position.x + HULL_RIB_STEP * 0.5
+	while x < _rect.end.x - 1.0:
+		_hull.draw_rect(Rect2(x, _rect.position.y, 2.0, _rect.size.y), HULL_RIB)
+		_hull.draw_rect(Rect2(x + 2.0, _rect.position.y, 1.0, _rect.size.y), HULL_RIB_LIGHT)
+		x += HULL_RIB_STEP
+	var y: float = _rect.position.y + HULL_SEAM_STEP
+	while y < _rect.end.y - 1.0:
+		_hull.draw_rect(Rect2(_rect.position.x, y, _rect.size.x, 1.0), HULL_RIB)
+		y += HULL_SEAM_STEP
+	for point: Vector2 in _hull_lamp_points():
+		_hull.draw_rect(Rect2(point - HULL_LAMP_SIZE * 0.5, HULL_LAMP_SIZE), HULL_LAMP_COLOR)
+
+
+func _draw_hull_glow() -> void:
+	for point: Vector2 in _hull_lamp_points():
+		var glow := Rect2(point - Vector2(HULL_GLOW_SIZE.x * 0.5, 0.0), HULL_GLOW_SIZE)
+		_hull_glow.draw_rect(glow, HULL_GLOW_COLOR)
+		_hull_glow.draw_rect(glow.grow_individual(-6.0, 0.0, -6.0, -6.0), HULL_GLOW_COLOR)
+
+
+func _hull_lamp_points() -> Array[Vector2]:
+	var points: Array[Vector2] = []
+	var x: float = _rect.position.x + HULL_LAMP_STEP * 0.5
+	while x < _rect.end.x:
+		points.append(Vector2(x, _rect.position.y + HULL_LAMP_DROP).round())
+		x += HULL_LAMP_STEP
+	return points
 
 
 func _unshaded(blend: CanvasItemMaterial.BlendMode) -> CanvasItemMaterial:

@@ -80,6 +80,10 @@ func _ready() -> void:
 	_goal.text = ""
 
 
+func _exit_tree() -> void:
+	DialogueManager.hold_ambient(false)
+
+
 func _process(delta: float) -> void:
 	_watch_overload()
 	if _message_left <= 0.0:
@@ -129,6 +133,7 @@ func open(terminal_id: StringName, network: EnergyNetwork) -> void:
 	_build_rows()
 	_refresh()
 	_opened_frame = Engine.get_process_frames()
+	DialogueManager.hold_ambient(true)
 	AudioManager.play_sfx(&"ui_confirm")
 	var allowed: Array[Control] = []
 	for row: Button in _rows:

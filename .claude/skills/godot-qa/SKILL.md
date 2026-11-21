@@ -161,6 +161,10 @@ Saída no scratchpad da sessão, nunca no repo.
   com ele**: a revisita nova (`core_return_<setor>`) dispara a fala ao entrar e o MU-7 fica parado
   (`f69_c_comporta_reator` falhou 3 marcos). Ponha a flag `dlg_core_return_<setor>` no `from_dict`
   de todo roteiro que já tinha o setor religado.
+- **(F65, revisão B1)** **Espera nova no meio de um roteiro de arena muda a fase das torres e das
+  plataformas** (relógio desde a carga da cena): 270 quadros a mais antes da arena e o `f65_reactor`
+  tomou o pulso da torre do piso e perdeu o acoplador. Ponha a cena nova em outro roteiro (o tour, que
+  força as sobrecargas) ou desloque por um múltiplo comum dos ciclos.
 - **(F65)** **Pulo de 3 quadros é pulo cortado** (`JUMP_CUT_MULTIPLIER`): o bloco de 4 tiles não
   passava. Segure o `jump` ~11 quadros e solte antes do segundo aperto do pulo duplo (aperto novo).
 - **(F65)** **Teleporte para dentro do cone de uma torre** dá 0,8 s até o pulso; DESCARGA trava

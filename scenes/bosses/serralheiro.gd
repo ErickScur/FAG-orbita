@@ -31,7 +31,7 @@ const OFF_FOREVER: float = 1.0e9
 const TROLLEY_FRAME: Vector2i = Vector2i(64, 40)
 const CLAW_FRAME: Vector2i = Vector2i(48, 48)
 const BAY_FRAME: Vector2i = Vector2i(32, 32)
-const TROLLEY_DROP: float = 22.0
+const TROLLEY_DROP: float = 30.0
 const SHOULDER_DROP: float = 13.0
 const SEGMENT_LENGTH: float = 72.0
 const REACH_SLACK: float = 6.0
@@ -72,6 +72,11 @@ const NODE_LAMP_EDGE: Color = Color("0e1218")
 const VICTORY_DELAY: float = 1.2
 const CAMERA_FLOOR_MARGIN: float = 8.0
 const CAMERA_WALL: float = 80.0
+const WAKE_TOP_MARGIN: float = 48.0
+const WAKE_EASE_TIME: float = 0.4
+const FRAMING_TOP_MARGIN: float = 42.0
+const FRAMING_PAN_SPEED: float = 240.0
+const FRAMING_SPLIT_SLACK: float = 8.0
 const LEVEL_GROUP: StringName = &"level"
 const Z_RAIL: int = -6
 const Z_BAY: int = -5
@@ -123,6 +128,12 @@ var _wired: bool = false
 var _purge_accumulator: float = 0.0
 var _clock: float = 0.0
 var _node_released: bool = false
+var _framing: bool = false
+var _framing_high: float = 0.0
+var _framing_low: float = 0.0
+var _framing_split: float = INF
+var _wake_camera: BossFocusCamera = null
+var _wake_target: Vector2 = Vector2.ZERO
 
 
 func _ready() -> void:
@@ -132,6 +143,7 @@ func _ready() -> void:
 	_rail_left = _tile_x(rail, 0, _arena.position.x)
 	_rail_right = _tile_x(rail, 1, _arena.end.x - Balance.TILE_SIZE) + Balance.TILE_SIZE
 	_rail_top = _arena.position.y
+	_setup_framing()
 	_build_rail()
 	_build_lamps()
 	_build_bays()
@@ -174,6 +186,7 @@ func _process(delta: float) -> void:
 	_refresh_arm(delta)
 	_refresh_lamps()
 	_refresh_bays(delta)
+	_update_framing(delta)
 
 
 func configure(params: Dictionary) -> void:
@@ -235,6 +248,50 @@ func is_vented() -> bool:
 
 func encounter() -> LockEncounter:
 	return _fight
+
+
+func trolley_top() -> float:
+	return _rail_top + TROLLEY_DROP - TROLLEY_FRAME.y * 0.5
+
+
+func eye_position() -> Vector2:
+	return Vector2(_fight.arm_x, _rail_top + TROLLEY_DROP)
+
+
+func wake_target() -> Vector2:
+	return _wake_target
+
+
+func is_wake_framed() -> bool:
+	return _wake_camera != null and is_instance_valid(_wake_camera) and _wake_camera.is_running()
+
+
+func framing_bottom(feet_y: float) -> float:
+	return ArenaFraming.limit_bottom(feet_y, _framing_split, _framing_high, _framing_low)
+
+
+func boss_top_on_screen() -> float:
+	var camera: Camera2D = get_viewport().get_camera_2d() if is_inside_tree() else null
+	if camera == null:
+		return -1.0
+	var top: float = camera.get_screen_center_position().y - get_viewport_rect().size.y * 0.5
+	return trolley_top() - top
+
+
+func is_boss_in_frame(min_top: float) -> bool:
+	var top: float = boss_top_on_screen()
+	var x: float = boss_x_on_screen()
+	var half: float = TROLLEY_FRAME.x * 0.5
+	var width: float = get_viewport_rect().size.x if is_inside_tree() else 0.0
+	return top >= min_top and x - half >= 0.0 and x + half <= width
+
+
+func boss_x_on_screen() -> float:
+	var camera: Camera2D = get_viewport().get_camera_2d() if is_inside_tree() else null
+	if camera == null:
+		return -1.0
+	var left: float = camera.get_screen_center_position().x - get_viewport_rect().size.x * 0.5
+	return _fight.arm_x - left
 
 
 func _wire() -> void:
@@ -304,6 +361,7 @@ func _apply(event: Dictionary) -> void:
 
 
 func _on_wake() -> void:
+	_focus_wake()
 	if _hatch != null:
 		_hatch.close()
 	for coupler: Coupler in _couplers.values():
@@ -404,6 +462,7 @@ func _apply_reset() -> void:
 		_bay_open[index] = 0.0
 	_purge_accumulator = 0.0
 	_wrist_drop = IDLE_WRIST_DROP
+	_release_wake_camera()
 	_lock_node()
 	var player: Node2D = _player()
 	if player != null and _wired:
@@ -444,11 +503,69 @@ func _frame_arena(body: Node2D, inside: bool) -> void:
 	if level == null or not level.has_method(&"camera_rect"):
 		return
 	var rect: Rect2i = level.call(&"camera_rect")
+	_framing = inside
 	if inside:
 		var left: int = maxi(rect.position.x, int(_arena.position.x - CAMERA_WALL))
-		var bottom: int = int(_arena.end.y + CAMERA_FLOOR_MARGIN)
+		var bottom: int = int(framing_bottom(body.global_position.y))
 		rect = Rect2i(left, rect.position.y, rect.end.x - left, bottom - rect.position.y)
 	body.call(&"set_camera_limits", rect)
+
+
+func _setup_framing() -> void:
+	_framing_low = _arena.end.y + CAMERA_FLOOR_MARGIN
+	_framing_high = _framing_low
+	_framing_split = INF
+	if not _params.has("framing_floor"):
+		return
+	var screen_height: float = float(
+		ProjectSettings.get_setting("display/window/size/viewport_height", 216)
+	)
+	_framing_high = minf(
+		_framing_low,
+		ArenaFraming.high_bottom(trolley_top(), FRAMING_TOP_MARGIN, screen_height)
+	)
+	_framing_split = float(_params["framing_floor"]) * Balance.TILE_SIZE + FRAMING_SPLIT_SLACK
+
+
+func _update_framing(delta: float) -> void:
+	if not _framing or not _wired:
+		return
+	var player: Node2D = _player()
+	if player == null:
+		return
+	var camera: Camera2D = get_viewport().get_camera_2d()
+	if camera == null or camera.get_parent() != player:
+		return
+	var goal: float = framing_bottom(player.global_position.y)
+	var current: float = float(camera.limit_bottom)
+	if is_equal_approx(current, goal):
+		return
+	camera.limit_bottom = int(round(move_toward(current, goal, FRAMING_PAN_SPEED * delta)))
+
+
+func _focus_wake() -> void:
+	var player: Node2D = _player()
+	var home: Camera2D = get_viewport().get_camera_2d()
+	if player == null or home == null:
+		return
+	_release_wake_camera()
+	var screen: Vector2 = get_viewport_rect().size
+	var boss_top := Vector2(_fight.arm_x, trolley_top())
+	_wake_target = ArenaFraming.focus_between(
+		player.global_position, boss_top, screen, WAKE_TOP_MARGIN
+	)
+	_wake_camera = BossFocusCamera.new()
+	_wake_camera.name = "WakeCamera"
+	add_child(_wake_camera)
+	var hold: float = maxf(0.0, Balance.LOCK_WAKE_TIME - WAKE_EASE_TIME * 2.0)
+	_wake_camera.start(home, player, _wake_target, WAKE_EASE_TIME, hold, WAKE_EASE_TIME)
+	_wake_target = _wake_camera.target()
+
+
+func _release_wake_camera() -> void:
+	if _wake_camera != null and is_instance_valid(_wake_camera):
+		_wake_camera.release()
+	_wake_camera = null
 
 
 func _sync_couplers() -> void:

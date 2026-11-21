@@ -16,7 +16,7 @@ last_updated: 2026-09-19
 
 ## 1. Contexto e objetivo
 
-A **Estabilidade do Reator** é o timer global do jogo e o que "prende o jogador" ([GDD-2.3](../design/GDD.md#gdd-2-3-micro)): começa em 100% e cai 1% a cada 90 s de gameplay. Religar um setor devolve +15%, cada log lido +0,5%, cada morte custa −3%. Em 0% a estação perde órbita: **Game Over definitivo**. A pergunta constante é *"vale a pena procurar mais um log?"*.
+A **Estabilidade do Reator** é o timer global do jogo e o que "prende o jogador" ([GDD-2.3](../design/GDD.md#gdd-2-3-micro)): começa em 100% e cai 1% a cada 45 s de gameplay (era 90 s; AJ-078). Religar um setor devolve +15%, cada log lido +0,5%, cada morte custa −3%. Em 0% a estação perde órbita: **Game Over definitivo**. A pergunta constante é *"vale a pena procurar mais um log?"*.
 
 Narrativamente, o timer é **ligado** na etapa 2 da Jornada (Chamado para a Aventura): até o alarme do Núcleo Central, o reator não cai. Abaixo de 25% o HUD pulsa em vermelho e toca um alarme diegético. O timer **congela** em pause, diálogo e leitura de log. Existe um **modo sem timer** (acessibilidade) e multiplicadores por dificuldade.
 
@@ -59,8 +59,8 @@ Não pontua sozinho na rubrica, mas é o **requisito "Timer" do 1º bimestre** (
 ## 5. Critérios de aceite
 
 - [x] `new_game()` → `reactor_percent == Balance.REACTOR_START` e `flags.reactor_online == false`; o reator **não cai** antes do alarme da Fase 0.
-- [x] Com o timer ligado em Normal, após 90 s de gameplay o reator está em 99% (±0,05).
-- [x] Fácil cai metade (0,5% em 90 s); Difícil 1,5%; modo sem timer não cai em nenhuma dificuldade.
+- [x] Com o timer ligado em Normal, após `REACTOR_DECAY_INTERVAL` (45 s) de gameplay o reator está em 99% (±0,05).
+- [x] Fácil cai metade (0,5% por intervalo); Difícil 1,5%; modo sem timer não cai em nenhuma dificuldade.
 - [x] Durante pause (`get_tree().paused`), diálogo bloqueante e leitura de log o valor não muda (QA: screenshot antes/depois idêntico).
 - [x] Ler um log pela primeira vez soma +0,5%; reler o mesmo log não soma.
 - [x] `sector_restored` soma +15%, sem passar de 100%.
@@ -245,3 +245,14 @@ Nenhuma.
 - **Quem**: agente de implementação · **O que**: `scripts/core/reactor_clock.gd` (lógica pura), tique do reator no `GameState` (`_tick_reactor`, `_update_alarm`, `_after_reactor_change`, `is_reactor_online`/`set_reactor_online`/`is_in_level`/`is_reactor_running`/`is_reactor_critical`), handlers de `sector_restored` (+15%), `collectible_picked(&"log")` (+0,5%) e `player_died` (−3%), crítico com alarme a cada `REACTOR_ALARM_INTERVAL`, `game_over(&"reactor")` uma única vez, `Balance.REACTOR_ALARM_INTERVAL = 4.0`, cenas `tests/qa/scenes/reactor_probe.tscn` e `reactor_zero_probe.tscn`, suítes `tests/test_reactor_clock.gd` (10 casos) e `tests/test_reactor_state.gd` (16 casos), roteiros `tests/qa/f14_reactor.json` e `f14_game_over.json`. Portões: import limpo, 271 testes passando, 36 cenas no smoke, varreduras 3D/comentários/fonte vazias. QA leu as 8 capturas: 26% (ceil de 25,3) em branco → 24% em vermelho abaixo do limiar → congelado e idêntico por 180 frames de pausa → 23% ao retomar → tela `PERDA DE ÓRBITA - MISSÃO ENCERRADA` no zero.
 - **Pendências**: `REACTOR_ALARM_INTERVAL` **ainda não está na tabela [GDD-P](../design/GDD.md#gdd-p) nem nos Ajustes** — esta execução foi proibida de editar `docs/design/`; registrar (junto com as três constantes da F15). O `level_base` (F21) escreve `GameState.flags["reactor_online"] = true` direto em vez de `set_reactor_online(true)`: funciona porque o HUD reavalia a visibilidade por frame, mas o caminho oficial é o método.
 - **Próximo passo**: F17 (religar setor → `sector_restored`) e F19/F28 (alarme da Fase 0 liga a flag; o JSON `data/dialogue/core_hub.json` já traz `set_flags: ["reactor_online"]`).
+
+### 2026-11-21 — O reator volta a pressionar (AJ-078, grupo B1)
+- Revisão de design: a campanha inteira (632 s) ficou entre 99,5 % e 100 %; no ritmo da GDD-2.7 o
+  Normal terminava em 95 % e nunca descia de 90 %. `REACTOR_DECAY_INTERVAL` 90 → **45 s** (GDD-P,
+  [AJ-078](../design/GDD.md#gdd-ajustes)): Normal no ritmo da GDD termina em 83 % (mín. 73 %); 1,5×
+  mais lento chega ao Reator com 37 %; Difícil no ritmo da GDD termina em 37 %; Fácil 95 %. Modo sem
+  timer continua ×0.
+- **Testes:** `tests/test_reactor_pressure.gd` (simula a campanha da GDD-2.7 por dificuldade e
+  ritmo); `test_reactor_state.gd` passa a usar `Balance.REACTOR_DECAY_INTERVAL` em vez de 90 s fixo.
+- **QA:** nenhum roteiro chega perto de 0 % (a campanha completa de QA dura ~11 min e devolve +15 %
+  por setor); nada precisou de `no_timer`.

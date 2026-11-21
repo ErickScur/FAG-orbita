@@ -20,7 +20,7 @@ def fight(r, landed, shots=True, stop=""):
     r.at(L + 90); r.release("move_left")
     r.at(L + 96); r.press("move_right")
     r.at(L + 122); r.release("move_right")
-    r.at(L + 140); r.expect(87, 44, "acoplador_1"); boss(r, "phase_name", "ACTIVE", "braco_ativo")
+    r.at(L + 140); r.expect(87, 43, "acoplador_1"); boss(r, "phase_name", "ACTIVE", "braco_ativo")
     A = L + 140
     r.press("interact")
     r.at(A + 90); shot("04_carregando_1")

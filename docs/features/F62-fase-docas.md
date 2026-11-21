@@ -409,3 +409,17 @@ Nenhuma que bloqueie. Pendente: a faixa `docks` (ficha MUS-DOCKS).
 - Religar as Docas → cutscene → fala → **volta ao Núcleo** (`next_scene` no `docks.tscn`), com a
   revisita `after_sector: docks` abrindo a comporta da Memória. O `f62_docks` (gerador da F63, com a
   luta do Serralheiro) termina em `core_hub.tscn`: 41/41 marcos.
+
+### 2026-11-21 — Revisão de design: hangar selado × vácuo e identidade das Docas (grupo B1)
+- **P6 — selado e vácuo pareciam iguais** (véu ciano × borda tracejada, estrelas nos dois). Agora o
+  `VacuumZone` selado esconde as estrelas por completo e desenha um **casco fechado**: chapas escuras
+  com nervuras a cada 48 px, junta a cada 64 px e uma fileira de luzes internas quentes no alto (com
+  halo aditivo desenhado, sem `PointLight2D`). Em vácuo: estrelas, detritos, borda amarela tracejada
+  piscando e **cantos de faixa de risco** amarelo/preto; abrir para o vácuo toca também o chiado de
+  descompressão. A transição (0,6 s) mostra o casco sumindo, inclusive na purga do Serralheiro.
+- **P7 — paleta:** a galeria e o vestíbulo ganham **escotilhas para o espaço** (`W`, moldura amarela
+  do tileset: galeria em (2–3, 45–46) e (8–9, 44–45), vestíbulo em (99–100, 19–20) e (113–114,
+  19–20)), caixotes e cabeços de amarração com faixa de risco (`dk_crate_02/03`, `dk_bollard_03/04`)
+  e a lâmpada da galeria passou de branco-azulado para **sódio** (`#ffd25a`). Tileset não mudou.
+- **Antessala do Serralheiro** (F63): fosso com 2 linhas; ver o log da F63.
+- **QA:** `f62_tour` (11_antessala em (100,43)) e `f62_docks` regenerados.

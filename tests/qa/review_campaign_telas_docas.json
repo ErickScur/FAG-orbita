@@ -39,7 +39,7 @@
   {"frame": 380, "action": "move_left", "pressed": false},
   {"frame": 386, "action": "move_right", "pressed": true},
   {"frame": 412, "action": "move_right", "pressed": false},
-  {"frame": 430, "expect_tile": [87, 44], "tolerance": 1, "label": "orig_acoplador_1"},
+  {"frame": 430, "expect_tile": [87, 43], "tolerance": 1, "label": "orig_acoplador_1"},
   {"frame": 430, "expect_call": "Docks/Entities/Serralheiro.phase_name", "equals": "ACTIVE", "label": "orig_braco_ativo"},
   {"frame": 430, "action": "interact", "pressed": true},
   {"frame": 431, "action": "move_left", "pressed": false},

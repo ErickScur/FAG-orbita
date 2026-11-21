@@ -85,6 +85,7 @@
   {"frame": 1287, "action": "interact", "pressed": true},
   {"frame": 1290, "action": "interact", "pressed": false},
   {"frame": 1305, "screenshot": "orig_08_terminal_da_arena"},
+  {"frame": 1306, "expect_call": "DialogueManager.is_box_visible", "equals": false, "label": "orig_terminal_sem_legenda_por_cima"},
   {"frame": 1310, "action": "interact", "pressed": true},
   {"frame": 1313, "action": "interact", "pressed": false},
   {"frame": 1320, "action": "move_down", "pressed": true},
