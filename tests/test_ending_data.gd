@@ -5,8 +5,9 @@ const README_PATH: String = "res://README.md"
 const FONT_PATH: String = "res://assets/fonts/ui_font.ttf"
 const SAVE_FIXTURE: String = "user://test_f66_save.json"
 const LOG_NAMES: PackedStringArray = [
-	"Helena Vasquez", "Samira Okafor", "Marcos", "Teodoro", "Ana Lúcia"
+	"Helena Vasquez", "Samira Okafor", "Marcos", "Teodoro", "Ana Lúcia", "Davi"
 ]
+const NEAR_STATION_RATIO: float = 0.5
 
 var _state: Node = null
 var _table: Dictionary = {}
@@ -28,6 +29,44 @@ func after_each() -> void:
 func test_endings_data_is_complete() -> void:
 	var problems: PackedStringArray = EndingData.errors(_table)
 	assert_true(problems.is_empty(), ", ".join(problems))
+
+
+func test_the_seeding_cut_keeps_the_capsule_near_artemis() -> void:
+	var events: Array[Dictionary] = EndingData.cutscene_events(_table, EndingData.SEEDING)
+	var launch_at: float = -1.0
+	for event: Dictionary in events:
+		if String(event.get("do", "")) == "launch":
+			launch_at = float(event.get("at", 0.0))
+	assert_true(launch_at >= 0.0, "a Semeadura lança a cápsula")
+	var flight: float = EndingData.capsule_flight(_table, EndingData.SEEDING)
+	assert_true(flight > 0.0, "a Semeadura define o tempo de voo da cápsula")
+	var flown: float = (EndingData.cutscene_length(events) - launch_at) / maxf(flight, 0.001)
+	assert_true(
+		flown <= NEAR_STATION_RATIO,
+		"corte com a cápsula a %.0f%% do voo; corta perto da ARTEMIS" % (flown * 100.0)
+	)
+
+
+func test_continue_hint_follows_the_input_device() -> void:
+	var keyboard: String = EndingData.continue_hint(_table, false)
+	var pad: String = EndingData.continue_hint(_table, true)
+	assert_true(keyboard.begins_with("[ENTER]"), "teclado mostra ENTER: %s" % keyboard)
+	assert_true(pad.begins_with("[A]"), "controle mostra o botão A: %s" % pad)
+	assert_ne(keyboard, pad, "as duas dicas são diferentes")
+
+
+func test_joypad_detection_follows_the_last_device() -> void:
+	var button := InputEventJoypadButton.new()
+	button.button_index = JOY_BUTTON_A
+	assert_true(EndingData.joypad_from_event(button, false), "botão de controle")
+	var key := InputEventKey.new()
+	key.keycode = KEY_ENTER
+	assert_false(EndingData.joypad_from_event(key, true), "tecla volta ao teclado")
+	var drift := InputEventJoypadMotion.new()
+	drift.axis_value = 0.1
+	assert_false(EndingData.joypad_from_event(drift, false), "ruído do analógico não troca")
+	var mouse := InputEventMouseMotion.new()
+	assert_true(EndingData.joypad_from_event(mouse, true), "mouse que só se mexe mantém")
 
 
 func test_no_data_is_the_lowest_tier() -> void:

@@ -614,13 +614,39 @@ Solid flat magenta background (#FF00FF) everywhere else, with clear magenta gaps
 | Campo | Valor |
 |---|---|
 | Caminho final | `assets/sprites/fx/ending_space_sheet.png` (lido por `EndingCutscene`, F66) |
-| Contrato | Folha **256×128 = 4 col × 2 lin de 64×64**, fundo transparente. Linha 0: (0) ARTEMIS por fora, janelas acesas · (1) a mesma, apagada · (2) cápsula de sementes em voo para a direita, com chama · (3) a mesma sem chama. Linha 1: (0) planeta-alvo habitável (oceanos e continentes verdes) · (1) Terra pequena e cansada (continentes marrons) · (2) clarão do transmissor com feixe para a direita · (3) onda do sinal (três arcos ciano). Na cutscene a estação vai a ×2, o planeta-alvo a ×1,5–2 e a Terra a ×0,5 |
+| Contrato | Folha **256×128 = 4 col × 2 lin de 64×64**, fundo transparente. Linha 0: (0) ARTEMIS por fora, janelas acesas · (1) a mesma, apagada · (2) cápsula de sementes em voo para a direita, com chama · (3) a mesma sem chama. Linha 1: (0) planeta-alvo habitável, **inconfundível com a Terra** (terra ocre e âmbar, mares teal em fiordes e crateras, faixas de nuvem violeta, borda de atmosfera menta, lua cinza pequena) · (1) Terra pequena e cansada (continentes marrons) · (2) clarão do transmissor com feixe para a direita · (3) onda do sinal (três arcos ciano). Na cutscene a estação vai a ×2, o planeta-alvo a ×1,5 e a Terra a ×0,5 (só na Transmissão) |
 | Placeholder gerado | `assets/placeholder/sprites/fx/ending_space_sheet.png` (256×128) — `tools/make_placeholders.gd`, forma `rect_index` |
 | Fonte | **IA — geração de imagem do Codex CLI**, 2026-11-21, 2 variações (as duas 4×2 exatas), escolhida a **2ª**: a diferença entre a ARTEMIS acesa (janelas âmbar) e apagada se lê de longe; na 1ª as duas eram quase iguais. Referências: `mu7_sheet.png` e `space_mid.png` |
 | Montagem | `tools/autoslice_sheet.gd` 64×64, 4 colunas, `--fit=contain`; alfa binarizado; 4 pixels magenta do miolo do anel da estação escurecidos. 0 px semitransparentes, 0 px de franja |
-| Status | **integrado (IA)** em 2026-11-21 |
+| Planeta-alvo refeito (2026-11-21, revisão de design) | O 1º planeta era um globo azul e verde com nuvens brancas: na Semeadura a cápsula parecia "voltar para a Terra" e na Transmissão havia duas Terras na tela. **IA — geração de imagem do Codex CLI**, 2 imagens 2×1 (4 planetas), escolhida a **1ª da 1ª imagem** (fiordes e lagos de cratera leem como mundo rochoso com água; os listrados da 2ª coluna liam como gigante gasoso). Referência: a própria `ending_space_sheet.png`. Montagem: metade esquerda do bruto, quadrado do objeto amostrado no centro de cada pixel de arte para 62 px dentro da célula de 64, magenta (e franja magenta) recortado, alfa binário, colado na célula (0,1). Prompt abaixo, em "Prompt do planeta-alvo" |
+| Status | **integrado (IA)** em 2026-11-21; planeta-alvo trocado no mesmo dia |
 
-**Prompt (Codex):**
+**Prompt do planeta-alvo (Codex, vigente para a célula (0,1)):**
+```
+Pixel art of TWO alternative versions of the same kind of object: an ALIEN HABITABLE PLANET seen from deep space, for the final cutscene of a melancholic 2D side-view space station game. It must NEVER look like Earth.
+
+STYLE MUST MATCH THE ATTACHED REFERENCE SHEET (the space station, the capsule and the small tired Earth): same 16-bit look, hard pixels, dark 1-pixel outline, no anti-aliasing, no soft gradients, chunky shapes.
+
+Palette (use ONLY these, NO blue ocean, NO green-and-blue Earth look, NO white Earth-like clouds):
+- warm ochre and amber land (#C8923A, #A86A2A, #E2B86A)
+- deep teal shallow seas and lakes, greenish not blue (#1F6E68, #2F9A88)
+- rust-red highlands (#8A3E2A)
+- pale violet thin cloud bands (#B9A6D8)
+- a thin MINT-GREEN atmosphere rim on the right side (#9FF0C0)
+- shadow side very dark plum (#24162A), dark outline (#0B1216)
+
+Layout: a grid of SQUARE frames, 2 columns and 1 row, the same size each, each planet CENTERED in its own frame, filling about 90% of the frame.
+Frame 1: a round alien planet mostly OCHRE and AMBER land, with a few irregular DEEP TEAL seas shaped like long fjords and crater lakes (not continents in an ocean), rust-red highland ridges, two thin pale violet cloud bands stretched horizontally, the left third in dark plum shadow, a thin mint-green atmosphere rim on the lit right edge. Add ONE small grey moon touching the upper right of the frame.
+Frame 2: the same idea with a different surface: banded like a dune world, wide horizontal stripes of ochre, amber and rust, a large deep teal polar sea at the top, a few crater lakes, the left third in dark plum shadow, mint-green rim on the right. No moon.
+
+Chunky readable shapes only: no thin 1-pixel details. Each planet must still read when each frame is shrunk to 64x64 pixels.
+
+IMPORTANT: draw ONLY the planet (and the tiny moon in frame 1). No stars, no nebula, no background scenery, no rings.
+
+Solid flat magenta background (#FF00FF) everywhere else, with a clear magenta gap between the two frames. No text, no letters, no labels, no numbers, no grid lines, no frame borders, no watermark.
+```
+
+**Prompt (Codex) da folha original** (a célula (0,1) dela foi substituída):
 ```
 Pixel art sprite sheet of EIGHT objects seen in deep space, for the final cutscene of a melancholic 2D side-view space station game. Quiet, lonely, beautiful.
 
@@ -704,6 +730,7 @@ NO EMPTY BORDER INSIDE A TILE: the magenta gaps are separators that go BETWEEN t
 | Fonte | **IA — geração de imagem do Codex CLI**, 2026-10-27, 2 variações (as duas em grade 8×4 exata). Base: **1ª variação** (painéis mais limpos, janela de moldura grossa). Da 2ª veio só a passarela one-way (a da 1ª sumia, fina e escura, contra o fundo). Referências: `core_tiles.png` e `greenhouse_tiles.png` |
 | Montagem | Igual à Estufa: as 16 máscaras são a célula "interior" com as faixas de borda coladas por cima (cima 28 % da célula "piso", baixo 22 % da "teto", lados 13 % das células de borda), então as bordas casam por construção. Fundo = variação de painel da linha 4 escurecida (×0,60, quase neutra), porque o fundo de aço com fenda da IA, repetido na fase inteira, virava uma grade de fendas. Ganho final 0,9 com joelho nos claros: luma dos sólidos 0,555 (Núcleo 0,53, Estufa 0,55). 0 px semitransparentes, 0 px de franja |
 | Status | **integrado (IA)** em 2026-10-27; `tests/test_level_tileset.gd` confere o Lab papel por papel (inclui a parede magnética) |
+| Luminária (quadros 22 e 25) | **Fundo recortado em 2026-11-21**: a IA desenhou a lâmpada sobre a parede e o `PoweredLamp` tingia o quadrado inteiro (lia como um "0" laranja). Pós-processo nos PNG, sem regerar: cor da parede = mediana da borda do quadro; fica o maior bloco 4-conexo de pixels a mais de 30 de distância dessa cor, com os furos internos preenchidos; o resto vira transparente. `test_every_lamp_fixture_is_cut_out_of_the_wall` exige os quatro cantos transparentes e no máximo 192 px opacos em toda folha que vira luminária |
 
 **Prompt (Codex, com os dois tilesets anexados):**
 ```
@@ -751,6 +778,7 @@ No text, no letters, no numbers, no labels, no grid lines, no watermark.
 | Fonte | **IA — geração de imagem do Codex CLI**, 2026-10-27, 2 variações (as duas 8×4 exatas), escolhida a **1ª**: azulejos mais limpos e geada só nas bordas. A 2ª tinha mais ruído e, na linha 4, geada em forma de **"+"** nas juntas — descartada pela regra de não ter cruz. Referências: `lab_tiles.png` e `core_tiles.png` ×6 |
 | Montagem | Receita do TIL-LAB (`compose`): as 16 máscaras são o azulejo "interior" com faixas de borda coladas (cima 28 % da célula "piso" com crosta de geada, baixo 22 % do "teto", lados 13 %). **Passarela one-way montada da faixa de piso** (4 px de aço com geada + 1 px de sombra): as duas passarelas da IA (grade escura na 1ª, tela ciano vazada na 2ª) sumiam contra o fundo escuro. Fundo = o próprio azulejo escuro da IA (0,7), sem escurecer. Ganho 0,87 com joelho nos claros: luma dos sólidos **0,552** (Núcleo 0,53, Lab 0,555). 0 px semitransparentes, 0 px de franja |
 | Status | **integrado (IA)** em 2026-10-27; `tests/test_level_tileset.gd` confere a Enfermaria papel por papel (inclui a parede magnética) |
+| Luminária (quadros 22 e 25) | **Fundo recortado em 2026-11-21**: a IA desenhou a lâmpada sobre a parede e o `PoweredLamp` tingia o quadrado inteiro (lia como um "0" laranja). Pós-processo nos PNG, sem regerar: cor da parede = mediana da borda do quadro; fica o maior bloco 4-conexo de pixels a mais de 30 de distância dessa cor, com os furos internos preenchidos; o resto vira transparente. `test_every_lamp_fixture_is_cut_out_of_the_wall` exige os quatro cantos transparentes e no máximo 192 px opacos em toda folha que vira luminária |
 
 **Prompt (Codex, com os dois tilesets anexados):**
 ```
@@ -799,6 +827,7 @@ No text, no letters, no numbers, no labels, no grid lines, no watermark.
 | Fonte | **IA — geração de imagem do Codex CLI**, 2026-11-21, 2 variações (as duas 8×4 exatas), escolhida a **1ª** (piso com faixa de perigo e costura acesa, mais legível). Referências: `docks_tiles.png` e `lab_tiles.png` |
 | Montagem | Script do agente (PIL): chave por magentice + *unmix*, redução por média com alfa pré-multiplicado, alfa binário; máscaras = célula interior + faixas (topo 5 px do "piso", baixo 4 px do "teto", lados 3 px das bordas); passarela da faixa da própria célula one-way. Ganho ×1,42 com joelho nos claros: luma dos sólidos **0,544** |
 | Status | **integrado (IA)** em 2026-11-21; `tests/test_level_tileset.gd` confere o Reator papel por papel |
+| Luminária (quadros 22 e 25) | **Fundo recortado em 2026-11-21**: a IA desenhou a lâmpada sobre a parede e o `PoweredLamp` tingia o quadrado inteiro (lia como um "0" laranja). Pós-processo nos PNG, sem regerar: cor da parede = mediana da borda do quadro; fica o maior bloco 4-conexo de pixels a mais de 30 de distância dessa cor, com os furos internos preenchidos; o resto vira transparente. `test_every_lamp_fixture_is_cut_out_of_the_wall` exige os quatro cantos transparentes e no máximo 192 px opacos em toda folha que vira luminária |
 
 **Prompt (Codex, com os dois tilesets anexados):**
 ```
@@ -955,6 +984,7 @@ IMPORTANT: draw ONLY the objects described. Never draw walls, floors, ground, ro
 | Fonte | **IA — geração de imagem do Codex CLI**, 2026-11-20, 2 variações (as duas 8×4 exatas), escolhida a **1ª**: piso com a faixa de perigo fina no topo e menos marcas soltas. Referências: `infirmary_tiles.png` e `lab_tiles.png` |
 | Montagem | Receita da Enfermaria (script do agente, PIL): redução por média com alfa pré-multiplicado; as 16 máscaras são a célula "interior" com faixas coladas (topo 5 px da célula "piso", baixo 4 px do "teto", lados 2 px das bordas). Passarela one-way montada da faixa de piso. Ganho ×1,12 com joelho nos claros: luma dos sólidos **0,550** (Enfermaria 0,552). 0 px semitransparentes |
 | Status | **integrado (IA)** em 2026-11-20; `tests/test_level_tileset.gd` confere as Docas papel por papel |
+| Luminária (quadros 22 e 25) | **Fundo recortado em 2026-11-21**: a IA desenhou a lâmpada sobre a parede e o `PoweredLamp` tingia o quadrado inteiro (lia como um "0" laranja). Pós-processo nos PNG, sem regerar: cor da parede = mediana da borda do quadro; fica o maior bloco 4-conexo de pixels a mais de 30 de distância dessa cor, com os furos internos preenchidos; o resto vira transparente. `test_every_lamp_fixture_is_cut_out_of_the_wall` exige os quatro cantos transparentes e no máximo 192 px opacos em toda folha que vira luminária |
 
 **Prompt (Codex, com os dois tilesets anexados):**
 ```
@@ -1098,6 +1128,7 @@ IMPORTANT: draw ONLY the objects described. Never draw walls, floors, ground, ro
 | Fonte | **IA — geração de imagem do Codex CLI**, 2026-11-21, 2 variações (as duas 8×4 exatas), escolhida a **1ª** (mural do planeta e passarela treliçada mais legíveis). Referências: `docks_tiles.png` e `core_tiles.png` |
 | Montagem | Script do agente (PIL, receita das Docas): grade achada pelas faixas magenta, chave por "magentice", redução por média com alfa pré-multiplicado e alfa binário; 16 máscaras = interior com faixas coladas (topo 5 px do "piso", baixo 4 px do "teto", lados 2 px); one-way montada da faixa de piso. Luma dos sólidos **0,560**; 0 px semitransparentes |
 | Status | **integrado (IA)** em 2026-11-21 |
+| Luminária (quadros 22 e 25) | **Fundo recortado em 2026-11-21**: a IA desenhou a lâmpada sobre a parede e o `PoweredLamp` tingia o quadrado inteiro (lia como um "0" laranja). Pós-processo nos PNG, sem regerar: cor da parede = mediana da borda do quadro; fica o maior bloco 4-conexo de pixels a mais de 30 de distância dessa cor, com os furos internos preenchidos; o resto vira transparente. `test_every_lamp_fixture_is_cut_out_of_the_wall` exige os quatro cantos transparentes e no máximo 192 px opacos em toda folha que vira luminária |
 
 **Prompt (Codex, com os dois tilesets anexados):**
 ```

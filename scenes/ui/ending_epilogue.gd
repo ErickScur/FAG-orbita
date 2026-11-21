@@ -42,6 +42,8 @@ var _buttons: HBoxContainer = null
 var _yes: Button = null
 var _no: Button = null
 var _focus_trap: FocusTrap = FocusTrap.new()
+var _skip: SkipHold = null
+var _joypad: bool = false
 
 
 func _ready() -> void:
@@ -66,8 +68,16 @@ func _process(delta: float) -> void:
 				_advance()
 
 
+func _input(event: InputEvent) -> void:
+	var joypad: bool = EndingData.joypad_from_event(event, _joypad)
+	if joypad == _joypad:
+		return
+	_joypad = joypad
+	_hint.text = EndingData.continue_hint(_table, _joypad)
+
+
 func _unhandled_input(event: InputEvent) -> void:
-	if _stage == Stage.QUESTION:
+	if _stage == Stage.QUESTION or _stage == Stage.NAMES:
 		return
 	if not event.is_action_pressed(&"ui_accept"):
 		return
@@ -92,6 +102,18 @@ func paragraph_index() -> int:
 
 func current_text() -> String:
 	return _body.text if _body != null else ""
+
+
+func continue_hint() -> String:
+	return _hint.text if _hint != null else ""
+
+
+func skip_hint_visible() -> bool:
+	return _skip != null and _skip.is_visible_in_tree()
+
+
+func skip_progress() -> float:
+	return _skip.progress() if _skip != null else 0.0
 
 
 func _advance() -> void:
@@ -122,6 +144,9 @@ func _tick_epilogue(delta: float) -> void:
 
 
 func _tick_names(delta: float) -> void:
+	if _skip.tick(delta):
+		_show_crew_footer()
+		return
 	_names_box.position.y -= Balance.ENDING_NAMES_SPEED * delta
 	if _names_box.position.y + _names_box.size.y <= 0.0:
 		_show_crew_footer()
@@ -154,11 +179,14 @@ func _start_names() -> void:
 	_names_title.visible = true
 	_names_clip.visible = true
 	_names_box.position = Vector2(0, NAMES_HEIGHT)
+	_skip.arm()
+	_skip.visible = true
 
 
 func _show_crew_footer() -> void:
 	_stage = Stage.CREW_FOOTER
 	_names_clip.visible = false
+	_skip.visible = false
 	_footer.visible = true
 	_hold_left = Balance.ENDING_PARAGRAPH_MIN_HOLD
 
@@ -209,11 +237,15 @@ func _build() -> void:
 	_body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_body.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	_place(_body, Vector2(MARGIN, 48), Vector2(SCREEN_SIZE.x - MARGIN * 2.0, 112))
-	_hint = _label(EndingData.ui_text(_table, "continue_hint"), DIM_COLOR, 16)
+	_hint = _label(EndingData.continue_hint(_table, _joypad), DIM_COLOR, 16)
 	_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	_place(_hint, Vector2(MARGIN, SCREEN_SIZE.y - 28), Vector2(SCREEN_SIZE.x - MARGIN * 2.0, 16))
 	_build_names()
 	_build_stats()
+	_skip = SkipHold.new(EndingData.ui_text(_table, "skip_hint"))
+	_skip.place_top_right(SCREEN_SIZE)
+	_skip.visible = false
+	add_child(_skip)
 
 
 func _build_names() -> void:

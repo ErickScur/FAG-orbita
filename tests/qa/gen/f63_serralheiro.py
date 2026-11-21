@@ -42,7 +42,7 @@ r.shot("15_religando")
 F = r.f
 r.at(F + 200); r.shot("16_cutscene")
 r.at(F + 560); r.shot("17_fala_de_religamento")
-r.accept(8, 14)
+r.accept(6, 14)
 r.wait(160); r.expect_scene("res://scenes/levels/core_hub.tscn")
 r.wait(10); r.shot("18_de_volta_ao_nucleo")
 r.wait(20); r.quit()

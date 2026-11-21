@@ -192,3 +192,12 @@ Nenhuma.
   `RESEARCH_TOTAL` 12→4); F36 reposiciona os 4 logs e remove os gatilhos órfãos nos
   `data/levels/*.json`; alguém precisa decidir o que fazer com
   `data/levels/energy_test.json`, que ainda aponta `log_on_restore: log_gh_03`.
+
+### 2026-11-21 — Coerência dos fatos (agente de correção C)
+- Tabela de fatos refeita contra os 13 logs, as falas, o epílogo e `crew.json`. Duas contradições
+  corrigidas ([AJ-076](../design/GDD.md#gdd-ajustes)): os "40 saudáveis" do log final (40 é a tripulação
+  inteira) e a Ana Lúcia em dois lugares (leito 10 no LOG 14, painel do hangar no LOG 16). O leito 11
+  passa a ser do **Davi**, filho dela; "Até o leito dez" fecha o setor B.
+- Cartão do primeiro log/dado não fala mais de "placar" (a HUD não tem contador desde o AJ-028/075):
+  "registro da tripulação, arquivado no chassi" e "pesquisa do planeta alvo, arquivada no chassi".
+- Falas do fim das Docas 8 → 5 (`lock_down` 2, `dk_restored` 2, `core_return_docks` 1).

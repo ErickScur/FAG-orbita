@@ -212,3 +212,20 @@ Nenhuma.
   (`f66_transmissao`, `f66_dados_alto_baixo`).
 - **QA**: `f66_semeadura` 23/23, `f66_transmissao` 22/22; `f65_reactor` 31/31 termina na sala de
   comando vindo do hub.
+
+### 2026-11-21 — Revisão de design: planeta-alvo próprio, corte cedo, pular segurando (agente de correção C)
+- **Planeta-alvo**: era um globo azul e verde com nuvens, igual à Terra (na Semeadura a cápsula parecia
+  voltar para casa; na Transmissão havia duas Terras). Regenerado pelo Codex: terra ocre e âmbar, mares
+  teal em fiordes, nuvens violeta, atmosfera menta, lua cinza. Ficha SPR-ENDING com o prompt novo.
+- **Corte da Semeadura**: `capsule_flight` (18 s) no JSON da cutscene; lançamento 2,5 s, quatro apagões,
+  corte em 10 s, com a cápsula a ~42% do voo, logo depois da ARTEMIS. O planeta foi a ×1,5 em (336, 116).
+  `test_the_seeding_cut_keeps_the_capsule_near_artemis` exige o corte antes de metade do voo.
+- **Pular segurando** nos 40 nomes e nos créditos (`SkipHold`, a mesma regra da cutscene: precisa soltar e
+  segurar `ENDING_SKIP_HOLD_TIME`). Um toque não pula mais os créditos nem os nomes; a dica
+  `SEGURE PARA PULAR` fica apagada no canto e acende com a barra enquanto se segura.
+- **Dica de continuar por dispositivo**: `[ENTER] CONTINUAR` no teclado, `[A] CONTINUAR` no controle
+  (`EndingData.continue_hint` + último dispositivo usado; `ui_accept` não é remapeável).
+- **Créditos e README**: linha de arte por IA cobre as sete fases, os chefes e a cutscene; README lista
+  Laboratório, Enfermaria, Docas, Memória, Reator, sala de comando e cutscene.
+- **QA**: `f66_semeadura` 27/27, `f66_transmissao` 26/26 (marcos novos: toque não pula nomes nem
+  créditos; segurar pula).

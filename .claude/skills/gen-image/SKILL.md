@@ -56,6 +56,10 @@ tools/gen_image.sh --prompt=<scratchpad>/<ID>.txt --out=<scratchpad>/<ID>/raw.pn
    quadros vizinhos da mesma animação** antes de aceitar (F61).
    **Passarela one-way desenhada pela IA some contra o fundo** (aconteceu no Lab e na Enfermaria):
    monte a one-way a partir da faixa de piso do próprio tileset (F61).
+   **Objeto que vive dentro de um tileset (luminária) não pode trazer a parede**: nos tilesets do
+   Lab, Enfermaria, Docas, Memória e Reator a IA pintou a lâmpada sobre o tijolo, o `PoweredLamp`
+   tingiu o quadrado inteiro e ela virou um "0" laranja. Recorte o fundo e conte pixels opacos
+   (`test_every_lamp_fixture_is_cut_out_of_the_wall`; revisão de design 2026-11-21).
    **"Sem cruz" vale também para padrão acidental**: geada nas juntas dos azulejos formou "+" (F61).
    **Sprite pendurado (teto ou parede) não vai pelo `autoslice_sheet.gd`**: ele alinha cada
    quadro pelo pé e tira a escala do quadro mais alto, então a placa de fixação da CX-2 ficaria

@@ -1,6 +1,7 @@
 {
   "ui": {
     "continue_hint": "[ENTER] CONTINUAR",
+    "continue_hint_pad": "[A] CONTINUAR",
     "skip_hint": "SEGURE PARA PULAR",
     "crew_title": "TRIPULAÇÃO DA ARTEMIS",
     "crew_footer": "%d PESSOAS.",
@@ -23,14 +24,15 @@
       "confirm_no": "VOLTAR",
       "cutscene": {
         "caption": "ARTEMIS · 04:12 · SEMEADURA",
+        "capsule_flight": 18.0,
         "events": [
           { "at": 1.0, "do": "charge" },
-          { "at": 3.0, "do": "launch" },
+          { "at": 2.5, "do": "launch" },
+          { "at": 4.0, "do": "lights_step" },
           { "at": 5.5, "do": "lights_step" },
-          { "at": 7.5, "do": "lights_step" },
-          { "at": 9.5, "do": "lights_step" },
-          { "at": 11.5, "do": "lights_step" },
-          { "at": 14.0, "do": "cut" }
+          { "at": 7.0, "do": "lights_step" },
+          { "at": 8.5, "do": "lights_step" },
+          { "at": 10.0, "do": "cut" }
         ]
       },
       "epilogue": {

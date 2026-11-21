@@ -24,8 +24,8 @@ const FLICKER_TIME: float = 0.18
 const LAYOUTS: Dictionary = {
 	&"seeding": {
 		"station": Vector2(104, 108),
-		"planet": Vector2(330, 112),
-		"planet_scale": 2.0,
+		"planet": Vector2(336, 116),
+		"planet_scale": 1.5,
 		"earth": Vector2(-100, -100),
 	},
 	&"transmission": {
@@ -44,6 +44,7 @@ var _events: Array[Dictionary] = []
 var _next_event: int = 0
 var _elapsed: float = 0.0
 var _length: float = 0.0
+var _flight: float = 0.0
 var _cut: bool = false
 var _lights_total: int = 0
 var _lights_done: int = 0
@@ -71,6 +72,7 @@ func _ready() -> void:
 	_layout = LAYOUTS.get(ending_id, LAYOUTS[EndingData.SEEDING])
 	_events = EndingData.cutscene_events(table, ending_id)
 	_length = EndingData.cutscene_length(_events)
+	_flight = EndingData.capsule_flight(table, ending_id)
 	_lights_total = EndingData.count_action(_events, "lights_step")
 	AudioManager.stop_all()
 	_build_world()
@@ -150,7 +152,7 @@ func _launch() -> void:
 	AudioManager.play_sfx(&"sector_restored")
 	var target: Vector2 = Vector2(_layout.get("planet", SCREEN_SIZE))
 	var away: Vector2 = target - Vector2(48, 0)
-	var flight: float = maxf(1.0, (_length - _elapsed) * 1.25)
+	var flight: float = _flight if _flight > 0.0 else maxf(1.0, (_length - _elapsed) * 1.25)
 	var tween: Tween = create_tween().set_parallel(true)
 	tween.tween_property(_capsule, ^"position", away, flight).set_trans(Tween.TRANS_QUAD)
 	tween.tween_property(

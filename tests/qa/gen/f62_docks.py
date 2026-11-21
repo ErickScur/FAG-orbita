@@ -136,7 +136,7 @@ F = r.f
 r.at(F + 200); r.shot("33_cutscene")
 r.at(F + 400); r.shot("34_cutscene_volta")
 r.at(F + 560); r.shot("35_fala_de_religamento")
-r.accept(8, 14)
+r.accept(6, 14)
 r.wait(160); r.expect_scene("res://scenes/levels/core_hub.tscn")
 r.wait(10); r.shot("36_de_volta_ao_nucleo")
 if STAGE == 5:

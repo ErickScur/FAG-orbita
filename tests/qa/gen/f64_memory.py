@@ -7,6 +7,9 @@ from qa_build import R
 
 SCENE = "res://scenes/levels/memory_core.tscn"
 PROTOCOL = "MemoryCore/Protocol"
+with open(os.path.join(ROOT, "data", "dialogue", "memory_core.json"), encoding="utf-8") as fh:
+    import json
+    SIGNAL_LINE = json.load(fh)["sequences"]["mem_restored"]["lines"][0]["text"]
 STAGE = int(sys.argv[1]) if len(sys.argv) > 1 else 99
 ABILITIES = ["magnetic_claws", "heat_sink", "heated_core", "thruster"]
 r = R()
@@ -156,11 +159,12 @@ F = r.f
 r.at(F + 120); r.shot("23_cutscene_a_memoria_volta")
 r.at(F + 300); r.shot("24_cutscene_cores")
 r.at(F + 480); r.shot("25_cutscene_refeitorio")
-r.at(F + 720); r.shot("26_acesso_root")
+r.at(F + 720); r.shot("26_acesso_root_e_sinal_juntos")
 r.add(expect_call=PROTOCOL + ".signal_visible", equals=True, label="sinal_da_terra")
+r.add(expect_call="DialogueManager.current_text", equals=SIGNAL_LINE, label="painel_junto_da_fala")
 r.accept(4, 14)
-r.shot("27_um_sinal_da_terra")
-r.accept(4, 14)
+r.shot("27_evitando_lembrar")
+r.accept(2, 14)
 r.wait(260); r.expect_scene("res://scenes/levels/core_hub.tscn")
 r.add(expect_call="GameState.get", args=["checkpoint"], equals={"scene": "res://scenes/levels/core_hub.tscn", "dock_id": "core_dock_wing"}, label="backup_na_doca_da_ala")
 r.wait(10); r.shot("28_de_volta_ao_nucleo_sem_fim_da_demo")

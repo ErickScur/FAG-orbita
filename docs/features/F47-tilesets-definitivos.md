@@ -185,6 +185,15 @@ Nenhuma para o jogo rodar. **Pendente do humano:** registrar a licença/origem d
 ### 2026-09-20 — Buraco no topo das máscaras da Estufa
 - **Quem**: agente TILES · **O que**: a faixa de musgo do topo era colada com `blit_rect`, que copia o alfa: onde a silhueta do musgo era transparente na folha, o tile ficava **vazado**, e as 8 máscaras com topo exposto (toda superfície de piso e patamar) abriam buraco. Trocado por `blend_rect`, que preserva a chapa de base por baixo. Pego por `test_level_tileset.gd::test_every_mask_tile_is_solid_and_opaque`, não pelo olho.
 
+### 2026-11-21 — Luminárias das fases recortadas da parede (agente de correção C)
+- Os quadros 22 e 25 do Lab, Enfermaria, Docas, Memória e Reator vinham 100% opacos (a IA desenhou a
+  lâmpada sobre o tijolo) e o `PoweredLamp` tingia o quadrado inteiro: de longe a luminária lia como um
+  "0" laranja. Pós-processo nos PNG (receita na ficha de cada tileset no ASSETS), sem regerar.
+- Mecanismo: `test_every_lamp_fixture_is_cut_out_of_the_wall` lê as folhas de luminária (Núcleo + toda
+  fase com `entity_tiles`) e exige os quatro cantos transparentes e no máximo 192 px opacos.
+- QA: `lamps_tilesets` (gerador `tests/qa/gen/lamps.py`) põe o MU-7 embaixo de uma lâmpada de cada
+  tileset, 6/6 fases, 12/12 marcos.
+
 ## 13. Tabela de mapeamento peça → papel
 
 > Coordenadas `linha:coluna` da **folha bruta**; destino é a coordenada do atlas 8×4 do jogo.

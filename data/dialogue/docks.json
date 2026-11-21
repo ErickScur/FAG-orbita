@@ -34,11 +34,7 @@
       "lines": [
         {
           "speaker": "orbita",
-          "text": "Contenção desligada. Ele não lutou. Só fechava portas."
-        },
-        {
-          "speaker": "orbita",
-          "text": "Última ordem no registro dele: selar o hangar às três e doze. Remetente: rede central."
+          "text": "Contenção desligada. Última ordem dele: selar o hangar às três e doze. Remetente: rede central."
         },
         {
           "speaker": "orbita",
@@ -54,10 +50,6 @@
           "speaker": "orbita",
           "text": "Docas religadas. Estabilidade subindo.",
           "sfx": "sector_restored"
-        },
-        {
-          "speaker": "orbita",
-          "text": "As travas do berço continuam abertas. Vou deixar como estão."
         },
         {
           "speaker": "orbita",

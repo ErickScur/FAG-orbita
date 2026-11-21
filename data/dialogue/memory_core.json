@@ -30,16 +30,12 @@
       "lines": [
         {
           "speaker": "orbita",
-          "text": "Acesso root restaurado. A estação inteira, inclusive o que eu selei há duzentos anos.",
+          "text": "Acesso root restaurado. E um sinal: fraco, sem padrão. Vem da direção da Terra.",
           "sfx": "sector_restored"
         },
         {
           "speaker": "orbita",
-          "text": "Coordenadas do planeta alvo. Dados de terraformação. Arquivo genético intacto."
-        },
-        {
-          "speaker": "orbita",
-          "text": "E um sinal. Fraco, sem padrão. Vem da direção da Terra."
+          "text": "Coordenadas do planeta alvo, dados de terraformação, arquivo genético. Tudo intacto."
         },
         {
           "speaker": "orbita",

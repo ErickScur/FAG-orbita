@@ -5,6 +5,7 @@ const LOGO_PATH: String = "res://assets/ui/logo.png"
 const STARS_PATH: String = "res://assets/backgrounds/space_far.png"
 const SCREEN_SIZE: Vector2 = Vector2(384, 216)
 const SECTION_GAP: float = 16.0
+const TOP_BAND: float = 20.0
 const LINE_HEIGHT: float = 16.0
 const TITLE_COLOR: Color = Color(0.372549, 0.831373, 0.784314)
 const TEXT_COLOR: Color = Color(0.847059, 0.890196, 0.909804)
@@ -13,16 +14,28 @@ var _box: VBoxContainer = null
 var _finished: bool = false
 var _resting: bool = false
 var _rest_left: float = 0.0
+var _skip: SkipHold = null
 
 
 func _ready() -> void:
 	get_tree().paused = false
 	_build(EndingData.credits())
 	_box.position = Vector2(0, SCREEN_SIZE.y)
+	var band := ColorRect.new()
+	band.color = Color.BLACK
+	band.size = Vector2(SCREEN_SIZE.x, TOP_BAND)
+	band.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(band)
+	_skip = SkipHold.new(EndingData.ui_text(EndingData.load_table(), "skip_hint"))
+	_skip.place_top_right(SCREEN_SIZE)
+	add_child(_skip)
 
 
 func _process(delta: float) -> void:
 	if _finished:
+		return
+	if _skip.tick(delta):
+		_leave()
 		return
 	if _resting:
 		_rest_left -= delta
@@ -35,20 +48,16 @@ func _process(delta: float) -> void:
 		_rest_left = Balance.ENDING_PARAGRAPH_MIN_HOLD * 2.0
 
 
-func _unhandled_input(event: InputEvent) -> void:
-	if _finished:
-		return
-	if event.is_action_pressed(&"ui_accept") or event.is_action_pressed(&"ui_cancel"):
-		get_viewport().set_input_as_handled()
-		_leave()
-
-
 func scroll_offset() -> float:
 	return _box.position.y if _box != null else 0.0
 
 
 func is_resting() -> bool:
 	return _resting
+
+
+func skip_progress() -> float:
+	return _skip.progress() if _skip != null else 0.0
 
 
 func _leave() -> void:

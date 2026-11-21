@@ -75,9 +75,12 @@ Professor: Jeferson Eduardo Guido — disciplina de Desenvolvimento de Jogos.
 | Plataforma móvel | Kenney — *Pixel Platformer: Industrial Expansion* | CC0 — https://kenney.nl/assets |
 | Partículas | Kenney — *Particle Pack* | CC0 — https://kenney.nl/assets |
 | Efeitos sonoros | Kenney — *Sci-Fi Sounds* | CC0 — https://kenney.nl/assets |
-| MU-7, SR-3, terminais, porta, planta, objetos, tilesets, fundo de espaço, logo | gerados com Gemini / Nano Banana Pro | uso próprio do projeto |
-| Torre CX-2, tileset do Laboratório, bocal de vapor, o Serralheiro e a arena dele | gerados com Codex (geração de imagem) | uso próprio do projeto |
-| Sala de comando (cápsula, transmissor, consoles) e cutscene final (ARTEMIS, planetas, sinal) | gerados com Codex (geração de imagem) | uso próprio do projeto |
-| Placa de Blindagem (folha de coletáveis) | gerada com Codex (geração de imagem) | uso próprio do projeto |
+| MU-7, SR-3, BOTÂNICO 04, terminais, porta, planta, objetos, tilesets do Núcleo Central e da Estufa, fundo de espaço, logo | gerados com Gemini / Nano Banana Pro | uso próprio do projeto |
+| Laboratório: tileset, torre CX-2, bocal de vapor, piso eletrificado | gerados com Codex (geração de imagem) | uso próprio do projeto |
+| Enfermaria: tileset, objetos, gelo fino, sentinela V-9 | gerados com Codex (geração de imagem) | uso próprio do projeto |
+| Docas: tileset, objetos, berço da SELENE, acoplador, jato do propulsor, o Serralheiro e a arena dele | gerados com Codex (geração de imagem) | uso próprio do projeto |
+| Núcleo de Memória: tileset, tripulação lembrada, apagamento, PROTOCOLO LUTO | gerados com Codex (geração de imagem) | uso próprio do projeto |
 | Núcleo do Reator: tileset, núcleo de ARGOS, torre blindada, acoplador Root, plataforma térmica | gerados com Codex (geração de imagem) | uso próprio do projeto |
+| Sala de comando (cápsula, transmissor, consoles) e cutscene final (ARTEMIS, planeta-alvo, Terra, sinal) | gerados com Codex (geração de imagem) | uso próprio do projeto |
+| Placa de Blindagem (folha de coletáveis) | gerada com Codex (geração de imagem) | uso próprio do projeto |
 | Trilhas do Núcleo Central e da Estufa | geradas por IA | uso próprio do projeto |

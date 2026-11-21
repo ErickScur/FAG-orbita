@@ -15,7 +15,7 @@ MENU = "res://scenes/ui/main_menu.tscn"
 SPAWN = (2, 12)
 WALK = {"seeding": 128, "transmission": 244}
 CONSOLE = {"seeding": (17, 12), "transmission": (30, 12)}
-CUT_AT = {"seeding": 14.0, "transmission": 13.5}
+CUT_AT = {"seeding": 10.0, "transmission": 13.5}
 TEXT_CPS = 30.0
 FPS = 60
 ROOM_BEAT = 180
@@ -81,8 +81,8 @@ def cutscene(r, ending):
     r.at(begin + 330); r.shot("08_cutscene_execucao")
     if ending == "seeding":
         r.add(expect_call="EndingCutscene.capsule_launched", equals=True, label="08_capsula_partiu")
-    r.at(begin + 620); r.shot("09_cutscene_apagando")
     cut = begin + int(CUT_AT[ending] * FPS)
+    r.at(min(begin + 620, cut - 80)); r.shot("09_cutscene_apagando")
     r.at(cut - 20); r.shot("10_ultimo_instante")
     r.at(cut + 30); r.add(expect_call="EndingCutscene.is_cut", equals=True, label="11_corte_seco")
     r.shot("11_preto")
@@ -104,9 +104,13 @@ def epilogue(r, ending, tier):
     read_paragraphs(r, ending, tier, {0: "12_epilogo", 1: "13_epilogo", 6: "13_epilogo"})
     r.wait(10)
     r.add(expect_call="EndingEpilogue.stage_name", equals="names", label="14_nomes")
+    r.add(expect_call="EndingEpilogue.skip_hint_visible", equals=True, label="14_dica_de_pular")
     r.wait(240); r.shot("14_nomes_rolando")
-    r.wait(360); r.shot("14_nomes_meio")
     r.tap("ui_accept", 3, 20)
+    r.add(expect_call="EndingEpilogue.stage_name", equals="names", label="14_toque_nao_pula_nomes")
+    r.wait(340); r.shot("14_nomes_meio")
+    r.press("ui_accept"); r.wait(30); r.shot("14_segurando_para_pular")
+    r.wait(40); r.release("ui_accept"); r.wait(4)
     r.add(expect_call="EndingEpilogue.stage_name", equals="crew_footer", label="15_quarenta")
     r.shot("15_quarenta_pessoas")
     r.tap("ui_accept", 3, 30)
@@ -122,7 +126,12 @@ def credits_and_menu(r):
     r.wait(200); r.shot("18_creditos_inicio")
     r.wait(400); r.shot("19_creditos_meio")
     r.call("SaveManager.save_game")
-    r.tap("ui_accept", 3, 90)
+    r.tap("ui_accept", 3, 30)
+    r.expect_scene(CREDITS)
+    r.add(expect_call="Credits.is_inside_tree", equals=True, label="19_toque_nao_pula_creditos")
+    r.press("ui_accept"); r.wait(30); r.shot("19_segurando_para_pular")
+    r.wait(40); r.release("ui_accept")
+    r.wait(90)
     r.expect_scene(MENU)
     r.wait(20); r.shot("20_menu_com_marca")
     r.add(expect_call="MainMenu/CompletedMark.is_visible_in_tree", equals=True,

@@ -106,6 +106,8 @@ Para religar o reator, ÓRBITA precisa entrar no próprio **núcleo de memória*
 
 É o boss do jogo, só que o boss é a informação. Mecanicamente, o adversário é o **PROTOCOLO LUTO** — [GDD-2.6.2-H](GDD.md#gdd-2-6-2-h).
 
+> No jogo, os 40 são a tripulação inteira, não só os saudáveis presos: o log final diz "quem estava saudável ficou preso do lado dos esporos" ([AJ-076](GDD.md#gdd-ajustes)).
+
 <a id="jh-7"></a>
 ### 7. Recompensa
 

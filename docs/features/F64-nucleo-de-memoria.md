@@ -324,3 +324,15 @@ Nenhuma que bloqueie. Pendente: a faixa MUS-MEMORY.
   Núcleo sozinha; `f64_memory` (31/31) agora espera `core_hub.tscn` depois da fala de religamento e
   confere o backup na doca da ala (`core_dock_wing`, gravado pelo hub ao entrar), depois sobe à
   comporta do Reator e a abre com o Root. `LOGS_TOTAL` 13 / `RESEARCH_TOTAL` 12 com o Reator.
+
+### 2026-11-21 — Revisão de design: fatos, falas e o painel do sinal (agente de correção C)
+- **Fatos**: o log final dizia "Quarenta pessoas saudáveis ficaram presas", mas 40 é a tripulação
+  inteira, os leitos 1–11 já estavam ocupados e a SELENE partiu com gente. Linha 5 → *"Selei o lado
+  errado. Quem estava saudável ficou preso do lado dos esporos."* ([AJ-076](../design/GDD.md#gdd-ajustes)).
+- **Falas**: `mem_restored` 4 → 3 linhas, `core_return_memory` 2 → 1. O sinal da Terra fica.
+- **Painel antes da fala** (o painel `SINAL FRACO · DIREÇÃO: TERRA` aparecia duas linhas antes de a
+  ÓRBITA falar do sinal): a fala agora **abre** com o sinal (*"Acesso root restaurado. E um sinal:
+  fraco, sem padrão. Vem da direção da Terra."*), e o painel, que nasce no fim da cutscene, chega junto
+  dela. Sem mudar código: `earth_signal.gd` e o `protocol_luto.gd` ficaram como estavam.
+- **QA**: `f64_memory` 32/32 (marco novo `painel_junto_da_fala` confere o texto da fala com o painel
+  visível); `f64_hub_volta` 10/10.

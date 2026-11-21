@@ -74,6 +74,23 @@ func test_campaign_has_eight_long_logs() -> void:
 		assert_true(lines.size() <= MAX_LOG_LINES, "log '%s' longo demais: %d" % [key, lines.size()])
 
 
+func test_the_logs_keep_the_crew_facts_straight() -> void:
+	var logs: Dictionary = _content["logs"]
+	for key: Variant in logs:
+		for line: Variant in (logs[key] as Dictionary).get("lines", []):
+			var text_value: String = String(
+				(line as Dictionary).get("text", "") if line is Dictionary else line
+			)
+			assert_false(
+				text_value.contains("Ana Lúcia") and text_value.contains("Leito dez"),
+				"%s: a Ana Lúcia está no painel do hangar, não num leito: %s" % [key, text_value]
+			)
+			assert_false(
+				text_value.to_lower().contains("quarenta pessoas saudáveis"),
+				"%s: os 40 são a tripulação inteira, não os saudáveis presos: %s" % [key, text_value]
+			)
+
+
 func test_line_length() -> void:
 	var sequence_errors: PackedStringArray = DialogueData.wrap_length_errors(
 		_content["sequences"], DialogueData.MAX_LINE_CHARS

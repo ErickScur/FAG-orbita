@@ -36,6 +36,8 @@ const MAGNETIC_SHEETS: Array[String] = [
 const YELLOW_MIN_WARM: float = 0.45
 const YELLOW_MIN_GAP: float = 0.12
 const LAMP_MIN_GAP: float = 0.20
+const LAMP_MAX_OPAQUE: int = 192
+const LEVELS_DIR: String = "res://data/levels/"
 
 
 func test_every_mask_tile_is_solid_and_opaque() -> void:
@@ -169,6 +171,50 @@ func test_the_lamp_has_a_lit_and_an_unlit_frame() -> void:
 		on - off >= LAMP_MIN_GAP,
 		"luminária apagada não é mais escura que a acesa (%.2f vs %.2f)" % [on, off]
 	)
+
+
+func test_every_lamp_fixture_is_cut_out_of_the_wall() -> void:
+	var sheets: Array[String] = _lamp_sheets()
+	assert_true(sheets.size() >= 6, "luminárias do Núcleo e das fases com entity_tiles")
+	for path: String in sheets:
+		var texture: Texture2D = AssetResolver.texture(path)
+		assert_not_null(texture, "%s: textura ausente" % path)
+		if texture == null:
+			continue
+		var image: Image = texture.get_image()
+		for index: int in [PoweredLamp.FRAME_ON, PoweredLamp.FRAME_OFF]:
+			var coords := Vector2i(index % 8, index / 8)
+			for corner: Vector2i in [
+				Vector2i(0, 0), Vector2i(TILE - 1, 0), Vector2i(0, TILE - 1),
+				Vector2i(TILE - 1, TILE - 1),
+			]:
+				assert_true(
+					_alpha(image, coords, corner) <= 0.5,
+					"%s: quadro %d com canto opaco em %s (parede atrás da luminária)"
+					% [path, index, corner]
+				)
+			var opaque: int = TILE * TILE - _transparent_pixels(image, coords)
+			assert_true(
+				opaque > 0 and opaque <= LAMP_MAX_OPAQUE,
+				"%s: quadro %d com %d px opacos; a luminária é o objeto, não o quadrado"
+				% [path, index, opaque]
+			)
+
+
+func _lamp_sheets() -> Array[String]:
+	var sheets: Array[String] = [PoweredLamp.TILE_SHEET]
+	for file_name: String in DirAccess.get_files_at(LEVELS_DIR):
+		if not file_name.ends_with(".json"):
+			continue
+		var parsed: Variant = JSON.parse_string(
+			FileAccess.get_file_as_string(LEVELS_DIR + file_name)
+		)
+		if not (parsed is Dictionary):
+			continue
+		var path: String = String((parsed as Dictionary).get("entity_tiles", ""))
+		if not path.is_empty() and not sheets.has(path):
+			sheets.append(path)
+	return sheets
 
 
 func _frame_luma(image: Image, index: int) -> float:

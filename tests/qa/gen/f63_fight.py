@@ -70,7 +70,7 @@ def fight(r, landed, shots=True, stop=""):
     boss(r, "is_vented", False, "vacuo_fechado")
     boss(r, "is_gate_closed", False, "comporta_aberta")
     shot("11_serralheiro_desligado")
-    r.at(D + 810); shot("12_fala_do_serralheiro"); r.accept(6, 14)
+    r.at(D + 810); shot("12_fala_do_serralheiro"); r.accept(4, 14)
     r.wait(30); shot("13_depois_da_fala")
     r.press("move_right"); r.wait(140); r.release("move_right"); r.wait(30)
     r.expect(115, 40, "no_do_setor"); shot("14_no_do_setor")

@@ -93,6 +93,25 @@ static func cutscene_length(events: Array[Dictionary]) -> float:
 	return 0.0
 
 
+static func capsule_flight(table: Dictionary, ending_id: StringName) -> float:
+	var cutscene: Dictionary = entry(table, ending_id).get("cutscene", {})
+	return float(cutscene.get("capsule_flight", 0.0))
+
+
+static func continue_hint(table: Dictionary, joypad: bool) -> String:
+	return ui_text(table, "continue_hint_pad" if joypad else "continue_hint")
+
+
+static func joypad_from_event(event: InputEvent, current: bool) -> bool:
+	if event is InputEventJoypadButton:
+		return true
+	if event is InputEventJoypadMotion:
+		return true if absf((event as InputEventJoypadMotion).axis_value) >= 0.5 else current
+	if event is InputEventKey or event is InputEventMouseButton:
+		return false
+	return current
+
+
 static func count_action(events: Array[Dictionary], action: String) -> int:
 	var count: int = 0
 	for event: Dictionary in events:

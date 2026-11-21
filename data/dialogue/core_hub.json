@@ -193,11 +193,7 @@
       "lines": [
         {
           "speaker": "orbita",
-          "text": "O Núcleo sentiu as Docas. Quase toda a luz voltou."
-        },
-        {
-          "speaker": "orbita",
-          "text": "Uma comporta que eu não reconheço respondeu. Núcleo de Memória."
+          "text": "O Núcleo sentiu as Docas. Respondeu uma comporta que eu não reconheço: Núcleo de Memória."
         }
       ]
     },
@@ -207,11 +203,7 @@
       "lines": [
         {
           "speaker": "orbita",
-          "text": "O acesso root abre a comporta do reator. Ele está no limite."
-        },
-        {
-          "speaker": "orbita",
-          "text": "Sobra energia para uma última ação. Desta vez quem decide sou eu, e eu lembro de tudo."
+          "text": "O root abre a comporta do reator. Sobra energia para uma última ação, e desta vez eu lembro de tudo."
         }
       ]
     }
