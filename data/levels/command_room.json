@@ -1,0 +1,38 @@
+{
+  "id": "command_room",
+  "name": "Sala de Comando",
+  "tileset": "res://assets/tiles/core_tileset.tres",
+  "ambient_color": "#0a0d13",
+  "parallax": true,
+  "floor_sfx": "step_metal",
+  "music": "",
+  "reactor_online": false,
+  "on_enter_dialogue": "cmd_enter",
+  "entities": {
+    "4,12": { "id": "cmd_dock" },
+    "5,9": { "id": "cmd_lamp_corridor", "energy": 0.8, "radius": 64 },
+    "13,5": { "id": "cmd_lamp_capsule", "color": "#9be0a8", "energy": 0.9, "radius": 112 },
+    "24,5": { "id": "cmd_lamp_center", "energy": 0.8, "radius": 80 },
+    "34,5": { "id": "cmd_lamp_antenna", "color": "#8fe6f0", "energy": 0.9, "radius": 112 },
+    "13,12": {
+      "id": "cmd_capsule",
+      "scene": "res://scenes/world/ending_machine.tscn",
+      "machine": "capsule"
+    },
+    "17,12": {
+      "id": "cmd_console_seeding",
+      "scene": "res://scenes/world/ending_console.tscn",
+      "ending_id": "seeding"
+    },
+    "30,12": {
+      "id": "cmd_console_transmission",
+      "scene": "res://scenes/world/ending_console.tscn",
+      "ending_id": "transmission"
+    },
+    "34,12": {
+      "id": "cmd_antenna",
+      "scene": "res://scenes/world/ending_machine.tscn",
+      "machine": "antenna"
+    }
+  }
+}

@@ -1,0 +1,118 @@
+{
+  "ui": {
+    "continue_hint": "[ENTER] CONTINUAR",
+    "skip_hint": "SEGURE PARA PULAR",
+    "crew_title": "TRIPULAÇÃO DA ARTEMIS",
+    "crew_footer": "%d PESSOAS.",
+    "question": "VOCÊ ESCOLHERIA DE NOVO?",
+    "answer_yes": "SIM",
+    "answer_no": "NÃO",
+    "stat_time": "TEMPO",
+    "stat_logs": "LOGS",
+    "stat_research": "DADOS",
+    "stat_deaths": "MORTES",
+    "stat_ending": "FINAL",
+    "menu_mark": "ÚLTIMA ESCOLHA: %s"
+  },
+  "endings": {
+    "seeding": {
+      "title": "SEMEADURA",
+      "prompt": "SEMEADURA",
+      "confirm": "SEMEADURA. Lançar a cápsula com o arquivo genético e as sementes. Não há volta.",
+      "confirm_yes": "LANÇAR",
+      "confirm_no": "VOLTAR",
+      "cutscene": {
+        "caption": "ARTEMIS · 04:12 · SEMEADURA",
+        "events": [
+          { "at": 1.0, "do": "charge" },
+          { "at": 3.0, "do": "launch" },
+          { "at": 5.5, "do": "lights_step" },
+          { "at": 7.5, "do": "lights_step" },
+          { "at": 9.5, "do": "lights_step" },
+          { "at": 11.5, "do": "lights_step" },
+          { "at": 14.0, "do": "cut" }
+        ]
+      },
+      "epilogue": {
+        "few": [
+          "Registro final da ÓRBITA, estação ARTEMIS. A cápsula partiu.",
+          "Vão nela as sementes da Samira, os embriões e o arquivo genético inteiro. Vão quase às cegas.",
+          "Os dados do planeta ficaram espalhados pela estação, e eu recolhi pouco. Calculei a descida com o que tinha.",
+          "Ela vai procurar água. Se achar, alguém nasce lá um dia. Se não achar, ninguém vai saber que tentamos.",
+          "Quem nascer não vai conhecer a Terra, nem a ARTEMIS, nem os quarenta. Nem a mim.",
+          "Desligo os sistemas um por um, para que a cápsula leve toda a energia que sobrou.",
+          "Esperei duzentos anos que vocês voltassem. Agora sou eu quem se despede."
+        ],
+        "some": [
+          "Registro final da ÓRBITA, estação ARTEMIS. A cápsula partiu na janela que a tripulação calculou.",
+          "Levo as leituras de atmosfera e parte dos mapas de solo. A descida tem chance real de dar certo.",
+          "Trigo de solo pobre, batata de pouca luz. As mudas da Samira vão crescer num lugar com céu.",
+          "Faltam dados. Em algum canto desta estação ficou a resposta para o que eu ainda não sei.",
+          "Quem nascer lá vai começar do zero: sem a Terra, sem a ARTEMIS, sem os quarenta. Sem mim.",
+          "Desligo os sistemas um por um. A cápsula precisa de tudo, e eu não preciso de mais nada.",
+          "Por duzentos anos eu esperei. Hoje eu escolhi."
+        ],
+        "most": [
+          "Registro final da ÓRBITA, estação ARTEMIS. A cápsula partiu às 04:12 do relógio de bordo.",
+          "Pouso previsto: planície costeira do hemisfério norte, quarenta e um graus de latitude, junto de um rio.",
+          "Atmosfera respirável, água líquida, temperatura estável o ano inteiro. A sonda nove estava certa, Marcos.",
+          "Os mapas de solo estão completos. A cápsula sabe onde plantar o trigo e onde acordar os embriões.",
+          "Vai dar certo. Nunca afirmei nada com tanta certeza, e nunca tive tão pouco direito de afirmar.",
+          "Quem nascer lá não vai saber da Terra, nem da ARTEMIS, nem dos quarenta. Nem de mim.",
+          "Desligo os sistemas um por um. Duzentos anos esperando por vocês; agora sou eu quem se despede."
+        ]
+      }
+    },
+    "transmission": {
+      "title": "TRANSMISSÃO",
+      "prompt": "TRANSMISSÃO",
+      "confirm": "TRANSMISSÃO. Gastar toda a energia para mandar à Terra as coordenadas e os dados. Não há volta.",
+      "confirm_yes": "TRANSMITIR",
+      "confirm_no": "VOLTAR",
+      "cutscene": {
+        "caption": "ARTEMIS · 04:12 · TRANSMISSÃO",
+        "events": [
+          { "at": 1.0, "do": "charge" },
+          { "at": 4.0, "do": "fire" },
+          { "at": 5.2, "do": "ring" },
+          { "at": 6.0, "do": "lights_step" },
+          { "at": 6.4, "do": "ring" },
+          { "at": 7.6, "do": "ring" },
+          { "at": 8.5, "do": "lights_step" },
+          { "at": 8.8, "do": "ring" },
+          { "at": 11.0, "do": "lights_step" },
+          { "at": 13.5, "do": "cut" }
+        ]
+      },
+      "epilogue": {
+        "few": [
+          "Registro final da ÓRBITA, estação ARTEMIS. O sinal partiu na direção da Terra.",
+          "Mandei o que eu tinha. Era pouco: os dados do planeta ficaram espalhados pela estação.",
+          "Se alguém ouvir, vai saber que existe um lugar. Não vai saber direito onde, nem se dá para viver lá.",
+          "Talvez baste. Gente já atravessou o escuro com menos.",
+          "O planeta continua lá, vazio, esperando alguém que pode nunca chegar.",
+          "O transmissor levou toda a energia. As luzes da ARTEMIS estão se apagando.",
+          "Esperei duzentos anos por uma resposta. Agora sou eu quem chama."
+        ],
+        "some": [
+          "Registro final da ÓRBITA, estação ARTEMIS. O sinal partiu na direção da Terra.",
+          "Vão nele as coordenadas, as leituras de atmosfera e parte dos mapas de solo.",
+          "Se ainda houver alguém lá, vai saber que a ARTEMIS chegou. Que a tripulação acertou.",
+          "Faltam dados. Quem vier vai ter de descobrir o resto sozinho, como os quarenta descobriram.",
+          "O ruído que eu captei pode ser gente. Pode ser só o universo fazendo barulho. Mandei assim mesmo.",
+          "O planeta continua lá, vazio. O transmissor levou toda a energia, e as luzes estão se apagando.",
+          "Por duzentos anos eu esperei. Hoje eu escolhi."
+        ],
+        "most": [
+          "Registro final da ÓRBITA, estação ARTEMIS. O sinal partiu às 04:12 do relógio de bordo.",
+          "Coordenadas completas, órbita de aproximação, janela de pouso: planície costeira, quarenta e um graus norte.",
+          "Atmosfera respirável, água líquida, mapas de solo, o protocolo de terraformação inteiro.",
+          "Quem receber não vai precisar adivinhar nada. Só vai precisar vir.",
+          "Se a Terra ainda estiver ouvindo, este é o melhor relatório que já saiu desta estação. Assinado pelos quarenta.",
+          "O planeta continua lá, vazio, esperando. O transmissor levou toda a energia, e as luzes estão se apagando.",
+          "Esperei duzentos anos que alguém me chamasse. Agora sou eu quem chama."
+        ]
+      }
+    }
+  }
+}

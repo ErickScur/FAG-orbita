@@ -42,6 +42,8 @@
 | [SPR-COUPLER](#spr-coupler) | Sprite sheet | Acoplador de energia (4 estados; F63 reaproveita) | A | IA | **integrado (IA)** | F62, F63 |
 | [FX-THRUSTER](#fx-thruster) | Sprite sheet | Jato do Propulsor | B | IA | **integrado (IA)** | F62 |
 | [SPR-PROPS-INF](#spr-props-inf) | Sprite sheet | Objetos da Enfermaria (leitos, maca, soro, cápsula…) | B | IA | **integrado (IA)** | F61 |
+| [SPR-CMD](#spr-cmd) | Sprite sheet | Sala de comando: baia da cápsula, transmissor e os dois consoles de alavanca | A | IA | **integrado (IA)** | F66 |
+| [SPR-ENDING](#spr-ending) | Sprite sheet | Cutscene final: ARTEMIS por fora, cápsula em voo, planeta-alvo, Terra, clarão e onda do sinal | A | IA | **integrado (IA)** | F66 |
 | [TIL-CORE](#til-core) | Tileset | Núcleo Central | A | Grátis + IA | **integrado** | F21, F28 |
 | [TIL-GREENHOUSE](#til-greenhouse) | Tileset | Estufa | A | Grátis + IA | **integrado** | F21, F29 |
 | [TIL-LAB](#til-lab) | Tileset | Laboratório (Verão) | A | IA | **integrado (IA)** | F60 |
@@ -506,6 +508,86 @@ Row 2:
 Chunky readable shapes only: no thin 1-pixel details — everything must still read when each frame is shrunk to 32x32 pixels. Keep the relative sizes realistic: the beds, stretcher and pod are wide and low, the IV stand and file cabinet are tall and narrow.
 
 IMPORTANT RULE FOR EVERY FRAME: draw ONLY the object described. Never draw walls, floors, ground, ceilings, rooms, scenery, characters, bodies, cast shadows or any other object. Each object floats on the flat magenta background, resting on the bottom edge of its frame.
+
+Solid flat magenta background (#FF00FF) everywhere else, with clear magenta gaps between frames. No text, no letters, no labels, no numbers, no grid lines, no frame borders, no watermark.
+```
+
+<a id="spr-cmd"></a>
+### SPR-CMD — Sala de comando (máquinas e consoles da escolha)
+
+| Campo | Valor |
+|---|---|
+| Caminho final | `assets/sprites/world/command_machines_sheet.png` (lido por `EndingMachine` e `EndingConsole`, F66) |
+| Contrato | Folha **256×128 = 4 col × 2 lin de 64×64**, fundo transparente, cada máquina **apoiada no pé do quadro** e centrada. Linha 0: (0) baia da cápsula parada · (1) baia armada (luzes verdes) · (2) transmissor parado · (3) transmissor carregando (anéis e ponta ciano). Linha 1: (0) console SEMEADURA com a alavanca em cima · (1) alavanca puxada, tela verde · (2) console TRANSMISSÃO com a alavanca em cima · (3) alavanca puxada, tela ciano. As duas máquinas têm silhuetas opostas (cápsula bojuda entre garras × mastro fino com prato); os consoles têm a mesma forma e se distinguem pela cor do pomo e da faixa |
+| Placeholder gerado | `assets/placeholder/sprites/world/command_machines_sheet.png` (256×128) — `tools/make_placeholders.gd`, forma `rect_index` |
+| Fonte | **IA — geração de imagem do Codex CLI**, 2026-11-21, 2 variações (as duas 4×2 exatas), escolhida a **1ª**: garras da baia e pomos das alavancas mais grossos e legíveis a 64 px; na 2ª o pomo das duas alavancas era cinza e os consoles ficavam iguais. Referências: `mu7_sheet.png`, `door_sheet.png`, `terminal_sheet.png` |
+| Montagem | `tools/autoslice_sheet.gd --frame-width=64 --frame-height=64 --columns=4 --fit=contain` (escala 0,13, alinhado pelo pé), depois alfa binarizado (≥ 128 opaco, abaixo transparente): 0 px semitransparentes, 0 px de franja magenta |
+| Status | **integrado (IA)** em 2026-11-21 |
+
+**Prompt (Codex):**
+```
+Pixel art sprite sheet of EIGHT machines for the final room of a melancholic 2D side-view space station game: the station COMMAND ROOM, where the last decision of the game is made. Side view, "a beautiful station nobody is using", silent, dark, almost sacred.
+
+STYLE MUST MATCH THE ATTACHED REFERENCE IMAGES (the MU-7 robot, the station door, dock and terminals): same worn 16-bit look, hard pixels, dark 1-pixel outline, scratched paint, grime in recesses. MEDIUM brightness, no baked glow halos, no cast shadows.
+
+Palette: cold blue-grey steel (#5E6E7A, #3A4650, #8CA3B0 highlight), dark outline (#0B1216), off-white casing (#C9D3D8). SEEDING machines use a living GREEN accent (#7BD88F, #3E8E57). TRANSMISSION machines use a signal CYAN accent (#7FE3F0, #3A9FB0). A few amber warning marks (#E0B43C).
+
+Layout: a grid of SQUARE frames, 4 columns and 2 rows, the same size each, every machine STANDING ON THE BOTTOM EDGE of its own frame, centered horizontally, filling most of the frame height.
+Row 1:
+ 1. SEED CAPSULE LAUNCH CRADLE, dormant: a tall rounded seed capsule (like a bullet-shaped pod, white casing with a green band and a small round porthole) standing upright inside an open steel launch cradle with two curved clamp arms and a heavy base with pipes. Accent lights dark.
+ 2. the SAME seed capsule cradle, ARMED: identical shape, but the green band, the porthole and small lights on the base are lit bright green.
+ 3. TRANSMITTER ANTENNA, dormant: a tall steel mast on a heavy base with cables, topped by a big round parabolic DISH facing up and to the right, with a pointed feed horn in the center of the dish. Accent lights dark.
+ 4. the SAME transmitter antenna, CHARGING: identical shape, but the feed horn and rings along the mast are lit bright cyan.
+Row 2:
+ 5. a LEVER CONSOLE for seeding: a waist-high slanted control pedestal with a big heavy lever with a round knob sticking UP out of the top, a green stripe on the front panel, screen dark.
+ 6. the SAME seeding lever console with the lever PULLED DOWN to the front, the green stripe and a small screen lit green.
+ 7. a LEVER CONSOLE for transmission: the same pedestal shape and lever UP, but with a cyan stripe on the front panel, screen dark.
+ 8. the SAME transmission lever console with the lever PULLED DOWN, the cyan stripe and a small screen lit cyan.
+
+Keep the two big machines very different in silhouette: the capsule cradle is a bulky rounded pod held by clamps, the transmitter is a thin mast with a wide dish on top. The consoles are about half the height of the big machines.
+
+Chunky readable shapes only: no thin 1-pixel details. Everything must still read when the sheet is shrunk so each frame is 64x64 pixels.
+
+IMPORTANT RULE FOR EVERY FRAME: draw ONLY the machine described. Never draw walls, floors, ground, ceilings, rooms, scenery, characters, cast shadows or any other object. Each machine floats on the flat magenta background, resting on the bottom edge of its frame.
+
+Solid flat magenta background (#FF00FF) everywhere else, with clear magenta gaps between frames. No text, no letters, no labels, no numbers, no grid lines, no frame borders, no watermark.
+```
+
+<a id="spr-ending"></a>
+### SPR-ENDING — Cutscene final (espaço)
+
+| Campo | Valor |
+|---|---|
+| Caminho final | `assets/sprites/fx/ending_space_sheet.png` (lido por `EndingCutscene`, F66) |
+| Contrato | Folha **256×128 = 4 col × 2 lin de 64×64**, fundo transparente. Linha 0: (0) ARTEMIS por fora, janelas acesas · (1) a mesma, apagada · (2) cápsula de sementes em voo para a direita, com chama · (3) a mesma sem chama. Linha 1: (0) planeta-alvo habitável (oceanos e continentes verdes) · (1) Terra pequena e cansada (continentes marrons) · (2) clarão do transmissor com feixe para a direita · (3) onda do sinal (três arcos ciano). Na cutscene a estação vai a ×2, o planeta-alvo a ×1,5–2 e a Terra a ×0,5 |
+| Placeholder gerado | `assets/placeholder/sprites/fx/ending_space_sheet.png` (256×128) — `tools/make_placeholders.gd`, forma `rect_index` |
+| Fonte | **IA — geração de imagem do Codex CLI**, 2026-11-21, 2 variações (as duas 4×2 exatas), escolhida a **2ª**: a diferença entre a ARTEMIS acesa (janelas âmbar) e apagada se lê de longe; na 1ª as duas eram quase iguais. Referências: `mu7_sheet.png` e `space_mid.png` |
+| Montagem | `tools/autoslice_sheet.gd` 64×64, 4 colunas, `--fit=contain`; alfa binarizado; 4 pixels magenta do miolo do anel da estação escurecidos. 0 px semitransparentes, 0 px de franja |
+| Status | **integrado (IA)** em 2026-11-21 |
+
+**Prompt (Codex):**
+```
+Pixel art sprite sheet of EIGHT objects seen in deep space, for the final cutscene of a melancholic 2D side-view space station game. Quiet, lonely, beautiful.
+
+STYLE MUST MATCH THE ATTACHED REFERENCE IMAGES (the station robot and the space background with the planet): same 16-bit look, hard pixels, dark 1-pixel outline on objects, no anti-aliasing, no soft gradients.
+
+Palette: station steel blue-grey (#5E6E7A, #3A4650, #8CA3B0), off-white panels (#C9D3D8), warm window light (#F0D58A), dark outline (#0B1216), seed capsule green band (#7BD88F), thruster flame (#FFE9A8, #F0A040), habitable planet ocean teal and green land (#2E8C9A, #5FB06A, #E8F0E0 clouds), Earth pale blue with brown dry land and grey clouds (#6F9FC8, #9C7A55, #B8C2C8), transmission signal cyan (#7FE3F0, #E8FBFF).
+
+Layout: a grid of SQUARE frames, 4 columns and 2 rows, the same size each, every object CENTERED in its own frame.
+Row 1:
+ 1. the ARTEMIS SPACE STATION seen from outside, small and far: a central ring hub with four short modules (one with a big glass dome greenhouse, one with a tall mast and a round dish antenna), two solar panel wings, MANY small warm lit windows. Fill most of the frame.
+ 2. the SAME station with every window DARK and the panels unlit, identical shape and position.
+ 3. a SEED CAPSULE in flight seen from the side: a white bullet-shaped pod with a green band and a small porthole, pointing RIGHT, with a bright yellow-orange thruster FLAME coming out of its LEFT end. The capsule occupies about half of the frame width.
+ 4. the SAME seed capsule pointing RIGHT, no flame, a faint cold glint on the porthole.
+Row 2:
+ 5. a HABITABLE PLANET: a round planet filling the frame, teal oceans, green continents, thin white clouds, a soft cyan atmosphere rim on the right side, the left side in shadow.
+ 6. the EARTH, far away and tired: a smaller round planet (about half the frame), pale blue ocean, large brown dry continents, grey clouds, the left half in shadow.
+ 7. a TRANSMISSION SIGNAL FLASH: a bright cyan starburst flare with a short straight beam going to the RIGHT, white core.
+ 8. a SIGNAL WAVE RING: three thin concentric cyan arcs opening to the RIGHT like a radio wave, made of thick pixels.
+
+Chunky readable shapes only: no thin 1-pixel details. Everything must still read when the sheet is shrunk so each frame is 64x64 pixels.
+
+IMPORTANT RULE FOR EVERY FRAME: draw ONLY the object described. No stars, no nebula, no background scenery inside the frames.
 
 Solid flat magenta background (#FF00FF) everywhere else, with clear magenta gaps between frames. No text, no letters, no labels, no numbers, no grid lines, no frame borders, no watermark.
 ```

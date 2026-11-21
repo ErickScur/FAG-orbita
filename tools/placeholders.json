@@ -171,6 +171,26 @@
       "seed": 110
     },
     {
+      "id": "SPR-CMD",
+      "path": "sprites/world/command_machines_sheet.png",
+      "frame": [64, 64],
+      "grid": [4, 2],
+      "shape": "rect_index",
+      "palette": "core",
+      "body": "#5E6E7A",
+      "seed": 166
+    },
+    {
+      "id": "SPR-ENDING",
+      "path": "sprites/fx/ending_space_sheet.png",
+      "frame": [64, 64],
+      "grid": [4, 2],
+      "shape": "rect_index",
+      "palette": "space",
+      "body": "#C9D3D8",
+      "seed": 167
+    },
+    {
       "id": "SPR-BOTANICO",
       "path": "sprites/npc/botanico_sheet.png",
       "frame": [16, 16],

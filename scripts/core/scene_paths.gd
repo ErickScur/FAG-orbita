@@ -8,6 +8,10 @@ const SPLASH: String = "res://scenes/boot/splash.tscn"
 const GAME_OVER: String = "res://scenes/ui/game_over.tscn"
 const DEMO_END: String = "res://scenes/ui/demo_end.tscn"
 const CHASSIS_LOST: String = "res://scenes/ui/chassis_lost.tscn"
+const COMMAND_ROOM: String = "res://scenes/levels/command_room.tscn"
+const ENDING_CUTSCENE: String = "res://scenes/ui/ending_cutscene.tscn"
+const ENDING_EPILOGUE: String = "res://scenes/ui/ending_epilogue.tscn"
+const CREDITS: String = "res://scenes/ui/credits.tscn"
 
 
 static func is_level(path: String) -> bool:

@@ -84,17 +84,19 @@ scripts/core/
   station_map_model.gd    estado dos setores no mapa (F67) · log_catalog.gd: codex de logs (F33)
 scenes/
   boot/                   splash.tscn, loading.tscn
-  ui/                     main_menu, options_menu, pause_menu, hud, dialogue_box, chassis_lost, game_over, demo_end, energy_terminal_ui, station_map, log_archive
+  ui/                     main_menu, options_menu, pause_menu, hud, dialogue_box, chassis_lost, game_over, demo_end, energy_terminal_ui, station_map, log_archive,
+                          ending_cutscene, ending_epilogue, credits (F66: corte, epílogo, 40 nomes, estatísticas, créditos)
   player/                 mu7.tscn + mu7.gd
   enemies/                sr3.tscn, spore_swarm.tscn
   world/                  terminal, distribution_terminal, door, backup_dock, collectible, moving_platform, grow_plant, magnetic_wall, secret_wall, space_parallax, log_object, level_exit, sector_node, powered_lamp, steam_vent, electric_floor, vacuum_zone, coupler, escape_cradle
   npc/                    botanico.tscn (F34)
-  levels/                 level_base.tscn, core_hub.tscn, greenhouse.tscn, lab.tscn, infirmary.tscn, docks.tscn
+  levels/                 level_base.tscn, core_hub.tscn, greenhouse.tscn, lab.tscn, infirmary.tscn, docks.tscn, command_room.tscn (sala da escolha final, F66)
 data/
   levels/*.txt            fases em ASCII + legenda
   energy/*.json           definição dos terminais (orçamento, sistemas, efeitos)
   logs/*.json             fragmentos de log (autor, setor, texto)
   dialogue/*.json         falas da ÓRBITA / tutorial
+  endings/*.json          finais (epílogo por faixa de Dados, linha do tempo da cutscene), 40 tripulantes, créditos (F66)
 assets/
   sprites/ tiles/ ui/ fonts/ backgrounds/ fx/ audio/music/ audio/sfx/
   placeholder/            gerados por tools/make_placeholders.gd
@@ -122,7 +124,7 @@ Cada cena mora com seu script ao lado (`scenes/player/mu7.tscn` + `scenes/player
 
 ### 4.3 Contrato dos autoloads (fonte única; features novas reutilizam, não inventam)
 
-**Sinais do `EventBus`:** `integrity_changed(current: int, maximum: int)` · `charge_changed(current: float, maximum: float)` · `reactor_changed(percent: float)` · `reactor_critical(active: bool)` · `player_damaged(amount: int)` · `player_died()` · `player_respawned()` · `status_applied(status_id: StringName, duration: float)` · `status_cleared(status_id: StringName)` · `interaction_available(prompt: String)` · `interaction_cleared()` · `energy_changed(terminal_id: StringName, system_id: StringName, powered: bool)` · `sector_restored(sector_id: StringName)` · `ability_unlocked(ability_id: StringName)` · `collectible_picked(kind: StringName, item_id: StringName)` · `log_opened(log_id: StringName)` · `log_closed(log_id: StringName)` · `dialogue_started()` · `dialogue_finished()` · `objective_changed(text: String)` · `checkpoint_reached(checkpoint_id: StringName)` · `game_over(reason: StringName)` · `demo_completed()` · `flashlight_toggled(on: bool)` · `game_paused(paused: bool)`.
+**Sinais do `EventBus`:** `integrity_changed(current: int, maximum: int)` · `charge_changed(current: float, maximum: float)` · `reactor_changed(percent: float)` · `reactor_critical(active: bool)` · `player_damaged(amount: int)` · `player_died()` · `player_respawned()` · `status_applied(status_id: StringName, duration: float)` · `status_cleared(status_id: StringName)` · `interaction_available(prompt: String)` · `interaction_cleared()` · `energy_changed(terminal_id: StringName, system_id: StringName, powered: bool)` · `sector_restored(sector_id: StringName)` · `ability_unlocked(ability_id: StringName)` · `collectible_picked(kind: StringName, item_id: StringName)` · `log_opened(log_id: StringName)` · `log_closed(log_id: StringName)` · `dialogue_started()` · `dialogue_finished()` · `objective_changed(text: String)` · `checkpoint_reached(checkpoint_id: StringName)` · `game_over(reason: StringName)` · `demo_completed()` · `argos_defeated()` (F65 emite; o `SceneManager` leva à sala de comando) · `ending_chosen(ending_id: StringName)` · `flashlight_toggled(on: bool)` · `game_paused(paused: bool)`.
 
 **`GameState`** — campos: `reactor_percent`, `integrity`, `integrity_max`, `charge`, `charge_max`, `logs_collected`, `research_collected`, `collected_ids`, `abilities`, `sectors_restored` (`Array[StringName]`), `energy_states: Dictionary`, `checkpoint: Dictionary {scene, dock_id}`, `deaths`, `play_time`, `flags: Dictionary`, `current_objective`. Métodos: `new_game()`, `is_timer_frozen() -> bool`, `apply_damage(amount: int)`, `repair(amount: int)`, `is_dead() -> bool`, `add_charge(v: float)`, `spend_charge(v: float) -> bool`, `change_reactor(amount: float)`, `reactor_multiplier() -> float`, `register_pickup(kind: StringName, item_id: StringName) -> bool`, `set_objective(id: StringName)`, `mark_visited(scene_path) -> bool` / `has_visited(level_key) -> bool` (marca `flags.visited_<fase>`, F67), `get_stats() -> Dictionary`, `to_dict()`, `from_dict(d)`.
 

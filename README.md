@@ -77,4 +77,5 @@ Professor: Jeferson Eduardo Guido — disciplina de Desenvolvimento de Jogos.
 | Efeitos sonoros | Kenney — *Sci-Fi Sounds* | CC0 — https://kenney.nl/assets |
 | MU-7, SR-3, terminais, porta, planta, objetos, tilesets, fundo de espaço, logo | gerados com Gemini / Nano Banana Pro | uso próprio do projeto |
 | Torre CX-2, tileset do Laboratório, bocal de vapor | gerados com Codex (geração de imagem) | uso próprio do projeto |
+| Sala de comando (cápsula, transmissor, consoles) e cutscene final (ARTEMIS, planetas, sinal) | gerados com Codex (geração de imagem) | uso próprio do projeto |
 | Trilhas do Núcleo Central e da Estufa | geradas por IA | uso próprio do projeto |

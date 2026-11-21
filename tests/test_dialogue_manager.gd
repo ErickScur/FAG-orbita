@@ -1,6 +1,6 @@
 extends TestCase
 
-const DEMO_SEQUENCES: int = 28
+const DEMO_SEQUENCES: int = 29
 const DEMO_LOGS: int = 10
 const DEMO_SPEAKERS: int = 3
 const TYPICAL_LINE_CHARS: int = 84

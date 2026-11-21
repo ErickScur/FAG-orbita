@@ -1,0 +1,42 @@
+{
+  "title": "ÓRBITA",
+  "sections": [
+    {
+      "heading": "UM JOGO DE",
+      "lines": ["Alex Hoffmann", "Erick Scur", "Murilo Wolff Klug", "Kauan Giacomin", "Victor William"]
+    },
+    {
+      "heading": "PROFESSOR",
+      "lines": ["Jeferson Eduardo Guido"]
+    },
+    {
+      "heading": "DISCIPLINA",
+      "lines": ["Desenvolvimento de Jogos"]
+    },
+    {
+      "heading": "FEITO COM",
+      "lines": ["Godot Engine 4.7"]
+    },
+    {
+      "heading": "FONTE",
+      "lines": ["m5x7 · Daniel Linssen"]
+    },
+    {
+      "heading": "ARTE",
+      "lines": [
+        "Kenney · Pixel Platformer: Industrial Expansion (CC0)",
+        "Kenney · Particle Pack (CC0)",
+        "Personagens, cenários e objetos gerados com",
+        "Gemini / Nano Banana Pro e Codex"
+      ]
+    },
+    {
+      "heading": "SOM",
+      "lines": ["Kenney · Sci-Fi Sounds (CC0)", "Trilhas geradas por IA"]
+    },
+    {
+      "heading": "",
+      "lines": ["PARA OS 40."]
+    }
+  ]
+}

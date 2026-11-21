@@ -94,3 +94,9 @@ res://scenes/world/ice_wall.tscn
 res://tests/qa/scenes/infirmary_sandbox.tscn
 res://scenes/npc/botanico.tscn
 res://tests/qa/scenes/f34_probe_corridor.tscn
+res://scenes/world/ending_machine.tscn
+res://scenes/world/ending_console.tscn
+res://scenes/levels/command_room.tscn
+res://scenes/ui/ending_cutscene.tscn
+res://scenes/ui/ending_epilogue.tscn
+res://scenes/ui/credits.tscn

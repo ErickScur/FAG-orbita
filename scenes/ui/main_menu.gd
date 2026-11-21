@@ -8,6 +8,7 @@ const CONFIRM_SCENE: String = "res://scenes/ui/confirm_dialog.tscn"
 const ARCHIVE_SCENE: String = "res://scenes/ui/log_archive.tscn"
 const LOGO_PATH: String = "res://assets/ui/logo.png"
 const BACKDROP_PATH: String = "res://assets/backgrounds/menu_backdrop.png"
+const COMPLETED_MARK_COLOR: Color = Color(0.541176, 0.607843, 0.658824, 0.8)
 
 @export var new_game_question: String = ""
 @export var corrupted_message: String = ""
@@ -28,6 +29,7 @@ const BACKDROP_PATH: String = "res://assets/backgrounds/menu_backdrop.png"
 func _ready() -> void:
 	_apply_backdrop()
 	_apply_logo()
+	_show_completed_mark()
 	AudioManager.play_music(&"menu")
 	continue_button.disabled = not SaveManager.has_save()
 	options_button.disabled = not ResourceLoader.exists(OPTIONS_SCENE)
@@ -201,3 +203,19 @@ func _apply_logo() -> void:
 	logo_image.visible = true
 	logo_text.visible = false
 
+
+func _show_completed_mark() -> void:
+	var ending_id: StringName = EndingData.from_save(SaveManager.save_path)
+	if ending_id == &"":
+		return
+	var table: Dictionary = EndingData.load_table()
+	var mark := Label.new()
+	mark.name = "CompletedMark"
+	mark.text = EndingData.ui_text(table, "menu_mark") % EndingData.text(table, ending_id, "title")
+	mark.position = Vector2(4, 198)
+	mark.size = Vector2(200, 14)
+	mark.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	mark.add_theme_font_size_override("font_size", 16)
+	mark.add_theme_color_override("font_color", COMPLETED_MARK_COLOR)
+	add_child(mark)
+	move_child(mark, overlay.get_index())

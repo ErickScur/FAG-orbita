@@ -77,11 +77,11 @@ Asset "definitivo" é trabalho paralelo do humano: assim que o Dia 1 terminar, o
 | Área secreta | [F27](features/F27-area-secreta.md) | Demo | `[`[x]` |
 | Combate (não-letal) | [F31](features/F31-dash-feixe.md) (Feixe desliga inimigos) | Stretch | `[x]` |
 | Movimento aleatório de NPCs | [F34](features/F34-drone-botanico.md) (BOTÂNICO 04 vagueia ao acaso no corredor escuro da Estufa e segue o MU-7 iluminando os poços) | Stretch | `[x]` |
-| Missões secundárias | Coleta opcional de Dados de Pesquisa ([F20](features/F20-coletaveis-contadores.md)) + F66 | Final | `[ ]` |
+| Missões secundárias | Coleta opcional de Dados de Pesquisa ([F20](features/F20-coletaveis-contadores.md)) que muda o epílogo em três faixas ([F66](features/F66-finais-epilogo-creditos.md)) | Final | `[x]` |
 | Desenvolvimento de 4 fases com dificuldades diferentes | F43 Estufa `[x]`, F60 Laboratório `[x]`, F61 Enfermaria `[x]`, F62 Docas `[x]` (todas ligadas ao hub pela F45) | Final | `[x]` |
 | Chefão de nível (Boss) | F64, F65 | Final | `[ ]` |
 | Chefão de nível inferior (Mini-boss) | F63 | Final | `[ ]` |
-| Fim de jogo alternativo | F66 | Final | `[ ]` |
+| Fim de jogo alternativo | [F66](features/F66-finais-epilogo-creditos.md) (sala de comando: SEMEADURA ou TRANSMISSÃO, cutscene que corta no instante da execução, epílogo, 40 nomes, créditos; entra pela `argos_defeated` da F65) | Final | `[x]` |
 | Nível (progressão) | F69 (upgrades permanentes) | Final | `[ ]` |
 | Scanner | [F67](features/F67-mapa-estacao.md) (mapa da estação: TAB duas vezes ou pausa → MAPA) | Final | `[x]` |
 | 3D · Elementos de FPS | — | `[-]` [ADR-000](DECISIONS.md#adr-000) | `[-]` |

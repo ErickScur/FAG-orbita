@@ -1,0 +1,18 @@
+[
+  {"frame": 1, "call": "Settings.set", "args": ["difficulty", "normal"]},
+  {"frame": 1, "call": "GameState.new_game", "args": []},
+  {"frame": 1, "call": "GameState.from_dict", "args": [{"research_collected": [], "collected_ids": [], "flags": {"ending": "transmission", "game_completed": true}}]},
+  {"frame": 1, "scene": "res://scenes/ui/ending_cutscene.tscn"},
+  {"frame": 30, "expect_scene": "res://scenes/ui/ending_cutscene.tscn"},
+  {"frame": 40, "action": "jump", "pressed": true},
+  {"frame": 43, "action": "jump", "pressed": false},
+  {"frame": 63, "expect_call": "EndingCutscene.is_cut", "equals": false, "label": "01_toque_nao_pula"},
+  {"frame": 63, "screenshot": "01_toque_curto"},
+  {"frame": 63, "action": "jump", "pressed": true},
+  {"frame": 93, "screenshot": "02_segurando_barra"},
+  {"frame": 133, "action": "jump", "pressed": false},
+  {"frame": 133, "expect_call": "EndingCutscene.is_cut", "equals": true, "label": "02_segurar_pula"},
+  {"frame": 343, "expect_scene": "res://scenes/ui/ending_epilogue.tscn"},
+  {"frame": 343, "screenshot": "03_epilogo_depois_do_pulo"},
+  {"frame": 353, "quit": true}
+]
