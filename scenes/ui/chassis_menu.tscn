@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://c0rbitachassis"]
+[gd_scene load_steps=6 format=3 uid="uid://c0rbitachassis"]
 
 [ext_resource type="Script" path="res://scenes/ui/chassis_menu.gd" id="1_chassis"]
+[ext_resource type="PackedScene" uid="uid://c0rbitamap" path="res://scenes/ui/station_map.tscn" id="2_map"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
 content_margin_left = 4.0
@@ -281,7 +282,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 16)
 layout_mode = 2
 mouse_filter = 2
-theme_override_colors/font_color = Color(0.309804, 0.356863, 0.4, 1)
+theme_override_colors/font_color = Color(0.372549, 0.831373, 0.784314, 1)
 text = "AGUARDANDO ENERGIA"
 vertical_alignment = 1
 
@@ -302,7 +303,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
-theme_override_colors/font_color = Color(0.309804, 0.356863, 0.4, 1)
+theme_override_colors/font_color = Color(0.541176, 0.607843, 0.658824, 1)
 text = "MAPA DA ESTAÇÃO"
 vertical_alignment = 1
 
@@ -310,7 +311,7 @@ vertical_alignment = 1
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
-theme_override_colors/font_color = Color(0.309804, 0.356863, 0.4, 1)
+theme_override_colors/font_color = Color(0.843137, 0.890196, 0.909804, 1)
 text = "SEM ENERGIA"
 horizontal_alignment = 2
 vertical_alignment = 1
@@ -327,7 +328,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
-theme_override_colors/font_color = Color(0.309804, 0.356863, 0.4, 1)
+theme_override_colors/font_color = Color(0.541176, 0.607843, 0.658824, 1)
 text = "SETORES VISITADOS"
 vertical_alignment = 1
 
@@ -335,7 +336,7 @@ vertical_alignment = 1
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
-theme_override_colors/font_color = Color(0.309804, 0.356863, 0.4, 1)
+theme_override_colors/font_color = Color(0.843137, 0.890196, 0.909804, 1)
 text = "??"
 horizontal_alignment = 2
 vertical_alignment = 1
@@ -349,3 +350,10 @@ theme_override_colors/font_color = Color(0.541176, 0.607843, 0.658824, 1)
 text = "[TAB] FECHAR"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Map" parent="Root" instance=ExtResource("2_map")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+standalone = false
+footer_id = &"footer_chassis"

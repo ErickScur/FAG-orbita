@@ -103,3 +103,11 @@ O modelo é generoso com energia (toda porta aberta, toda planta crescida, garra
   pega isso **se** a habilidade nova entrar em `ALL_ABILITIES`.
 - **(F60)** Elevador que nasce estacionado no destino e **desce** quando ligado dá consequência
   visível no console e é a única forma de embarcar: bom padrão para "ligar mostra algo".
+- **(F45)** **As 2 colunas de sobreposição valem também do piso para a primeira plataforma fina**:
+  a escada da rotunda do hub começava 2 tiles acima e 1 coluna depois do fim do corredor, e o
+  Reator ficou inalcançável (só o `test_each_sealed_door_really_guards_its_exit` pegou). Rode
+  `tools/level_reach.gd --level=<fase>` e confira o `_` em cima de cada plataforma.
+- **(F45)** **Saída de fase que fica aberta para sempre é portal de interação**, nunca de contato: no
+  corredor da ala, andar até o Laboratório disparava a Estufa. Quem volta aparece na saída cujo
+  `target` é a fase de origem (`ArrivalRoute`); fase nova liga ao hub pela tabela da F45 §6.4, e
+  `test_reserved_exits_wait_for_their_scenes` reprova cena nova com a vaga ainda reservada.

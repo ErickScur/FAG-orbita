@@ -6,10 +6,11 @@
 size = Vector2(16, 44)
 
 [node name="LevelExit" type="Area2D" groups=["level_exit"]]
-collision_layer = 0
-collision_mask = 2
-monitorable = false
+collision_layer = 8
+collision_mask = 0
+monitoring = false
 script = ExtResource("1_level_exit")
+prompt_text = "ENTRAR"
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, -24)

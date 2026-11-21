@@ -61,6 +61,16 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "RETOMAR"
 
+[node name="MapButton" type="Button" parent="Root/MainCenter/MainRow/Main/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "MAPA"
+
+[node name="ArchiveButton" type="Button" parent="Root/MainCenter/MainRow/Main/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "ARQUIVO DE LOGS"
+
 [node name="OptionsButton" type="Button" parent="Root/MainCenter/MainRow/Main/VBox"]
 unique_name_in_owner = true
 layout_mode = 2

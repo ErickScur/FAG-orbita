@@ -112,6 +112,8 @@ func _run_event(event: Dictionary) -> void:
 		_check_tile(event)
 	if event.has("expect_scene"):
 		_check_scene(String(event.get("expect_scene", "")))
+	if event.has("expect_call"):
+		_check_call(event)
 	if event.has("screenshot"):
 		_capture(String(event.get("screenshot", "")))
 	if bool(event.get("quit", false)):
@@ -227,6 +229,30 @@ func _check_scene(expected: String) -> void:
 	_log("frame %d ERRO marco de cena: esperado %s, atual %s" % [_frame, expected, actual])
 
 
+func _check_call(event: Dictionary) -> void:
+	_checks += 1
+	var label: String = String(event.get("label", "sem_nome"))
+	var target: String = String(event.get("expect_call", ""))
+	var parts: PackedStringArray = target.rsplit(".", true, 1)
+	var node: Node = null
+	if parts.size() == 2 and not parts[0].is_empty():
+		node = get_tree().root.get_node_or_null(NodePath(parts[0]))
+	if node == null or not node.has_method(parts[1]):
+		_check_failures += 1
+		_log("frame %d ERRO marco %s: chamada inexistente %s" % [_frame, label, target])
+		return
+	var raw_args: Variant = event.get("args", [])
+	var actual: Variant = node.callv(parts[1], raw_args if raw_args is Array else [])
+	var expected: Variant = event.get("equals", true)
+	if QAMarks.same_value(actual, expected):
+		_log("frame %d marco OK %s (%s = %s)" % [_frame, label, target, str(actual)])
+		return
+	_check_failures += 1
+	_log("frame %d ERRO marco %s: %s devolveu %s, esperado %s" % [
+		_frame, label, target, str(actual), str(expected)
+	])
+
+
 func _finish() -> void:
 	if _finishing:
 		return
@@ -263,13 +289,7 @@ func _load_script(path: String) -> Array[Dictionary]:
 	if not (parsed is Array):
 		_log("ERRO roteiro inválido %s" % path)
 		return result
-	var raw: Array = parsed
-	for entry: Variant in raw:
-		if entry is Dictionary:
-			result.append(entry)
-	result.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
-		return int(a.get("frame", 0)) < int(b.get("frame", 0)))
-	return result
+	return QAMarks.ordered_events(parsed)
 
 
 func _last_frame() -> int:

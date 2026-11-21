@@ -12,6 +12,14 @@
   "reactor_online": true,
   "objective": "obj_infirmary",
   "on_enter_dialogue": "inf_enter",
+  "revisit": [
+    {
+      "after_sector": "infirmary",
+      "ambient_color": "#4c5a66",
+      "objective": "",
+      "on_enter_dialogue": ""
+    }
+  ],
   "terminals": [
     "infirmary"
   ],
@@ -474,7 +482,12 @@
     "82,45": {
       "id": "data_inf_01"
     },
-    "4,46": {
+    "2,46": {
+      "id": "inf_exit_core",
+      "target": "res://scenes/levels/core_hub.tscn",
+      "sector": "core"
+    },
+    "8,46": {
       "id": "inf_dock_01"
     },
     "13,46": {

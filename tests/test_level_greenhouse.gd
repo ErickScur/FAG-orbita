@@ -100,7 +100,7 @@ func test_map_grew_into_a_tall_vertical_level() -> void:
 
 func test_single_spawn_and_the_expected_cast() -> void:
 	assert_eq(_count_symbol("P"), 1, "exatamente um spawn")
-	assert_eq(_count_symbol("E"), 0, "a Estufa acaba no Nó, não numa saída de fase")
+	assert_eq(_count_symbol("E"), 1, "só a porta de volta ao Núcleo, na entrada (F45)")
 	assert_eq(_count_symbol("T"), 3, "três consoles do mesmo terminal")
 	assert_eq(_count_symbol("|"), 1, "uma porta de energia")
 	assert_eq(_count_symbol("S"), 3, "três SR-3")

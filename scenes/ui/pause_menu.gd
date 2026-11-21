@@ -4,6 +4,8 @@ const FIRST_LEVEL: String = "res://scenes/levels/core_hub.tscn"
 const FALLBACK_LEVEL: String = "res://tests/qa/scenes/loading_target.tscn"
 const OPTIONS_SCENE: String = "res://scenes/ui/options_menu.tscn"
 const CONFIRM_SCENE: String = "res://scenes/ui/confirm_dialog.tscn"
+const MAP_SCENE: String = "res://scenes/ui/station_map.tscn"
+const ARCHIVE_SCENE: String = "res://scenes/ui/log_archive.tscn"
 const GAMEPLAY_GROUP: StringName = &"gameplay"
 const CONTROL_ROWS: Array[Dictionary] = [
 	{"label": "MOVER", "actions": [&"move_left", &"move_right"]},
@@ -13,6 +15,7 @@ const CONTROL_ROWS: Array[Dictionary] = [
 	{"label": "LANTERNA", "actions": [&"flashlight"]},
 	{"label": "GARRAS", "actions": [&"move_up"]},
 	{"label": "CHASSI", "actions": [&"map"]},
+	{"label": "ARQUIVO", "actions": [&"log_archive"]},
 	{"label": "PAUSA", "actions": [&"pause"]},
 ]
 const KEY_NAMES: Dictionary = {
@@ -34,12 +37,16 @@ const CONTROL_KEY_COLOR: Color = Color(0.843137, 0.890196, 0.909804)
 
 var is_open: bool = false
 
+var _direct_overlay: bool = false
+
 @onready var main_panel: PanelContainer = %Main
 @onready var controls_panel: PanelContainer = %Controls
 @onready var controls_rows: VBoxContainer = %Rows
 @onready var restart_panel: PanelContainer = %RestartPanel
 @onready var overlay: Control = %Overlay
 @onready var resume_button: Button = %ResumeButton
+@onready var map_button: Button = %MapButton
+@onready var archive_button: Button = %ArchiveButton
 @onready var options_button: Button = %OptionsButton
 @onready var restart_button: Button = %RestartButton
 @onready var quit_button: Button = %QuitButton
@@ -53,6 +60,8 @@ func _ready() -> void:
 	visible = false
 	restart_panel.visible = false
 	resume_button.pressed.connect(close)
+	map_button.pressed.connect(_on_map)
+	archive_button.pressed.connect(_on_archive)
 	options_button.pressed.connect(_on_options)
 	restart_button.pressed.connect(_show_restart)
 	quit_button.pressed.connect(_on_quit_to_menu)
@@ -84,6 +93,12 @@ func _unhandled_input(event: InputEvent) -> void:
 				close()
 		elif can_pause():
 			open()
+		return
+	if event.is_action_pressed(&"log_archive"):
+		if is_open and _overlay_open():
+			return
+		get_viewport().set_input_as_handled()
+		open_archive()
 		return
 	if not is_open or _overlay_open():
 		return
@@ -123,10 +138,36 @@ func open() -> void:
 	AudioManager.play_sfx(&"ui_confirm")
 
 
+func open_archive() -> void:
+	if is_open:
+		if main_panel.visible and not _overlay_open():
+			_on_archive()
+		return
+	if not can_pause():
+		return
+	is_open = true
+	visible = true
+	_direct_overlay = true
+	restart_panel.visible = false
+	main_panel.visible = false
+	controls_panel.visible = false
+	get_tree().paused = true
+	EventBus.game_paused.emit(true)
+	_open_overlay(ARCHIVE_SCENE, archive_button)
+
+
+func overlay_owns_focus() -> bool:
+	for child: Node in overlay.get_children():
+		if child.has_method(&"owns_focus") and bool(child.call(&"owns_focus")):
+			return true
+	return false
+
+
 func close() -> void:
 	if not is_open:
 		return
 	is_open = false
+	_direct_overlay = false
 	_clear_overlay()
 	restart_panel.visible = false
 	main_panel.visible = true
@@ -140,6 +181,8 @@ func close() -> void:
 func _buttons() -> Array[Button]:
 	return [
 		resume_button,
+		map_button,
+		archive_button,
 		options_button,
 		restart_button,
 		quit_button,
@@ -202,6 +245,33 @@ func _on_options() -> void:
 
 func _on_options_closed() -> void:
 	options_button.grab_focus.call_deferred()
+
+
+func _on_map() -> void:
+	AudioManager.play_sfx(&"ui_confirm")
+	_open_overlay(MAP_SCENE, map_button)
+
+
+func _on_archive() -> void:
+	_open_overlay(ARCHIVE_SCENE, archive_button)
+
+
+func _open_overlay(path: String, return_button: Button) -> void:
+	if _overlay_open() or not ResourceLoader.exists(path):
+		return
+	var packed: PackedScene = load(path)
+	if packed == null:
+		return
+	var screen: Control = packed.instantiate()
+	screen.connect(&"closed", _on_overlay_closed.bind(return_button))
+	overlay.add_child(screen)
+
+
+func _on_overlay_closed(return_button: Button) -> void:
+	if _direct_overlay:
+		close.call_deferred()
+		return
+	return_button.grab_focus.call_deferred()
 
 
 func _on_from_backup() -> void:

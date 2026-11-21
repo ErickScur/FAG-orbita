@@ -34,6 +34,11 @@ origem).
   `GameState.apply_damage_over_time(per_second, delta, acumulador)`; teste
   `test_damage_over_time_follows_difficulty` (F60).
 
+- **`Array.sort_custom` não é estável**: elementos com a mesma chave saem em qualquer ordem. O
+  `QACapture` ordenava o roteiro só pelo quadro e rodava `new_game` depois do `from_dict` do mesmo
+  quadro, apagando o checkpoint (o MU-7 nascia no `P`). Desempate pelo índice original
+  (`QAMarks.ordered_events`, teste `test_events_in_the_same_frame_keep_the_script_order`) (F45).
+
 ## Luz e sombra (renderer Compatibility)
 - **Máximo de 16 `Light2D` por item de canvas**; da 17ª em diante é descartada **em silêncio**.
   19 luzes de brilho por tile tiraram a lanterna do MU-7 da lista (F43). Brilho repetido é fundido
@@ -56,7 +61,15 @@ origem).
   `size`/`position` ou use `PRESET_MODE_KEEP_SIZE` (F37 — o aviso do HUD ficou torto desde a F15).
 - **Modal por cima de outra tela precisa de trava de foco**: sem `focus_neighbor_*` a navegação
   por setas/controle escapa para os botões de baixo; com mouse parece funcionar. Use `FocusTrap`
-  (`scripts/core/focus_trap.gd`) (F09).
+  (`scripts/core/focus_trap.gd`) (F09). O `FocusTrap` liga os controles em **lista circular**
+  (esquerda = anterior): para navegação 2D (mapa radial) ponha os 4 vizinhos + `focus_next/previous`
+  à mão, apontando para dentro da tela ou para o próprio botão (F67).
+- **`TAB` é `ui_focus_next` do Godot**: com um botão focado, a GUI consome o `TAB` antes do
+  `_unhandled_input`. Tela que usa a ação `map` (TAB) trata em `_input` e marca como tratado (F67).
+- **Tela que dá foco a um botão precisa soltar o foco ao fechar**: o `can_open()` do Terminal do
+  Chassi recusa abrir com qualquer foco na tela (é como ele sabe que há modal); um botão do mapa
+  esquecido focado trava o `[TAB]` seguinte em silêncio. `release_focus()` no fechar; marco
+  `expect_call ... can_open` no QA (F67).
 - **`clip_contents` + deslize horizontal corta o texto** em container de largura fixa ("DADO DE
   PESQUISA 01/1"). Anime na vertical ou sem recorte (F35).
 - **Auto-pause por perda de foco** (`NOTIFICATION_APPLICATION_FOCUS_OUT`) precisa ignorar o modo

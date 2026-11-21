@@ -24,7 +24,7 @@ const DARK_POCKET_RADIUS_TILES: int = 8
 const RECT_LIGHT_COVER: float = 1.3
 const WARD_LAMP_MAX_RADIUS: float = 64.0
 const EXPECTED_COUNTS: Dictionary = {
-	"E": 0, "T": 2, "|": 3, "Y": 4, "i": 5, "h": 7, "m": 1, "D": 4, "L": 2, "l": 0,
+	"E": 1, "T": 2, "|": 3, "Y": 4, "i": 5, "h": 7, "m": 1, "D": 4, "L": 2, "l": 0,
 	"r": 2, "C": 1, "x": 2, "c": 2, "k": 2, "@": 7, "I": 20, "_": 23, "o": 23,
 }
 const WARD_V9: Array[String] = ["inf_v9_01", "inf_v9_02", "inf_v9_03"]

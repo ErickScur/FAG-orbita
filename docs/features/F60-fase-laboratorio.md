@@ -65,7 +65,7 @@ desligar as torres no Terminal e ver os cones apagarem; cortar a refrigeração 
 - Religar a Estufa leva ao Núcleo Central (não mais à tela de fim). O Núcleo, revisitado depois
   da Estufa: nasce na doca do Habitacional (`hab_dock_01`), ambiente mais claro, objetivo
   `obj_core_lab`, uma fala de marco (`core_return`), **comporta do Laboratório destravada** e a
-  saída para a Estufa selada (a volta de mão dupla é a [F45](F45-ida-e-volta.md)).
+  saída para a Estufa selada (superado pela [F45](F45-ida-e-volta.md): as saídas não fecham mais e todo setor tem porta de volta).
 - Antes da Estufa, a comporta do Laboratório já existe no Núcleo, **selada** (tinta vermelha da
   porta selada): o jogador vê para onde vai voltar.
 - Religar o Laboratório → cutscene → fala de fechamento → tela de fim (`demo_completed`).

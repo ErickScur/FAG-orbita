@@ -1,0 +1,69 @@
+{
+  "station": "ARTEMIS",
+  "hub": "core_hub",
+  "sectors": [
+    {
+      "id": "core_hub",
+      "name": "NÚCLEO CENTRAL",
+      "level": "core_hub",
+      "scene": "res://scenes/levels/core_hub.tscn",
+      "requires": "",
+      "restored_when": "greenhouse",
+      "cell": [0, 1]
+    },
+    {
+      "id": "greenhouse",
+      "name": "ESTUFA",
+      "level": "greenhouse",
+      "scene": "res://scenes/levels/greenhouse.tscn",
+      "requires": "",
+      "restored_when": "",
+      "cell": [-1, 2]
+    },
+    {
+      "id": "lab",
+      "name": "LABORATÓRIO",
+      "level": "lab",
+      "scene": "res://scenes/levels/lab.tscn",
+      "requires": "greenhouse",
+      "restored_when": "",
+      "cell": [1, 1]
+    },
+    {
+      "id": "infirmary",
+      "name": "ENFERMARIA",
+      "level": "infirmary",
+      "scene": "res://scenes/levels/infirmary.tscn",
+      "requires": "lab",
+      "restored_when": "",
+      "cell": [-1, 1]
+    },
+    {
+      "id": "docks",
+      "name": "DOCAS",
+      "level": "docks",
+      "scene": "res://scenes/levels/docks.tscn",
+      "requires": "infirmary",
+      "restored_when": "",
+      "cell": [1, 2]
+    },
+    {
+      "id": "memory",
+      "name": "NÚCLEO DE MEMÓRIA",
+      "level": "memory_core",
+      "scene": "res://scenes/levels/memory_core.tscn",
+      "requires": "docks",
+      "restored_when": "",
+      "cell": [0, 3]
+    },
+    {
+      "id": "reactor",
+      "name": "NÚCLEO DO REATOR",
+      "level": "reactor_core",
+      "scene": "res://scenes/levels/reactor_core.tscn",
+      "requires": "memory",
+      "restored_when": "",
+      "cell": [0, 0]
+    }
+  ]
+}

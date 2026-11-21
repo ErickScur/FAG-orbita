@@ -33,6 +33,8 @@ var _alarm_left: float = 0.0
 var _game_over_sent: bool = false
 var _last_display: int = -1
 var _objectives: Dictionary = {}
+var _level_path: String = ""
+var _visit_scene: String = ""
 
 
 func _ready() -> void:
@@ -52,6 +54,7 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	_tick_statuses(delta)
+	_track_visit()
 	if not is_in_level():
 		return
 	play_time += delta
@@ -75,6 +78,8 @@ func new_game() -> void:
 	play_time = 0.0
 	flags = {}
 	current_objective = ""
+	_level_path = ""
+	_visit_scene = ""
 	_died_emitted = false
 	_cutscene_active = false
 	clear_statuses()
@@ -229,6 +234,16 @@ func register_entry_checkpoint(scene_path: String, dock_id: String) -> bool:
 	return true
 
 
+func enter_level(scene_path: String) -> String:
+	var origin: String = ArrivalRoute.next_origin(_level_path, scene_path)
+	_level_path = scene_path
+	return origin
+
+
+func current_level() -> String:
+	return _level_path
+
+
 func is_reactor_critical() -> bool:
 	return _critical
 
@@ -260,6 +275,20 @@ func register_secret(secret_id: StringName) -> bool:
 
 func secrets_found() -> int:
 	return RunStats.secrets_found(self)
+
+
+func mark_visited(scene_path: String) -> bool:
+	if not ScenePaths.is_level(scene_path):
+		return false
+	var flag: String = StationMapModel.visited_flag(ScenePaths.level_key(scene_path))
+	if bool(flags.get(flag, false)):
+		return false
+	flags[flag] = true
+	return true
+
+
+func has_visited(level_key: String) -> bool:
+	return bool(flags.get(StationMapModel.visited_flag(level_key), false))
 
 
 func unlock_ability(ability_id: StringName) -> bool:
@@ -351,6 +380,8 @@ func from_dict(data: Dictionary) -> void:
 	play_time = float(data.get("play_time", 0.0))
 	flags = Dictionary(data.get("flags", {})).duplicate(true)
 	current_objective = String(data.get("current_objective", ""))
+	_level_path = ""
+	_visit_scene = ""
 	_died_emitted = integrity <= 0
 	clear_statuses()
 	_reset_reactor_runtime()
@@ -398,6 +429,17 @@ func _reset_reactor_runtime() -> void:
 	_alarm_left = 0.0
 	_game_over_sent = false
 	_last_display = ReactorClock.display_percent(reactor_percent)
+
+
+func _track_visit() -> void:
+	var tree: SceneTree = get_tree()
+	if tree == null or tree.current_scene == null:
+		return
+	var path: String = tree.current_scene.scene_file_path
+	if path == _visit_scene:
+		return
+	_visit_scene = path
+	mark_visited(path)
 
 
 func _tick_statuses(delta: float) -> void:

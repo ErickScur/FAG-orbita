@@ -150,24 +150,74 @@
     "101,11": {
       "id": "core_hub_exit",
       "target": "res://scenes/levels/greenhouse.tscn",
-      "closes_after_sector": "greenhouse"
+      "sector": "greenhouse"
     },
     "105,11": {
       "id": "door_lab",
-      "sealed_until_sector": "greenhouse"
+      "sealed_until_sector": "greenhouse",
+      "sector": "lab"
     },
     "109,11": {
       "id": "core_hub_exit_lab",
       "target": "res://scenes/levels/lab.tscn",
-      "closes_after_sector": "lab"
+      "sector": "lab"
     },
     "113,11": {
       "id": "door_infirmary",
-      "sealed_until_sector": "lab"
+      "sealed_until_sector": "lab",
+      "sector": "infirmary"
     },
     "117,11": {
       "id": "core_hub_exit_infirmary",
-      "target": "res://scenes/levels/infirmary.tscn"
+      "target": "res://scenes/levels/infirmary.tscn",
+      "sector": "infirmary"
+    },
+    "121,11": {
+      "id": "door_docks",
+      "sealed_until_sector": "infirmary",
+      "sector": "docks"
+    },
+    "129,11": {
+      "id": "core_dock_wing"
+    },
+    "134,4": {
+      "id": "wing_lamp_upper",
+      "color": "#e0b43c",
+      "radius": 80.0,
+      "energy": 1.3
+    },
+    "139,12": {
+      "id": "wing_lamp_lower",
+      "color": "#e0b43c",
+      "radius": 80.0,
+      "energy": 1.3
+    },
+    "143,5": {
+      "id": "door_reactor",
+      "sealed_until_sector": "memory",
+      "sector": "reactor"
+    },
+    "143,14": {
+      "id": "door_memory",
+      "sealed_until_sector": "docks",
+      "sector": "memory"
+    }
+  },
+  "reserved_exits": {
+    "125,11": {
+      "id": "core_hub_exit_docks",
+      "target": "res://scenes/levels/docks.tscn",
+      "sector": "docks"
+    },
+    "146,14": {
+      "id": "core_hub_exit_memory",
+      "target": "res://scenes/levels/memory_core.tscn",
+      "sector": "memory"
+    },
+    "146,5": {
+      "id": "core_hub_exit_reactor",
+      "target": "res://scenes/levels/reactor_core.tscn",
+      "sector": "reactor"
     }
   },
   "triggers": [

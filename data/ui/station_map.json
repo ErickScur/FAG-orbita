@@ -1,0 +1,15 @@
+{
+  "title": "MAPA DA ESTAÇÃO",
+  "restored_count": "RELIGADOS %d/%d",
+  "state_restored": "RELIGADO",
+  "state_visited": "SEM ENERGIA",
+  "state_sealed": "SELADO",
+  "state_unknown": "SEM DADOS",
+  "here": "VOCÊ ESTÁ AQUI",
+  "logs": "LOGS %d/%d",
+  "data": "DADOS %d/%d",
+  "sealed_hint": "ABRE COM %s RELIGADO",
+  "unknown_hint": "NENHUMA LEITURA",
+  "footer_chassis": "[SETAS] SETOR   [TAB] FECHAR",
+  "footer_overlay": "[SETAS] SETOR   [ESC] VOLTAR"
+}

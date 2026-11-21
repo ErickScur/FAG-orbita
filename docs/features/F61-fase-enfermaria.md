@@ -64,7 +64,7 @@ do upgrade.
 **A. Ligação entre setores** — religar o Laboratório leva ao Núcleo (o `lab.tscn` ganha
 `next_scene`); o bloco `revisit` vira **lista ordenada** (vale a última entrada cujo
 `after_sector` já foi religado). Depois do Laboratório: comporta da Enfermaria destravada, saída do
-Laboratório selada (até a F45), objetivo `obj_core_infirmary`, fala de marco `core_return_lab`,
+Laboratório selada (superado pela [F45](F45-ida-e-volta.md): ela continua aberta), objetivo `obj_core_infirmary`, fala de marco `core_return_lab`,
 Núcleo ainda mais claro. Antes disso a comporta da Enfermaria aparece selada. Religar a
 Enfermaria → cutscene → fala → tela de fim (frase de fechamento por último setor religado).
 

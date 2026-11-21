@@ -1,0 +1,108 @@
+{
+  "core": {
+    "name": "Núcleo Central",
+    "prompt": "VOLTAR AO NÚCLEO",
+    "scene": "res://scenes/levels/core_hub.tscn",
+    "color": "#7fd6e6",
+    "hub": true,
+    "icon": [
+      "..###..",
+      ".#...#.",
+      "#..#..#",
+      "#.###.#",
+      "#..#..#",
+      ".#...#.",
+      "..###.."
+    ]
+  },
+  "greenhouse": {
+    "name": "Estufa",
+    "prompt": "ENTRAR NA ESTUFA",
+    "scene": "res://scenes/levels/greenhouse.tscn",
+    "color": "#8ee06a",
+    "icon": [
+      "...####",
+      "..#####",
+      ".####.#",
+      ".###.##",
+      ".##.###",
+      ".#.###.",
+      "#......"
+    ]
+  },
+  "lab": {
+    "name": "Laboratório",
+    "prompt": "ENTRAR NO LABORATÓRIO",
+    "scene": "res://scenes/levels/lab.tscn",
+    "color": "#ff9a4a",
+    "icon": [
+      "..###..",
+      "...#...",
+      "...#...",
+      "..#.#..",
+      ".#...#.",
+      "#######",
+      "#######"
+    ]
+  },
+  "infirmary": {
+    "name": "Enfermaria",
+    "prompt": "ENTRAR NA ENFERMARIA",
+    "scene": "res://scenes/levels/infirmary.tscn",
+    "color": "#c8ecff",
+    "icon": [
+      "..###..",
+      "..###..",
+      "#######",
+      "#######",
+      "#######",
+      "..###..",
+      "..###.."
+    ]
+  },
+  "docks": {
+    "name": "Docas",
+    "prompt": "ENTRAR NAS DOCAS",
+    "scene": "res://scenes/levels/docks.tscn",
+    "color": "#ffcc33",
+    "icon": [
+      "...#...",
+      "..###..",
+      "...#...",
+      "...#...",
+      "#..#..#",
+      ".#.#.#.",
+      "..###.."
+    ]
+  },
+  "memory": {
+    "name": "Núcleo de Memória",
+    "prompt": "ENTRAR NO NÚCLEO DE MEMÓRIA",
+    "scene": "res://scenes/levels/memory_core.tscn",
+    "color": "#e65ad8",
+    "icon": [
+      ".......",
+      "..###..",
+      ".#...#.",
+      "#..#..#",
+      ".#...#.",
+      "..###..",
+      "......."
+    ]
+  },
+  "reactor": {
+    "name": "Núcleo do Reator",
+    "prompt": "ENTRAR NO NÚCLEO DO REATOR",
+    "scene": "res://scenes/levels/reactor_core.tscn",
+    "color": "#ff4a3a",
+    "icon": [
+      "##...##",
+      "###.###",
+      ".#...#.",
+      "...#...",
+      ".......",
+      "..###..",
+      "..###.."
+    ]
+  }
+}

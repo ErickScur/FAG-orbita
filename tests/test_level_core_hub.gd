@@ -10,6 +10,20 @@ const MAX_GAP_TILES: int = 3
 const MAIN_FLOOR_TOP: int = 9
 const TERMINAL_ID: StringName = &"core_hub"
 const DASH_PIT_FLOOR_ROW: int = 15
+const WING_HALL_COLUMN: int = 132
+const SECTOR_CHAIN: Array[Dictionary] = [
+	{"sector": "lab", "door": "door_lab", "after": "greenhouse", "exit": "core_hub_exit_lab"},
+	{
+		"sector": "infirmary", "door": "door_infirmary", "after": "lab",
+		"exit": "core_hub_exit_infirmary",
+	},
+	{"sector": "docks", "door": "door_docks", "after": "infirmary", "exit": "core_hub_exit_docks"},
+	{"sector": "memory", "door": "door_memory", "after": "docks", "exit": "core_hub_exit_memory"},
+	{
+		"sector": "reactor", "door": "door_reactor", "after": "memory",
+		"exit": "core_hub_exit_reactor",
+	},
+]
 const SR3_SCENE: String = "res://scenes/enemies/sr3.tscn"
 const PLAYER_SCENE: String = "res://scenes/player/mu7.tscn"
 const TUTORIAL_ORDER: Array[String] = [
@@ -57,7 +71,7 @@ func test_single_spawn_and_one_exit_per_sector() -> void:
 	assert_eq(_count_symbol("P"), 1, "exatamente um spawn")
 	assert_eq(_count_symbol("E"), 3, "uma saída para a Estufa, o Laboratório e a Enfermaria")
 	assert_eq(_count_symbol("T"), 1, "exatamente um terminal de distribuição")
-	assert_eq(_count_symbol("|"), 3, "a porta do Habitacional e as comportas do Lab e da Enfermaria")
+	assert_eq(_count_symbol("|"), 6, "a porta do Habitacional e as cinco comportas de setor")
 	assert_eq(_count_symbol("S"), 1, "exatamente uma SR-3")
 
 
@@ -68,7 +82,7 @@ func test_tutorial_has_one_of_each_pickup() -> void:
 	assert_eq(_count_symbol("l"), 0, "nenhum fragmento solto de log")
 	assert_eq(_count_symbol("L"), 1, "um terminal de registros")
 	assert_eq(_count_symbol("m"), 1, "um elevador de serviço")
-	assert_eq(_count_symbol("D"), 3, "doca inicial, doca antes do Habitacional e a da revisita")
+	assert_eq(_count_symbol("D"), 4, "doca inicial, antes do Habitacional, da revisita e da rotunda")
 
 
 func test_tutorial_cards_follow_the_teaching_order() -> void:
@@ -106,7 +120,7 @@ func test_every_tutorial_card_sits_before_its_obstacle() -> void:
 func test_floor_is_continuous_and_climbable() -> void:
 	var previous: int = -1
 	var gap: int = 0
-	for column: int in range(int(_parsed.get("width", 0))):
+	for column: int in range(WING_HALL_COLUMN):
 		var ground: int = _ground_row(column)
 		if ground < 0:
 			gap += 1
@@ -223,36 +237,91 @@ func test_revisit_spawns_past_the_tutorial_obstacles() -> void:
 		assert_true(dock.x < _cell_of("core_hub_exit").x, "e antes da saída da Estufa")
 
 
-func test_each_sector_opens_the_next_door_and_closes_its_own_exit() -> void:
-	var chain: Array[Dictionary] = [
-		{"exit": "core_hub_exit", "closes": "greenhouse", "door": "door_lab"},
-		{"exit": "core_hub_exit_lab", "closes": "lab", "door": "door_infirmary"},
-	]
+func test_each_sector_unseals_the_next_door_and_every_exit_stays_open() -> void:
+	var catalog: Dictionary = SectorCatalog.load_all()
+	var first: Dictionary = _exit_params("core_hub_exit")
+	assert_eq(String(first.get("sector", "")), "greenhouse", "a primeira saída é a da Estufa")
+	assert_false(first.has("closes_after_sector"), "a saída da Estufa não fecha mais (F45)")
 	var previous_door: int = 0
-	for link: Dictionary in chain:
-		var exit: Dictionary = _params_of(String(link["exit"]))
+	for link: Dictionary in SECTOR_CHAIN:
+		var sector: String = String(link["sector"])
 		var door: Dictionary = _params_of(String(link["door"]))
-		assert_eq(String(exit.get("closes_after_sector", "")), link["closes"], "saída fecha")
-		assert_eq(String(door.get("sealed_until_sector", "")), link["closes"], "comporta abre")
-		var door_x: int = _cell_of(String(link["door"])).x
-		assert_true(door_x > _cell_of(String(link["exit"])).x, "comporta depois da saída")
-		assert_true(door_x > previous_door, "comportas em ordem de setor")
-		previous_door = door_x
-	var last: Dictionary = _params_of("core_hub_exit_infirmary")
-	assert_eq(String(last.get("target", "")), "res://scenes/levels/infirmary.tscn", "Enfermaria")
-	assert_true(
-		_cell_of("core_hub_exit_infirmary").x > _cell_of("door_infirmary").x,
-		"a saída da Enfermaria fica atrás da comporta"
-	)
+		var exit: Dictionary = _exit_params(String(link["exit"]))
+		assert_false(exit.is_empty(), "saída '%s' viva ou reservada" % link["exit"])
+		assert_eq(String(door.get("sealed_until_sector", "")), link["after"], "%s abre" % sector)
+		assert_eq(String(door.get("sector", "")), sector, "placa da comporta de %s" % sector)
+		assert_eq(String(exit.get("sector", "")), sector, "placa da saída de %s" % sector)
+		assert_false(exit.has("closes_after_sector"), "saída de %s não fecha" % sector)
+		assert_eq(
+			String(exit.get("target", "")), SectorCatalog.scene(StringName(sector), catalog),
+			"alvo de %s bate com o catálogo" % sector
+		)
+		var door_cell: Vector2i = _cell_of(String(link["door"]))
+		var exit_cell: Vector2i = _exit_cell(String(link["exit"]))
+		assert_eq(exit_cell.y, door_cell.y, "saída de %s no piso da comporta" % sector)
+		assert_true(exit_cell.x > door_cell.x, "saída de %s atrás da comporta" % sector)
+		assert_true(door_cell.x >= previous_door, "comportas em ordem de setor")
+		previous_door = door_cell.x
 	var after_lab: Dictionary = SectorRevisit.active_block(_meta, [&"greenhouse", &"lab"])
 	assert_eq(String(after_lab.get("objective", "")), "obj_core_infirmary", "objetivo novo")
 	assert_eq(String(after_lab.get("on_enter_dialogue", "")), "core_return_lab", "fala nova")
-	var after_gh: Dictionary = SectorRevisit.active_block(_meta, [&"greenhouse"])
-	assert_true(
-		_luma(String(after_lab.get("ambient_color", ""))) >
-		_luma(String(after_gh.get("ambient_color", ""))),
-		"o Núcleo clareia a cada setor"
-	)
+	var previous_luma: float = _luma(String(_meta.get("ambient_color", "")))
+	for block: Dictionary in SectorRevisit.blocks(_meta):
+		var luma: float = _luma(String(block.get("ambient_color", "")))
+		assert_true(luma > previous_luma, "o Núcleo clareia depois de %s" % block.get("after_sector"))
+		previous_luma = luma
+
+
+func test_each_sealed_door_really_guards_its_exit() -> void:
+	var text: String = FileAccess.get_file_as_string(MAP_PATH)
+	var doors_open: Dictionary = LevelReachability.analyze(text, _meta)
+	for link: Dictionary in SECTOR_CHAIN:
+		var exit_cell: Vector2i = _exit_cell(String(link["exit"]))
+		assert_true(
+			LevelReachability.can_stand_at(doors_open, exit_cell),
+			"%s alcançável com a comporta aberta" % link["exit"]
+		)
+		var walled: Dictionary = LevelReachability.analyze(
+			_map_with_wall_at(_cell_of(String(link["door"]))), _meta
+		)
+		assert_false(
+			LevelReachability.can_stand_at(walled, exit_cell),
+			"%s não se alcança com %s fechada" % [link["exit"], link["door"]]
+		)
+
+
+func test_reserved_exits_wait_for_their_scenes() -> void:
+	var lines: PackedStringArray = _lines()
+	for key: Variant in ArrivalRoute.reserved_exits(_meta):
+		var cell: Vector2i = LevelParser.key_to_cell(String(key))
+		var params: Dictionary = ArrivalRoute.reserved_exits(_meta)[key]
+		var target: String = String(params.get("target", ""))
+		assert_eq(lines[cell.y][cell.x], " ", "vaga %s livre no mapa" % key)
+		assert_false(
+			ResourceLoader.exists(target),
+			"%s já existe: ligue a saída reservada %s (F45, Como ligar uma fase nova ao hub)"
+			% [target, key]
+		)
+	for key: Variant in ArrivalRoute.exits(_meta):
+		var target: String = String((ArrivalRoute.exits(_meta)[key] as Dictionary)["target"])
+		assert_true(ResourceLoader.exists(target), "saída viva %s aponta para cena que existe" % key)
+
+
+func test_the_wing_reads_as_a_radial_hub() -> void:
+	var docks: Vector2i = _exit_cell("core_hub_exit_docks")
+	var memory: Vector2i = _exit_cell("core_hub_exit_memory")
+	var reactor: Vector2i = _exit_cell("core_hub_exit_reactor")
+	assert_true(reactor.y < docks.y, "o Reator fica acima do corredor")
+	assert_true(memory.y > docks.y, "a Memória fica abaixo do corredor")
+	assert_true(memory.x >= WING_HALL_COLUMN and reactor.x >= WING_HALL_COLUMN, "na rotunda")
+	var wing_dock: Vector2i = _cell_of("core_dock_wing")
+	for exit_id: String in ["core_hub_exit_docks", "core_hub_exit_memory", "core_hub_exit_reactor"]:
+		var cell: Vector2i = _exit_cell(exit_id)
+		assert_true(
+			Vector2(cell).distance_to(Vector2(wing_dock)) <
+			Vector2(cell).distance_to(Vector2(_cell_of("hab_dock_02"))),
+			"%s volta para a doca da rotunda" % exit_id
+		)
 
 
 func test_entity_keys_point_to_entity_cells() -> void:
@@ -452,6 +521,40 @@ func _ground_row(column: int) -> int:
 	return -1
 
 
+func _map_with_wall_at(cell: Vector2i) -> String:
+	var lines: PackedStringArray = _lines()
+	var row: int = cell.y
+	while row >= 0:
+		var line: String = lines[row]
+		if row != cell.y and line[cell.x] == "#":
+			break
+		lines[row] = line.substr(0, cell.x) + "#" + line.substr(cell.x + 1)
+		row -= 1
+	return "\n".join(lines)
+
+
+func _exit_params(exit_id: String) -> Dictionary:
+	var found: Dictionary = _params_of(exit_id)
+	if not found.is_empty():
+		return found
+	var reserved: Dictionary = ArrivalRoute.reserved_exits(_meta)
+	for key: Variant in reserved:
+		if String((reserved[key] as Dictionary).get("id", "")) == exit_id:
+			return reserved[key]
+	return {}
+
+
+func _exit_cell(exit_id: String) -> Vector2i:
+	var cell: Vector2i = _cell_of(exit_id)
+	if cell.x >= 0:
+		return cell
+	var reserved: Dictionary = ArrivalRoute.reserved_exits(_meta)
+	for key: Variant in reserved:
+		if String((reserved[key] as Dictionary).get("id", "")) == exit_id:
+			return LevelParser.key_to_cell(String(key))
+	return Vector2i(-1, -1)
+
+
 func _map_with_spawn_at(cell: Vector2i) -> String:
 	var lines: PackedStringArray = _lines()
 	for row: int in range(lines.size()):
@@ -489,7 +592,7 @@ func _tunnel_span() -> Vector2i:
 func _dash_gap_span() -> Vector2i:
 	var first: int = -1
 	var last: int = -1
-	for column: int in range(int(_parsed.get("width", 0))):
+	for column: int in range(WING_HALL_COLUMN):
 		if _ground_row(column) != DASH_PIT_FLOOR_ROW:
 			continue
 		if not _parsed.get("solids", {}).has(Vector2i(column, MAIN_FLOOR_TOP)):

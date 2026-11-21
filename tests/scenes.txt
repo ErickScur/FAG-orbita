@@ -33,6 +33,8 @@ res://tests/qa/scenes/interaction_sandbox.tscn
 res://tests/qa/scenes/light_sandbox.tscn
 res://scenes/ui/hud.tscn
 res://scenes/ui/chassis_menu.tscn
+res://scenes/ui/station_map.tscn
+res://scenes/ui/log_archive.tscn
 res://scenes/ui/tutorial_card.tscn
 res://tests/qa/scenes/hud_probe.tscn
 res://tests/qa/scenes/reactor_probe.tscn

@@ -35,6 +35,7 @@ Lista JSON **plana** de eventos (não há chave `scene` nem `steps`), ordenada p
 | `screenshot` | captura síncrona, loga `jogador em coluna,linha` |
 | `expect_tile` (+`tolerance`, `label`) | **marco**: reprova se o MU-7 não estiver no tile (±1 padrão) |
 | `expect_scene` | marco de cena atual (`scene_file_path`) |
+| `expect_call` + `equals` (+`args`, `label`) | **marco de estado**: chama `Caminho/Do/No.metodo` e reprova se o retorno não for `equals` (número com tolerância; `String`≡`StringName`). Ex.: `{"expect_call": "GameState.is_timer_frozen", "equals": true}`, `{"expect_call": "SceneManager/PauseMenu.overlay_owns_focus", "equals": true}` (F67) |
 | `call` + `args` | chama método por caminho a partir da raiz (`GameState.x`, `DialogueManager.y`) |
 | `scene` | troca de cena no meio do roteiro |
 | `quit` | encerra; sem ele o roteiro roda até o limite de segurança |
@@ -119,6 +120,10 @@ Saída no scratchpad da sessão, nunca no repo.
   `qa.sh` lança por `open -g`. Nunca mova a janela do QA por código.
 - **(F60)** Não espere `RenderingServer.frame_post_draw` no QA: com a janela em segundo plano e
   coberta o macOS para de desenhá-la, o sinal nunca chega e o jogo não sai (travou o `_finish`).
+- **(F45)** Eventos do mesmo quadro rodam **na ordem do roteiro** só desde 2026-11-21 (antes o
+  `sort_custom` instável embaralhava `new_game`/`from_dict`/`scene` e o roteiro mentia às vezes).
+  Roteiro que depende de save (`Continuar`) grava o próprio com `{"call": "SaveManager.save_game"}`
+  logo depois do `from_dict`: o `user://save.json` é dividido com as outras worktrees.
 - **(F60)** O roteiro herda a dificuldade do `user://settings.cfg` do humano (ele joga no
   Difícil). Fixe `{"frame": 1, "call": "Settings.set", "args": ["difficulty", "normal"]}`: é o `set`
   de propriedade, não grava no arquivo dele.

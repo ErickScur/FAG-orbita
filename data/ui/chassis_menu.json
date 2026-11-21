@@ -1,6 +1,6 @@
 {
   "title": "TERMINAL DO CHASSI MU-7",
-  "footer": "[TAB] FECHAR",
+  "footer": "[TAB] MAPA   [ESC] FECHAR",
   "reactor_label": "ESTABILIDADE DO REATOR",
   "reactor_value": "%d%%",
   "reactor_offline": "SEM LEITURA",
@@ -17,9 +17,9 @@
   "ability_dash": "IMPULSO MAGNÉTICO",
   "ability_beam": "FEIXE DE MANUTENÇÃO",
   "ability_cost": "%d CARGA",
-  "locked_title": "AGUARDANDO ENERGIA",
+  "locked_title": "ESTAÇÃO ARTEMIS",
   "map_label": "MAPA DA ESTAÇÃO",
-  "map_value": "SEM ENERGIA",
-  "sectors_label": "SETORES VISITADOS",
-  "sectors_value": "??"
+  "map_value": "[TAB]",
+  "sectors_label": "SETORES RELIGADOS",
+  "sectors_value": "%d/%d"
 }

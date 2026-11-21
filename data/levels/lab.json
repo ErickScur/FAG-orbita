@@ -12,6 +12,14 @@
   "reactor_online": true,
   "objective": "obj_lab",
   "on_enter_dialogue": "lab_enter",
+  "revisit": [
+    {
+      "after_sector": "lab",
+      "ambient_color": "#5a5348",
+      "objective": "",
+      "on_enter_dialogue": ""
+    }
+  ],
   "terminals": [
     "lab"
   ],
@@ -225,7 +233,12 @@
       "id": "lab_console_b",
       "terminal": "lab"
     },
-    "3,41": {
+    "2,41": {
+      "id": "lab_exit_core",
+      "target": "res://scenes/levels/core_hub.tscn",
+      "sector": "core"
+    },
+    "7,41": {
       "id": "lab_dock_01"
     },
     "12,41": {

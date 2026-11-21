@@ -22,16 +22,19 @@ const ANIM_OPENING: StringName = &"opening"
 const ANIM_OPEN: StringName = &"open"
 const ANIM_CLOSING: StringName = &"closing"
 const ANIM_SEALED: StringName = &"sealed"
+const PLATE_OFFSET: Vector2 = Vector2(0.0, -57.0)
 
 @export var terminal_id: StringName = &""
 @export var system_id: StringName = &""
 @export var powered: bool = false
 @export var sealed: bool = false
 @export var sealed_until_sector: StringName = &""
+@export var sector: StringName = &""
 
 var _held_open: bool = false
 var _bulkhead_height: float = 0.0
 var _bulkhead_delay: int = BULKHEAD_DELAY_FRAMES
+var _plate: SectorPlate = null
 
 @onready var _sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var _shape: CollisionShape2D = $CollisionShape2D
@@ -44,6 +47,7 @@ func _ready() -> void:
 	_build_animations()
 	_sprite.animation_finished.connect(_on_animation_finished)
 	_apply_sector_seal()
+	_apply_plate()
 	set_powered_silent(powered)
 	EventBus.energy_changed.connect(_on_energy_changed)
 	set_physics_process(true)
@@ -88,9 +92,11 @@ func configure(params: Dictionary) -> void:
 	system_id = StringName(String(params.get("system_id", system_id)))
 	sealed = bool(params.get("sealed", sealed))
 	sealed_until_sector = StringName(String(params.get("sealed_until_sector", sealed_until_sector)))
+	sector = StringName(String(params.get("sector", sector)))
 	_apply_sector_seal()
 	if _sprite == null:
 		return
+	_apply_plate()
 	set_powered_silent(powered)
 
 
@@ -100,6 +106,10 @@ func is_sector_sealed() -> bool:
 
 func is_open() -> bool:
 	return powered and not sealed
+
+
+func plate() -> SectorPlate:
+	return _plate
 
 
 func current_animation() -> StringName:
@@ -135,6 +145,21 @@ func _apply_sector_seal() -> void:
 	_held_open = true
 	terminal_id = &""
 	system_id = &""
+
+
+func _apply_plate() -> void:
+	if sector == &"":
+		return
+	var table: Dictionary = SectorCatalog.load_all()
+	if not SectorCatalog.has(sector, table):
+		push_warning("Door: setor '%s' sem placa em %s" % [sector, SectorCatalog.PATH])
+		return
+	if _plate == null:
+		_plate = SectorPlate.new()
+		_plate.name = "Plate"
+		_plate.position = PLATE_OFFSET
+		add_child(_plate)
+	_plate.setup(sector, table)
 
 
 func _measure_bulkhead() -> void:

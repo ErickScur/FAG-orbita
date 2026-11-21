@@ -1,8 +1,16 @@
 [
+  {"frame": 1, "call": "Settings.set", "args": ["difficulty", "normal"]},
+  {"frame": 1, "call": "GameState.new_game", "args": []},
+  {"frame": 1, "call": "GameState.from_dict", "args": [{"flags": {"dlg_core_wake": true, "dlg_core_alarm": true, "dlg_core_terminal_first": true, "dlg_core_lights_off": true, "dlg_hab_body": true, "dlg_hab_first_sr3": true, "dlg_core_return": true, "reactor_online": true, "dlg_gh_enter": true}, "energy_states": {"core_hub": ["door_habitat"]}, "current_objective": "obj_greenhouse", "checkpoint": {"scene": "res://scenes/levels/greenhouse.tscn", "dock_id": "gh_dock_01"}}]},
+  {"frame": 1, "call": "SaveManager.save_game", "args": []},
+  {"frame": 1, "scene": "res://scenes/ui/main_menu.tscn"},
+  {"frame": 30, "expect_scene": "res://scenes/ui/main_menu.tscn"},
   {"frame": 40, "screenshot": "f53_05_menu_continuar"},
   {"frame": 54, "action": "ui_accept", "pressed": true},
   {"frame": 58, "action": "ui_accept", "pressed": false},
   {"frame": 220, "screenshot": "f53_06_carregando_estufa"},
+  {"frame": 2390, "expect_scene": "res://scenes/levels/greenhouse.tscn"},
+  {"frame": 2391, "expect_tile": [6, 62], "tolerance": 1, "label": "07_continuou_na_doca_da_entrada"},
   {"frame": 2400, "screenshot": "f53_07_continuou_na_estufa"},
   {"frame": 2500, "quit": true}
 ]

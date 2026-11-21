@@ -1,0 +1,13 @@
+{
+  "title": "ARQUIVO DE LOGS",
+  "counter": "LOGS %d/%d",
+  "by_sector": "POR SETOR",
+  "by_author": "POR AUTOR",
+  "unknown_author": "NÃO ENCONTRADOS",
+  "missing_title": "???",
+  "missing_body": "REGISTRO AUSENTE. CONTINUE PROCURANDO.",
+  "read_hint": "[ENTER] LER",
+  "empty": "NENHUM REGISTRO NO ARQUIVO.",
+  "footer_list": "[CIMA/BAIXO] LOG  [LADOS] AGRUPAR  [ESC] VOLTAR",
+  "footer_reader": "[CIMA/BAIXO] ROLAR  [ESC] LISTA"
+}

@@ -17,6 +17,7 @@ const RESTORED_META: String = "ambient_restored"
 var _parsed: Dictionary = {}
 var _meta: Dictionary = {}
 var _spawn_dock: String = ""
+var _arrival_id: String = ""
 var _player: Node2D = null
 var _death_armed: bool = true
 
@@ -63,7 +64,17 @@ func spawn_position() -> Vector2:
 	return start_position()
 
 
+func entry_position() -> Vector2:
+	var arrival: Node2D = _arrival_node()
+	if arrival != null:
+		return arrival.global_position
+	return spawn_position()
+
+
 func start_position() -> Vector2:
+	var arrival: Node2D = _arrival_node()
+	if arrival != null:
+		return arrival.global_position
 	var dock: Node2D = _revisit_dock()
 	if dock != null:
 		return dock.global_position
@@ -78,6 +89,10 @@ func camera_rect() -> Rect2i:
 
 func is_revisit() -> bool:
 	return not _spawn_dock.is_empty()
+
+
+func arrival_point() -> String:
+	return _arrival_id
 
 
 func meta_value(key: String) -> Variant:
@@ -101,6 +116,7 @@ func _load_data() -> bool:
 	var raw_meta: Dictionary = _read_json(meta_path)
 	_spawn_dock = SectorRevisit.spawn_dock(raw_meta, GameState.sectors_restored)
 	_meta = SectorRevisit.apply(raw_meta, GameState.sectors_restored)
+	_arrival_id = ArrivalRoute.exit_toward(_meta, GameState.enter_level(scene_file_path))
 	_parsed = LevelParser.parse(text, LevelBuilder.entity_chars())
 	for warning: String in _parsed.get("warnings", []) as PackedStringArray:
 		push_warning("level_base (%s): %s" % [level_id, warning])
@@ -162,7 +178,7 @@ func _spawn_player() -> void:
 	_player = instance
 	_player.name = "Player"
 	add_child(_player)
-	_player.global_position = spawn_position()
+	_player.global_position = entry_position()
 	var floor_sfx: String = String(_meta.get("floor_sfx", ""))
 	if not floor_sfx.is_empty():
 		_player.set(&"floor_sfx", StringName(floor_sfx))
@@ -259,6 +275,16 @@ func _entry_dock() -> BackupDock:
 			best = dock
 			best_distance = distance
 	return best
+
+
+func _arrival_node() -> Node2D:
+	if _arrival_id.is_empty() or not is_inside_tree():
+		return null
+	for node: Node in get_tree().get_nodes_in_group(StringName("entity:" + _arrival_id)):
+		if node is Node2D and is_ancestor_of(node):
+			return node
+	push_warning("level_base (%s): ponto de chegada '%s' ausente" % [level_id, _arrival_id])
+	return null
 
 
 func _revisit_dock() -> Node2D:

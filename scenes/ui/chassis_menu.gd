@@ -12,10 +12,14 @@ const COLOR_EMPTY: Color = Color(0.309804, 0.356863, 0.4)
 const COLOR_VALUE: Color = Color(0.843137, 0.890196, 0.909804)
 const COLOR_CRITICAL: Color = Color(1.0, 0.360784, 0.360784)
 const COST_SEPARATION: int = 4
+const PAGE_DIAGNOSTICS: StringName = &"diagnostics"
+const PAGE_MAP: StringName = &"map"
 
 var is_open: bool = false
 
 var _texts: Dictionary = {}
+var _page: StringName = PAGE_DIAGNOSTICS
+var _station_sectors: Array[Dictionary] = []
 
 @onready var _title: Label = %Title
 @onready var _reactor_label: Label = %ReactorLabel
@@ -39,6 +43,8 @@ var _texts: Dictionary = {}
 @onready var _sectors_label: Label = %SectorsLabel
 @onready var _sectors_value: Label = %SectorsValue
 @onready var _footer: Label = %Footer
+@onready var _diagnostics: Control = $Root/Center
+@onready var _map: Control = %Map
 
 
 func _ready() -> void:
@@ -46,8 +52,10 @@ func _ready() -> void:
 	visible = false
 	is_open = false
 	_texts = HudModel.load_texts(TEXTS_PATH)
+	_station_sectors = StationMapModel.load_station()["sectors"]
 	_apply_static_texts()
 	_apply_counter_icons()
+	_show_page(PAGE_DIAGNOSTICS)
 
 
 func _input(event: InputEvent) -> void:
@@ -58,6 +66,11 @@ func _input(event: InputEvent) -> void:
 			return
 		get_viewport().set_input_as_handled()
 		open()
+		return
+	if event.is_action_pressed(&"map") and _page == PAGE_DIAGNOSTICS:
+		get_viewport().set_input_as_handled()
+		AudioManager.play_sfx(&"ui_move")
+		_show_page(PAGE_MAP)
 		return
 	if (
 		event.is_action_pressed(&"map")
@@ -96,6 +109,7 @@ func open() -> void:
 		return
 	is_open = true
 	_refresh()
+	_show_page(PAGE_DIAGNOSTICS)
 	visible = true
 	get_tree().paused = true
 	EventBus.game_paused.emit(true)
@@ -106,6 +120,7 @@ func close() -> void:
 	if not is_open:
 		return
 	is_open = false
+	_show_page(PAGE_DIAGNOSTICS)
 	visible = false
 	get_tree().paused = false
 	EventBus.game_paused.emit(false)
@@ -144,7 +159,36 @@ func _refresh() -> void:
 	_charge_value.text = _pair(int(roundf(GameState.charge)), int(roundf(GameState.charge_max)))
 	_logs_value.text = _pair(GameState.logs_collected.size(), Balance.LOGS_TOTAL)
 	_research_value.text = _pair(GameState.research_collected.size(), Balance.RESEARCH_TOTAL)
+	_refresh_station()
 	_refresh_abilities()
+
+
+func current_page() -> StringName:
+	return _page
+
+
+func _show_page(page: StringName) -> void:
+	_page = page
+	var on_map: bool = page == PAGE_MAP
+	_diagnostics.visible = not on_map
+	_map.visible = on_map
+	if on_map:
+		_map.call(&"refresh")
+		_map.call(&"focus_default")
+	else:
+		_map.call(&"release")
+
+
+func _refresh_station() -> void:
+	var scene: Node = get_tree().current_scene
+	var snap: Dictionary = StationMapModel.snapshot(
+		GameState, scene.scene_file_path if scene != null else ""
+	)
+	_sectors_value.text = HudModel.format_pair(
+		_text(&"sectors_value"),
+		StationMapModel.restored_count(_station_sectors, snap),
+		_station_sectors.size()
+	)
 
 
 func _refresh_reactor() -> void:

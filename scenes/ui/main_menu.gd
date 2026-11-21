@@ -5,6 +5,7 @@ const BRIEFING_SCENE: String = "res://scenes/boot/briefing.tscn"
 const FALLBACK_LEVEL: String = "res://tests/qa/scenes/loading_target.tscn"
 const OPTIONS_SCENE: String = "res://scenes/ui/options_menu.tscn"
 const CONFIRM_SCENE: String = "res://scenes/ui/confirm_dialog.tscn"
+const ARCHIVE_SCENE: String = "res://scenes/ui/log_archive.tscn"
 const LOGO_PATH: String = "res://assets/ui/logo.png"
 const BACKDROP_PATH: String = "res://assets/backgrounds/menu_backdrop.png"
 
@@ -17,6 +18,7 @@ const BACKDROP_PATH: String = "res://assets/backgrounds/menu_backdrop.png"
 @onready var continue_button: Button = %ContinueButton
 @onready var new_game_button: Button = %NewGameButton
 @onready var options_button: Button = %OptionsButton
+@onready var archive_button: Button = %ArchiveButton
 @onready var quit_button: Button = %QuitButton
 @onready var toast: Label = %Toast
 @onready var toast_timer: Timer = %ToastTimer
@@ -29,9 +31,12 @@ func _ready() -> void:
 	AudioManager.play_music(&"menu")
 	continue_button.disabled = not SaveManager.has_save()
 	options_button.disabled = not ResourceLoader.exists(OPTIONS_SCENE)
+	var has_archive: bool = ResourceLoader.exists(ARCHIVE_SCENE)
+	archive_button.disabled = not (SaveManager.has_save() and has_archive)
 	continue_button.pressed.connect(_on_continue)
 	new_game_button.pressed.connect(_on_new_game)
 	options_button.pressed.connect(_on_options)
+	archive_button.pressed.connect(_on_archive)
 	quit_button.pressed.connect(_on_quit)
 	toast.visible = false
 	toast_timer.timeout.connect(_hide_toast)
@@ -51,7 +56,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _buttons() -> Array[Button]:
-	return [continue_button, new_game_button, options_button, quit_button]
+	return [continue_button, new_game_button, options_button, archive_button, quit_button]
 
 
 func _focus_first() -> void:
@@ -127,6 +132,23 @@ func _on_options() -> void:
 
 func _on_options_closed() -> void:
 	options_button.grab_focus.call_deferred()
+
+
+func _on_archive() -> void:
+	if _overlay_open() or not ResourceLoader.exists(ARCHIVE_SCENE):
+		return
+	var packed: PackedScene = load(ARCHIVE_SCENE)
+	if packed == null:
+		return
+	var archive: Control = packed.instantiate()
+	archive.set(&"uses_override", true)
+	archive.set(&"collected_override", LogCatalog.collected_from_save(SaveManager.save_path))
+	archive.connect(&"closed", _on_archive_closed)
+	overlay.add_child(archive)
+
+
+func _on_archive_closed() -> void:
+	archive_button.grab_focus.call_deferred()
 
 
 func _on_quit() -> void:

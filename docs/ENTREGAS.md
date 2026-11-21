@@ -65,7 +65,7 @@ Asset "definitivo" é trabalho paralelo do humano: assim que o Dia 1 terminar, o
 | Música (trilha sonora) | [F04](features/F04-audio-volume.md), [F28](features/F28-fase-nucleo-central.md), [F29](features/F29-fase-estufa.md) | Demo | `[`[x]` |
 | Efeitos visuais/sonoros | [F05](features/F05-pipeline-assets-placeholders.md), [F04](features/F04-audio-volume.md), [F29](features/F29-fase-estufa.md) | Demo | `[`[x]` |
 | Habilidades | [F24](features/F24-garras-magneticas.md) (+ [F31](features/F31-dash-feixe.md) stretch) | Demo | `[`[x]` |
-| Itens e inventário | [F20](features/F20-coletaveis-contadores.md) (+ [F33](features/F33-arquivo-logs.md) stretch) | Demo | `[`[x]` |
+| Itens e inventário | [F20](features/F20-coletaveis-contadores.md) (+ [F33](features/F33-arquivo-logs.md): arquivo de logs, tecla L) | Demo | `[`[x]` |
 | Coleta de itens | [F20](features/F20-coletaveis-contadores.md) | Demo | `[`[x]` |
 | Recompensas | [F14](features/F14-estabilidade-reator.md) (log → +0,5% reator; setor → +15%), [F20](features/F20-coletaveis-contadores.md), [F24](features/F24-garras-magneticas.md) (upgrade ao religar setor) | Demo | `[ ]` |
 | HUD | [F15](features/F15-hud-objetivos.md) | Demo | `[`[x]` |
@@ -83,7 +83,7 @@ Asset "definitivo" é trabalho paralelo do humano: assim que o Dia 1 terminar, o
 | Chefão de nível inferior (Mini-boss) | F63 | Final | `[ ]` |
 | Fim de jogo alternativo | F66 | Final | `[ ]` |
 | Nível (progressão) | F69 (upgrades permanentes) | Final | `[ ]` |
-| Scanner | F67 (mapa da estação) | Final | `[ ]` |
+| Scanner | [F67](features/F67-mapa-estacao.md) (mapa da estação: TAB duas vezes ou pausa → MAPA) | Final | `[x]` |
 | 3D · Elementos de FPS | — | `[-]` [ADR-000](DECISIONS.md#adr-000) | `[-]` |
 | Elementos de RTS · Turnos · Montaria · Sandbox · Endless · Conta de usuário · Classes · Armaduras · Loja · Dinheiro · Simulação de dia | — | `[-]` fora dos pilares do GDD | `[-]` |
 
