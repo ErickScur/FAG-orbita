@@ -266,9 +266,7 @@
       "id": "core_hub_exit_memory",
       "target": "res://scenes/levels/memory_core.tscn",
       "sector": "memory"
-    }
-  },
-  "reserved_exits": {
+    },
     "146,5": {
       "id": "core_hub_exit_reactor",
       "target": "res://scenes/levels/reactor_core.tscn",

@@ -17,7 +17,7 @@ o MU-7 andar e tem mais de duas capturas, a posição dele mudou entre elas.
 
 Marcos no roteiro (o QACapture confere e loga "marco OK" ou "ERRO marco"):
   {"frame": 300, "expect_tile": [18, 37], "tolerance": 1, "label": "pe_do_painel"}
-  {"frame": 900, "expect_scene": "res://scenes/ui/demo_end.tscn"}
+  {"frame": 900, "expect_scene": "res://scenes/levels/command_room.tscn"}
 EOF
 }
 

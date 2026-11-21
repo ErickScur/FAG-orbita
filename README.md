@@ -79,4 +79,5 @@ Professor: Jeferson Eduardo Guido — disciplina de Desenvolvimento de Jogos.
 | Torre CX-2, tileset do Laboratório, bocal de vapor, o Serralheiro e a arena dele | gerados com Codex (geração de imagem) | uso próprio do projeto |
 | Sala de comando (cápsula, transmissor, consoles) e cutscene final (ARTEMIS, planetas, sinal) | gerados com Codex (geração de imagem) | uso próprio do projeto |
 | Placa de Blindagem (folha de coletáveis) | gerada com Codex (geração de imagem) | uso próprio do projeto |
+| Núcleo do Reator: tileset, núcleo de ARGOS, torre blindada, acoplador Root, plataforma térmica | gerados com Codex (geração de imagem) | uso próprio do projeto |
 | Trilhas do Núcleo Central e da Estufa | geradas por IA | uso próprio do projeto |

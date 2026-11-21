@@ -208,12 +208,13 @@ func test_logs_and_milestone_dialogue() -> void:
 	assert_true(Objectives.has(objective, Objectives.load_all()), "objetivo da fase")
 
 
-func test_scene_wires_the_sector_and_the_provisional_end() -> void:
+func test_scene_wires_the_sector_and_returns_to_the_hub() -> void:
 	var state: SceneState = (load(SCENE_PATH) as PackedScene).get_state()
 	var narrative: Dictionary = _node_properties(state, "Narrative")
 	assert_eq(String(narrative.get("sector_id", "")), "memory", "setor")
 	assert_eq(String(narrative.get("next_scene", "")), CORE_HUB_SCENE, "volta ao Núcleo")
-	assert_eq(String(narrative.get("demo_end_until", "")), REACTOR_SCENE, "fim provisório")
+	assert_false(narrative.has("demo_end_until"), "sem fim provisório: a Memória volta ao Núcleo")
+	assert_true(ResourceLoader.exists(REACTOR_SCENE), "o Reator existe")
 	assert_eq(String(narrative.get("restored_dialogue", "")), "mem_restored", "fala final")
 	assert_true(_has_node(state, "Protocol"), "protocolo na cena")
 

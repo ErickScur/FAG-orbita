@@ -12,6 +12,5 @@ script = ExtResource("2_narrative")
 sector_id = &"memory"
 restored_dialogue = &"mem_restored"
 next_scene = "res://scenes/levels/core_hub.tscn"
-demo_end_until = "res://scenes/levels/reactor_core.tscn"
 
 [node name="Protocol" parent="." instance=ExtResource("3_protocol")]

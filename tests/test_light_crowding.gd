@@ -2,7 +2,8 @@ extends TestCase
 
 const LEVELS_DIR: String = "res://data/levels/"
 const PLAYABLE_LEVELS: PackedStringArray = [
-	"core_hub", "greenhouse", "lab", "infirmary", "docks", "memory_core"
+	"core_hub", "greenhouse", "lab", "infirmary", "docks", "memory_core",
+	"reactor_core"
 ]
 const TILE_SIZE: int = 16
 const WINDOW_PX: int = 256

@@ -9,5 +9,6 @@
   "obj_docks": "Religar as Docas",
   "obj_core_memory": "Ir ao Núcleo de Memória",
   "obj_memory": "Religar a Memória",
-  "obj_core_reactor": "Religar o Reator"
+  "obj_core_reactor": "Religar o Reator",
+  "obj_reactor": "Desligar o ARGOS"
 }

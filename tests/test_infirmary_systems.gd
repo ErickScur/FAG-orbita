@@ -1,6 +1,5 @@
 extends TestCase
 
-const DEMO_END_SCRIPT: String = "res://scenes/ui/demo_end.gd"
 const INFIRMARY_PROPS: String = "res://assets/sprites/props/infirmary_props_sheet.png"
 
 
@@ -51,35 +50,6 @@ func test_prop_accepts_another_sheet() -> void:
 	var legacy: Sprite2D = LevelBuilder._make_prop({"frame": 2}) as Sprite2D
 	assert_eq((legacy.texture as AtlasTexture).region.position, Vector2(64.0, 0.0), "padrão")
 	legacy.free()
-
-
-func test_closing_text_follows_the_last_restored_sector() -> void:
-	var script: GDScript = load(DEMO_END_SCRIPT)
-	assert_eq(
-		String(script.call(&"closing_text", [&"greenhouse"])),
-		"A ESTUFA VOLTOU A RESPIRAR. A ESTAÇÃO AINDA NÃO.", "Estufa"
-	)
-	assert_eq(
-		String(script.call(&"closing_text", [&"greenhouse", &"lab"])),
-		"O LABORATÓRIO ESFRIOU. A ESTAÇÃO AINDA NÃO.", "Laboratório"
-	)
-	assert_eq(
-		String(script.call(&"closing_text", [&"greenhouse", &"lab", &"infirmary"])),
-		"A ENFERMARIA AQUECEU. A ESTAÇÃO AINDA NÃO.", "Enfermaria"
-	)
-	assert_eq(
-		String(script.call(&"closing_text", [&"greenhouse", &"lab", &"infirmary", &"docks"])),
-		"AS DOCAS SEGURARAM O AR. A ESTAÇÃO AINDA NÃO.", "Docas"
-	)
-	var memory: Array = [&"greenhouse", &"lab", &"infirmary", &"docks", &"memory"]
-	assert_eq(
-		String(script.call(&"closing_text", memory)),
-		"A MEMÓRIA VOLTOU INTEIRA. A ESTAÇÃO AINDA NÃO.", "Memória"
-	)
-	assert_eq(
-		String(script.call(&"closing_text", [])),
-		"A MEMÓRIA VOLTOU INTEIRA. A ESTAÇÃO AINDA NÃO.", "padrão: o último setor pronto"
-	)
 
 
 func test_heated_core_has_a_chassis_label() -> void:

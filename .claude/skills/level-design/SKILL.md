@@ -143,3 +143,17 @@ O modelo é generoso com energia (toda porta aberta, toda planta crescida, garra
 - **(F64)** **Texto liberado por distância só lê se o espaçamento casar com o andar**: (velocidade de
   andar − empuxo) × tempo de digitação da linha ≥ distância entre gatilhos; senão o log termina com o
   MU-7 já parado no fim do corredor (foi preciso corredor 53 → 76 tiles e empuxo 55 → 75 px/s).
+- **(F65)** **O modelo de alcançabilidade conta o fundo do mapa como chão**: um fosso de 3 tiles
+  aberto para fora do mapa (letal no jogo) virou chão no modelo, e o pulo duplo saía dele para o
+  outro lado do vão "só com dash". Fosso que prova habilidade precisa de fundo fora do alcance do
+  pulo duplo (7 tiles no Reator) ou chão de verdade.
+- **(F65)** **O modelo não dá pulo duplo saindo de plataforma móvel**, e **arena aberta é toda
+  alcançável caindo de cima**: provar "só com Propulsor" dentro de uma arena não funciona; prove a
+  habilidade num gargalo antes dela (o bloco de 4 tiles da aproximação) e use paredes, não
+  plataformas, para separar trechos.
+- **(F65)** **O Feixe é horizontal a −8 px do pé**: torre de teto pendurada 3 tiles acima do piso
+  não é atingível. Ponha a torre de parede na altura do peito de onde o jogador para, ou o corpo
+  do Feixe ao alcance do ápice de um pulo, e confira no roteiro de QA.
+- **(F65)** **Sistema `locked` nunca liga**, nem no `initial` (`EnergyGrid.set_state` pula o que
+  `can_power` recusa): "ligado e travado" não existe. O que o terminal não pode desligar fica fora
+  dele (`system_id: ""`), comandado pela própria cena.

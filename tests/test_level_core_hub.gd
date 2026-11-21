@@ -69,7 +69,7 @@ func test_map_is_tall_enough_for_the_viewport() -> void:
 
 func test_single_spawn_and_one_exit_per_sector() -> void:
 	assert_eq(_count_symbol("P"), 1, "exatamente um spawn")
-	assert_eq(_count_symbol("E"), 5, "uma saída por setor pronto, da Estufa à Memória")
+	assert_eq(_count_symbol("E"), 6, "uma saída por setor, da Estufa ao Reator")
 	assert_eq(_count_symbol("T"), 1, "exatamente um terminal de distribuição")
 	assert_eq(_count_symbol("|"), 6, "a porta do Habitacional e as cinco comportas de setor")
 	assert_eq(_count_symbol("S"), 1, "exatamente uma SR-3")
@@ -462,7 +462,7 @@ func test_the_lift_docks_level_with_the_floor_and_the_niche() -> void:
 	)
 
 
-func test_exit_falls_back_to_the_demo_end() -> void:
+func test_every_exit_targets_a_level() -> void:
 	var exit_params: Dictionary = {}
 	for key: Variant in _meta.get("entities", {}):
 		var params: Dictionary = (_meta["entities"] as Dictionary)[key]

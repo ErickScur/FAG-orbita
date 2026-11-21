@@ -1,7 +1,7 @@
 extends TestCase
 
-const DEMO_SEQUENCES: int = 34
-const DEMO_LOGS: int = 12
+const DEMO_SEQUENCES: int = 36
+const DEMO_LOGS: int = 13
 const DEMO_SPEAKERS: int = 4
 const TYPICAL_LINE_CHARS: int = 84
 const AMBIENT_HOLD_MIN: float = 1.5

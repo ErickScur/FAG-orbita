@@ -28,7 +28,6 @@ func _ready() -> void:
 	_spawn_pause_menu()
 	EventBus.player_died.connect(_on_player_died)
 	EventBus.game_over.connect(_on_game_over)
-	EventBus.demo_completed.connect(_on_demo_completed)
 	EventBus.argos_defeated.connect(_on_argos_defeated)
 
 
@@ -121,11 +120,6 @@ func _on_player_died() -> void:
 func _on_game_over(_reason: StringName) -> void:
 	_dismiss_chassis_lost()
 	goto(ScenePaths.GAME_OVER)
-
-
-func _on_demo_completed() -> void:
-	_dismiss_chassis_lost()
-	goto(ScenePaths.DEMO_END)
 
 
 func _on_argos_defeated() -> void:

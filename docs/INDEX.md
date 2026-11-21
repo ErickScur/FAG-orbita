@@ -166,7 +166,7 @@ Top-down por bloco. Dentro de um bloco, top-down, respeitando `depends_on`. **N�
 | F62 | [Fase 4 — Docas (vácuo, Propulsor)](features/F62-fase-docas.md) | FINAL | 4 fases | [GDD-2.7 F4](design/GDD.md#gdd-2-7-f4) | `[x]` |
 | F63 | [Mini boss — O Serralheiro](features/F63-serralheiro.md) | FINAL | Mini-boss | [GDD-2.6.2-G](design/GDD.md#gdd-2-6-2-g) | `[x]` |
 | F64 | [Fase 5 — Núcleo de Memória / Protocolo Luto](features/F64-nucleo-de-memoria.md) | FINAL | Boss | [GDD-2.6.2-H](design/GDD.md#gdd-2-6-2-h) | `[x]` |
-| F65 | Fase 6 — Núcleo do Reator / ARGOS | FINAL | Boss | [GDD-2.6.2-I](design/GDD.md#gdd-2-6-2-i) | `[ ]` |
+| F65 | [Fase 6 — Núcleo do Reator / batalha final ARGOS](features/F65-nucleo-do-reator-argos.md) | FINAL | Boss | [GDD-2.6.2-I](design/GDD.md#gdd-2-6-2-i) | `[x]` |
 | F66 | [Sala da escolha, finais alternativos, epílogo por Dados, 40 nomes & créditos](features/F66-finais-epilogo-creditos.md) | FINAL | Fim de jogo alternativo · Missões secundárias | [Jornada 8–9](design/JORNADA-DO-HEROI.md#jh-8) | `[x]` |
 | F67 | [Mapa da estação (TAB e pausa)](features/F67-mapa-estacao.md) | FINAL | Scanner | [GDD-2.8](design/GDD.md#gdd-2-8-telas) | `[x]` |
 | F68 | [Status restantes (Descarga, Sobrecarga) e piso eletrificado](features/F68-status-restantes.md) | FINAL | Efeitos naturais | [GDD-2.6.2-F](design/GDD.md#gdd-2-6-2-f) | `[x]` |

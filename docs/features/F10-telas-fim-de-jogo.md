@@ -20,7 +20,7 @@ O ÓRBITA tem três fins ([GDD-2.8 Telas](../design/GDD.md#gdd-2-8-telas)):
 
 1. **Chassi perdido** (Integridade 0): sobreposição preta com `SINAL DO CHASSI PERDIDO - RESTAURANDO BACKUP` e o custo em estabilidade. Não é game over: o jogo continua no último Ponto de Backup.
 2. **Perda de órbita** (Reator 0%): `PERDA DE ÓRBITA - MISSÃO ENCERRADA`, com o número de logs que o jogador nunca vai ler e a opção de carregar o último setor.
-3. **FIM DA DEMO** ([AJ-004](../design/GDD.md#gdd-ajustes)): ao religar a Estufa e sair pela transição final, estatísticas da run (tempo, logs, dados, mortes, segredos) e volta ao menu.
+3. ~~**FIM DA DEMO**~~ (aposentado em 2026-11-21, [AJ-075](../design/GDD.md#gdd-ajustes): o fim de vitória do jogo completo é ARGOS → sala de comando → finais → créditos, [F66](F66-finais-epilogo-creditos.md)) ([AJ-004](../design/GDD.md#gdd-ajustes)): ao religar a Estufa e sair pela transição final, estatísticas da run (tempo, logs, dados, mortes, segredos) e volta ao menu.
 
 Serve aos pilares **ESCASSEZ** (morrer custa tempo do mundo) e **AUSÊNCIA** (texto monoespaçado, sem "Game Over" comemorativo).
 
@@ -215,3 +215,13 @@ Nenhuma.
 - **QA visual** (janela real, `--qa-scale=3`): `f10_01_chassis_typing` (linha vermelha em digitação), `f10_02_chassis_full` (linha completa + custo + barra + `[E] CONTINUAR`), `f10_03_chassis_closed` (sonda de volta), `f10_04_game_over` (CARREGAR desabilitado sem backup), `f10_05_game_over_com_backup` (CARREGAR habilitado e focado), `f10_11_demo_end` (`FIM DA DEMO` em 32 + `TEMPO 12:34` / `LOGS 6/24` / `DADOS 4/12` / `MORTES 2` / `SEGREDOS 1/4` + frase de fechamento + `MENU PRINCIPAL`).
 - **Decisões novas**: ADR-F10-004 (total de segredos) e ADR-F10-005 (política de morte no `SceneManager`, seam `player_respawned` para a F13).
 - **Próximo passo**: F13 consome `player_respawned` (posição na doca, integridade, contagem de mortes) e F14 aplica a penalidade de −3%.
+
+### 2026-11-21 — `FIM DA DEMO` aposentado (integração da F65)
+- **Quem**: agente de integração (branch `final/integracao`) · **O que**: com as seis fases ligadas
+  ao hub, o `FIM DA DEMO` deixou de ser alcançável e foi removido: `EventBus.demo_completed`,
+  `SceneManager._on_demo_completed`, `ScenePaths.DEMO_END`, `scenes/ui/demo_end.*`, o roteiro
+  `f10_demo_end` e o teste da frase de fechamento por setor. As telas de derrota (chassi perdido,
+  perda de órbita) e o `RunStats` ficam; as estatísticas da vitória aparecem no epílogo da F66
+  (`EndingData.stats_rows`). A sonda `end_probe` troca o 3º botão por "ARGOS VENCIDO", que emite
+  `argos_defeated` (→ sala de comando). Decisão em ADR-F66-009; GDD AJ-075. A tela da demo vive na
+  tag `v0.1-demo`.

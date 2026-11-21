@@ -17,7 +17,6 @@ res://scenes/ui/pause_menu.tscn
 res://tests/qa/scenes/pause_sandbox.tscn
 res://scenes/ui/chassis_lost.tscn
 res://scenes/ui/game_over.tscn
-res://scenes/ui/demo_end.tscn
 res://scenes/ui/save_toast.tscn
 res://tests/qa/scenes/end_probe.tscn
 res://tests/qa/scenes/save_probe.tscn
@@ -106,3 +105,7 @@ res://scenes/world/electric_floor.tscn
 res://scenes/dev/hazard_test.tscn
 res://scenes/bosses/protocol_luto.tscn
 res://scenes/levels/memory_core.tscn
+res://scenes/enemies/cx2_armored.tscn
+res://scenes/world/root_coupler.tscn
+res://scenes/world/thermal_platform.tscn
+res://scenes/levels/reactor_core.tscn

@@ -11,6 +11,7 @@ const HUB_EXITS: Dictionary = {
 	"res://scenes/levels/infirmary.tscn": "core_hub_exit_infirmary",
 	"res://scenes/levels/docks.tscn": "core_hub_exit_docks",
 	"res://scenes/levels/memory_core.tscn": "core_hub_exit_memory",
+	"res://scenes/levels/reactor_core.tscn": "core_hub_exit_reactor",
 }
 const SECTOR_RETURNS: Dictionary = {
 	"greenhouse": "gh_exit_core",
@@ -18,8 +19,9 @@ const SECTOR_RETURNS: Dictionary = {
 	"infirmary": "inf_exit_core",
 	"docks": "dk_exit_core",
 	"memory_core": "mem_exit_core",
+	"reactor_core": "rc_exit_core",
 }
-const SECTOR_OF_LEVEL: Dictionary = {"memory_core": "memory"}
+const SECTOR_OF_LEVEL: Dictionary = {"memory_core": "memory", "reactor_core": "reactor"}
 const ICON_SIZE: int = 7
 
 var _state: Node = null

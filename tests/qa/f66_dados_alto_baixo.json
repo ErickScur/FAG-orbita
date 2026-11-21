@@ -11,7 +11,7 @@
   {"frame": 376, "screenshot": "p2_dados_baixo"},
   {"frame": 406, "call": "Settings.set", "args": ["difficulty", "normal"]},
   {"frame": 406, "call": "GameState.new_game", "args": []},
-  {"frame": 406, "call": "GameState.from_dict", "args": [{"research_collected": ["qa_f66_research_00", "qa_f66_research_01", "qa_f66_research_02", "qa_f66_research_03", "qa_f66_research_04", "qa_f66_research_05", "qa_f66_research_06", "qa_f66_research_07", "qa_f66_research_08", "qa_f66_research_09", "qa_f66_research_10"], "collected_ids": ["qa_f66_research_00", "qa_f66_research_01", "qa_f66_research_02", "qa_f66_research_03", "qa_f66_research_04", "qa_f66_research_05", "qa_f66_research_06", "qa_f66_research_07", "qa_f66_research_08", "qa_f66_research_09", "qa_f66_research_10"], "flags": {"ending": "seeding", "game_completed": true}}]},
+  {"frame": 406, "call": "GameState.from_dict", "args": [{"research_collected": ["qa_f66_research_00", "qa_f66_research_01", "qa_f66_research_02", "qa_f66_research_03", "qa_f66_research_04", "qa_f66_research_05", "qa_f66_research_06", "qa_f66_research_07", "qa_f66_research_08", "qa_f66_research_09", "qa_f66_research_10", "qa_f66_research_11"], "collected_ids": ["qa_f66_research_00", "qa_f66_research_01", "qa_f66_research_02", "qa_f66_research_03", "qa_f66_research_04", "qa_f66_research_05", "qa_f66_research_06", "qa_f66_research_07", "qa_f66_research_08", "qa_f66_research_09", "qa_f66_research_10", "qa_f66_research_11"], "flags": {"ending": "seeding", "game_completed": true}}]},
   {"frame": 406, "scene": "res://scenes/ui/ending_epilogue.tscn"},
   {"frame": 446, "expect_scene": "res://scenes/ui/ending_epilogue.tscn"},
   {"frame": 446, "expect_call": "EndingEpilogue.tier", "equals": "most", "label": "faixa_alto"},

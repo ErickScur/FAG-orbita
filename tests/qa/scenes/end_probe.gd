@@ -8,7 +8,7 @@ const SAMPLE_SECRET: String = "secret_greenhouse_01"
 
 @onready var death_button: Button = %DeathButton
 @onready var game_over_button: Button = %GameOverButton
-@onready var demo_button: Button = %DemoButton
+@onready var argos_button: Button = %ArgosButton
 @onready var status_label: Label = %Status
 
 
@@ -16,7 +16,7 @@ func _ready() -> void:
 	_seed_state()
 	death_button.pressed.connect(_on_death)
 	game_over_button.pressed.connect(_on_game_over)
-	demo_button.pressed.connect(_on_demo)
+	argos_button.pressed.connect(_on_argos)
 	EventBus.player_respawned.connect(_on_respawned)
 	_refresh()
 	death_button.grab_focus()
@@ -52,8 +52,8 @@ func _on_game_over() -> void:
 	EventBus.game_over.emit(&"reactor")
 
 
-func _on_demo() -> void:
-	EventBus.demo_completed.emit()
+func _on_argos() -> void:
+	EventBus.argos_defeated.emit()
 
 
 func _on_respawned() -> void:

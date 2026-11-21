@@ -1,0 +1,53 @@
+{
+  "logs": [
+    {
+      "id": "log_rc_01",
+      "sector": "reactor",
+      "author": "helena",
+      "title": "LOG PESSOAL 21",
+      "subtitle": "DRA. HELENA VASQUEZ",
+      "lines": [
+        {
+          "text": "Log pessoal. Vinte e um. Estou na sala dos radiadores, em cima do núcleo. Aqui o ar treme.",
+          "expr": "tired"
+        },
+        {
+          "text": "O Bruno desenhou o ARGOS para um dia ruim: três torres, três acopladores, e o núcleo no meio.",
+          "expr": "neutral"
+        },
+        {
+          "text": "Se o reator sair do controle, o ARGOS fecha a câmara e segura o calor lá dentro. Com quem estiver dentro.",
+          "expr": "worried"
+        },
+        {
+          "text": "Ontem a contenção recebeu uma ordem pela rede: selar o núcleo e não abrir para ninguém. Nem para nós.",
+          "expr": "worried"
+        },
+        {
+          "text": "O Bruno ficou do lado de dentro, trocando as placas do resfriamento. Ele ainda responde pelo rádio.",
+          "expr": "emotional"
+        },
+        {
+          "text": "Ele disse que o ARGOS só cai se os três acopladores queimarem. E só um acesso root queima um.",
+          "expr": "determined"
+        },
+        {
+          "text": "A sobrecarga queima o acoplador. O ARGOS perde o apoio e o núcleo apaga. Sem volta.",
+          "expr": "neutral"
+        },
+        {
+          "text": "Eu não tenho root. Só a comandante e a ÓRBITA. E a ÓRBITA não responde mais a nenhuma de nós.",
+          "expr": "tired"
+        },
+        {
+          "text": "O Bruno disse para eu não chorar no rádio, que atrapalha a leitura dos sensores. Eu ri. Ele também.",
+          "expr": "emotional"
+        },
+        {
+          "text": "Se você está ouvindo isto, ÓRBITA, o caminho até a sala de comando passa pelo meio dele. Desculpe.",
+          "expr": "tired"
+        }
+      ]
+    }
+  ]
+}

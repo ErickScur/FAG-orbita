@@ -102,9 +102,9 @@ func _apply_closed_state() -> void:
 func _on_interacted(_actor: Node) -> void:
 	if _used or is_closed():
 		return
+	if not has_target():
+		push_error("LevelExit: saída sem cena de destino (%s)" % target)
+		return
 	_used = true
 	AudioManager.play_sfx(&"door_open")
-	if has_target():
-		SceneManager.goto(target)
-		return
-	EventBus.demo_completed.emit()
+	SceneManager.goto(target)

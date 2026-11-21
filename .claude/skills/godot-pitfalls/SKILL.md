@@ -38,6 +38,9 @@ origem).
   `QACapture` ordenava o roteiro só pelo quadro e rodava `new_game` depois do `from_dict` do mesmo
   quadro, apagando o checkpoint (o MU-7 nascia no `P`). Desempate pelo índice original
   (`QAMarks.ordered_events`, teste `test_events_in_the_same_frame_keep_the_script_order`) (F45).
+- **`AnimatableBody2D` com `sync_to_physics` desfaz o `position` atribuído fora do passo de
+  física**: no teste síncrono a plataforma "não saía do lugar". O movimento vale no jogo; o teste
+  confere o alvo calculado (`ThermalPlatform.point_at`), não o `position` (F65).
 
 ## Luz e sombra (renderer Compatibility)
 - **Máximo de 16 `Light2D` por item de canvas**; da 17ª em diante é descartada **em silêncio**.
@@ -130,6 +133,12 @@ origem).
 - **Entidade sem `terminal_id`/`system_id` herda o padrão do script** (o esporo nasce
   `greenhouse/heating`): em fase nova passe `"system_id": ""` explícito quando ela só deve
   responder a efeito de grupo (F60).
+- **Subclasse de cena compartilhada (`extends Coupler`) quebra quando outra feature acrescenta
+  membro na base**: o `RootCoupler` (F65) e o `Coupler` da F63 declararam `_actor` em branches
+  separadas e a integração deu `Parse Error: The member "_actor" already exists in parent class`
+  (o script inteiro some, o teste para no meio). Em subclasse, prefixe os membros privados com o
+  papel (`_charger`, não `_actor`) e, ao integrar, esconda o que a base nova constrói sozinha no
+  `_ready` (soquete, pips) se a subclasse não usa (F65, integração).
 
 ## Câmera e parallax
 - **Offset de câmera arredondado a pixel inteiro** em 384×216 com escala inteira; fração borra o

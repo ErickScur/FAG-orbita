@@ -1,0 +1,28 @@
+{
+  "sequences": {
+    "rc_enter": {
+      "mode": "blocking",
+      "once": true,
+      "lines": [
+        {
+          "speaker": "orbita",
+          "text": "Núcleo do reator. A temperatura passa do limite de todos os meus sensores."
+        },
+        {
+          "speaker": "orbita",
+          "text": "A sala de comando fica do outro lado do núcleo. Não há outro caminho."
+        }
+      ]
+    },
+    "rc_argos": {
+      "mode": "ambient",
+      "once": true,
+      "lines": [
+        {
+          "speaker": "orbita",
+          "text": "ARGOS. Contenção do reator. Ele ainda cumpre a ordem de não deixar ninguém passar."
+        }
+      ]
+    }
+  }
+}

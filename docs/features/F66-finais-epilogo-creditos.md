@@ -180,6 +180,21 @@ Nenhuma.
 - **Decisão:** `data/endings/credits.json` mantém equipe, professor, disciplina, motor, fonte, arte e som; testes conferem contra o `README.md` (seção Equipe e autores de terceiros).
 - **Consequências:** asset novo de terceiros entra no README **e** no JSON, ou o teste reprova. **Data:** 2026-11-21.
 
+### ADR-F66-009 — O `FIM DA DEMO` sai do jogo (removido, não redirecionado)
+- **Contexto:** com o Reator (F65) no hub, toda fase tem `next_scene` e o único fim de vitória é
+  `argos_defeated`. As saídas eram remover o fluxo da demo ou redirecionar `demo_completed` para a
+  sala de comando.
+- **Decisão:** **remover**. Saem `EventBus.demo_completed`, `SceneManager._on_demo_completed`,
+  `ScenePaths.DEMO_END`, `scenes/ui/demo_end.*`, o gancho `SectorNarrative.demo_end_until` (e
+  `ends_demo_here`), o roteiro `f10_demo_end` e o teste de frase de fechamento. Setor sem
+  `next_scene` e portal sem alvo viram `push_error` (erro de dados, não fim de jogo). A sonda da F10
+  troca o botão "FIM DA DEMO" por "ARGOS VENCIDO" (`argos_defeated`). Redirecionar deixaria dois
+  caminhos para a sala de comando e um sinal com nome mentiroso.
+- **Consequências:** `test_the_only_ending_is_argos` (`tests/test_scene_paths.gd`) reprova se o
+  sinal, a cena ou um `demo_end_until` voltarem e confere que todo `next_scene` das fases existe. A
+  tela da demo continua na tag `v0.1-demo`. GDD: [AJ-075](../design/GDD.md#gdd-ajustes).
+  **Data:** 2026-11-21.
+
 ## 12. Log de evolução
 
 ### 2026-11-21 — Feature criada e entregue
@@ -189,3 +204,11 @@ Nenhuma.
 - **QA** (`tools/qa.sh`): `f66_semeadura` 23/23 marcos, `f66_transmissao` 22/22, `f66_dados_alto_baixo` 6/6, `f66_pular_cutscene` 4/4. Capturas lidas: sala escura com as quatro silhuetas legíveis e o prompt `[E] SEMEADURA`; confirmação legível; a sala apagando com só a máquina escolhida acesa; ARTEMIS acesa com a cápsula acoplada e o planeta à direita; cápsula a meio caminho com a estação quase apagada; ondas do sinal rumo à Terra com o planeta-alvo vazio embaixo; epílogo centrado em fonte 16; a faixa alta cita "quarenta e um graus de latitude"; nomes em duas colunas; estatísticas com FINAL; pergunta em 32; créditos com a logo; menu com `ÚLTIMA ESCOLHA: TRANSMISSÃO` no canto.
 - **Observações**: 1) a marca do menu sumiu na primeira rodada porque o `user://save.json` é dividido com as outras worktrees; o roteiro grava o próprio save antes de voltar ao menu e confere a marca com `expect_call`. 2) Marcar o avanço do epílogo com dois toques fixos por parágrafo saiu do trilho (o 1º parágrafo já tinha terminado de digitar); o gerador calcula o tempo de digitação de cada parágrafo a partir do JSON.
 - **Próximo passo**: F65 emite `EventBus.argos_defeated`; remover o fluxo `FIM DA DEMO` na integração final (§6).
+
+### 2026-11-21 — Integração com a F65: o fluxo de fim definitivo
+- **Quem**: agente de integração (branch `final/integracao`) · **O que**: ARGOS (`argos_defeated`)
+  é o único fim de vitória; o `FIM DA DEMO` foi removido (ADR-F66-009, AJ-075). A Memória volta ao
+  Núcleo sozinha e a comporta do Reator abre com o Root. `RESEARCH_TOTAL` 12: `f66.py` regenerado
+  (`f66_transmissao`, `f66_dados_alto_baixo`).
+- **QA**: `f66_semeadura` 23/23, `f66_transmissao` 22/22; `f65_reactor` 31/31 termina na sala de
+  comando vindo do hub.

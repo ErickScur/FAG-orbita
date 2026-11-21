@@ -379,7 +379,7 @@ Toda vez que a dificuldade sobe demais, o jogador ganha um upgrade que faz o con
 |---|---|
 | Superior esquerdo | Integridade em 4 células (célula vazia fica vermelha piscando); Carga azul abaixo, com marcação do custo da próxima habilidade; ícones de status com contador regressivo |
 | Topo centro | **Vazio em jogo normal.** O bloco do reator só aparece **em estado crítico** (abaixo de `REACTOR_CRITICAL`), em vermelho pulsante com `CRÍTICO`. Fora disso a estabilidade se lê no Terminal do Chassi ([AJ-028](#gdd-ajustes)) — esconder um cronômetro que está matando o jogador seria injusto, por isso a exceção |
-| Inferior direito | **Vazio.** Os contadores de Fragmento de Log e Dado de Pesquisa migraram para o Terminal do Chassi (`[TAB]`) e continuam na tela de FIM DA DEMO ([AJ-028](#gdd-ajustes)) |
+| Inferior direito | **Vazio.** Os contadores de Fragmento de Log e Dado de Pesquisa migraram para o Terminal do Chassi (`[TAB]`) e continuam nas estatísticas do epílogo ([AJ-028](#gdd-ajustes), [AJ-075](#gdd-ajustes)) |
 | Superior direito | **Um** objetivo por fase, com o rótulo `OBJETIVO:` acima do texto, alinhado à direita. Ele é definido quando a fase carrega e **não muda até a fase terminar** ([AJ-026](#gdd-ajustes)) |
 | Centro inferior | Prompt de interação contextual (`[E] ACESSAR TERMINAL`) e, na fase tutorial, o cartão de tecla da vez ([AJ-025](#gdd-ajustes)) |
 | Legendas | Falas da ÓRBITA e logs da Helena na parte de baixo, com o nome de quem fala. Sempre legendado |
@@ -534,8 +534,8 @@ Toda vez que a dificuldade sobe demais, o jogador ganha um upgrade que faz o con
 | `ROOT_OVERLOAD_UNITS` | 1 | unid. de energia | 2.6.1 · AJ-067 |
 | `ROOT_OVERLOAD_TIME` | 20 | s | AJ-067 |
 | `ROOT_OVERLOAD_COST` | 25 | Carga | AJ-067 |
-| `LOGS_TOTAL` | 12 | un. | AJ-048 · AJ-064 |
-| `RESEARCH_TOTAL` | 11 | un. | AJ-048 · AJ-064 |
+| `LOGS_TOTAL` | 13 | un. | AJ-048 · AJ-064 · AJ-071 |
+| `RESEARCH_TOTAL` | 12 | un. | AJ-048 · AJ-064 · AJ-071 |
 | `DIFFICULTY_DAMAGE_MULT` | {easy: 0.5, normal: 1.0, hard: 1.5} | fator | AJ-003 |
 | `DIFFICULTY_REACTOR_MULT` | {easy: 0.5, normal: 1.0, hard: 1.5} | fator | AJ-003 |
 | `RESPAWN_CHARGE_RATIO` | 1.0 | fração | AJ-006 |
@@ -790,6 +790,20 @@ Toda vez que a dificuldade sobe demais, o jogador ganha um upgrade que faz o con
 | `RECALL_BACKSTEP` | 48 | px | AJ-063 |
 | `RECALL_TRAIL` | 96 | px | AJ-063 |
 | `RECALL_TEXT_CPS` | 40.0 | car./s | AJ-063 |
+| `ARGOS_TIME` | 90.0 | s | 2.6.2-I |
+| `ARGOS_COUPLERS` | 3 | un. | 2.6.2-I |
+| `ARGOS_SEGMENTS` | 9 | lâmpadas | AJ-068 |
+| `ARGOS_ALARM_INTERVAL` | 2.0 | s | AJ-068 |
+| `ARGOS_ALARM_FAST_INTERVAL` | 0.6 | s | AJ-068 |
+| `ARGOS_ALARM_FAST_TIME` | 20.0 | s | AJ-068 |
+| `ARGOS_TOWER_STUN_TIME` | 2.5 | s | AJ-069 |
+| `ARGOS_COUPLER_CHARGE_TIME` | 1.5 | s | AJ-069 |
+| `ARGOS_COUPLER_RANGE` | 28.0 | px | AJ-069 |
+| `ARGOS_LIFT_CYCLE` | 6.0 | s | AJ-070 |
+| `ARGOS_LIFT_HOLD` | 0.2 | fração do ciclo | AJ-070 |
+| `ARGOS_PHASE_SPEEDUP` | 0.25 | fração por acoplador | AJ-070 |
+| `ARGOS_SHUTDOWN_TIME` | 4.0 | s | AJ-071 |
+| `ARGOS_SILENCE_TIME` | 3.0 | s | AJ-071 |
 
 <a id="gdd-p-dificuldade"></a>
 ### Multiplicadores de dificuldade (AJ-003)
@@ -859,3 +873,8 @@ Toda vez que a dificuldade sobe demais, o jogador ganha um upgrade que faz o con
 | AJ-072 | 2026-11-21 | 2.6.3 · 2.8 (tela 8) · GDD-P | **Epílogo em três faixas de Dados.** O texto do epílogo de cada final tem três versões, escolhidas pela fração de Dados de Pesquisa coletados sobre `RESEARCH_TOTAL`: **poucos** (abaixo de 30 %), **alguns** (de 30 % a menos de 75 %) e **quase todos** (75 % ou mais), com o limite arredondado para cima (com 12 dados: 0–3, 4–8, 9–12). Quanto mais dados, mais específico e confiante: a faixa alta cita coordenadas, latitude, hora de bordo e a sonda nove. A tripulação são **40 pessoas** (`CREW_TOTAL`), com nome e função curta em `data/endings/crew.json`, que é a fonte de todo nome de tripulante dos logs | GDD-2.6.3 pede "mais dados = final mais específico e confiante" sem dizer quantos degraus; três faixas cabem no texto sem virar planilha, e a fração continua valendo quando as fases novas mudam o total |
 | AJ-073 | 2026-11-21 | 2.7-F6 · 2.8 (tela 8) · 2.9 · GDD-P | **Sala de comando e corte.** Depois de ARGOS, a sala de comando (fase pequena, sem música, sem objetivo e com o reator fora do relógio: a decisão não tem desafio mecânico) tem a baia da cápsula de um lado, o transmissor do outro e dois consoles de alavanca, SEMEADURA e TRANSMISSÃO. Interagir pede **confirmação** (é irreversível). Confirmada, a escolha é gravada no save (`flags.ending`, `flags.game_completed`), a alavanca desce, a máquina acende e a sala apaga em 3 s; a tela corta seco para uma cutscene externa de 10 a 25 s (cápsula partindo e a ARTEMIS apagando módulo por módulo; ou o transmissor disparando para a Terra com o planeta-alvo vazio ao lado) que **corta para o preto no instante da execução**, 1,5 s de silêncio, e segue para o epílogo. A cutscene pula **segurando** qualquer tecla por 1 s, não com um toque: é o fim do jogo e um toque acidental o apagaria | GDD-2.7-F6 ("sala do terminal, silêncio total, duas alavancas") e Jornada 9 ("a tela corta no instante da execução"). As duas alavancas viraram consoles com alavanca para a escolha ser lida pela silhueta, e a confirmação existe porque não há volta |
 | AJ-074 | 2026-11-21 | 2.8 (tela 8) · GDD-P | **Ordem e ritmo da tela de vitória.** Epílogo (um parágrafo por vez, digitado a 30 car./s e trocado sozinho depois do tempo de leitura a 18 car./s, mínimo 2,5 s; `[ENTER]` adianta) → os 40 nomes rolando devagar (22 px/s; `[ENTER]` pula) → estatísticas (tempo, logs, dados, mortes e o final escolhido) → **"VOCÊ ESCOLHERIA DE NOVO?"** com **SIM** e **NÃO**, que levam os dois aos créditos sem efeito nenhum → créditos rolando (24 px/s; qualquer botão de confirmar ou voltar pula) → menu principal, que passa a mostrar discretamente o último final escolhido | A pergunta do GDD ganha resposta para o jogador responder a si mesmo; nenhuma das duas muda nada, coerente com "não há final certo" (GDD-2.5) |
+| AJ-068 | 2026-11-21 | 2.6.2-I · 2.7-F6 · 2.8 · GDD-P | **O timer de ARGOS é o núcleo.** Os 90 s (`ARGOS_TIME`) começam quando o MU-7 cai na arena e são mostrados **sem HUD nova**: 9 lâmpadas em volta do núcleo (`ARGOS_SEGMENTS`, uma apaga a cada 10 s com um estalo e um tremor), o alarme do reator a cada 2 s que acelera para 0,6 s nos últimos 20 s (`ARGOS_ALARM_*`) e a arena inteira avermelhando no fim. Tempo zero: o núcleo estoura e o chassi cai (mesmo fluxo de `SINAL DO CHASSI PERDIDO`, −3 % de reator); o MU-7 volta à última doca e o encontro recomeça limpo (acopladores, energia e relógio). Os 90 s não param com o terminal aberto | O GDD pede 90 s e a regra do playtest proíbe HUD nova (F37/F44). O relógio que mata precisa ser legível de longe: o som e a cor chegam onde a câmera não mostra o núcleo |
+| AJ-069 | 2026-11-21 | 2.6.2-I · 2.6.2-B · 2.6.1 · GDD-P | **Torres blindadas e acopladores Root.** As três torres de ARGOS são CX-2 blindadas: o Feixe só as atordoa por 2,5 s (`ARGOS_TOWER_STUN_TIME`, contra 4 s da CX-2) e o terminal não as desliga (sistema `ARGOS` travado, que também energiza o piso da arena). Cada acoplador tem uma linha no terminal da arena; com a linha ligada, `[E] SOBRECARGA ROOT` no acoplador (exige Acesso Root) carrega por 1,5 s (`ARGOS_COUPLER_CHARGE_TIME`) com o MU-7 a até 28 px (`ARGOS_COUPLER_RANGE`); afastar-se ou perder a linha cancela. Sobrecarregado, o acoplador queima e fica assim mesmo sem a linha. Não gasta Carga: o Root rompe o lacre e a energia vem da linha. A sobrecarga ROOT do console (AJ-067, +1 por 20 s) vale na arena | A carga de 1,5 s debaixo do cone (0,8 s de mira) obriga o Feixe sem tornar a torre invencível; sem custo de Carga sobra Carga para pulo duplo, dash e Feixe, e a escolha fica na energia |
+| AJ-070 | 2026-11-21 | 2.6.2-I · 2.7-F6 · GDD-P | **Plataformas térmicas e as fases de ARGOS.** As plataformas da arena sobem e descem com o calor do núcleo num ciclo de 6 s (`ARGOS_LIFT_CYCLE`): paradas embaixo e em cima por 20 % do ciclo cada (`ARGOS_LIFT_HOLD`), subindo e descendo no resto, com a chapa passando de fria a branca conforme sobe. Cada acoplador sobrecarregado é uma fase: o núcleo racha, um anel cai e o ciclo das plataformas e a varredura das torres aceleram 25 % (`ARGOS_PHASE_SPEEDUP`) | "Plataformas que sobem e descem pelo calor" pedia um ciclo legível; a cor da chapa avisa o movimento. A fase sobe a pressão sem inimigo novo |
+| AJ-071 | 2026-11-21 | 2.6.2-I · 2.7-F6 · 2.6.3 · GDD-P | **ARGOS apaga e o reator fica em silêncio.** No terceiro acoplador o MU-7 trava, o núcleo racha, escurece e apaga em 4 s (`ARGOS_SHUTDOWN_TIME`), torres, piso e calor desligam, a música e o alarme param, e há 3 s de silêncio (`ARGOS_SILENCE_TIME`) antes da sala de comando (F66, `argos_defeated`). O setor `reactor` entra em `sectors_restored` sem a cutscene de religamento nem os +15 % (não há Nó; o reator está acabando de propósito). O Reator traz 1 log e 1 dado: `LOGS_TOTAL` 12→13 e `RESEARCH_TOTAL` 11→12 (os totais finais do jogo) | GDD-2.7-F6 "9/10 → 0/10": a última batalha termina em quietude, não em festa. O mapa (F67) lê `sectors_restored` e mostra o Reator vencido |
+| AJ-075 | 2026-11-21 | 2.7 · 2.8 | **O FIM DA DEMO sai do jogo.** Com as seis fases no hub, nenhum setor termina em tela de fim: cada um volta ao Núcleo e o único fim de vitória é ARGOS → sala de comando → final escolhido → epílogo com estatísticas → créditos → menu (F66). Os fins de derrota (chassi perdido, perda de órbita) ficam como estão. A tela "FIM DA DEMO" do AJ-004 continua na tag `v0.1-demo` | Integração da F65: o fim provisório (`demo_end_until`, AJ-064) só existia enquanto faltava o Reator |

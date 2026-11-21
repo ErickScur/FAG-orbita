@@ -316,3 +316,11 @@ Nenhuma que bloqueie. Pendente: a faixa MUS-MEMORY.
   `f66_semeadura` 23/23.
 - **Portões**: `tools/gates.sh` completo verde — 1143 testes, 108 cenas.
 - **Pendências**: MUS-MEMORY; a fase do Reator (F65) troca o fim provisório (`demo_end_until`).
+
+### 2026-11-21 — Integração com o Reator (F65): fim provisório desligado
+- **Quem**: agente de integração (branch `final/integracao`) · **O que**: com `reactor_core.tscn` no
+  repo, o ADR-F64-005 cumpriu o papel e o gancho saiu: `demo_end_until` não existe mais no
+  `SectorNarrative` nem na cena (o `FIM DA DEMO` foi aposentado, ADR-F66-009). A Memória volta ao
+  Núcleo sozinha; `f64_memory` (31/31) agora espera `core_hub.tscn` depois da fala de religamento e
+  confere o backup na doca da ala (`core_dock_wing`, gravado pelo hub ao entrar), depois sobe à
+  comporta do Reator e a abre com o Root. `LOGS_TOTAL` 13 / `RESEARCH_TOTAL` 12 com o Reator.

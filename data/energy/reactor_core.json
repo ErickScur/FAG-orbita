@@ -1,0 +1,61 @@
+{
+  "id": "reactor_core",
+  "title": "NÚCLEO DO REATOR - CONTENÇÃO",
+  "budget": 2,
+  "goal_text": "Sobrecarregar os três acopladores de ARGOS",
+  "goal_done_text": "As três linhas estão vivas. Falta a sobrecarga",
+  "goal_systems": [
+    "line_1",
+    "line_2",
+    "line_3"
+  ],
+  "initial": [
+    "coolant"
+  ],
+  "systems": [
+    {
+      "id": "coolant",
+      "name": "REFRIGERAÇÃO DE EMERGÊNCIA",
+      "tag": "CLIMA",
+      "description": "Mantém as ilhas frias da arena.",
+      "effect_off": "As ilhas frias somem.",
+      "cost": 1,
+      "requires": [],
+      "locked": false,
+      "effects": []
+    },
+    {
+      "id": "line_1",
+      "name": "LINHA DO ACOPLADOR 1",
+      "tag": "META",
+      "description": "Alimenta o acoplador do piso.",
+      "effect_off": "O acoplador do piso apaga.",
+      "cost": 1,
+      "requires": [],
+      "locked": false,
+      "effects": []
+    },
+    {
+      "id": "line_2",
+      "name": "LINHA DO ACOPLADOR 2",
+      "tag": "META",
+      "description": "Alimenta o acoplador da plataforma oeste.",
+      "effect_off": "O acoplador oeste apaga.",
+      "cost": 1,
+      "requires": [],
+      "locked": false,
+      "effects": []
+    },
+    {
+      "id": "line_3",
+      "name": "LINHA DO ACOPLADOR 3",
+      "tag": "META",
+      "description": "Alimenta o acoplador do alto.",
+      "effect_off": "O acoplador do alto apaga.",
+      "cost": 1,
+      "requires": [],
+      "locked": false,
+      "effects": []
+    }
+  ]
+}

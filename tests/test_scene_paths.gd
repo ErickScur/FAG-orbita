@@ -1,6 +1,7 @@
 extends TestCase
 
 const LOADING_DATA: String = "res://data/ui/loading.json"
+const RETIRED_DEMO_END: String = "res://scenes/ui/demo_end.tscn"
 
 
 func test_is_level_accepts_level_scenes() -> void:
@@ -23,7 +24,7 @@ func test_menu_scenes_never_count_as_playable() -> void:
 		"res://scenes/ui/pause_menu.tscn",
 		"res://scenes/ui/confirm_dialog.tscn",
 		ScenePaths.GAME_OVER,
-		ScenePaths.DEMO_END,
+		ScenePaths.CREDITS,
 		ScenePaths.CHASSIS_LOST,
 	]:
 		assert_false(ScenePaths.is_level(path), "cena de UI não é fase: %s" % path)
@@ -36,7 +37,7 @@ func test_ui_scenes_exist() -> void:
 		"res://scenes/ui/pause_menu.tscn",
 		"res://scenes/ui/confirm_dialog.tscn",
 		ScenePaths.GAME_OVER,
-		ScenePaths.DEMO_END,
+		ScenePaths.CREDITS,
 		ScenePaths.CHASSIS_LOST,
 		"res://scenes/ui/save_toast.tscn",
 	]:
@@ -65,3 +66,23 @@ func test_loading_data_is_valid() -> void:
 	var names: Dictionary = data.get("sector_names", {})
 	assert_true(names.has("core_hub"), "nome do núcleo central")
 	assert_true(names.has("greenhouse"), "nome da estufa")
+
+
+func test_the_only_ending_is_argos() -> void:
+	var bus: GDScript = load("res://autoload/event_bus.gd")
+	assert_false(bus.has_script_signal(&"demo_completed"), "o FIM DA DEMO foi aposentado")
+	assert_true(bus.has_script_signal(&"argos_defeated"), "ARGOS leva à sala de comando")
+	assert_false(ResourceLoader.exists(RETIRED_DEMO_END), "a tela de FIM DA DEMO não existe mais")
+	assert_true(ResourceLoader.exists(ScenePaths.COMMAND_ROOM), "sala de comando")
+	for file: String in DirAccess.get_files_at(ScenePaths.LEVELS_DIR):
+		if not file.ends_with(".tscn"):
+			continue
+		var state: SceneState = (load(ScenePaths.LEVELS_DIR + file) as PackedScene).get_state()
+		for node: int in range(state.get_node_count()):
+			for index: int in range(state.get_node_property_count(node)):
+				var property: StringName = state.get_node_property_name(node, index)
+				assert_ne(String(property), "demo_end_until", "%s sem fim provisório" % file)
+				if property != &"next_scene":
+					continue
+				var next: String = String(state.get_node_property_value(node, index))
+				assert_true(ResourceLoader.exists(next), "%s segue para %s" % [file, next])

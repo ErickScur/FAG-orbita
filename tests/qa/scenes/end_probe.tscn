@@ -76,10 +76,10 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "PERDA DE ÓRBITA"
 
-[node name="DemoButton" type="Button" parent="Ui/Root/Buttons"]
+[node name="ArgosButton" type="Button" parent="Ui/Root/Buttons"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "FIM DA DEMO"
+text = "ARGOS VENCIDO"
 
 [node name="Hint" type="Label" parent="Ui/Root"]
 layout_mode = 1

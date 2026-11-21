@@ -161,3 +161,10 @@ Saída no scratchpad da sessão, nunca no repo.
   com ele**: a revisita nova (`core_return_<setor>`) dispara a fala ao entrar e o MU-7 fica parado
   (`f69_c_comporta_reator` falhou 3 marcos). Ponha a flag `dlg_core_return_<setor>` no `from_dict`
   de todo roteiro que já tinha o setor religado.
+- **(F65)** **Pulo de 3 quadros é pulo cortado** (`JUMP_CUT_MULTIPLIER`): o bloco de 4 tiles não
+  passava. Segure o `jump` ~11 quadros e solte antes do segundo aperto do pulo duplo (aperto novo).
+- **(F65)** **Teleporte para dentro do cone de uma torre** dá 0,8 s até o pulso; DESCARGA trava
+  o Feixe. Dispare o Feixe nos primeiros quadros e conte a Carga do roteiro (dash 20, pulo duplo
+  15, Feixe 25): o 3º Feixe do Reator falhou sem Carga até o roteiro recarregar na doca.
+- **(F65)** Troca de cena depois de cutscene longa: conte cutscene + silêncio + tela de
+  carregamento (≥ 1,6 s) antes do `expect_scene`; o roteiro do Reator pegou a tela de loading duas vezes.

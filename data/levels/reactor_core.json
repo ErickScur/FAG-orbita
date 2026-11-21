@@ -1,0 +1,310 @@
+{
+  "id": "reactor_core",
+  "name": "Núcleo do Reator",
+  "tileset": "res://assets/tiles/reactor_tileset.tres",
+  "entity_tiles": "res://assets/tiles/reactor_tiles.png",
+  "ambient_color": "#140907",
+  "ambient_restored": "#3a3434",
+  "ambient_motes": "#ff9a5a",
+  "parallax": false,
+  "floor_sfx": "step_metal",
+  "music": "",
+  "reactor_online": true,
+  "objective": "obj_reactor",
+  "on_enter_dialogue": "rc_enter",
+  "reach": {
+    "double_jump": true
+  },
+  "argos": {
+    "terminal": "reactor_core",
+    "core": [
+      800,
+      440
+    ],
+    "arena": [
+      37,
+      13,
+      26,
+      32
+    ],
+    "heat_group": "rc_heat",
+    "tower_group": "argos_tower",
+    "floor_group": "argos_floor",
+    "alarm_group": "rc_alarm"
+  },
+  "revisit": [
+    {
+      "after_sector": "reactor",
+      "ambient_color": "#3a3434",
+      "objective": "",
+      "on_enter_dialogue": ""
+    }
+  ],
+  "terminals": [
+    "reactor_core"
+  ],
+  "entities": {
+    "2,44": {
+      "id": "rc_exit_core",
+      "target": "res://scenes/levels/core_hub.tscn",
+      "sector": "core"
+    },
+    "7,44": {
+      "id": "rc_dock_01"
+    },
+    "5,41": {
+      "id": "rc_lamp_entry",
+      "color": "#ff8a4a",
+      "radius": 80.0,
+      "energy": 1.0
+    },
+    "10,41": {
+      "id": "rc_furnace_01",
+      "rect": [
+        6,
+        4
+      ],
+      "kind": "furnace"
+    },
+    "12,41": {
+      "id": "cell_rc_01"
+    },
+    "17,44": {
+      "id": "rc_vent_01",
+      "phase": 0.0
+    },
+    "24,25": {
+      "id": "rc_vent_02",
+      "phase": 2.5
+    },
+    "28,21": {
+      "id": "rc_lamp_climb",
+      "color": "#ff8a4a",
+      "radius": 64.0,
+      "energy": 0.9
+    },
+    "8,9": {
+      "id": "rc_lamp_stairs",
+      "color": "#ff8a4a",
+      "radius": 64.0,
+      "energy": 0.9
+    },
+    "25,9": {
+      "id": "rc_lamp_hall",
+      "color": "#ff8a4a",
+      "radius": 80.0,
+      "energy": 1.0
+    },
+    "31,11": {
+      "id": "rc_dock_02"
+    },
+    "16,3": {
+      "id": "rc_furnace_02",
+      "rect": [
+        7,
+        3
+      ],
+      "kind": "furnace"
+    },
+    "21,5": {
+      "id": "log_rc_01",
+      "prompt_text": "LER REGISTRO"
+    },
+    "37,3": {
+      "id": "rc_heat_arena",
+      "rect": [
+        26,
+        42
+      ],
+      "kind": "warm",
+      "group": "rc_heat"
+    },
+    "48,26": {
+      "id": "rc_heat_core",
+      "rect": [
+        4,
+        4
+      ],
+      "kind": "furnace",
+      "group": "rc_heat"
+    },
+    "39,31": {
+      "id": "rc_console_b",
+      "terminal": "reactor_core"
+    },
+    "39,44": {
+      "id": "rc_console_a",
+      "terminal": "reactor_core"
+    },
+    "38,26": {
+      "id": "rc_tower_01",
+      "scene": "res://scenes/enemies/cx2_armored.tscn",
+      "terminal_id": "",
+      "system_id": "",
+      "mount": "wall_left",
+      "group": "argos_tower"
+    },
+    "62,44": {
+      "id": "rc_tower_03",
+      "scene": "res://scenes/enemies/cx2_armored.tscn",
+      "terminal_id": "",
+      "system_id": "",
+      "mount": "wall_right",
+      "group": "argos_tower"
+    },
+    "55,5": {
+      "id": "rc_tower_02",
+      "scene": "res://scenes/enemies/cx2_armored.tscn",
+      "terminal_id": "",
+      "system_id": "",
+      "mount": "ceiling",
+      "group": "argos_tower"
+    },
+    "60,44": {
+      "id": "rc_coupler_01",
+      "scene": "res://scenes/world/root_coupler.tscn",
+      "terminal_id": "reactor_core",
+      "system_id": "line_1"
+    },
+    "42,27": {
+      "id": "rc_coupler_02",
+      "scene": "res://scenes/world/root_coupler.tscn",
+      "terminal_id": "reactor_core",
+      "system_id": "line_2"
+    },
+    "56,8": {
+      "id": "rc_coupler_03",
+      "scene": "res://scenes/world/root_coupler.tscn",
+      "terminal_id": "reactor_core",
+      "system_id": "line_3"
+    },
+    "37,42": {
+      "id": "rc_cool_01",
+      "rect": [
+        6,
+        3
+      ],
+      "terminal_id": "reactor_core",
+      "system_id": "coolant"
+    },
+    "56,30": {
+      "id": "rc_cool_02",
+      "rect": [
+        6,
+        3
+      ],
+      "terminal_id": "reactor_core",
+      "system_id": "coolant"
+    },
+    "46,43": {
+      "id": "rc_lift_01",
+      "scene": "res://scenes/world/thermal_platform.tscn",
+      "path": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          -9
+        ]
+      ],
+      "phase": 0.0
+    },
+    "52,43": {
+      "id": "rc_lift_02",
+      "scene": "res://scenes/world/thermal_platform.tscn",
+      "path": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          -9
+        ]
+      ],
+      "phase": 0.5
+    },
+    "50,5": {
+      "id": "data_rc_01"
+    },
+    "59,31": {
+      "id": "cell_rc_02"
+    },
+    "50,12": {
+      "id": "rc_lamp_top",
+      "color": "#ff5a3a",
+      "radius": 80.0,
+      "energy": 1.0,
+      "group": "rc_alarm"
+    },
+    "44,45": {
+      "id": "rc_floor_01",
+      "terminal_id": "",
+      "system_id": "",
+      "group": "argos_floor"
+    },
+    "45,45": {
+      "id": "rc_floor_02",
+      "terminal_id": "",
+      "system_id": "",
+      "group": "argos_floor"
+    },
+    "46,45": {
+      "id": "rc_floor_03",
+      "terminal_id": "",
+      "system_id": "",
+      "group": "argos_floor"
+    },
+    "47,45": {
+      "id": "rc_floor_04",
+      "terminal_id": "",
+      "system_id": "",
+      "group": "argos_floor"
+    },
+    "48,45": {
+      "id": "rc_floor_05",
+      "terminal_id": "",
+      "system_id": "",
+      "group": "argos_floor"
+    },
+    "49,45": {
+      "id": "rc_floor_06",
+      "terminal_id": "",
+      "system_id": "",
+      "group": "argos_floor"
+    },
+    "50,45": {
+      "id": "rc_floor_07",
+      "terminal_id": "",
+      "system_id": "",
+      "group": "argos_floor"
+    },
+    "51,45": {
+      "id": "rc_floor_08",
+      "terminal_id": "",
+      "system_id": "",
+      "group": "argos_floor"
+    },
+    "52,45": {
+      "id": "rc_floor_09",
+      "terminal_id": "",
+      "system_id": "",
+      "group": "argos_floor"
+    },
+    "53,45": {
+      "id": "rc_floor_10",
+      "terminal_id": "",
+      "system_id": "",
+      "group": "argos_floor"
+    },
+    "54,45": {
+      "id": "rc_floor_11",
+      "terminal_id": "",
+      "system_id": "",
+      "group": "argos_floor"
+    }
+  },
+  "triggers": []
+}

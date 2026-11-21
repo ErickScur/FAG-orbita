@@ -139,7 +139,7 @@ de sobreposição também com o piso de partida (validação no Godot, 2026-11-2
 |---|---|---|---|---|
 | Docas | `res://scenes/levels/docks.tscn` | `door_docks` 121,11 (`infirmary`) | ~~125,11~~ **ligada** (2026-11-21) | `core_dock_wing` 129,11 |
 | Núcleo de Memória | `res://scenes/levels/memory_core.tscn` | `door_memory` 143,14 (`docks`) | ~~146,14~~ **ligada** (F64, 2026-11-21) | `core_dock_wing` 129,11 |
-| Núcleo do Reator | `res://scenes/levels/reactor_core.tscn` | `door_reactor` 143,5 (`memory`) | **146,5** | `core_dock_wing` 129,11 |
+| Núcleo do Reator | `res://scenes/levels/reactor_core.tscn` | `door_reactor` 143,5 (`memory`) | ~~146,5~~ **ligada** (F65, 2026-11-21) | `core_dock_wing` 129,11 |
 
 Passos, para cada fase nova (o teste `test_reserved_exits_wait_for_their_scenes` **reprova** o
 `gates.sh` enquanto a cena existir e a vaga não estiver ligada):
@@ -303,3 +303,13 @@ Nenhuma.
   âncora); `f45_a`/`f45_b` regenerados (só a flag da fala nova) e verdes; roteiro novo
   `f62_hub_docks` (hub → Docas → hub).
 
+### 2026-11-21 — Integração com o Reator (F65): a última vaga
+- **Quem**: agente de integração (branch `final/integracao`) · **O que**: `E` em 146,5 no
+  `core_hub.txt` e `core_hub_exit_reactor` (`sector: reactor`) em `entities`. **Todas as vagas
+  foram consumidas**: o bloco `reserved_exits` saiu do `core_hub.json` (o `ArrivalRoute` lê
+  ausência como `{}`; `test_reserved_exits_wait_for_their_scenes` continua valendo se um setor novo
+  aparecer). O hub tem 6 portais (`test_single_spawn_and_one_exit_per_sector`). Reator em
+  `HUB_EXITS`/`SECTOR_RETURNS`, e o mapa de id de fase → setor do teste ficou um só
+  (`SECTOR_OF_LEVEL`: `memory_core` → `memory`, `reactor_core` → `reactor`).
+- **Revisita**: a última entrada continua `after_sector: memory` (objetivo "Religar o Reator"); o
+  Reator não volta ao hub, termina em `argos_defeated` → sala de comando (F66).

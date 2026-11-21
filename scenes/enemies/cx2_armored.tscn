@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=3 uid="uid://c0rbitacx2armored"]
+
+[ext_resource type="Script" path="res://scenes/enemies/cx2_armored.gd" id="1_cx2_armored"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cx2a_beam"]
+size = Vector2(20, 20)
+
+[node name="Cx2Armored" type="Node2D" groups=["enemy", "powered", "beam_target", "argos_tower"]]
+script = ExtResource("1_cx2_armored")
+
+[node name="Cone" type="Polygon2D" parent="."]
+
+[node name="ConeLight" type="PointLight2D" parent="."]
+blend_mode = 0
+shadow_enabled = true
+
+[node name="Mount" type="Node2D" parent="."]
+position = Vector2(0, -8)
+
+[node name="Sprite" type="AnimatedSprite2D" parent="Mount"]
+position = Vector2(0, 16)
+
+[node name="BeamBody" type="StaticBody2D" parent="Mount"]
+collision_layer = 4
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Mount/BeamBody"]
+position = Vector2(0, 14)
+shape = SubResource("RectangleShape2D_cx2a_beam")

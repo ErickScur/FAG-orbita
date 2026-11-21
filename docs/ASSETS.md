@@ -46,6 +46,10 @@
 | [SPR-LOCK-PROPS](#spr-lock-props) | Sprites | Arena do Serralheiro: baia de SR-3, comporta, escotilha, placa soldada, trilho, luz da contenção | A | IA | **integrado (IA)** | F63 |
 | [SPR-PROPS-INF](#spr-props-inf) | Sprite sheet | Objetos da Enfermaria (leitos, maca, soro, cápsula…) | B | IA | **integrado (IA)** | F61 |
 | [SPR-CMD](#spr-cmd) | Sprite sheet | Sala de comando: baia da cápsula, transmissor e os dois consoles de alavanca | A | IA | **integrado (IA)** | F66 |
+| [SPR-ARGOS](#spr-argos) | Sprite sheet | Núcleo de ARGOS (8 estados, anéis e lâmpadas por código) | A | IA | **integrado (IA)** | F65 |
+| [SPR-CX2-ARMORED](#spr-cx2-armored) | Sprite sheet | Torre blindada de ARGOS (variante da CX-2) | A | IA | **integrado (IA)** | F65 |
+| [SPR-ROOT-COUPLER](#spr-root-coupler) | Sprite sheet | Acoplador Root (sem linha, alimentado, sobrecarregando, queimado) | A | IA | **integrado (IA)** | F65 |
+| [SPR-THERMAL-PLATFORM](#spr-thermal-platform) | Sprite sheet | Plataforma térmica (fria → branca) | A | IA | **integrado (IA)** | F65 |
 | [SPR-ENDING](#spr-ending) | Sprite sheet | Cutscene final: ARTEMIS por fora, cápsula em voo, planeta-alvo, Terra, clarão e onda do sinal | A | IA | **integrado (IA)** | F66 |
 | [TIL-CORE](#til-core) | Tileset | Núcleo Central | A | Grátis + IA | **integrado** | F21, F28 |
 | [TIL-GREENHOUSE](#til-greenhouse) | Tileset | Estufa | A | Grátis + IA | **integrado** | F21, F29 |
@@ -56,6 +60,7 @@
 | [SPR-CREW-MEMORY](#spr-crew-memory) | Sprite sheet | Tripulação lembrada, 8 poses do cotidiano | A | IA | **integrado (IA)** | F64 |
 | [FX-ERASURE](#fx-erasure) | Sprite sheet | Apagamento: estática e bloco se desfazendo | A | IA | **integrado (IA)** | F64 |
 | [SPR-LUTO](#spr-luto) | Sprite sheet | PROTOCOLO LUTO, o olho do firewall (8 quadros 64×64) | A | IA | **integrado (IA)** | F64 |
+| [TIL-REACTOR](#til-reactor) | Tileset | Núcleo do Reator (Verão extremo) | A | IA | **integrado (IA)** | F65 |
 | [BG-SPACE](#bg-space) | Camadas parallax | Espaço pelas janelas + menu | A | Grátis ou IA | **integrado** | F26, F07 |
 | [UI-LOGO](#ui-logo) | Imagem | Logo ÓRBITA (splash + menu) | A | IA | **integrado** | F03, F07 |
 | [UI-FONT](#ui-font) | Fonte | Fonte pixel de toda a UI | A | Grátis | integrado | F05, F07 |
@@ -69,6 +74,7 @@
 | [MUS-DOCKS](#mus-docks) | Música | Trilha das Docas | A | IA ou Grátis | pendente | F62 |
 | [MUS-SERRALHEIRO](#mus-serralheiro) | Música | Luta contra o Serralheiro (loop tenso) | A | IA ou Grátis | pendente | F63 |
 | [MUS-MEMORY](#mus-memory) | Música | Trilha do Núcleo de Memória (piano limpo) | A | IA ou Grátis | pendente | F64 |
+| [MUS-REACTOR](#mus-reactor) | Música | Trilha do Núcleo do Reator | B | IA ou Grátis | pendente | F65 |
 | [MUS-CHASSIS](#mus-chassis) | Música | Momento CHASSI PERDIDO (one-shot) | B | Grátis | pendente | F46 |
 | [MUS-GAMEOVER](#mus-gameover) | Música | Momento PERDA DE ÓRBITA (one-shot) | B | Grátis | pendente | F46 |
 | [MUS-SECTOR](#mus-sector) | Música | Momento do religamento do setor (one-shot) | B | Grátis | pendente | F46 |
@@ -782,6 +788,161 @@ IMPORTANT RULE: deliver a GRID OF SEPARATE TILES, not a finished picture. Do not
 No text, no letters, no numbers, no labels, no grid lines, no watermark.
 ```
 
+<a id="til-reactor"></a>
+### TIL-REACTOR — Tileset Núcleo do Reator
+
+| Campo | Valor |
+|---|---|
+| Caminho final | `assets/tiles/reactor_tiles.png` + `assets/tiles/reactor_tileset.tres` |
+| Contrato | **Mesmo atlas do TIL-DOCKS**: 128×64, 8×4 de 16×16. Linhas 0–1: as 16 máscaras, opacas. Linha 2: (0,2) passarela one-way · (1,2) parede de fundo · (2,2) janela · (3,2) grelha com brilho · (4,2) cano horizontal · (5,2) cano vertical · (6,2) luminária acesa (quadro 22) · (7,2) faixa vermelha e preta. Linha 3: (0,3) **parede magnética amarela** · (1,3) luminária apagada (quadro 25) · (2..7,3) radiador, junção de conduíte, manômetros, chapa rachada com brilho, placa de contenção, grelha de piso com brilho. O `.tres` é cópia do `docks_tileset.tres` com a textura trocada |
+| Paleta | GDD-2.9 (Reator: vermelho e branco estourado): aço aquecido `#A07868`, moldura queimada `#5A3A34`, contorno `#160A08`, costuras laranja `#FF8A3A` e branco-quente `#FFE8C8` |
+| Fonte | **IA — geração de imagem do Codex CLI**, 2026-11-21, 2 variações (as duas 8×4 exatas), escolhida a **1ª** (piso com faixa de perigo e costura acesa, mais legível). Referências: `docks_tiles.png` e `lab_tiles.png` |
+| Montagem | Script do agente (PIL): chave por magentice + *unmix*, redução por média com alfa pré-multiplicado, alfa binário; máscaras = célula interior + faixas (topo 5 px do "piso", baixo 4 px do "teto", lados 3 px das bordas); passarela da faixa da própria célula one-way. Ganho ×1,42 com joelho nos claros: luma dos sólidos **0,544** |
+| Status | **integrado (IA)** em 2026-11-21; `tests/test_level_tileset.gd` confere o Reator papel por papel |
+
+**Prompt (Codex, com os dois tilesets anexados):**
+```
+Pixel art TILE SET for a 2D side-view space station platformer: the REACTOR CORE of the station, in meltdown. Heavy heat-scorched steel plates, incandescent seams, red and white-hot "extreme summer" heat, industrial and dangerous.
+
+STYLE MUST MATCH THE ATTACHED REFERENCE IMAGES (the existing station tilesets): same 16-bit worn look, panel seams, rivets, scratched paint, grime in recesses, hard pixels, no anti-aliasing, no soft gradients.
+
+Palette (16 colors max): medium heat-tinted steel plates (#A07868 body, #C89A84 highlight, #765248 shading), dark scorched frame (#5A3A34, #3A2420), dark brown-black outline (#160A08), glowing ORANGE seams (#FF8A3A) and a little WHITE-HOT (#FFE8C8) only on thin seams and small lamps, warning red (#E03A2A) only on trims. Keep the base tiles MEDIUM-BRIGHT: the engine darkens the scene with lighting, so do NOT bake shadows, glow or vignettes into tiles.
+
+Layout: a strict grid of SQUARE tiles, 8 columns and 4 rows, all the same size, separated by flat magenta (#FF00FF) gaps. Each tile filled EDGE TO EDGE with artwork inside its own square (except where a tile is told to have magenta).
+Row 1:
+ 1. wall block INTERIOR: riveted heat-tinted steel plates, seamless on all four sides, no border, plate seams and a few rivets.
+ 2. the same block seen as a FLOOR TOP: a thick scorched deck plate along the TOP edge with a thin glowing orange seam, the plates below.
+ 3. the same block as a CEILING UNDERSIDE: darker scorched lip along the BOTTOM edge with bolts.
+ 4. the same block with a dark edge trim along the LEFT side only.
+ 5. the same block with a dark edge trim along the RIGHT side only.
+ 6. a single isolated block with trim on all four sides.
+ 7. a THIN ONE-WAY steel grating catwalk filling only the TOP QUARTER of the square, the rest flat magenta.
+ 8. a dark recessed BACKGROUND wall (deep scorched #4A2E28 and #321E1A, clearly darker than the blocks), seamless, large plain panels with faint coolant pipes.
+Row 2:
+ 1. a square WINDOW FRAME: thick scorched frame with red corner brackets, the center fully flat magenta (#FF00FF).
+ 2. a ventilation grille with horizontal slats, glowing orange deep inside.
+ 3. a horizontal coolant pipe with a valve.
+ 4. a vertical coolant pipe.
+ 5. a caged warning lamp, ON, glass lit hot orange-white.
+ 6. the same caged lamp, OFF, glass dark grey.
+ 7. a red-and-black diagonal HAZARD stripe panel.
+ 8. a climbable MAGNETIC wall panel with bold diagonal YELLOW (#E8C15A) and dark grey stripes, steel frame.
+Row 3: reactor details, each a full square tile: a radiator fin panel, a thick power conduit junction, a pressure gauge cluster (no numbers), a cracked plate leaking orange light through the crack, a heavy containment bolt plate, a cable bundle strapped over panels, a floor grate with orange glow below, a warning panel with a big chevron arrow.
+Row 4: eight more variations of the row-1 interior block (different plate layout, a dent, scorch marks, a heat-warped plate), each seamless.
+
+IMPORTANT RULE: deliver a GRID OF SEPARATE TILES, not a finished picture. Do not draw a room, a level or a composed scene; do not draw characters, creatures or props resting on the tiles.
+No text, no letters, no numbers, no labels, no grid lines, no watermark.
+```
+
+<a id="spr-argos"></a>
+### SPR-ARGOS — Núcleo de ARGOS
+
+| Campo | Valor |
+|---|---|
+| Caminho final | `assets/sprites/bosses/argos_core_sheet.png` (montado pelo `ArgosEncounter`) |
+| Contrato | Folha **256×128 = 4 col × 2 lin de 64×64**, núcleo centrado. Quadros 0–3 pulso (laranja → branco → laranja), 4 uma rachadura e uma garra aberta, 5 duas garras abertas e plasma vermelho, 6 morrendo (vermelho escuro, fumaça), 7 morto (cinza-azulado). Os 3 anéis, as 9 lâmpadas do timer, a luz e as brasas são desenhados por código |
+| Fonte | **IA — geração de imagem do Codex CLI**, 2026-11-21, 2 variações, escolhida a **1ª** (garras com faixa de perigo, quadros do mesmo tamanho). Referências: `mu7_sheet.png` e `coupler_sheet.png` |
+| Montagem | Escala única tirada do maior quadro (62 px), centrado em cada célula de 64 |
+| Status | **integrado (IA)** em 2026-11-21 |
+
+**Prompt (Codex):**
+```
+Pixel art sprite sheet of ARGOS, the UNSTABLE REACTOR CORE that is the final boss of a melancholic 2D side-view space station platformer. Front/side view, the core is seen as a big round object.
+
+STYLE MUST MATCH THE ATTACHED REFERENCE IMAGES (the MU-7 robot and the station machines): same worn 16-bit look, hard pixels, dark 1-pixel outline, rivets, scratched metal. No cast shadows.
+
+THE OBJECT (same design and same size in every frame, centered in its frame): a large SPHERICAL energy core of molten plasma held inside a heavy circular containment CAGE: a thick dark steel ring around the sphere with FOUR big clamp mounts at the top, bottom, left and right, each clamp a chunky bolted block. Between the clamps the sphere is visible. It is a machine, not a creature: no eyes, no face, no mouth.
+
+Layout: a grid of SQUARE frames, 4 columns and 2 rows, all the same size, the core centered in each frame and filling about 80% of it.
+Row 1 - "unstable", 4 pulse frames: the plasma sphere glows ORANGE and WHITE-HOT with swirling bands; frame 1 orange (#FF7A2A) with a white center, frame 2 brighter, frame 3 the brightest WHITE-HOT flare (#FFF2D8) with short flame tongues escaping between the clamps, frame 4 back to bright orange.
+Row 2 - damage: frame 5 the same core with ONE big glowing crack across the sphere and one clamp broken open; frame 6 TWO clamps broken, more cracks, the plasma red (#E0382A) and unstable; frame 7 DYING: the plasma dim dark red, almost out, smoke wisps; frame 8 DEAD: the sphere cold dark grey-blue metal, no light at all, the cage still intact around it.
+
+Palette: dark steel cage (#454E58, #2C333B, #8C96A0 highlights), scorched red-brown (#5A3A34), plasma orange (#FF7A2A, #FF9A4A), white-hot (#FFF2D8), red (#E0382A), cold grey-blue (#5A6470) for the dead core, dark outline (#140A08).
+
+Chunky readable shapes only: no thin 1-pixel details; it will be shown at 64x64 pixels in game.
+
+IMPORTANT: draw ONLY the core and its cage. Never draw walls, floors, rooms, pipes, characters, beams or any other object. Solid flat magenta background (#FF00FF) everywhere else, with clear magenta gaps between frames. No text, no letters, no numbers, no labels, no grid lines, no frame borders, no watermark.
+```
+
+<a id="spr-cx2-armored"></a>
+### SPR-CX2-ARMORED — Torre blindada de ARGOS
+
+| Campo | Valor |
+|---|---|
+| Caminho final | `assets/sprites/enemies/cx2_armored_sheet.png` (cena `scenes/enemies/cx2_armored.tscn`, `X` com `"scene"`) |
+| Contrato | **Mesmo contrato do SPR-CX2** (128×64, `scan` 4f, `lock` 2f, `fire`, `off`), placa no topo do quadro e centrada em x = 16 |
+| Fonte | **IA — geração de imagem do Codex CLI**, 2026-11-21, 2 variações, escolhida a **1ª** (casca mais pesada e escura, lê "blindada" a 32 px). Referências: `mu7_sheet.png` e `cx2_sheet.png` |
+| Montagem | Fatiada **pelo topo**, centrada na placa de cada quadro, escala tirada dos quadros sem o clarão do `fire` |
+| Status | **integrado (IA)** em 2026-11-21 |
+
+**Prompt (Codex):**
+```
+Pixel art sprite sheet of an ARMORED CEILING-MOUNTED SECURITY TURRET called "ARGOS TOWER", a heavy variant of the CX-2 calibration turret (the second attached image), for a 2D side-view sci-fi platformer set inside a melting-down space station reactor. Side view.
+
+STYLE MUST MATCH THE ATTACHED REFERENCE IMAGES (the MU-7 robot and the CX-2 turret): same worn 16-bit look, hard pixels, dark 1-pixel outline, visible bolts, scratched paint. MEDIUM brightness overall, do NOT bake strong glow halos into the sprite.
+
+THE MACHINE (same design in every frame): it HANGS FROM THE CEILING like the CX-2, same layout as the CX-2, but ARMORED:
+- At the TOP: a wide flat mounting plate bolted to the ceiling (dark scorched steel #4A3A34) with two red warning marks (#E03A2A).
+- Below the plate: a SHORT, THICK arm covered by overlapping ARMOR PLATES, one elbow joint.
+- At the BOTTOM: a chunky boxy SCANNER HEAD enclosed in a HEAVY dark-red ARMOR SHELL (#7A3028 body, #4A1C18 shading, #A8544A highlight) with riveted plates and a thick visor frame, with ONE BIG ROUND LENS on its underside that takes up almost half of the head. The lens is the most visible part.
+It must clearly look like the same family as the CX-2 but much heavier and darker, armored.
+
+Layout: a grid of SQUARE frames, 4 columns and 2 rows, the same size each, every frame showing the WHOLE turret with the mounting plate touching the TOP of its frame.
+Row 1 - "scan", 4 frames: the head slowly sweeps from pointing down-left to pointing down-right; the lens is BRIGHT CYAN (#7FD6E8) with a small white highlight.
+Row 2 - frame 1 "lock A": head aimed straight down, lens RED (#E0383A). Frame 2 "lock B": same pose, lens BRIGHTER RED-ORANGE (#FF6A5A). Frame 3 "fire": same pose, lens WHITE-HOT with a short thick red beam flash right under the lens. Frame 4 "stunned": the arm sags, the head droops lower and tilted, the lens DARK GREY, a few small sparks on the armor.
+
+Chunky readable shapes only: no thin 1-pixel antennas, no speckle - everything must still read when each frame is shrunk to 32x32 pixels. The turret fills about 65% of the frame width and 75% of the frame height.
+
+IMPORTANT RULE FOR EVERY FRAME: draw ONLY the turret. Never draw the ceiling, walls, floors, rooms, scenery, characters, targets or cast shadows. The mounting plate floats on the flat magenta background.
+
+Solid flat magenta background (#FF00FF) everywhere else, with clear magenta gaps between frames. No text, no letters, no labels, no numbers, no grid lines, no frame borders, no watermark.
+```
+
+<a id="spr-root-coupler"></a>
+### SPR-ROOT-COUPLER — Acoplador Root
+
+| Campo | Valor |
+|---|---|
+| Caminho final | `assets/sprites/world/root_coupler_sheet.png` (cena `scenes/world/root_coupler.tscn`, `A` com `"scene"`) |
+| Contrato | **128×32 = 4 quadros de 32×32**, apoiados no pé: 0 sem linha · 1 alimentado (ciano) · 2 sobrecarregando (violeta) · 3 queimado |
+| Fonte | **IA — geração de imagem do Codex CLI**, 2026-11-21, folha "máquinas do Reator" (linha 1 acoplador, linha 2 plataforma térmica), 2 variações, escolhida a **2ª** (núcleo e garras mais grossos). Referências: `mu7_sheet.png` e `coupler_sheet.png` |
+| Status | **integrado (IA)** em 2026-11-21 |
+
+**Prompt (Codex, mesma folha da SPR-THERMAL-PLATFORM):**
+```
+Pixel art sprite sheet for a melancholic 2D side-view space station platformer, the REACTOR CORE sector in meltdown. Side view.
+
+STYLE MUST MATCH THE ATTACHED REFERENCE IMAGES (the MU-7 robot and the energy coupler of the docks): same worn 16-bit look, hard pixels, dark 1-pixel outline, scratched paint. No cast shadows.
+
+Layout: a grid of SQUARE frames, 4 columns and 2 rows, all the same size.
+Row 1: four states of the same ROOT COUPLER, a squat floor-mounted high-voltage machine, the same family as the attached energy coupler but heavier: a wide heavy steel base with red-and-black hazard stripes, a tall vertical socket holding a round glass core inside a cage of three thick prongs, thick cables going out of both sides at the bottom. Every frame STANDS ON THE BOTTOM EDGE of its own frame, same size and same position in each frame.
+ 1. UNFED: core dark grey, no light.
+ 2. FED: core lit bright cyan (#5FE8FF), steady.
+ 3. OVERLOADING: core VIOLET-WHITE (#C08CFF, #F4E8FF) with crackling violet arcs jumping between the three prongs.
+ 4. BURNT OUT: core cracked and blackened, prongs bent outward, a thin wisp of smoke, a small violet ember glow at the bottom of the socket.
+Row 2: four heat states of the same THERMAL LIFT PLATFORM: a thick horizontal heat-resistant metal SLAB that spans the FULL WIDTH of its frame and occupies only the TOP THIRD of the frame, with heavy bolted end caps and a row of small heat vents along its underside; below the slab, a short stubby exhaust nozzle at the center. The rest of the frame is magenta.
+ 5. COLD: dark grey steel, vents dark.
+ 6. WARMING: dull red tint on the underside, vents glowing dark red.
+ 7. HOT: orange glowing seams, vents bright orange.
+ 8. WHITE-HOT: underside glowing white-orange, vents white-hot.
+
+Palette: steel grey (#8C96A0, #B4BEC8, #5E6873), gunmetal (#454E58, #2C333B), hazard red (#E03A2A) with black (#1A1D21), cyan energy (#5FE8FF, #E8FFFF), violet Root energy (#C08CFF, #F4E8FF), heat orange (#FF8A3A), white-hot (#FFE8C8), dark outline (#140A08).
+
+Chunky readable shapes only: no thin 1-pixel details. The coupler must still read at 32x32 pixels and the platform at 48x16 pixels.
+
+IMPORTANT: draw ONLY the objects described. Never draw walls, floors, ground, rooms, characters or any other object. Solid flat magenta background (#FF00FF) everywhere else, with clear magenta gaps between frames. No text, no letters, no numbers, no labels, no grid lines, no frame borders, no watermark.
+```
+
+<a id="spr-thermal-platform"></a>
+### SPR-THERMAL-PLATFORM — Plataforma térmica
+
+| Campo | Valor |
+|---|---|
+| Caminho final | `assets/sprites/world/thermal_platform_sheet.png` (cena `scenes/world/thermal_platform.tscn`, `m` com `"scene"`) |
+| Contrato | **48×64 = 4 quadros de 48×16** na vertical: fria, aquecendo, quente, branca. A laje ocupa o topo do quadro (a colisão one-way é a mesma da plataforma móvel, 48×8) |
+| Fonte | linha 2 da folha "máquinas do Reator" (ver SPR-ROOT-COUPLER), redimensionada direto do bruto para 48×16 |
+| Status | **integrado (IA)** em 2026-11-21 |
+
 <a id="til-docks"></a>
 ### TIL-DOCKS — Tileset Docas
 
@@ -1396,6 +1557,16 @@ Instrumental seamless loop, 2 minutes 30 seconds, dark ambient for a 2D sci-fi g
 | Termos de busca | `industrial boss loop` · `mechanical tension ambient` · `sci-fi alarm loop` |
 | Placeholder | nenhum: até o arquivo chegar a luta toca a trilha da fase |
 | Status | **pendente** — o humano gera ou baixa e entrega; tocar com `AudioManager.play_layer` na entrada da arena |
+
+<a id="mus-reactor"></a>
+### MUS-REACTOR — Núcleo do Reator
+
+| Campo | Valor |
+|---|---|
+| Caminho final | `assets/audio/music/reactor.ogg` (**loop**, 1,5–2 min) |
+| Direção | Quase nada: um drone grave que sobe devagar de tom, chiado térmico e batidas metálicas espaçadas; sem melodia. O alarme do reator (`reactor_alarm`) é que marca o tempo. A vitória corta para silêncio |
+| Placeholder | nenhum: a fase para a música ao entrar e usa só o alarme |
+| Status | **pendente** |
 
 <a id="mus-chassis"></a>
 ### MUS-CHASSIS — Chassi perdido

@@ -21,6 +21,16 @@
 - [ ] Repositório público atualizado, `README.md` com controles e créditos, tag `v0.1-demo`.
 - [ ] Nenhum asset sem licença registrada.
 
+### Definition of Done do Final
+- [x] Do **splash** aos **créditos** sem crash **rodando do código-fonte**: menu → Núcleo Central →
+  Estufa → Laboratório → Enfermaria → Docas (Serralheiro) → Núcleo de Memória (Protocolo Luto,
+  Acesso Root) → Núcleo do Reator (ARGOS) → sala de comando → SEMEADURA ou TRANSMISSÃO → epílogo
+  por Dados → 40 nomes → estatísticas → créditos → menu. Nenhuma fase termina em tela de demo
+  (integração da F65, 2026-11-21). Coletáveis fecham em **13 logs e 12 dados**.
+- [x] Perda de órbita (reator 0%) e chassi perdido continuam como fins de derrota.
+- [ ] Trilhas novas (Docas, Serralheiro, Memória, Reator) — pendentes por decisão do humano.
+- [ ] Build exportada (F30) e tag `v1.0`.
+
 ---
 
 <a id="ritmo-3-dias"></a>
@@ -47,7 +57,7 @@ Asset "definitivo" é trabalho paralelo do humano: assim que o Dia 1 terminar, o
 | Github | [F01](features/F01-setup-projeto.md), [F30](features/F30-build-demo.md) | Demo | Repo público, histórico de commits por feature, README, release | `[~]` (repo e README ok; release na F30) |
 | Menu | [F07](features/F07-menu-principal.md) | Demo | Tela inicial com Continuar/Novo/Opções/Sair | `[`[x]` |
 | Tela de loading / splash screen | [F03](features/F03-cenas-splash-loading.md) | Demo | Splash com logo + loading com barra entre menu e fase | `[x]` |
-| Tela de fim de jogo | [F10](features/F10-telas-fim-de-jogo.md) | Demo | Perda de órbita (reator 0%), chassi perdido, FIM DA DEMO com estatísticas | `[`[x]` |
+| Tela de fim de jogo | [F10](features/F10-telas-fim-de-jogo.md), [F66](features/F66-finais-epilogo-creditos.md) | Demo | Perda de órbita (reator 0%), chassi perdido; no jogo completo, o fim é ARGOS → sala de comando → final escolhido → epílogo com estatísticas → créditos (o FIM DA DEMO foi aposentado na integração da F65 e vive na tag `v0.1-demo`) | `[x]` |
 | Ajuste de volume (dentro do jogo) | [F04](features/F04-audio-volume.md), [F08](features/F08-opcoes-dificuldade.md) | Demo | Sliders Master/Música/Efeitos/Voz no menu **e** no pause | `[`[x]` |
 
 ### 3.2 Mecânicas (pontuam como desenvolvimento de mecânica)
@@ -78,8 +88,8 @@ Asset "definitivo" é trabalho paralelo do humano: assim que o Dia 1 terminar, o
 | Combate (não-letal) | [F31](features/F31-dash-feixe.md) (Feixe desliga inimigos) | Stretch | `[x]` |
 | Movimento aleatório de NPCs | [F34](features/F34-drone-botanico.md) (BOTÂNICO 04 vagueia ao acaso no corredor escuro da Estufa e segue o MU-7 iluminando os poços) | Stretch | `[x]` |
 | Missões secundárias | Coleta opcional de Dados de Pesquisa ([F20](features/F20-coletaveis-contadores.md)) que muda o epílogo em três faixas ([F66](features/F66-finais-epilogo-creditos.md)) | Final | `[x]` |
-| Desenvolvimento de 4 fases com dificuldades diferentes | F43 Estufa `[x]`, F60 Laboratório `[x]`, F61 Enfermaria `[x]`, F62 Docas `[x]` (todas ligadas ao hub pela F45) | Final | `[x]` |
-| Chefão de nível (Boss) | [F64](features/F64-nucleo-de-memoria.md) (Protocolo Luto em 3 fases: fuga vertical da estática, puzzle sob pressão do firewall, andar contra o empuxo até o Nó); F65 (ARGOS) soma o segundo | Final | `[x]` |
+| Desenvolvimento de 4 fases com dificuldades diferentes | F43 Estufa `[x]`, F60 Laboratório `[x]`, F61 Enfermaria `[x]`, F62 Docas `[x]`, F64 Núcleo de Memória `[x]`, F65 Núcleo do Reator `[x]` (seis setores, todos ligados ao hub pela F45) | Final | `[x]` |
+| Chefão de nível (Boss) | [F64](features/F64-nucleo-de-memoria.md) (Protocolo Luto em 3 fases: fuga vertical da estática, puzzle sob pressão do firewall, andar contra o empuxo até o Nó) e [F65](features/F65-nucleo-do-reator-argos.md) (ARGOS, a batalha final: três torres blindadas, núcleo instável, plataformas térmicas e 90 s; vence-se sobrecarregando os 3 acopladores com o Acesso Root) | Final | `[x]` |
 | Chefão de nível inferior (Mini-boss) | [F63](features/F63-serralheiro.md) (o Serralheiro tranca as Docas: segurar os acopladores sob o braço que sela, contenção com tempo) | Final | `[x]` |
 | Fim de jogo alternativo | [F66](features/F66-finais-epilogo-creditos.md) (sala de comando: SEMEADURA ou TRANSMISSÃO, cutscene que corta no instante da execução, epílogo, 40 nomes, créditos; entra pela `argos_defeated` da F65) | Final | `[x]` |
 | Nível (progressão) | [F69](features/F69-upgrades-root.md) (Integridade/Carga máximas crescem com as placas e capacitores; Acesso Root abre o que estava selado) | Final | `[x]` |
