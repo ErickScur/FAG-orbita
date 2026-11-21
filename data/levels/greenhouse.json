@@ -305,6 +305,13 @@
       ],
       "wait": 0.6,
       "freight": true
+    },
+    "20,55": {
+      "id": "gh_root_door",
+      "requires_ability": "root_access"
+    },
+    "26,55": {
+      "id": "plate_gh_01"
     }
   },
   "triggers": [

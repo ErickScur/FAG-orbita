@@ -118,3 +118,11 @@ O modelo é generoso com energia (toda porta aberta, toda planta crescida, garra
   conte o tempo no vácuo do roteiro de QA; o primeiro roteiro morreu no vestíbulo sem nenhum inimigo.
 - **(F62)** Dois jatos de vapor num duto de 3 tiles matam: sem altura para esperar fora do jato,
   só o dash passa, e a Carga do dash concorre com o pulo duplo e o Propulsor.
+- **(F69)** **Porta ocupa só a célula do pé no ASCII**, mas o corpo tem 3 tiles e uma antepara
+  até o teto: fechar só a célula do `|` no modelo deixou o MU-7 "passar por cima" da porta ROOT do
+  Laboratório. O modelo de alcançabilidade fecha a coluna inteira (`_close_gate`); porta nova com
+  teto alto confira com `tools/level_reach.gd`.
+- **(F69)** **Letra de legenda é de uma entidade só**: F62 e F69 pegaram o `A` em paralelo e o
+  dicionário `LEGEND` ficou com a chave duas vezes, sem erro (o acoplador venceu). Hoje
+  `test_no_legend_letter_is_declared_twice` lê o código e reprova; em fase nova, confira a
+  `LEGEND` inteira antes de escolher letra.

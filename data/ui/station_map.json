@@ -9,6 +9,7 @@
   "logs": "LOGS %d/%d",
   "data": "DADOS %d/%d",
   "sealed_hint": "ABRE COM %s RELIGADO",
+  "sealed_root_hint": "SELADO - EXIGE ACESSO ROOT",
   "unknown_hint": "NENHUMA LEITURA",
   "footer_chassis": "[SETAS] SETOR   [TAB] FECHAR",
   "footer_overlay": "[SETAS] SETOR   [ESC] VOLTAR"

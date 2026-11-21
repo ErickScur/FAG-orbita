@@ -28,7 +28,7 @@
 | [SPR-TERMINAL](#spr-terminal) | Sprite | Terminal de Distribuição + terminal comum | A | IA | **integrado** | F16, F17 |
 | [SPR-DOCK](#spr-dock) | Sprite | Doca de recarga / Ponto de Backup | A | IA | **integrado** | F11, F13 |
 | [SPR-DOOR](#spr-door) | Sprite sheet | Porta de energia | A | IA ou Grátis | **integrado (IA)** | F17 |
-| [SPR-PICKUPS](#spr-pickups) | Sprite sheet | Célula, Kit de Solda, Log, Dado, Capacitor | A | IA | **integrado** | F20, F27 |
+| [SPR-PICKUPS](#spr-pickups) | Sprite sheet | Célula, Kit de Solda, Log, Dado, Capacitor, Placa de Blindagem | A | IA | **integrado** | F20, F27, F69 |
 | [SPR-PLATFORM](#spr-platform) | Sprite | Plataforma móvel | B | Grátis | **integrado** | F25 |
 | [SPR-PLANT](#spr-plant) | Sprite sheet | Planta que cresce | B | IA | **integrado** | F25 |
 | [SPR-PROPS](#spr-props) | Sprite sheet | Objetos do cotidiano (caneca, cadeira, foto, traje/corpo) | B | IA | **integrado** | F19, F28, F29 |
@@ -237,12 +237,13 @@ No text, no letters, no labels, no grid lines, no watermark.
 | Campo | Valor |
 |---|---|
 | Caminho final | `assets/sprites/pickups/pickups_sheet.png` |
-| Contrato | Frames **16×16**, 1 linha por item, 4f de brilho cada: Célula de Energia · Kit de Solda · Fragmento de Log · Dado de Pesquisa · Núcleo de Capacitor |
+| Contrato | Frames **16×16**, 1 linha por item, 4f de brilho cada: Célula de Energia · Kit de Solda · Fragmento de Log · Dado de Pesquisa · Núcleo de Capacitor · Placa de Blindagem (linha 6, F69) — folha **64×96** |
 | Placeholder | Silhuetas distintas (F37): pilha azul · maleta vermelha com cruz · documento verde com linhas · gema hexagonal dourada · anel/bobina roxo |
 | **Regra de silhueta** | A arte definitiva **tem de manter uma silhueta diferente por tipo**, legível em 16×16 sob luz escura. Cor sozinha não basta: os losangos coloridos antigos fizeram o jogador perguntar "oq são essas coisas azuis no chao e as laranjas". O ícone do contador no HUD repete a mesma silhueta do item — se a silhueta mudar aqui, `UI-HUD` muda junto |
 | **Par frágil** | Célula de Energia e Núcleo de Capacitor dividem o mesmo retângulo externo (8×14, cilindro vertical com tampas) e se separam por textura interna e cor. Se o jogador voltar a confundir, o capacitor deve virar **bobina horizontal deitada, mais larga que alta**, para não dividir a silhueta |
-| Placeholder gerado | `assets/placeholder/sprites/pickups/pickups_sheet.png` (64×80 = 4×5 frames de 16×16) — `tools/make_placeholders.gd` |
-| Status | placeholder |
+| Placeholder gerado | `assets/placeholder/sprites/pickups/pickups_sheet.png` (64×96 = 4×6 frames de 16×16) — `tools/make_placeholders.gd` |
+| Linha 6 — Placa de Blindagem (F69) | **IA — geração de imagem do Codex CLI** (2026-11-21, 2 variações, escolhida a 1), referência de estilo: a própria folha de coletáveis ampliada em fundo magenta. Escudo de aço azul-acinzentado com faixa ciano e rebites: silhueta pontuda embaixo, distinta do kit (maleta) e do dado (hexágono). Fatiada com `autoslice_sheet.gd --frame-height=14 --fit=contain`, centrada em 16×16 (1 px de margem), alfa limiarizado (a folha não tem alfa parcial). Prompt abaixo |
+| Status | integrado (linhas 1–5 da F20/F27; linha 6 da F69) |
 
 **Prompt:**
 ```
@@ -253,6 +254,15 @@ IMPORTANT RULE FOR EVERY FRAME: draw ONLY the object described. Never draw walls
 CRITICAL DELIVERY SIZE: draw the whole sheet SMALL — at most 256x320 pixels in total, which is four times the size it will have in the game (64x80, frames of 16x16). A large upscaled image loses its hard pixel edges when it is reduced and comes out blurry instead of pixel art. Do NOT deliver a big image.
 
 FRAME MARGIN: leave at least one empty pixel inside every frame on all four sides. Nothing — no antenna, no tool tip, no motion trail, no glow, no leaf — may touch or cross the edge of its own frame.
+```
+
+**Prompt da linha 6 (Placa de Blindagem, F69, `tools/gen_image.sh --variants=2`):**
+```
+Pixel art sprite sheet of ONE small collectible item for a 2D sci-fi side-view platformer: an "armor plate" upgrade for a small maintenance robot. The item is a SHIELD-SHAPED reinforced hull plate: flat top edge, straight sides, pointed bottom (a classic heater-shield silhouette), steel blue-grey metal (#6b7f8f, #9fb3c2, #3a4652) with a bright teal/cyan glowing horizontal band across the middle (#5fd4c8) and four tiny rivets at the corners. Dark outline (#0f151d) around the whole shape. It must look rare and valuable, clearly different from a battery, a red tool case, a green chip, a gold hexagon gem and a purple coil (the other items of the game, shown in the reference image).
+
+Layout: a grid of 4 columns and 2 rows of square cells. Row 1: the same plate in 4 frames of an idle glow animation (the teal band and a small white glint move/brighten slightly from frame to frame; the plate shape and size stay IDENTICAL in every frame). Row 2: leave completely empty (only magenta).
+
+Style: 16-bit pixel art matching the reference sheet, hard pixels, no anti-aliasing, thick readable silhouette that still reads at 16x16 pixels, dark outline. Each plate fills about 70% of its cell height and is centered. Solid flat magenta background (#FF00FF), no text, no labels, no grid lines. Only the object, NO wall, NO floor, no shadow.
 ```
 
 <a id="spr-platform"></a>

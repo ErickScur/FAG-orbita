@@ -13,6 +13,7 @@ const KEY_NAME: String = "name"
 const KEY_LEVEL: String = "level"
 const KEY_SCENE: String = "scene"
 const KEY_REQUIRES: String = "requires"
+const KEY_REQUIRES_ABILITY: String = "requires_ability"
 const KEY_RESTORED_WHEN: String = "restored_when"
 const KEY_CELL: String = "cell"
 const SNAP_RESTORED: String = "restored"
@@ -20,6 +21,7 @@ const SNAP_FLAGS: String = "flags"
 const SNAP_COLLECTED: String = "collected"
 const SNAP_CHECKPOINT: String = "checkpoint_scene"
 const SNAP_CURRENT: String = "current_scene"
+const SNAP_ABILITIES: String = "abilities"
 const KIND_RESEARCH: StringName = &"research"
 const DIRECTIONS: Array[Vector2i] = [
 	Vector2i.LEFT, Vector2i.RIGHT, Vector2i.UP, Vector2i.DOWN
@@ -62,6 +64,7 @@ static func snapshot(state: Object, current_scene: String) -> Dictionary:
 		SNAP_COLLECTED: _names(state.get("collected_ids") if state != null else []),
 		SNAP_CHECKPOINT: checkpoint_scene,
 		SNAP_CURRENT: current_scene,
+		SNAP_ABILITIES: _names(state.get("abilities") if state != null else []),
 	}
 
 
@@ -92,10 +95,28 @@ static func is_restored(sector: Dictionary, snap: Dictionary) -> bool:
 
 
 static func is_sealed(sector: Dictionary, snap: Dictionary) -> bool:
+	if missing_ability(sector, snap) != &"":
+		return true
 	var requirement: StringName = sector[KEY_REQUIRES]
 	if requirement == &"":
 		return false
 	return not (snap.get(SNAP_RESTORED, []) as Array).has(requirement)
+
+
+static func missing_ability(sector: Dictionary, snap: Dictionary) -> StringName:
+	var ability: StringName = sector.get(KEY_REQUIRES_ABILITY, &"")
+	if ability == &"":
+		return &""
+	if (snap.get(SNAP_ABILITIES, []) as Array).has(ability):
+		return &""
+	return ability
+
+
+static func sealed_by_ability_only(sector: Dictionary, snap: Dictionary) -> bool:
+	if missing_ability(sector, snap) == &"":
+		return false
+	var requirement: StringName = sector[KEY_REQUIRES]
+	return requirement == &"" or (snap.get(SNAP_RESTORED, []) as Array).has(requirement)
 
 
 static func is_current(sector: Dictionary, snap: Dictionary) -> bool:
@@ -251,6 +272,7 @@ static func _normalized(raw: Dictionary) -> Dictionary:
 		KEY_LEVEL: StringName(String(raw.get(KEY_LEVEL, raw.get(KEY_ID, "")))),
 		KEY_SCENE: String(raw.get(KEY_SCENE, "")),
 		KEY_REQUIRES: StringName(String(raw.get(KEY_REQUIRES, ""))),
+		KEY_REQUIRES_ABILITY: StringName(String(raw.get(KEY_REQUIRES_ABILITY, ""))),
 		KEY_RESTORED_WHEN: StringName(String(raw.get(KEY_RESTORED_WHEN, ""))),
 		KEY_CELL: cell,
 	}

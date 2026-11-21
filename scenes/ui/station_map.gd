@@ -401,6 +401,10 @@ func _detail_for(sector: Dictionary, state: StringName) -> String:
 				_text(&"data"), int(counts["data_found"]), int(counts["data_total"])
 			),
 		]
+	if state == StationMapModel.STATE_SEALED and StationMapModel.sealed_by_ability_only(
+		sector, _snap
+	):
+		return _text(&"sealed_root_hint")
 	if state == StationMapModel.STATE_SEALED:
 		var requirement: Dictionary = StationMapModel.find(
 			_sectors, sector[StationMapModel.KEY_REQUIRES]

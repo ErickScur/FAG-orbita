@@ -59,6 +59,13 @@ const LEGEND: Dictionary = {
 		"feature": "F20",
 		"kind": &"capacitor",
 	},
+	"B": {
+		"name": "placa de blindagem",
+		"scene": "res://scenes/world/collectible.tscn",
+		"anchor": &"center",
+		"feature": "F69",
+		"kind": &"armor_plate",
+	},
 	"|": {
 		"name": "porta de energia",
 		"scene": "res://scenes/world/door.tscn",
@@ -191,7 +198,7 @@ const LEGEND: Dictionary = {
 	},
 }
 const COLLECTIBLE_KINDS: Array[StringName] = [
-	&"log", &"research", &"cell", &"repair_kit", &"capacitor"
+	&"log", &"research", &"cell", &"repair_kit", &"capacitor", &"armor_plate"
 ]
 const PROPS_SHEET: String = "res://assets/sprites/props/props_sheet.png"
 const PROP_FRAME: Vector2i = Vector2i(32, 32)

@@ -4,6 +4,8 @@ const TEXTS_PATH: String = "res://data/ui/chassis_menu.json"
 const HUD_SHEET: String = "res://assets/ui/hud_sheet.png"
 const HUD_FRAME: Vector2i = Vector2i(16, 16)
 const HUD_COLUMNS: int = 8
+const PICKUP_SHEET: String = "res://assets/sprites/pickups/pickups_sheet.png"
+const PICKUP_FRAME: Vector2i = Vector2i(16, 16)
 const ABILITY_PREFIX: String = "ability_"
 const GAMEPLAY_GROUP: StringName = &"gameplay"
 const ROW_HEIGHT: float = 16.0
@@ -29,6 +31,10 @@ var _station_sectors: Array[Dictionary] = []
 @onready var _integrity_value: Label = %IntegrityValue
 @onready var _charge_label: Label = %ChargeLabel
 @onready var _charge_value: Label = %ChargeValue
+@onready var _plates_icon: TextureRect = %PlatesIcon
+@onready var _plates_value: Label = %PlatesValue
+@onready var _capacitors_icon: TextureRect = %CapacitorsIcon
+@onready var _capacitors_value: Label = %CapacitorsValue
 @onready var _logs_label: Label = %LogsLabel
 @onready var _logs_icon: TextureRect = %LogsIcon
 @onready var _logs_value: Label = %LogsValue
@@ -37,7 +43,6 @@ var _station_sectors: Array[Dictionary] = []
 @onready var _research_value: Label = %ResearchValue
 @onready var _abilities_title: Label = %AbilitiesTitle
 @onready var _abilities: GridContainer = %Abilities
-@onready var _locked_title: Label = %LockedTitle
 @onready var _map_label: Label = %MapLabel
 @onready var _map_value: Label = %MapValue
 @onready var _sectors_label: Label = %SectorsLabel
@@ -135,7 +140,6 @@ func _apply_static_texts() -> void:
 	_logs_label.text = _text(&"logs_label")
 	_research_label.text = _text(&"research_label")
 	_abilities_title.text = _text(&"abilities_title")
-	_locked_title.text = _text(&"locked_title")
 	_map_label.text = _text(&"map_label")
 	_map_value.text = _text(&"map_value")
 	_sectors_label.text = _text(&"sectors_label")
@@ -146,6 +150,12 @@ func _apply_static_texts() -> void:
 func _apply_counter_icons() -> void:
 	_logs_icon.texture = _counter_icon(HudModel.ICON_LOG)
 	_research_icon.texture = _counter_icon(HudModel.ICON_RESEARCH)
+	_plates_icon.texture = _pickup_icon(PickupRules.KIND_ARMOR_PLATE)
+	_capacitors_icon.texture = _pickup_icon(PickupRules.KIND_CAPACITOR)
+
+
+func _pickup_icon(kind: StringName) -> Texture2D:
+	return AssetResolver.atlas(PICKUP_SHEET, PICKUP_FRAME, 0, PickupRules.sheet_row(kind))
 
 
 func _counter_icon(index: int) -> Texture2D:
@@ -157,10 +167,20 @@ func _refresh() -> void:
 	_refresh_reactor()
 	_integrity_value.text = _pair(GameState.integrity, GameState.integrity_max)
 	_charge_value.text = _pair(int(roundf(GameState.charge)), int(roundf(GameState.charge_max)))
+	_plates_value.text = _pair(GameState.plates_installed(), Balance.ARMOR_PLATES_TOTAL)
+	_capacitors_value.text = _pair(GameState.capacitors_installed(), Balance.CAPACITORS_TOTAL)
 	_logs_value.text = _pair(GameState.logs_collected.size(), Balance.LOGS_TOTAL)
 	_research_value.text = _pair(GameState.research_collected.size(), Balance.RESEARCH_TOTAL)
 	_refresh_station()
 	_refresh_abilities()
+
+
+func upgrade_counts() -> Vector2i:
+	return Vector2i(GameState.capacitors_installed(), GameState.plates_installed())
+
+
+func upgrade_texts() -> PackedStringArray:
+	return PackedStringArray([_capacitors_value.text, _plates_value.text])
 
 
 func current_page() -> StringName:

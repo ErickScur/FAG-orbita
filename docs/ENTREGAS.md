@@ -67,7 +67,7 @@ Asset "definitivo" é trabalho paralelo do humano: assim que o Dia 1 terminar, o
 | Habilidades | [F24](features/F24-garras-magneticas.md) (+ [F31](features/F31-dash-feixe.md) stretch) | Demo | `[`[x]` |
 | Itens e inventário | [F20](features/F20-coletaveis-contadores.md) (+ [F33](features/F33-arquivo-logs.md): arquivo de logs, tecla L) | Demo | `[`[x]` |
 | Coleta de itens | [F20](features/F20-coletaveis-contadores.md) | Demo | `[`[x]` |
-| Recompensas | [F14](features/F14-estabilidade-reator.md) (log → +0,5% reator; setor → +15%), [F20](features/F20-coletaveis-contadores.md), [F24](features/F24-garras-magneticas.md) (upgrade ao religar setor) | Demo | `[ ]` |
+| Recompensas | [F14](features/F14-estabilidade-reator.md) (log → +0,5% reator; setor → +15%), [F20](features/F20-coletaveis-contadores.md), [F24](features/F24-garras-magneticas.md) (upgrade ao religar setor), [F69](features/F69-upgrades-root.md) (Capacitor e Placa permanentes fora da rota; porta ROOT) | Demo | `[x]` |
 | HUD | [F15](features/F15-hud-objetivos.md) | Demo | `[`[x]` |
 | Missões primárias | [F15](features/F15-hud-objetivos.md) (objetivo atual: estabilizar o reator / religar a Estufa) | Demo | `[`[x]` |
 | Botão de pause | [F09](features/F09-pause-recomecar.md) | Demo | `[`[x]` |
@@ -82,7 +82,7 @@ Asset "definitivo" é trabalho paralelo do humano: assim que o Dia 1 terminar, o
 | Chefão de nível (Boss) | F64, F65 | Final | `[ ]` |
 | Chefão de nível inferior (Mini-boss) | F63 | Final | `[ ]` |
 | Fim de jogo alternativo | [F66](features/F66-finais-epilogo-creditos.md) (sala de comando: SEMEADURA ou TRANSMISSÃO, cutscene que corta no instante da execução, epílogo, 40 nomes, créditos; entra pela `argos_defeated` da F65) | Final | `[x]` |
-| Nível (progressão) | F69 (upgrades permanentes) | Final | `[ ]` |
+| Nível (progressão) | [F69](features/F69-upgrades-root.md) (Integridade/Carga máximas crescem com as placas e capacitores; Acesso Root abre o que estava selado) | Final | `[x]` |
 | Scanner | [F67](features/F67-mapa-estacao.md) (mapa da estação: TAB duas vezes ou pausa → MAPA) | Final | `[x]` |
 | 3D · Elementos de FPS | — | `[-]` [ADR-000](DECISIONS.md#adr-000) | `[-]` |
 | Elementos de RTS · Turnos · Montaria · Sandbox · Endless · Conta de usuário · Classes · Armaduras · Loja · Dinheiro · Simulação de dia | — | `[-]` fora dos pilares do GDD | `[-]` |

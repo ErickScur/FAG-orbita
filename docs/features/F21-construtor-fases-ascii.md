@@ -128,6 +128,7 @@ Ordem do `_ready()`: 1) carrega `.txt`/`.json`; 2) `LevelParser.parse` (erro →
 | `c` | Célula de energia | `collectible.tscn` (`kind: cell`) | centro | F20 |
 | `k` | Kit de solda | `collectible.tscn` (`kind: repair_kit`) | centro | F20 |
 | `C` | Núcleo de capacitor | `collectible.tscn` (`kind: capacitor`) | centro | F20 |
+| `B` | Placa de Blindagem | `collectible.tscn` (`kind: armor_plate`) | centro | F69 |
 | `\|` | Porta de energia | `scenes/world/door.tscn` (3 tiles de altura, ancorada no tile inferior) | pés | F17 |
 | `E` | Saída / transição | `scenes/world/level_exit.tscn` (`target`, `dock_id` no JSON) | pés | F28/F29 |
 | `S` | SR-3 | `scenes/enemies/sr3.tscn` (patrulha da plataforma sob ele) | pés | F22 |
@@ -142,6 +143,16 @@ Ordem do `_ready()`: 1) carrega `.txt`/`.json`; 2) `LevelParser.parse` (erro →
 | `b` | Drone BOTÂNICO 04 | `scenes/npc/botanico.tscn` | centro | F34 (stretch) |
 | `v` | Jato de vapor | `scenes/world/steam_vent.tscn` ([ADR-F21-008](#adr-f21-008)) | pés | F32 (stretch) |
 | `z` | Piso eletrificado | `scenes/world/electric_floor.tscn` | pés | F32 (stretch) |
+| `X` | Torre calibradora CX-2 | `scenes/enemies/cx2.tscn` | centro | F60 |
+| `h` | Zona de clima | `scenes/world/heat_zone.tscn` | centro | F60 |
+| `i` | Ilha de clima | `scenes/world/cold_island.tscn` | centro | F60 |
+| `Y` | Sentinela V-9 | `scenes/enemies/v9.tscn` | centro | F61 |
+| `_` | Gelo fino | `scenes/world/thin_ice.tscn` | centro | F61 |
+| `I` | Parede de gelo | `scenes/world/ice_wall.tscn` | centro | F61 |
+| `V` | Zona de vácuo | `scenes/world/vacuum_zone.tscn` | centro | F62 |
+| `A` | Acoplador de energia | `scenes/world/coupler.tscn` | pés | F62 |
+
+Cada letra vale para **uma** entidade: `test_no_legend_letter_is_declared_twice` (`tests/test_level_parser.gd`) lê o `LEGEND` do código e reprova letra repetida ou que também seja tile (a F69 e a F62 pegaram o `A` ao mesmo tempo; a placa foi para `B`).
 
 **Âncoras:** `pés` = `(cell.x * 16 + 8, cell.y * 16 + 16)` (base do tile, mesma convenção do MU-7); `centro` = `(cell.x * 16 + 8, cell.y * 16 + 8)`.
 

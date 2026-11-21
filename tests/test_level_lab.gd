@@ -20,7 +20,7 @@ const RECT_LIGHT_COVER: float = 1.3
 const FURNACE_KIND: String = "furnace"
 const HEAT_KINDS: Array[String] = ["warm", "furnace"]
 const EXPECTED_COUNTS: Dictionary = {
-	"E": 1, "T": 3, "|": 2, "S": 2, "~": 3, "m": 1, "X": 5, "v": 5, "i": 4, "h": 6,
+	"E": 1, "T": 3, "|": 3, "S": 2, "~": 3, "m": 1, "X": 5, "v": 5, "i": 4, "h": 6,
 	"D": 4, "L": 2, "l": 0, "r": 2, "C": 1, "x": 2, "c": 3, "k": 3, "o": 1, "@": 2,
 }
 const LIFT_ID: String = "lab_lift"

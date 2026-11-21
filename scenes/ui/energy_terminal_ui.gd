@@ -37,6 +37,12 @@ const TEXT_ONLINE: String = "%s: ONLINE"
 const TEXT_OFFLINE: String = "%s: OFFLINE"
 const TEXT_CASCADE: String = "DESLIGADO EM CADEIA: %s"
 const TEXT_BUDGET: String = "ORÇAMENTO DE ENERGIA: %d/%d EM USO"
+const TEXT_BUDGET_ROOT: String = "ORÇAMENTO: %d/%d EM USO - ROOT %ds"
+const TEXT_ROOT_HINT: String = "%s SOBRECARGA ROOT: +%d POR %ds (%d CARGA)"
+const TEXT_ROOT_ON: String = "SOBRECARGA ROOT: +%d DE ENERGIA"
+const TEXT_ROOT_FAIL: String = "SOBRECARGA INDISPONÍVEL"
+const COLOR_ROOT: Color = Color(0.768627, 0.607843, 1.0, 1.0)
+const ROOT_ACTION: StringName = &"beam"
 
 var _terminal_id: StringName = &""
 var _network: EnergyNetwork = null
@@ -55,6 +61,8 @@ var _selected: int = -1
 var _message_left: float = 0.0
 var _opened_frame: int = -1
 var _closing: bool = false
+var _meter_size: int = -1
+var _overload_seconds: int = -1
 
 @onready var _title: Label = %Title
 @onready var _goal: Label = %Goal
@@ -73,6 +81,7 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
+	_watch_overload()
 	if _message_left <= 0.0:
 		return
 	_message_left = maxf(0.0, _message_left - delta)
@@ -92,6 +101,10 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_pressed(&"interact"):
 		get_viewport().set_input_as_handled()
 		toggle_selected()
+		return
+	if event.is_action_pressed(ROOT_ACTION) and has_root():
+		get_viewport().set_input_as_handled()
+		overload()
 		return
 	if event.is_action_pressed(&"move_down"):
 		get_viewport().set_input_as_handled()
@@ -142,6 +155,25 @@ func toggle_selected() -> void:
 	var outcome: Dictionary = _network.toggle(_terminal_id, system_id)
 	_report(system_id, outcome)
 	_refresh()
+
+
+func has_root() -> bool:
+	return GameState.has_ability(UpgradeRules.ROOT_ABILITY)
+
+
+func overload() -> bool:
+	if _grid == null or _network == null:
+		return false
+	if not _network.overload(_terminal_id):
+		_show_message(TEXT_ROOT_FAIL, _color_alert())
+		return false
+	_show_message(TEXT_ROOT_ON % Balance.ROOT_OVERLOAD_UNITS, COLOR_ROOT)
+	_refresh()
+	return true
+
+
+func budget_text() -> String:
+	return _budget.text if _budget != null else ""
 
 
 func selected_index() -> int:
@@ -236,7 +268,8 @@ func _build_meter() -> void:
 		_meter.remove_child(child)
 		child.queue_free()
 	_cells.clear()
-	for index: int in range(_grid.budget):
+	_meter_size = _grid.effective_budget()
+	for index: int in range(_meter_size):
 		var cell := ColorRect.new()
 		cell.custom_minimum_size = CELL_SIZE
 		cell.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -247,11 +280,19 @@ func _build_meter() -> void:
 func _refresh() -> void:
 	if _grid == null:
 		return
+	if _meter_size != _grid.effective_budget():
+		_build_meter()
 	var used: int = _grid.used()
-	_budget.text = TEXT_BUDGET % [used, _grid.budget]
+	if _grid.is_overloaded():
+		_overload_seconds = ceili(_grid.overload_left)
+		_budget.text = TEXT_BUDGET_ROOT % [used, _grid.effective_budget(), _overload_seconds]
+	else:
+		_overload_seconds = -1
+		_budget.text = TEXT_BUDGET % [used, _grid.budget]
 	_refresh_goal()
 	for index: int in range(_cells.size()):
-		_cells[index].color = _color_on() if index < used else COLOR_OFF
+		var lit: Color = COLOR_ROOT if index >= _grid.budget else _color_on()
+		_cells[index].color = lit if index < used else COLOR_OFF
 	for index: int in range(_ids.size()):
 		_refresh_row(index)
 	_refresh_description()
@@ -319,12 +360,38 @@ func _refresh_description() -> void:
 
 
 func _refresh_hint() -> void:
-	if not _verbose or _selected < 0 or _selected >= _ids.size():
-		_message.text = ""
+	var text: String = ""
+	if _verbose and _selected >= 0 and _selected < _ids.size():
+		var names: String = _candidate_names(_ids[_selected])
+		text = "" if names.is_empty() else TEXT_TRADE % names
+	if text.is_empty() and _root_hint_applies():
+		_message.text = root_hint_text()
+		_message.add_theme_color_override(&"font_color", COLOR_ROOT)
 		return
-	var names: String = _candidate_names(_ids[_selected])
-	_message.text = "" if names.is_empty() else TEXT_TRADE % names
+	_message.text = text
 	_message.add_theme_color_override(&"font_color", COLOR_MUTED)
+
+
+func root_hint_text() -> String:
+	return TEXT_ROOT_HINT % [
+		KeyBindings.action_label(ROOT_ACTION),
+		Balance.ROOT_OVERLOAD_UNITS,
+		int(Balance.ROOT_OVERLOAD_TIME),
+		int(Balance.ROOT_OVERLOAD_COST),
+	]
+
+
+func _root_hint_applies() -> bool:
+	return _grid != null and has_root() and not _grid.is_overloaded()
+
+
+func _watch_overload() -> void:
+	if _grid == null:
+		return
+	var seconds: int = ceili(_grid.overload_left) if _grid.is_overloaded() else -1
+	if seconds == _overload_seconds and _meter_size == _grid.effective_budget():
+		return
+	_refresh()
 
 
 func _candidate_names(system_id: StringName) -> String:

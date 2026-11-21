@@ -60,6 +60,25 @@ func network() -> EnergyNetwork:
 	return node as EnergyNetwork
 
 
+func can_overload() -> bool:
+	if is_sector_node():
+		return false
+	var found: EnergyNetwork = network()
+	return found != null and found.can_overload(terminal_id)
+
+
+func overload() -> bool:
+	if is_sector_node():
+		return false
+	var found: EnergyNetwork = network()
+	return found != null and found.overload(terminal_id)
+
+
+func is_overloaded() -> bool:
+	var found: EnergyNetwork = network()
+	return found != null and found.is_overloaded(terminal_id)
+
+
 func _refresh() -> void:
 	if not is_inside_tree():
 		return

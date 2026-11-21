@@ -15,9 +15,12 @@ const CHARGE_TOASTS: Dictionary = {
 	PickupRules.KIND_CELL: &"toast_charge",
 	PickupRules.KIND_REPAIR_KIT: &"toast_integrity",
 	PickupRules.KIND_CAPACITOR: &"toast_capacity",
+	PickupRules.KIND_ARMOR_PLATE: &"toast_armor",
 }
 const CHARGE_FRAME_WIDTH: float = 60.0
-const CHARGE_SLOT_WIDTH: float = 68.0
+const CHARGE_SLOT_WIDTH: float = 72.0
+const VITALS_SLOT_WIDTH: int = 72
+const CELL_ART_REGION: Rect2i = Rect2i(3, 0, 9, 16)
 const TOAST_ROW_HEIGHT: float = 16.0
 const TOAST_HINT_COLOR: Color = Color(0.541176, 0.607843, 0.658824)
 const REACTOR_STATE_COLORS: Dictionary = {
@@ -66,7 +69,7 @@ func _ready() -> void:
 	_charge_label.text = HudModel.text_for(&"charge_label", _texts)
 	_integrity_label.text = HudModel.text_for(&"integrity_label", _texts)
 	_objective_label.text = HudModel.text_for(&"objective_label", _texts)
-	_build_cells()
+	_build_cells(GameState.integrity_max)
 	_build_bar_frames()
 	_beep_timer.wait_time = Balance.LOW_INTEGRITY_BEEP_INTERVAL
 	_beep_timer.timeout.connect(_on_beep_timeout)
@@ -110,22 +113,53 @@ func _frame_region(index: int) -> Rect2:
 	return Rect2(Vector2(cell * ATLAS_FRAME), Vector2(ATLAS_FRAME))
 
 
-func _build_cells() -> void:
+func _build_cells(maximum: int = Balance.INTEGRITY_MAX) -> void:
+	var count: int = UpgradeRules.cell_count(maximum)
+	if count == _cells.size():
+		return
 	for child: Node in _cells_box.get_children():
+		_cells_box.remove_child(child)
 		child.queue_free()
 	_cells.clear()
-	for index: int in range(Balance.INTEGRITY_CELLS):
+	var layout: Vector2i = UpgradeRules.cell_layout(count, VITALS_SLOT_WIDTH)
+	_cells_box.add_theme_constant_override(&"separation", layout.y)
+	for index: int in range(count):
 		var cell := TextureRect.new()
-		cell.custom_minimum_size = Vector2(ATLAS_FRAME)
+		cell.custom_minimum_size = Vector2(float(layout.x), float(ATLAS_FRAME.y))
 		cell.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		cell.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
+		cell.set_meta(&"compact", layout.x < ATLAS_FRAME.x)
 		_cells_box.add_child(cell)
 		_cells.append(cell)
 
 
-func _icon(index: int) -> Texture2D:
+func cell_count() -> int:
+	return _cells.size()
+
+
+func cells_width() -> float:
+	var total: float = 0.0
+	for cell: TextureRect in _cells:
+		total += cell.custom_minimum_size.x
+	return total + float(maxi(0, _cells.size() - 1) * _cells_box.get_theme_constant(&"separation"))
+
+
+func charge_frame_width() -> float:
+	return _charge_frame.size.x
+
+
+func _icon(index: int, compact: bool = false) -> Texture2D:
 	var cell: Vector2i = HudModel.atlas_cell(index, ATLAS_COLUMNS)
-	return AssetResolver.atlas(HUD_SHEET, ATLAS_FRAME, cell.x, cell.y)
+	var texture: AtlasTexture = AssetResolver.atlas(HUD_SHEET, ATLAS_FRAME, cell.x, cell.y)
+	if texture == null or not compact:
+		return texture
+	var trimmed := AtlasTexture.new()
+	trimmed.atlas = texture.atlas
+	trimmed.region = Rect2(
+		texture.region.position + Vector2(CELL_ART_REGION.position), Vector2(CELL_ART_REGION.size)
+	)
+	trimmed.filter_clip = true
+	return trimmed
 
 
 func _connect_events() -> void:
@@ -161,20 +195,25 @@ func _sync_with_state() -> void:
 
 
 func _on_integrity_changed(current: int, maximum: int) -> void:
-	var previous: Array[int] = _cell_states.duplicate()
-	_cell_states = HudModel.cell_states(current, maximum, Balance.INTEGRITY_CELLS)
+	var grew: bool = UpgradeRules.cell_count(maximum) != _cells.size()
+	_build_cells(maximum)
+	var previous: Array[int] = []
+	if not grew:
+		previous = _cell_states.duplicate()
+	_cell_states = HudModel.cell_states(current, maximum, _cells.size())
 	for index: int in range(_cells.size()):
 		var state: int = _cell_state(index)
 		var cell: TextureRect = _cells[index]
+		var compact: bool = bool(cell.get_meta(&"compact", false))
 		match state:
 			HudModel.STATE_FULL:
-				cell.texture = _icon(HudModel.CELL_FULL)
+				cell.texture = _icon(HudModel.CELL_FULL, compact)
 				cell.modulate = NORMAL_COLOR
 			HudModel.STATE_PARTIAL:
-				cell.texture = _icon(HudModel.CELL_FULL)
+				cell.texture = _icon(HudModel.CELL_FULL, compact)
 				cell.modulate = PARTIAL_DIM
 			_:
-				cell.texture = _icon(HudModel.CELL_BLINK)
+				cell.texture = _icon(HudModel.CELL_BLINK, compact)
 				cell.modulate = NORMAL_COLOR
 	_pulse_lost_cells(previous, _cell_states)
 	_update_low_integrity(_cell_states, current > 0)
@@ -260,8 +299,8 @@ func _snap_charge_bar() -> void:
 
 
 func _resize_charge_frame(maximum: float) -> void:
-	var width: float = minf(
-		roundf(CHARGE_FRAME_WIDTH * maximum / Balance.CHARGE_MAX), CHARGE_SLOT_WIDTH
+	var width: float = UpgradeRules.charge_frame_width(
+		maximum, CHARGE_FRAME_WIDTH, CHARGE_SLOT_WIDTH
 	)
 	if is_equal_approx(_charge_frame.size.x, width):
 		return
@@ -405,6 +444,9 @@ func _on_collectible_picked(kind: StringName, _item_id: StringName) -> void:
 			)
 		)
 		return
+	if PickupRules.is_upgrade(kind):
+		_toast(upgrade_toast_text(kind))
+		return
 	if not CHARGE_TOASTS.has(kind):
 		return
 	_toast(
@@ -413,6 +455,18 @@ func _on_collectible_picked(kind: StringName, _item_id: StringName) -> void:
 			PickupRules.amount_for(kind)
 		)
 	)
+
+
+func upgrade_toast_text(kind: StringName) -> String:
+	var template: String = HudModel.text_for(StringName(CHARGE_TOASTS.get(kind, &"")), _texts)
+	if template.is_empty():
+		return ""
+	var installed: int = GameState.capacitors_installed()
+	var total: int = Balance.CAPACITORS_TOTAL
+	if kind == PickupRules.KIND_ARMOR_PLATE:
+		installed = GameState.plates_installed()
+		total = Balance.ARMOR_PLATES_TOTAL
+	return template % [PickupRules.amount_for(kind), installed, total]
 
 
 func _show_first_pickup_card(kind: StringName) -> bool:

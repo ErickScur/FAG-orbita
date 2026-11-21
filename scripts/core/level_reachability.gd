@@ -28,8 +28,11 @@ const META_REACH: String = "reach"
 const REACH_DOUBLE_JUMP: String = "double_jump"
 const PROFILE_DOUBLE_JUMP: String = "double_jump_enabled"
 const DOUBLE_JUMP_DELAYS: Array[int] = [8, 16, 24]
+const ICE_WALL_SYMBOL: String = "I"
+const DOOR_SYMBOL: String = "|"
+const PROFILE_ABILITIES: String = "abilities"
 const PASSABLE_SYMBOLS: String = "|x"
-const PICKUP_SYMBOLS: String = "lrckC"
+const PICKUP_SYMBOLS: String = "lrckCB"
 const INTERACT_SYMBOLS: String = "TLED"
 const PROP_SYMBOL: String = "o"
 const INTERACTIVE_PROP_KEYS: Array[String] = ["scene", "log"]
@@ -147,6 +150,36 @@ static func default_profile() -> Dictionary:
 		"dash_enabled": true,
 	}
 	return _cached_profile.duplicate()
+
+
+static func profile_with_abilities(abilities: Array) -> Dictionary:
+	var profile: Dictionary = default_profile()
+	var granted: Array[StringName] = []
+	for value: Variant in abilities:
+		granted.append(StringName(String(value)))
+	profile[PROFILE_ABILITIES] = granted
+	profile[PROFILE_DOUBLE_JUMP] = VacuumRules.has_thruster(granted)
+	return profile
+
+
+static func analyze_with_abilities(
+	text: String, meta: Dictionary, abilities: Array
+) -> Dictionary:
+	return analyze(text, meta, profile_with_abilities(abilities))
+
+
+static func gate_ability(symbol: String, params: Dictionary) -> StringName:
+	match symbol:
+		MAGNETIC_SYMBOL:
+			return ClimbLogic.ABILITY_ID
+		ICE_WALL_SYMBOL:
+			if String(params.get("heater", "")).is_empty() and String(
+				params.get("system_id", "")
+			).is_empty():
+				return FreezeRules.ABILITY_ID
+		DOOR_SYMBOL:
+			return StringName(String(params.get("requires_ability", "")))
+	return &""
 
 
 static func can_stand_at(result: Dictionary, cell: Vector2i) -> bool:
@@ -418,10 +451,17 @@ func _build_grid(parsed: Dictionary, meta: Dictionary, profile: Dictionary) -> v
 	for cell: Vector2i in parsed.get("one_ways", []) as Array:
 		_cells[cell.y * _width + cell.x] = CELL_ONE_WAY
 	var meta_entities: Dictionary = meta.get("entities", {})
+	var granted: Variant = profile.get(PROFILE_ABILITIES, null)
 	for entry: Dictionary in parsed.get("entities", []) as Array:
 		var symbol: String = String(entry.get("symbol", ""))
 		var cell: Vector2i = entry.get("cell", Vector2i.ZERO)
-		if symbol == MAGNETIC_SYMBOL:
+		var raw_params: Variant = meta_entities.get(LevelParser.cell_key(cell), {})
+		var gate: StringName = gate_ability(
+			symbol, raw_params if raw_params is Dictionary else {}
+		)
+		if gate != &"" and granted is Array and not (granted as Array).has(gate):
+			_close_gate(symbol, cell)
+		elif symbol == MAGNETIC_SYMBOL:
 			_cells[cell.y * _width + cell.x] = CELL_MAGNETIC
 		elif symbol == THIN_ICE_SYMBOL:
 			_cells[cell.y * _width + cell.x] = CELL_SOLID
@@ -446,6 +486,17 @@ func _build_grid(parsed: Dictionary, meta: Dictionary, profile: Dictionary) -> v
 			if params is Dictionary:
 				path = (params as Dictionary).get("path", [])
 			_platforms.append(_platform_from(cell, path, profile))
+
+
+func _close_gate(symbol: String, cell: Vector2i) -> void:
+	_cells[cell.y * _width + cell.x] = CELL_SOLID
+	if symbol != DOOR_SYMBOL:
+		return
+	var tall: int = ceili((float(Door.BLOCK_SIZE.y) + Balance.DOOR_BULKHEAD_MAX) / _tile)
+	for row: int in range(cell.y - 1, cell.y - tall, -1):
+		if row < 0 or _cells[row * _width + cell.x] != CELL_EMPTY:
+			return
+		_cells[row * _width + cell.x] = CELL_SOLID
 
 
 func _platform_from(cell: Vector2i, path: Variant, profile: Dictionary) -> Dictionary:

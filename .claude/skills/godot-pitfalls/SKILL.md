@@ -74,10 +74,18 @@ origem).
   PESQUISA 01/1"). Anime na vertical ou sem recorte (F35).
 - **Auto-pause por perda de foco** (`NOTIFICATION_APPLICATION_FOCUS_OUT`) precisa ignorar o modo
   QA, senão abre a pausa em cima de toda captura (F06).
+- **`relabel` de teclas em sequência estraga trocas A↔D**: trocar `A` por `D` e depois `D` por `A`
+  devolve tudo `A`. Troque primeiro para um token intermediário único e só depois para a tecla
+  final (F71).
+- **`ScrollContainer` com `follow_focus` empurra o título da seção para fora** ao focar o 1º
+  botão; volte o scroll ao topo com `call_deferred` depois de dar o foco (F71).
 
 ## Pausa, Tween e diálogo
 - **Tween de nó comum é `TWEEN_PAUSE_BOUND`** e congela durante fala travante (o diálogo pausa a
   árvore). Efeito que acompanha fala: `set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)` (F35).
+- **Script filho de fase montada pelo `level_base` roda `_ready` antes da fase ser construída**:
+  o nó ainda não vê tiles nem entidades e a configuração some em silêncio. Configure em
+  `call_deferred` (F66).
 - **Gancho que cria estado de novo**: `DialogueManager._finish_current()` aplica efeitos antes de
   esconder a caixa, e um efeito pode iniciar fala nova na hora. Toda função que limpa estado
   depois de chamar um gancho **reconfere se o gancho recriou esse estado** — sem isso a fala das

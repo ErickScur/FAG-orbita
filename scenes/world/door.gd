@@ -23,6 +23,13 @@ const ANIM_OPEN: StringName = &"open"
 const ANIM_CLOSING: StringName = &"closing"
 const ANIM_SEALED: StringName = &"sealed"
 const PLATE_OFFSET: Vector2 = Vector2(0.0, -57.0)
+const ROOT_TINT: Color = Color("c49bff")
+const ROOT_PLATE_OFFSET: Vector2 = Vector2(0.0, -30.0)
+const ROOT_PANEL_SIZE: Vector2 = Vector2(32.0, 48.0)
+const ROOT_PANEL_LAYER: int = 8
+const PROMPT_ROOT: String = "ACESSO ROOT"
+const PROMPT_SEALED: String = "PORTA SELADA"
+const PROMPT_ROOT_MISSING: String = "SELADA - ACESSO ROOT"
 
 @export var terminal_id: StringName = &""
 @export var system_id: StringName = &""
@@ -30,11 +37,16 @@ const PLATE_OFFSET: Vector2 = Vector2(0.0, -57.0)
 @export var sealed: bool = false
 @export var sealed_until_sector: StringName = &""
 @export var sector: StringName = &""
+@export var requires_ability: StringName = &""
+@export var door_id: StringName = &""
 
 var _held_open: bool = false
 var _bulkhead_height: float = 0.0
 var _bulkhead_delay: int = BULKHEAD_DELAY_FRAMES
 var _plate: SectorPlate = null
+var _root_locked: bool = false
+var _root_plate: RootPlate = null
+var _root_panel: Interactable = null
 
 @onready var _sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var _shape: CollisionShape2D = $CollisionShape2D
@@ -47,9 +59,12 @@ func _ready() -> void:
 	_build_animations()
 	_sprite.animation_finished.connect(_on_animation_finished)
 	_apply_sector_seal()
+	_apply_root_lock()
 	_apply_plate()
+	_apply_root_visuals()
 	set_powered_silent(powered)
 	EventBus.energy_changed.connect(_on_energy_changed)
+	EventBus.ability_unlocked.connect(_on_ability_unlocked)
 	set_physics_process(true)
 
 
@@ -62,7 +77,7 @@ func _physics_process(_delta: float) -> void:
 
 
 func set_powered(on: bool) -> void:
-	if sealed or _held_open or powered == on:
+	if sealed or _root_locked or _held_open or powered == on:
 		return
 	powered = on
 	if on:
@@ -76,10 +91,10 @@ func set_powered(on: bool) -> void:
 
 
 func set_powered_silent(on: bool) -> void:
-	powered = (on or _held_open) and not sealed
+	powered = (on or _held_open) and not sealed and not _root_locked
 	if _sprite != null:
-		_sprite.modulate = SEALED_TINT if sealed else Color.WHITE
-	if sealed:
+		_sprite.modulate = _tint()
+	if sealed or _root_locked:
 		_play(ANIM_SEALED)
 		_set_blocking(true)
 		return
@@ -93,10 +108,14 @@ func configure(params: Dictionary) -> void:
 	sealed = bool(params.get("sealed", sealed))
 	sealed_until_sector = StringName(String(params.get("sealed_until_sector", sealed_until_sector)))
 	sector = StringName(String(params.get("sector", sector)))
+	requires_ability = StringName(String(params.get("requires_ability", requires_ability)))
+	door_id = StringName(String(params.get("id", door_id)))
 	_apply_sector_seal()
+	_apply_root_lock()
 	if _sprite == null:
 		return
 	_apply_plate()
+	_apply_root_visuals()
 	set_powered_silent(powered)
 
 
@@ -105,7 +124,47 @@ func is_sector_sealed() -> bool:
 
 
 func is_open() -> bool:
-	return powered and not sealed
+	return powered and not sealed and not _root_locked
+
+
+func is_root_locked() -> bool:
+	return _root_locked
+
+
+func root_plate() -> RootPlate:
+	return _root_plate
+
+
+func root_panel() -> Interactable:
+	return _root_panel
+
+
+func root_prompt() -> String:
+	if _root_panel == null:
+		return ""
+	return _root_panel.prompt_text
+
+
+func try_root_access() -> bool:
+	if not _root_locked or sealed:
+		return false
+	if not GameState.open_root_door(door_id):
+		AudioManager.play_sfx(&"ui_error")
+		if _root_panel != null:
+			_root_panel.set_prompt(PROMPT_ROOT_MISSING)
+		return false
+	_root_locked = false
+	_held_open = true
+	terminal_id = &""
+	system_id = &""
+	_clear_root_visuals()
+	if _sprite != null:
+		_sprite.modulate = _tint()
+	powered = true
+	AudioManager.play_sfx(&"power_on")
+	AudioManager.play_sfx(&"door_open")
+	_play(ANIM_OPENING)
+	return true
 
 
 func plate() -> SectorPlate:
@@ -145,6 +204,85 @@ func _apply_sector_seal() -> void:
 	_held_open = true
 	terminal_id = &""
 	system_id = &""
+
+
+func _apply_root_lock() -> void:
+	if requires_ability == &"":
+		_root_locked = false
+		return
+	_root_locked = not GameState.is_root_door_open(door_id)
+	if not _root_locked:
+		if not sealed:
+			powered = true
+			_held_open = true
+			terminal_id = &""
+			system_id = &""
+		return
+	powered = false
+	_held_open = false
+	terminal_id = &""
+	system_id = &""
+
+
+func _tint() -> Color:
+	if sealed:
+		return SEALED_TINT
+	if _root_locked:
+		return ROOT_TINT
+	return Color.WHITE
+
+
+func _apply_root_visuals() -> void:
+	if not _root_locked:
+		_clear_root_visuals()
+		return
+	if _root_plate == null:
+		_root_plate = RootPlate.new()
+		_root_plate.name = "RootPlate"
+		_root_plate.position = ROOT_PLATE_OFFSET
+		add_child(_root_plate)
+	if _root_panel == null:
+		_root_panel = Interactable.new()
+		_root_panel.name = "RootPanel"
+		_root_panel.collision_layer = ROOT_PANEL_LAYER
+		_root_panel.position = Vector2(0.0, -ROOT_PANEL_SIZE.y * 0.5)
+		var shape := CollisionShape2D.new()
+		var rectangle := RectangleShape2D.new()
+		rectangle.size = ROOT_PANEL_SIZE
+		shape.shape = rectangle
+		_root_panel.add_child(shape)
+		_root_panel.interacted.connect(_on_root_panel_interacted)
+		add_child(_root_panel)
+	_refresh_root_prompt()
+
+
+func _refresh_root_prompt() -> void:
+	var unlocked: bool = GameState.has_ability(requires_ability)
+	if _root_plate != null:
+		_root_plate.set_ready_to_open(unlocked and not sealed)
+	if _root_panel == null:
+		return
+	_root_panel.set_enabled(not sealed)
+	_root_panel.set_prompt(PROMPT_ROOT if unlocked else PROMPT_SEALED)
+
+
+func _clear_root_visuals() -> void:
+	if _root_plate != null:
+		_root_plate.queue_free()
+		_root_plate = null
+	if _root_panel != null:
+		_root_panel.queue_free()
+		_root_panel = null
+
+
+func _on_root_panel_interacted(_actor: Node) -> void:
+	try_root_access()
+
+
+func _on_ability_unlocked(ability_id: StringName) -> void:
+	if ability_id != requires_ability or not _root_locked:
+		return
+	_refresh_root_prompt()
 
 
 func _apply_plate() -> void:

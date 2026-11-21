@@ -134,10 +134,10 @@
       "id": "SPR-PICKUPS",
       "path": "sprites/pickups/pickups_sheet.png",
       "frame": [16, 16],
-      "grid": [4, 5],
+      "grid": [4, 6],
       "shape": "pickup_rows",
       "palette": "ui",
-      "rows": ["#4FA3FF", "#E0525A", "#5FE38A", "#E8C15A", "#A36BE0"],
+      "rows": ["#4FA3FF", "#E0525A", "#5FE38A", "#E8C15A", "#A36BE0", "#5FD4C8"],
       "seed": 107
     },
     {

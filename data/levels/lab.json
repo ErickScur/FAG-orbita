@@ -306,6 +306,13 @@
       "id": "lab_vent_02",
       "group": "lab_vents",
       "phase": 1.0
+    },
+    "37,15": {
+      "id": "lab_root_door",
+      "requires_ability": "root_access"
+    },
+    "33,15": {
+      "id": "plate_lab_01"
     }
   },
   "triggers": []

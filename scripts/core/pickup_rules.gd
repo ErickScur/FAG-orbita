@@ -6,15 +6,18 @@ const KIND_REPAIR_KIT: StringName = &"repair_kit"
 const KIND_LOG: StringName = &"log"
 const KIND_RESEARCH: StringName = &"research"
 const KIND_CAPACITOR: StringName = &"capacitor"
+const KIND_ARMOR_PLATE: StringName = &"armor_plate"
 const KINDS: Array[StringName] = [
-	KIND_CELL, KIND_REPAIR_KIT, KIND_LOG, KIND_RESEARCH, KIND_CAPACITOR
+	KIND_CELL, KIND_REPAIR_KIT, KIND_LOG, KIND_RESEARCH, KIND_CAPACITOR, KIND_ARMOR_PLATE
 ]
+const UPGRADE_KINDS: Array[StringName] = [KIND_CAPACITOR, KIND_ARMOR_PLATE]
 const SHEET_ROWS: Dictionary = {
 	KIND_CELL: 0,
 	KIND_REPAIR_KIT: 1,
 	KIND_LOG: 2,
 	KIND_RESEARCH: 3,
 	KIND_CAPACITOR: 4,
+	KIND_ARMOR_PLATE: 5,
 }
 const SEEN_FLAG_PREFIX: String = "seen_kind_"
 const FIRST_TEXT_PREFIX: String = "first_"
@@ -68,7 +71,13 @@ static func amount_for(kind: StringName) -> int:
 			return Balance.REPAIR_KIT_INTEGRITY
 		KIND_CAPACITOR:
 			return int(Balance.CAPACITOR_BONUS)
+		KIND_ARMOR_PLATE:
+			return Balance.ARMOR_PLATE_BONUS
 	return 0
+
+
+static func is_upgrade(kind: StringName) -> bool:
+	return UPGRADE_KINDS.has(kind)
 
 
 static func counts_toward_score(kind: StringName) -> bool:

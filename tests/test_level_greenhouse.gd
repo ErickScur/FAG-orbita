@@ -102,7 +102,7 @@ func test_single_spawn_and_the_expected_cast() -> void:
 	assert_eq(_count_symbol("P"), 1, "exatamente um spawn")
 	assert_eq(_count_symbol("E"), 1, "só a porta de volta ao Núcleo, na entrada (F45)")
 	assert_eq(_count_symbol("T"), 3, "três consoles do mesmo terminal")
-	assert_eq(_count_symbol("|"), 1, "uma porta de energia")
+	assert_eq(_count_symbol("|"), 2, "uma porta de energia e a comporta ROOT da F69")
 	assert_eq(_count_symbol("S"), 3, "três SR-3")
 	assert_eq(_count_symbol("~"), 5, "cinco focos de esporos")
 	assert_eq(_count_symbol("m"), 2, "elevador de carga e gôndola")

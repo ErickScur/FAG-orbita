@@ -68,7 +68,7 @@ func test_capacitor_raises_charge_maximum() -> void:
 	assert_almost_eq(
 		GameState.charge_max, Balance.CHARGE_MAX + Balance.CAPACITOR_BONUS, 0.001, "carga máxima"
 	)
-	assert_almost_eq(GameState.charge, 10.0 + Balance.CAPACITOR_BONUS, 0.001, "carga atual")
+	assert_almost_eq(GameState.charge, GameState.charge_max, 0.001, "o capacitor enche a Carga")
 
 
 func test_capacitor_is_collected_even_with_full_charge() -> void:

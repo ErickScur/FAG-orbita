@@ -1,6 +1,6 @@
 extends TestCase
 
-const LEGEND_CHARS: String = "DTLlrckC|ESM~mgx@obvzXhiY_IVA"
+const LEGEND_CHARS: String = "DTLlrckCB|ESM~mgx@obvzXhiY_IVA"
 const ROOM: String = "#####\n#P  #\n#####"
 
 
@@ -104,3 +104,26 @@ func test_legend_covers_all_entity_chars() -> void:
 	for symbol: String in LEGEND_CHARS:
 		assert_true(LevelBuilder.LEGEND.has(symbol), "legenda tem '%s'" % symbol)
 	assert_eq(LevelBuilder.LEGEND.size(), LEGEND_CHARS.length(), "tamanho da legenda")
+
+
+func test_no_legend_letter_is_declared_twice() -> void:
+	var source: String = FileAccess.get_file_as_string("res://scripts/core/level_builder.gd")
+	var block: String = source.substr(0, source.find("\n}\n"))
+	var pattern := RegEx.create_from_string("(?m)^\\t\"(.)\": \\{")
+	var seen: Dictionary = {}
+	for found: RegExMatch in pattern.search_all(block):
+		var symbol: String = found.get_string(1)
+		assert_false(seen.has(symbol), "letra '%s' declarada duas vezes na legenda" % symbol)
+		seen[symbol] = true
+	assert_eq(seen.size(), LevelBuilder.LEGEND.size(), "cada letra da legenda lida do código")
+	var unique: Dictionary = {}
+	for symbol: String in LEGEND_CHARS:
+		assert_false(unique.has(symbol), "'%s' repetida no teste" % symbol)
+		unique[symbol] = true
+	for symbol: String in LevelParser.TILE_CHARS:
+		assert_false(LevelBuilder.LEGEND.has(symbol), "'%s' é tile e entidade" % symbol)
+
+
+func test_plate_and_coupler_have_their_own_letters() -> void:
+	assert_eq(LevelBuilder.LEGEND["B"]["kind"], &"armor_plate", "B é a placa")
+	assert_true(String(LevelBuilder.LEGEND["A"]["scene"]).ends_with("coupler.tscn"), "A acopla")

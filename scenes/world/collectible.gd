@@ -126,7 +126,10 @@ func collect() -> bool:
 			GameState.repair(Balance.REPAIR_KIT_INTEGRITY)
 			GameState.register_pickup(kind, item_id)
 		PickupRules.KIND_CAPACITOR:
-			GameState.expand_charge_max(Balance.CAPACITOR_BONUS)
+			GameState.install_capacitor()
+			GameState.register_pickup(kind, item_id)
+		PickupRules.KIND_ARMOR_PLATE:
+			GameState.expand_integrity_max(Balance.ARMOR_PLATE_BONUS)
 			GameState.register_pickup(kind, item_id)
 		PickupRules.KIND_LOG:
 			_collect_log()

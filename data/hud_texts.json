@@ -13,7 +13,8 @@
   "toast_objective": "OBJETIVO ATUALIZADO",
   "toast_charge": "+%d CARGA",
   "toast_integrity": "+%d INTEGRIDADE",
-  "toast_capacity": "CAPACIDADE MÁXIMA +%d",
+  "toast_capacity": "CARGA MÁXIMA +%d  %d/%d",
+  "toast_armor": "INTEGRIDADE MÁXIMA +%d  %d/%d",
   "first_cell": "CÉLULA DE ENERGIA",
   "first_cell_hint": "recarrega a Carga do chassi",
   "first_repair_kit": "KIT DE SOLDA",
@@ -23,5 +24,7 @@
   "first_research": "DADO DE PESQUISA",
   "first_research_hint": "pesquisa da tripulação, conta no placar",
   "first_capacitor": "NÚCLEO DE CAPACITOR",
-  "first_capacitor_hint": "aumenta a Carga máxima do chassi"
+  "first_capacitor_hint": "aumenta a Carga máxima do chassi",
+  "first_armor_plate": "PLACA DE BLINDAGEM",
+  "first_armor_plate_hint": "aumenta a Integridade máxima do chassi"
 }

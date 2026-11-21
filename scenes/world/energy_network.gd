@@ -1,6 +1,8 @@
 class_name EnergyNetwork
 extends Node
 
+signal overload_changed(terminal_id: StringName, active: bool)
+
 const ENERGY_DIR: String = "res://data/energy/"
 const POWERED_GROUP: StringName = &"powered"
 const NETWORK_GROUP: StringName = &"energy_network"
@@ -14,6 +16,57 @@ var _snapshots: Dictionary = {}
 
 func _ready() -> void:
 	add_to_group(NETWORK_GROUP)
+
+
+func _process(delta: float) -> void:
+	for terminal_id: StringName in _order:
+		var target: EnergyGrid = grid(terminal_id)
+		if target == null or not target.is_overloaded():
+			continue
+		var shed: Array[StringName] = target.tick_overload(delta)
+		if target.is_overloaded():
+			continue
+		_finish_overload(terminal_id, target, shed)
+
+
+func can_overload(terminal_id: StringName) -> bool:
+	var target: EnergyGrid = grid(terminal_id)
+	if target == null or target.is_overloaded():
+		return false
+	if not GameState.has_ability(UpgradeRules.ROOT_ABILITY):
+		return false
+	return GameState.charge >= Balance.ROOT_OVERLOAD_COST
+
+
+func overload(terminal_id: StringName) -> bool:
+	if not can_overload(terminal_id):
+		AudioManager.play_sfx(&"ui_error")
+		return false
+	if not GameState.spend_charge(Balance.ROOT_OVERLOAD_COST):
+		return false
+	grid(terminal_id).start_overload(Balance.ROOT_OVERLOAD_UNITS, Balance.ROOT_OVERLOAD_TIME)
+	AudioManager.play_sfx(&"power_on")
+	overload_changed.emit(terminal_id, true)
+	return true
+
+
+func end_overload(terminal_id: StringName) -> void:
+	var target: EnergyGrid = grid(terminal_id)
+	if target == null or not target.is_overloaded():
+		return
+	_finish_overload(terminal_id, target, target.end_overload())
+
+
+func is_overloaded(terminal_id: StringName) -> bool:
+	var target: EnergyGrid = grid(terminal_id)
+	return target != null and target.is_overloaded()
+
+
+func overload_left(terminal_id: StringName) -> float:
+	var target: EnergyGrid = grid(terminal_id)
+	if target == null:
+		return 0.0
+	return target.overload_left
 
 
 func load_terminals(ids: Array) -> void:
@@ -94,6 +147,19 @@ func apply_all(terminal_id: StringName, silent: bool) -> void:
 		return
 	for system_id: StringName in target.system_ids():
 		_apply_system(terminal_id, target, system_id, target.is_powered(system_id), silent)
+
+
+func _finish_overload(
+	terminal_id: StringName, target: EnergyGrid, shed: Array[StringName]
+) -> void:
+	for changed: StringName in shed:
+		_apply_system(terminal_id, target, changed, false, false)
+	GameState.energy_states[terminal_id] = target.get_state()
+	for changed: StringName in shed:
+		EventBus.energy_changed.emit(terminal_id, changed, false)
+	if not shed.is_empty():
+		AudioManager.play_sfx(&"power_off")
+	overload_changed.emit(terminal_id, false)
 
 
 func _load_terminal(terminal_id: StringName) -> void:

@@ -17,12 +17,15 @@ var goal_done_text: String = ""
 var intro_bark: StringName = &""
 var verbose: bool = false
 var systems: Array[Dictionary] = []
+var overload_units: int = 0
+var overload_left: float = 0.0
 
 var _goal: Array[StringName] = []
 var _order: Array[StringName] = []
 var _index: Dictionary = {}
 var _powered: Dictionary = {}
 var _initial: Array[StringName] = []
+var _power_order: Array[StringName] = []
 
 
 static func from_dict(data: Dictionary) -> EnergyGrid:
@@ -212,7 +215,47 @@ func used() -> int:
 
 
 func free_units() -> int:
-	return budget - used()
+	return effective_budget() - used()
+
+
+func effective_budget() -> int:
+	return budget + maxi(0, overload_units)
+
+
+func is_overloaded() -> bool:
+	return overload_units > 0
+
+
+func start_overload(units: int, duration: float) -> bool:
+	if units <= 0 or duration <= 0.0 or is_overloaded():
+		return false
+	overload_units = units
+	overload_left = duration
+	return true
+
+
+func tick_overload(delta: float) -> Array[StringName]:
+	var shed: Array[StringName] = []
+	if not is_overloaded():
+		return shed
+	overload_left = maxf(0.0, overload_left - maxf(delta, 0.0))
+	if overload_left > 0.0:
+		return shed
+	return end_overload()
+
+
+func end_overload() -> Array[StringName]:
+	var shed: Array[StringName] = []
+	overload_units = 0
+	overload_left = 0.0
+	while used() > budget:
+		var victim: StringName = _last_sheddable()
+		if victim == &"":
+			break
+		for changed: StringName in power_off(victim):
+			if not shed.has(changed):
+				shed.append(changed)
+	return shed
 
 
 func missing_requirement(system_id: StringName) -> StringName:
@@ -251,6 +294,8 @@ func power_on(system_id: StringName) -> Array[StringName]:
 	if can_power(system_id) != Result.OK:
 		return changed
 	_powered[system_id] = true
+	_power_order.erase(system_id)
+	_power_order.append(system_id)
 	changed.append(system_id)
 	return changed
 
@@ -260,6 +305,7 @@ func power_off(system_id: StringName) -> Array[StringName]:
 	if can_unpower(system_id) != Result.OK:
 		return changed
 	_powered.erase(system_id)
+	_power_order.erase(system_id)
 	changed.append(system_id)
 	var scanning: bool = true
 	while scanning:
@@ -270,6 +316,7 @@ func power_off(system_id: StringName) -> Array[StringName]:
 			if missing_requirement(candidate) == &"":
 				continue
 			_powered.erase(candidate)
+			_power_order.erase(candidate)
 			changed.append(candidate)
 			scanning = true
 	return changed
@@ -298,6 +345,7 @@ func shutdown_candidates(system_id: StringName) -> Array[StringName]:
 		return result
 	var chain: Dictionary = _required_closure(system_id)
 	var saved: Array[StringName] = get_state()
+	var saved_order: Array[StringName] = _power_order.duplicate()
 	for candidate: StringName in _order:
 		if candidate == system_id or not _powered.has(candidate):
 			continue
@@ -307,6 +355,7 @@ func shutdown_candidates(system_id: StringName) -> Array[StringName]:
 		if can_power(system_id) == Result.OK:
 			result.append(candidate)
 		set_state(saved)
+		_power_order = saved_order.duplicate()
 	return result
 
 
@@ -325,6 +374,7 @@ func set_state(ids: Array) -> void:
 		if _index.has(system_id):
 			wanted[system_id] = true
 	_powered.clear()
+	_power_order.clear()
 	var scanning: bool = true
 	while scanning:
 		scanning = false
@@ -334,6 +384,7 @@ func set_state(ids: Array) -> void:
 			if can_power(system_id) != Result.OK:
 				continue
 			_powered[system_id] = true
+			_power_order.append(system_id)
 			scanning = true
 
 
@@ -347,6 +398,14 @@ func initial_state() -> Array[StringName]:
 
 func reset_to_initial() -> void:
 	set_state(_initial)
+
+
+func _last_sheddable() -> StringName:
+	for index: int in range(_power_order.size() - 1, -1, -1):
+		var candidate: StringName = _power_order[index]
+		if _powered.has(candidate) and not is_locked(candidate):
+			return candidate
+	return &""
 
 
 func _add_system(raw: Dictionary) -> void:

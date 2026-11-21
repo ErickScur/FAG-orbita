@@ -195,6 +195,44 @@ func expand_charge_max(value: float) -> void:
 	EventBus.charge_changed.emit(charge, charge_max)
 
 
+func expand_integrity_max(value: int) -> void:
+	if value <= 0:
+		return
+	integrity_max += value
+	integrity = clampi(integrity_max, 0, integrity_max)
+	_died_emitted = false
+	EventBus.integrity_changed.emit(integrity, integrity_max)
+
+
+func install_capacitor() -> void:
+	expand_charge_max(Balance.CAPACITOR_BONUS)
+	charge = charge_max
+	EventBus.charge_changed.emit(charge, charge_max)
+
+
+func capacitors_installed() -> int:
+	return UpgradeRules.capacitors_installed(charge_max)
+
+
+func plates_installed() -> int:
+	return UpgradeRules.plates_installed(integrity_max)
+
+
+func is_root_door_open(door_id: StringName) -> bool:
+	if door_id == &"":
+		return false
+	return bool(flags.get(UpgradeRules.root_door_flag(door_id), false))
+
+
+func open_root_door(door_id: StringName) -> bool:
+	if door_id == &"" or is_root_door_open(door_id):
+		return false
+	if not has_ability(UpgradeRules.ROOT_ABILITY):
+		return false
+	flags[UpgradeRules.root_door_flag(door_id)] = true
+	return true
+
+
 func spend_charge(value: float) -> bool:
 	if value <= 0.0:
 		return true

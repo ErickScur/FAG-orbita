@@ -56,11 +56,11 @@ func test_unknown_kind_is_never_collectable() -> void:
 
 func test_every_kind_has_its_own_sheet_row() -> void:
 	var rows: Dictionary = {}
-	assert_eq(PickupRules.KINDS.size(), 5, "cinco tipos")
+	assert_eq(PickupRules.KINDS.size(), 6, "seis tipos")
 	for kind: StringName in PickupRules.KINDS:
 		var row: int = PickupRules.sheet_row(kind)
 		assert_false(rows.has(row), "linha repetida para %s" % kind)
-		assert_true(row >= 0 and row < 5, "linha dentro da folha para %s" % kind)
+		assert_true(row >= 0 and row < 6, "linha dentro da folha para %s" % kind)
 		rows[row] = kind
 
 

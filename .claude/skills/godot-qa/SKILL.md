@@ -141,3 +141,10 @@ Saída no scratchpad da sessão, nunca no repo.
 - **(F62)** Quem entra numa fase **por uma porta** nasce **no portal de volta** (`<x>_exit_core`),
   não no `P` (ADR-F45-002): nas Docas o MU-7 chega em 1,48, duas colunas antes do `P` (3,48). O marco
   de chegada vale o portal; o `P` só vale para jogo novo direto na cena.
+- **(F66)** **Texto digitado não fecha com contagem fixa de toques**: no epílogo, dois `ui_accept`
+  por parágrafo saíram do trilho porque o 1º parágrafo já tinha terminado de digitar. O gerador do
+  roteiro calcula o tempo de digitação de cada parágrafo a partir do JSON (caracteres ÷ cps).
+- **(F71)** QA que fechava Opções **gravava o `settings.cfg` do humano** (teclas remapeadas,
+  dificuldade). Hoje `Settings.save_settings()` não grava com `--qa`; teste usa caminho próprio.
+- **(F71)** `tools/gates.sh` usa `$TMPDIR/orbita-gates`, **compartilhado entre worktrees**: dois
+  portões ao mesmo tempo misturam logs e relatórios. Rode com `TMPDIR=<scratchpad>/gates-<nome>`.

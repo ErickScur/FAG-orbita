@@ -170,7 +170,7 @@ Top-down por bloco. Dentro de um bloco, top-down, respeitando `depends_on`. **N�
 | F66 | [Sala da escolha, finais alternativos, epílogo por Dados, 40 nomes & créditos](features/F66-finais-epilogo-creditos.md) | FINAL | Fim de jogo alternativo · Missões secundárias | [Jornada 8–9](design/JORNADA-DO-HEROI.md#jh-8) | `[x]` |
 | F67 | [Mapa da estação (TAB e pausa)](features/F67-mapa-estacao.md) | FINAL | Scanner | [GDD-2.8](design/GDD.md#gdd-2-8-telas) | `[x]` |
 | F68 | Status restantes (Superaquecimento, Congelamento, Descarga, Sobrecarga) | FINAL | Efeitos naturais | [GDD-2.6.2-F](design/GDD.md#gdd-2-6-2-f) | `[ ]` |
-| F69 | Upgrades permanentes (Capacitor, Blindagem) & Acesso Root | FINAL | Nível/progressão · Recompensas | [GDD-2.6.3](design/GDD.md#gdd-2-6-3) | `[ ]` |
+| [F69](features/F69-upgrades-root.md) | Upgrades permanentes (Capacitor, Blindagem) & Acesso Root | FINAL | Nível/progressão · Recompensas | [GDD-2.6.3](design/GDD.md#gdd-2-6-3) | `[x]` |
 | F70 | Música adaptativa por camadas | FINAL | Música | [GDD-2.9](design/GDD.md#gdd-2-9-musica) | `[ ]` |
 | F71 | [Remapeamento de teclas & acessibilidade](features/F71-opcoes-acessibilidade.md) | FINAL | — | [GDD-2.8](design/GDD.md#gdd-2-8-telas) | `[x]` |
 | F72 | Apresentação final (5–10 min) | FINAL | Apresentação | [ENTREGAS](ENTREGAS.md#apresentacao) | `[ ]` |

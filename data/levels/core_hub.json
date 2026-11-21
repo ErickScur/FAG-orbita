@@ -218,12 +218,40 @@
     "143,5": {
       "id": "door_reactor",
       "sealed_until_sector": "memory",
-      "sector": "reactor"
+      "sector": "reactor",
+      "requires_ability": "root_access"
     },
     "143,14": {
       "id": "door_memory",
       "sealed_until_sector": "docks",
       "sector": "memory"
+    },
+    "92,2": {
+      "id": "core_mag_01"
+    },
+    "92,3": {
+      "id": "core_mag_02"
+    },
+    "92,4": {
+      "id": "core_mag_03"
+    },
+    "92,5": {
+      "id": "core_mag_04"
+    },
+    "92,6": {
+      "id": "core_mag_05"
+    },
+    "92,7": {
+      "id": "core_mag_06"
+    },
+    "92,8": {
+      "id": "core_mag_07"
+    },
+    "92,9": {
+      "id": "core_mag_08"
+    },
+    "99,4": {
+      "id": "plate_core_01"
     }
   },
   "reserved_exits": {

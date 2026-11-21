@@ -674,8 +674,10 @@ func _draw_pickup(
 			_draw_pickup_log(image, x, y, body, outline, light)
 		3:
 			_draw_pickup_research(image, x, y, body, outline, light)
-		_:
+		4:
 			_draw_pickup_capacitor(image, x, y, body, outline, light)
+		_:
+			_draw_pickup_plate(image, x, y, body, outline, light)
 	if col % 2 == 0:
 		_put(image, x + 2, y + 2, light)
 
@@ -732,6 +734,19 @@ func _draw_pickup_capacitor(
 	_fill_rect(image, x + 7, y + 5, 2, 6, outline)
 	_fill_rect(image, x + 7, y + 6, 2, 4, light)
 	_put(image, x + 5, y + 5, _shade(body, 0.45))
+
+
+func _draw_pickup_plate(
+	image: Image, x: int, y: int, body: Color, outline: Color, light: Color
+) -> void:
+	var steel: Color = Color("6b7f8f")
+	for row: int in range(12):
+		var inset: int = maxi(0, row - 7)
+		_fill_rect(image, x + 2 + inset, y + 2 + row, 12 - inset * 2, 1, outline)
+		if row > 0 and row < 11:
+			_fill_rect(image, x + 3 + inset, y + 2 + row, 10 - inset * 2, 1, steel)
+	_fill_rect(image, x + 3, y + 6, 10, 2, body)
+	_fill_rect(image, x + 5, y + 6, 2, 1, light)
 
 
 func _fill_ring(image: Image, cx: int, cy: int, outer: float, inner: float, color: Color) -> void:

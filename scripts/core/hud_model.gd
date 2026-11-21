@@ -23,6 +23,7 @@ const ABILITY_COSTS: Dictionary = {
 	DashLogic.ABILITY_ID: Balance.DASH_COST,
 	BeamLogic.ABILITY_ID: Balance.BEAM_COST,
 	VacuumRules.ABILITY_ID: Balance.DOUBLE_JUMP_COST,
+	UpgradeRules.ROOT_ABILITY: Balance.ROOT_OVERLOAD_COST,
 }
 const REACTOR_STATE_NONE: StringName = &""
 const REACTOR_STATE_CRITICAL: StringName = &"reactor_critical"
