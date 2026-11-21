@@ -87,6 +87,16 @@ origem).
   regular (senoide de 1 px), linhas primitivas (`draw_polyline` com largura −1) e caixa fora da
   faixa da HUD (y > 32) (F64).
 
+- **"O mundo está por cima da HUD" quase sempre é contraste, não camada**: rótulo sem fundo sobre
+  parede clara, com um objeto do mundo encostado, lê como "atrás". Meça antes de mexer em camada
+  (`tests/qa/hud_*.json`: lâmpada com `z_index` 4096 atrás de cada rótulo e lista de
+  `CanvasLayer` vivos). `z_index` nunca atravessa `CanvasLayer`; luz e `CanvasModulate` só agem na
+  camada 0 por padrão. Legibilidade da m5x7: **sombra 1,1**, não contorno — `outline_size` engrossa
+  o traço de 1 px até virar borrão. Tema local no `Root` da HUD vale só para os filhos (F37).
+- **Duas `CanvasLayer` com o mesmo `layer` empatam pela ordem da árvore**: a escolha de final
+  (50) desenhava por cima da pausa (50). Toda camada vem de `UiLayers`; `test_ui_layers.gd`
+  reprova número solto, camada fora da tabela e empate (F37).
+
 ## Pausa, Tween e diálogo
 - **Tween de nó comum é `TWEEN_PAUSE_BOUND`** e congela durante fala travante (o diálogo pausa a
   árvore). Efeito que acompanha fala: `set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)` (F35).

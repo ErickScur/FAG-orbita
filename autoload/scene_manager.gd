@@ -1,6 +1,6 @@
 extends Node
 
-const OVERLAY_LAYER: int = 100
+const OVERLAY_LAYER: int = UiLayers.SCENE_TRANSITION
 const PAUSE_MENU_SCENE: String = "res://scenes/ui/pause_menu.tscn"
 
 var pending_path: String = ""

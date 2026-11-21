@@ -9,7 +9,7 @@ rubric: ["HUD", "Missões primárias"]
 depends_on: ["F02", "F05", "F13", "F14"]
 unblocks: ["F16", "F17", "F19", "F20", "F23", "F28", "F29"]
 estimate: 2.5h
-last_updated: 2026-09-19
+last_updated: 2026-11-21
 ---
 
 # F15 — HUD & objetivo atual
@@ -320,3 +320,11 @@ Nenhuma.
 - **Onde aparece**: canto **superior** direito, em duas partes — `OBJETIVO:` apagado e o texto em
   ciano, ambos alinhados à direita em fonte 16. O sinal `objective_changed` e o aviso
   `OBJETIVO ATUALIZADO` continuam, só que disparam uma vez por fase.
+
+### 2026-11-21 — HUD sempre acima do mundo e legível sobre fundo claro
+- **Quem**: agente de polimento da HUD · **Motivo**: capturas da F62/F64 com lâmpada, olho do
+  Protocolo e broto "por cima" de `INTEGRIDADE`/`OBJETIVO` e rótulos sem contraste na parede salmão.
+- **Medido**: nada do mundo desenha acima da HUD (camada 10); o defeito era contraste. Decisão e
+  medida no [ADR-F37-007](F37-legibilidade-hud.md#adr-f37-007--ordem-das-camadas-num-lugar-só-e-sombra-de-1-px-nos-rótulos-da-hud).
+- **O que mudou aqui**: `hud.tscn` ganhou um tema local no `Root` (sombra 1,1 em todo `Label`); a
+  camada da HUD passa a ser conferida contra `UiLayers.HUD` por `tests/test_ui_layers.gd`.

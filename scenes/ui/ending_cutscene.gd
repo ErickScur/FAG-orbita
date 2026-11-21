@@ -274,6 +274,7 @@ func _build_world() -> void:
 func _build_overlay(table: Dictionary) -> void:
 	var layer := CanvasLayer.new()
 	layer.name = "Overlay"
+	layer.layer = UiLayers.CUTSCENE_OVERLAY
 	add_child(layer)
 	for top: float in [0.0, SCREEN_SIZE.y - LETTERBOX_HEIGHT]:
 		var bar := ColorRect.new()

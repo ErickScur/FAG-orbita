@@ -85,6 +85,7 @@ scripts/core/
   lock_encounter.gd       class_name LockEncounter — máquina de estados pura do Serralheiro (F63)
   memory_protocol.gd      fases do Protocolo Luto (F64) · erase_front/firewall_logic/recall_logic: estática, firewall e log final
   station_map_model.gd    estado dos setores no mapa (F67) · log_catalog.gd: codex de logs (F33)
+  ui_layers.gd            UiLayers — tabela única das camadas de CanvasLayer (mundo < HUD < sobreposições, F37)
   argos_logic.gd          class_name ArgosLogic — relógio de 90 s, fases, ciclo térmico e lâmpadas de ARGOS (F65)
 scenes/
   boot/                   splash.tscn, loading.tscn

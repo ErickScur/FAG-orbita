@@ -36,6 +36,9 @@ res://scenes/ui/station_map.tscn
 res://scenes/ui/log_archive.tscn
 res://scenes/ui/tutorial_card.tscn
 res://tests/qa/scenes/hud_probe.tscn
+res://tests/qa/scenes/hud_layer_probe_memory.tscn
+res://tests/qa/scenes/hud_layer_probe_hub.tscn
+res://tests/qa/scenes/hud_layer_probe_greenhouse.tscn
 res://tests/qa/scenes/reactor_probe.tscn
 res://tests/qa/scenes/reactor_zero_probe.tscn
 res://scenes/ui/dialogue_box.tscn

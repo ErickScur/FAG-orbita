@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://c0rbitahud"]
+[gd_scene load_steps=7 format=3 uid="uid://c0rbitahud"]
 
 [ext_resource type="Script" path="res://scenes/ui/hud.gd" id="1_hud"]
 [ext_resource type="PackedScene" uid="uid://c0rbitachassis" path="res://scenes/ui/chassis_menu.tscn" id="2_chassis"]
@@ -29,6 +29,12 @@ border_width_bottom = 1
 border_color = Color(0.207843, 0.435294, 0.435294, 1)
 anti_aliasing = false
 
+[sub_resource type="Theme" id="Theme_hud_legibility"]
+Label/colors/font_shadow_color = Color(0.0196078, 0.0313726, 0.0470588, 1)
+Label/constants/shadow_offset_x = 1
+Label/constants/shadow_offset_y = 1
+Label/constants/shadow_outline_size = 0
+
 [node name="HUD" type="CanvasLayer"]
 process_mode = 1
 layer = 10
@@ -41,6 +47,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+theme = SubResource("Theme_hud_legibility")
 
 [node name="Vitals" type="VBoxContainer" parent="Root"]
 layout_mode = 1

@@ -1,7 +1,7 @@
 class_name EarthSignal
 extends CanvasLayer
 
-const LAYER: int = 31
+const LAYER: int = UiLayers.EARTH_SIGNAL
 const BOX_RECT: Rect2 = Rect2(96, 36, 192, 48)
 const WAVE_RECT: Rect2 = Rect2(104, 40, 176, 22)
 const LABEL_RECT: Rect2 = Rect2(96, 64, 192, 16)

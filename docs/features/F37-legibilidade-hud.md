@@ -9,7 +9,7 @@ rubric: ["HUD", "Score de jogador (placar/contadores)", "Missões primárias"]
 depends_on: ["F15", "F20", "F09"]
 unblocks: []
 estimate: 3h
-last_updated: 2026-09-20
+last_updated: 2026-11-21
 ---
 
 # F37 — Legibilidade do HUD e dos coletáveis
@@ -268,6 +268,28 @@ Nenhuma.
   não quebrar a ligação item ↔ contador.
 - **Data:** 2026-09-20
 
+### ADR-F37-007 — Ordem das camadas num lugar só e sombra de 1 px nos rótulos da HUD
+- **Contexto:** nas capturas da F62/F64 parecia que lâmpadas, o olho do Protocolo Luto e um broto
+  das Docas ficavam **por cima** de `INTEGRIDADE`/`CARGA`/`OBJETIVO`, e a parede salmão do Núcleo
+  de Memória deixava os rótulos quase sem contraste. Medido com `tests/qa/hud_*.json` (sonda
+  `tests/qa/scenes/hud_layer_probe.gd`): em hub, Docas, Memória e Estufa escura a lista de
+  `CanvasLayer` vivos não tem nada do mundo acima da HUD (10), e uma lâmpada com
+  `z_index = 4096` e `PointLight2D` posta exatamente atrás de cada rótulo **não** cobre o texto
+  (pixels da cor do rótulo presentes). O defeito era só contraste: texto sem fundo sobre parede
+  clara, com objeto do mundo encostado, lê como "atrás". De quebra, a escolha de final da Sala de
+  Comando usava a camada 50, a mesma da pausa: empate desenha pela ordem da árvore.
+- **Decisão:** (1) toda camada de `CanvasLayer` mora em `UiLayers` (`scripts/core/ui_layers.gd`),
+  com `BELOW_HUD` e `ABOVE_HUD`; scripts usam a constante, `.tscn` guardam o número e
+  `tests/test_ui_layers.gd` reprova camada fora da tabela, número solto em script, empate e ordem
+  errada. A escolha de final foi para 45 (`CONFIRM_DIALOG`, abaixo da pausa). (2) O `Root` da HUD
+  tem um tema local com **sombra de 1 px (1,1) quase preta** para todo `Label`: rótulos, avisos e
+  o objetivo. Contorno (`outline_size` 1 ou 2) foi testado lado a lado e engrossa a m5x7 de traço
+  de 1 px até virar borrão; faixa escura atrás do bloco foi descartada por dar peso à HUD.
+- **Consequências:** fonte continua 16, nenhum elemento novo, a HUD não cresce. Em fundo escuro a
+  sombra some (a Estufa escura fica igual); em fundo claro o texto ganha borda inferior/direita.
+  `OBJETIVO:` continua cinza apagado de propósito (hierarquia), agora legível na parede salmão.
+- **Data:** 2026-11-21
+
 ## 12. Log de evolução
 
 ### 2026-09-20 — Feature criada e implementada
@@ -318,3 +340,23 @@ Nenhuma.
   69 cenas, 0 erro · greps vazios · QA visual de 4 situações lido pelo agente.
 - **Portões**: `--import` limpo · `run_tests.gd` 560 passed, 0 failed · `tools/smoke.sh` 69 cenas,
   0 erro · greps vazios · QA visual dos três estados em `f37_reator.json`.
+
+### 2026-11-21 — HUD sempre acima do mundo e legível sobre fundo claro
+- **Quem**: agente de polimento da HUD · **Motivo**: capturas da F62/F64 (lâmpada, olho do
+  Protocolo Luto e broto "por cima" dos rótulos; parede salmão da Memória sem contraste).
+- **Medida antes de mexer**: `tests/qa/hud_memory.json`, `hud_hub.json`, `hud_greenhouse.json`
+  com a sonda `tests/qa/scenes/hud_layer_probe.gd` — lista os `CanvasLayer` vivos (Memória:
+  parallax −1, tinta 4, vinheta 5, overlay 7, cartão 9, HUD 10, toast 60, fade 100) e põe uma
+  lâmpada `z_index` 4096 com luz atrás de cada rótulo. HUD venceu nas 5 posições (marcos
+  `expect_call ... lamp_under_hud = true`). Causa: contraste, não camada (ADR-F37-007).
+- **O que mudou**: `scripts/core/ui_layers.gd` (`UiLayers`, tabela única de camadas);
+  `memory_overlay.gd`, `memory_tint.gd`, `earth_signal.gd`, `scene_manager.gd`, `command_room.gd`
+  e `ending_cutscene.gd` usam a constante; escolha de final 50 → 45 (empatava com a pausa);
+  `hud.tscn` com tema local no `Root` (sombra 1,1 em todo `Label`).
+- **Testes novos**: `tests/test_ui_layers.gd` (ordem mundo < HUD < sobreposições, sem empate,
+  toda `CanvasLayer` de `.tscn` na tabela, nenhum número solto em script, sombra da HUD) —
+  conferido que reprova com a HUD em 3 e com `const LAYER: int = 31` no sinal da Terra.
+- **QA**: os três roteiros OK antes e depois; capturas comparadas — Memória e Docas legíveis,
+  Estufa escura igual (a sombra some no escuro). Variações lado a lado (sombra, sombra grossa,
+  contorno 2, sombra só embaixo) antes de escolher.
+- **Portões**: `tools/gates.sh` — 1148 passed, 0 failed · 111 cenas no smoke · PORTÕES VERDES.

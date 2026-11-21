@@ -4,7 +4,7 @@ extends CanvasLayer
 const SHADER_PATH: String = "res://scenes/fx/memory_desaturate.gdshader"
 const PARAM_AMOUNT: StringName = &"amount"
 const SCREEN_SIZE: Vector2 = Vector2(384, 216)
-const LAYER: int = 4
+const LAYER: int = UiLayers.MEMORY_TINT
 
 var amount: float = 0.0
 

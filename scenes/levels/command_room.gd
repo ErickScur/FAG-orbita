@@ -5,7 +5,7 @@ const CONFIRM_SCENE: String = "res://scenes/ui/confirm_dialog.tscn"
 const HUD_GROUP: StringName = &"hud"
 const PLAYER_GROUP: StringName = &"player"
 const POWERED_GROUP: StringName = &"powered"
-const DIALOG_LAYER: int = 50
+const DIALOG_LAYER: int = UiLayers.CONFIRM_DIALOG
 
 var _table: Dictionary = {}
 var _busy: bool = false
