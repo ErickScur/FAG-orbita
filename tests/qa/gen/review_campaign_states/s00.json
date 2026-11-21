@@ -1,0 +1,52 @@
+{
+	"saved_at": 1795240259,
+	"state": {
+		"abilities": [
+			"dash",
+			"beam"
+		],
+		"charge": 100.0,
+		"charge_max": 100.0,
+		"checkpoint": {
+			"dock_id": "hab_dock_02",
+			"scene": "res://scenes/levels/core_hub.tscn"
+		},
+		"collected_ids": [
+			"log_core_01",
+			"data_core_01",
+			"log_hab_01"
+		],
+		"current_objective": "Chegar à Estufa",
+		"deaths": 0,
+		"energy_states": {
+			"core_hub": [
+				"door_habitat"
+			]
+		},
+		"flags": {
+			"dlg_core_alarm": true,
+			"dlg_core_wake": true,
+			"dlg_hab_body": true,
+			"reactor_online": true,
+			"seen_kind_log": true,
+			"seen_kind_research": true,
+			"trg_core_t_alarm": true,
+			"trg_core_t_body": true,
+			"visited_core_hub": true
+		},
+		"integrity": 100,
+		"integrity_max": 100,
+		"logs_collected": [
+			"log_core_01",
+			"log_hab_01"
+		],
+		"play_time": 15.066666666667,
+		"reactor_percent": 99.9677777777773,
+		"research_collected": [
+			"data_core_01"
+		],
+		"sectors_restored": [],
+		"version": 1
+	},
+	"version": 1
+}

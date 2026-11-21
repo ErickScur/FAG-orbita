@@ -1,0 +1,112 @@
+{
+	"saved_at": 1795240334,
+	"state": {
+		"abilities": [
+			"dash",
+			"beam",
+			"magnetic_claws",
+			"heat_sink",
+			"heated_core"
+		],
+		"charge": 93.2999999999988,
+		"charge_max": 125.0,
+		"checkpoint": {
+			"dock_id": "core_dock_wing",
+			"scene": "res://scenes/levels/core_hub.tscn"
+		},
+		"collected_ids": [
+			"log_core_01",
+			"data_core_01",
+			"log_hab_01",
+			"data_gh_02",
+			"log_gh_02",
+			"data_lab_01",
+			"kit_lab_02",
+			"capacitor_lab_01",
+			"log_lab_02",
+			"log_lab_01",
+			"data_lab_02",
+			"kit_lab_03",
+			"log_inf_01",
+			"kit_inf_02"
+		],
+		"current_objective": "Chegar às Docas",
+		"deaths": 0,
+		"energy_states": {
+			"core_hub": [
+				"door_habitat"
+			],
+			"greenhouse": [
+				"grow_light",
+				"node_door"
+			],
+			"infirmary": [
+				"quarantine_door",
+				"node_door"
+			],
+			"lab": [
+				"wing_door",
+				"node_door"
+			]
+		},
+		"flags": {
+			"dlg_core_alarm": true,
+			"dlg_core_return": true,
+			"dlg_core_return_infirmary": true,
+			"dlg_core_return_lab": true,
+			"dlg_core_wake": true,
+			"dlg_gh_claws": true,
+			"dlg_gh_enter": true,
+			"dlg_gh_node_room": true,
+			"dlg_gh_restored": true,
+			"dlg_hab_body": true,
+			"dlg_inf_enter": true,
+			"dlg_inf_heated_core": true,
+			"dlg_inf_restored": true,
+			"dlg_lab_enter": true,
+			"dlg_lab_heat_sink": true,
+			"dlg_lab_restored": true,
+			"plant_gh_plant_1": true,
+			"plant_gh_plant_2": true,
+			"reactor_online": true,
+			"secret_lab_secret_01": true,
+			"seen_kind_capacitor": true,
+			"seen_kind_log": true,
+			"seen_kind_repair_kit": true,
+			"seen_kind_research": true,
+			"trg_core_t_alarm": true,
+			"trg_core_t_body": true,
+			"trg_gh_t_node_room": true,
+			"tut_climb": true,
+			"visited_core_hub": true,
+			"visited_greenhouse": true,
+			"visited_infirmary": true,
+			"visited_lab": true
+		},
+		"integrity": 67,
+		"integrity_max": 100,
+		"logs_collected": [
+			"log_core_01",
+			"log_hab_01",
+			"log_gh_02",
+			"log_lab_02",
+			"log_lab_01",
+			"log_inf_01"
+		],
+		"play_time": 350.466666666677,
+		"reactor_percent": 99.9599999999994,
+		"research_collected": [
+			"data_core_01",
+			"data_gh_02",
+			"data_lab_01",
+			"data_lab_02"
+		],
+		"sectors_restored": [
+			"greenhouse",
+			"lab",
+			"infirmary"
+		],
+		"version": 1
+	},
+	"version": 1
+}

@@ -1,0 +1,73 @@
+{
+	"saved_at": 1795240286,
+	"state": {
+		"abilities": [
+			"dash",
+			"beam",
+			"magnetic_claws"
+		],
+		"charge": 100.0,
+		"charge_max": 100.0,
+		"checkpoint": {
+			"dock_id": "hab_dock_02",
+			"scene": "res://scenes/levels/core_hub.tscn"
+		},
+		"collected_ids": [
+			"log_core_01",
+			"data_core_01",
+			"log_hab_01",
+			"data_gh_02",
+			"log_gh_02"
+		],
+		"current_objective": "Chegar ao Laboratório",
+		"deaths": 0,
+		"energy_states": {
+			"core_hub": [
+				"door_habitat"
+			],
+			"greenhouse": [
+				"grow_light",
+				"node_door"
+			]
+		},
+		"flags": {
+			"dlg_core_alarm": true,
+			"dlg_core_return": true,
+			"dlg_core_wake": true,
+			"dlg_gh_claws": true,
+			"dlg_gh_enter": true,
+			"dlg_gh_node_room": true,
+			"dlg_gh_restored": true,
+			"dlg_hab_body": true,
+			"plant_gh_plant_1": true,
+			"plant_gh_plant_2": true,
+			"reactor_online": true,
+			"seen_kind_log": true,
+			"seen_kind_research": true,
+			"trg_core_t_alarm": true,
+			"trg_core_t_body": true,
+			"trg_gh_t_node_room": true,
+			"tut_climb": true,
+			"visited_core_hub": true,
+			"visited_greenhouse": true
+		},
+		"integrity": 66,
+		"integrity_max": 100,
+		"logs_collected": [
+			"log_core_01",
+			"log_hab_01",
+			"log_gh_02"
+		],
+		"play_time": 108.866666666662,
+		"reactor_percent": 99.9599999999994,
+		"research_collected": [
+			"data_core_01",
+			"data_gh_02"
+		],
+		"sectors_restored": [
+			"greenhouse"
+		],
+		"version": 1
+	},
+	"version": 1
+}
