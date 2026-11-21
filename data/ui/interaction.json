@@ -1,0 +1,16 @@
+{
+  "door_root": "ACESSO ROOT",
+  "door_sealed": "PORTA SELADA",
+  "door_root_missing": "SELADA - ACESSO ROOT",
+  "coupler_charge": "SEGURAR PARA ACOPLAR",
+  "coupler_sealed": "ACOPLADOR TRANCADO",
+  "root_coupler_unfed": "ACOPLADOR SEM ENERGIA",
+  "root_coupler_ready": "SOBRECARGA ROOT",
+  "root_coupler_no_root": "SELADO - ACESSO ROOT",
+  "root_coupler_charging": "SOBRECARREGANDO",
+  "root_coupler_done": "ACOPLADOR SOBRECARREGADO",
+  "terminal_console": "ACESSAR TERMINAL",
+  "terminal_node": "RELIGAR NÓ DO SETOR",
+  "terminal_node_done": "NÓ DO SETOR RELIGADO",
+  "terminal_no_power": "TERMINAL SEM ENERGIA"
+}

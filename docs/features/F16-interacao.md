@@ -236,6 +236,18 @@ Nenhuma.
 - **Consequências:** a F19 pluga o `DialogueManager` no `interacted` sem reescrever a cena; a F17 herda de `Interactable` do mesmo jeito.
 - **Data:** 2026-09-19
 
+### ADR-F16-007 — Interagível inerte mostra o estado sem a tecla e perde a disputa
+- **Contexto:** a revisão da campanha achou `[E] PORTA SELADA`, `[E] ACOPLADOR TRANCADO`, `[E] ACOPLADOR SEM ENERGIA`: a tecla prometia uma ação que não acontecia. E a comporta ROOT do Laboratório (painel a meio corpo, prioridade 0) perdia para o log da coluna ao lado: `[E]` reabria o "Log pessoal 12" e a placa 4/4 ficava impossível.
+- **Decisão:** `Interactable.actionable` (padrão `true`). Inerte: `interact()` não emite, o prompt sai sem glifo (`prompt_with`) e a prioridade efetiva vira `InteractionRules.PRIORITY_INERT` (−100), então qualquer interagível que age ganha dele. A comporta ROOT usa `InteractionRules.PRIORITY_GATE` (10) e só é acionável com o Root — sem o Root ela vira estado e o log ao lado continua legível. A escolha de alvo é `Interactable.pick(candidatos, origem)`, usada pelo MU-7 e pelos testes. Os textos de porta, acoplador, acoplador ROOT e terminal moram em `data/ui/interaction.json` (`InteractionRules.text(id)`).
+- **Consequências:** `tests/test_root_door_priority.gd` monta, em toda fase, as entidades a até 4 tiles de cada porta ROOT e prova que, com o Root, o painel vence de −2 a +2 tiles em passos de 2 px (Laboratório: o log disputa e perde); sem o Root, o log do Laboratório vence. Terminal de Distribuição sem energia passou de "sem prompt" para `TERMINAL SEM ENERGIA` sem a tecla.
+- **Data:** 2026-11-21
+
+### ADR-F16-008 — Prompt acima da cabeça do MU-7 (AJ-077)
+- **Contexto:** o `PromptRow` era ancorado no centro inferior (y −36..−18). Com a câmera presa na borda (comporta do Reator no canto do hub) o prompt ficava longe do MU-7; com o MU-7 no pé da tela (arena do Serralheiro, sala de comando) cobria o acoplador e o próprio MU-7.
+- **Decisão:** a HUD acha o MU-7 pelo grupo `player`, lê a posição na tela com `get_global_transform_with_canvas()` e posiciona o `PromptRow` por `InteractionRules.prompt_position(pé, tamanho, tela)`: centrado no MU-7, 40 px acima do pé, preso à tela com 4 px de margem e nunca acima de y = 56 (faixa de Integridade/Carga/objetivo); sem espaço em cima, vai 8 px abaixo do pé. Sem MU-7 na cena, volta ao centro inferior.
+- **Consequências:** `tests/test_interaction_rules.gd` e `tests/test_hud_prompt.gd` provam posição dentro da tela e sem cobrir os 32 px do MU-7 em pé no centro, nos cantos e no topo. GDD-2.8 ganhou a linha "Sobre o MU-7".
+- **Data:** 2026-11-21
+
 ## 12. Log de evolução
 
 > Append-only. Mais novo no fim.
@@ -250,3 +262,22 @@ Nenhuma.
 - **QA visual** (6 capturas lidas pelo agente): longe dos objetos não há prompt e o contador marca "INTERAÇÕES 0"; ao encostar no terminal aparece **`[E] ACESSAR TERMINAL`** no centro inferior; `interact` leva o contador a 1, acende a tela do terminal e **troca o prompt para `[E] LER DE NOVO`** (prova da troca de texto em runtime); andando mais um pouco o prompt vira **`[E] LER REGISTRO`** (objeto de log) sem piscar duas vezes; **no ar o prompt continua visível e o contador não sobe** (acionamento exige `is_on_floor()`); em cima do interagível desabilitado não há prompt nenhum.
 - **Pendências**: o prompt é desenhado por um `Label` da sala de prova — o HUD real é da F15, que escuta `interaction_available`/`interaction_cleared`. O glifo `[X]` foi validado só por teste unitário (`InteractionRules.glyph(true)`), sem controle físico na máquina de QA.
 - **Próximo passo**: F17 (Terminal de Distribuição), F19 (logs/diálogo) e F20 conectam `interacted`.
+
+### 2026-11-21 — Correção da revisão da campanha (grupo A)
+- **Quem**: agente de correção, grupo A (HUD, interação, telas, MU-7).
+- **O que**: comporta ROOT do Laboratório vencia o log ao lado e a placa 4/4 ficava impossível;
+  prompt fixo no centro inferior longe do MU-7 ou cobrindo o acoplador; `[E]` em coisa que não
+  age. Decisões no [ADR-F16-007](#adr-f16-007--interagível-inerte-mostra-o-estado-sem-a-tecla-e-perde-a-disputa)
+  e [ADR-F16-008](#adr-f16-008--prompt-acima-da-cabeça-do-mu-7-aj-077) (AJ-077). Textos de porta,
+  acoplador, acoplador ROOT e terminal foram para `data/ui/interaction.json`.
+- **Testes**: `test_root_door_priority` (toda porta ROOT de toda fase contra o que está ao lado),
+  `test_interaction_rules` (+6: inerte sem tecla, inerte perde, inerte não emite, textos no JSON,
+  posição do prompt, glifo de confirmação), `test_hud_prompt` (prompt dentro da tela e fora dos
+  32 px do MU-7 no centro, cantos e topo).
+- **QA**: `review_campaign_lab_root` 8/8 (estava vermelho em 2): `[E] ACESSO ROOT` acima do MU-7
+  barrado na 38, depois do `E` a comporta abre e o prompt vira `[E] LER REGISTRO`.
+  `f63_serralheiro` 25/25: `[E] SEGURAR PARA ACOPLAR` acima do MU-7, sem cobrir o acoplador;
+  `ACOPLADOR TRANCADO` sem tecla. `f69_c_comporta_reator` 6/6: no canto do hub o prompt fica
+  colado no MU-7 (abaixo do pé, sem espaço em cima), `PORTA SELADA` sem tecla, `[E] ACESSO ROOT`
+  com Root. `f66_semeadura` 23/23: `[E] SEMEADURA` acima da cabeça.
+- **Portões**: `tools/gates.sh` — 1189 passed, 0 failed · 114 cenas no smoke · PORTÕES VERDES.

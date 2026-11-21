@@ -93,6 +93,8 @@ func _draw() -> void:
 func _input(event: InputEvent) -> void:
 	if not is_visible_in_tree():
 		return
+	if InteractionRules.note_device(event) and not _pane_hint.text.is_empty():
+		_pane_hint.text = read_hint()
 	if event.is_action_pressed(&"log_archive"):
 		_consume()
 		close()
@@ -109,6 +111,10 @@ func _input(event: InputEvent) -> void:
 	elif event.is_action_pressed(&"ui_accept"):
 		_consume()
 		open_selected()
+
+
+func read_hint() -> String:
+	return _text(&"read_hint") % InteractionRules.accept_glyph(InteractionRules.using_joypad())
 
 
 func refresh() -> void:
@@ -463,7 +469,7 @@ func _show_pane(entry: Dictionary) -> void:
 	_pane_role.text = String(entry[LogCatalog.KEY_SUBTITLE])
 	var lines: PackedStringArray = entry[LogCatalog.KEY_LINES]
 	_pane_preview.text = lines[0] if not lines.is_empty() else ""
-	_pane_hint.text = _text(&"read_hint")
+	_pane_hint.text = read_hint()
 
 
 func _sector_name(sector_key: StringName) -> String:

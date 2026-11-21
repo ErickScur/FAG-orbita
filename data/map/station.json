@@ -61,6 +61,7 @@
       "name": "NÚCLEO DO REATOR",
       "level": "reactor_core",
       "scene": "res://scenes/levels/reactor_core.tscn",
+      "extra_scenes": ["res://scenes/levels/command_room.tscn"],
       "requires": "memory",
       "requires_ability": "root_access",
       "restored_when": "",

@@ -35,6 +35,7 @@ const CLAW_PROBE_REACH: float = 10.0
 const STEP_FRAMES: Array[int] = [1, 4]
 const DROP_NUDGE: float = 1.0
 const BLINK_INTERVAL: float = 0.1
+const BLINK_DIM_ALPHA: float = 0.4
 const BEAM_FLASH_TIME: float = 0.1
 const BEAM_COLOR: Color = Color("5fe8ff")
 const BEAM_LIGHT_ENERGY: float = 1.2
@@ -86,7 +87,7 @@ var _claw_blocked: bool = false
 var _wall_push: float = 0.0
 var _flashlight_on: bool = false
 var _light_tween: Tween = null
-var _joypad: bool = false
+var _joypad: bool = InteractionRules.using_joypad()
 var _interaction_target: Interactable = null
 var _interaction_prompt: String = ""
 var _jump_assist: JumpAssist = JumpAssist.new(Balance.COYOTE_TIME, Balance.JUMP_BUFFER)
@@ -94,6 +95,8 @@ var _shake_left: float = 0.0
 var _shake_amplitude: float = 0.0
 var _shake_elapsed: float = 0.0
 var _flash_left: float = 0.0
+var _flash_peak: float = 1.0
+var _since_over_time_flash: float = HitFlashRules.OVER_TIME_INTERVAL
 var _flash_material: ShaderMaterial = null
 var _dashing: bool = false
 var _dash_left: float = 0.0
@@ -159,12 +162,10 @@ func _ready() -> void:
 
 
 func _input(event: InputEvent) -> void:
-	var joypad: bool = event is InputEventJoypadButton or event is InputEventJoypadMotion
-	if not joypad and not (event is InputEventKey):
+	InteractionRules.note_device(event)
+	if InteractionRules.using_joypad() == _joypad:
 		return
-	if joypad == _joypad:
-		return
-	_joypad = joypad
+	_joypad = InteractionRules.using_joypad()
 	_interaction_prompt = ""
 
 
@@ -508,23 +509,32 @@ func _update_shake(delta: float) -> void:
 
 
 func _update_flash(delta: float) -> void:
+	_since_over_time_flash += delta
 	if _flash_material == null or _flash_left <= 0.0:
 		return
 	_flash_left = maxf(0.0, _flash_left - delta)
 	var amount: float = 0.0
 	if Balance.HIT_FLASH_TIME > 0.0:
-		amount = clampf(_flash_left / Balance.HIT_FLASH_TIME, 0.0, 1.0)
+		amount = clampf(_flash_left / Balance.HIT_FLASH_TIME, 0.0, 1.0) * _flash_peak
 	_flash_material.set_shader_parameter(FLASH_AMOUNT, amount)
 	if _flash_left > 0.0:
 		_sprite.visible = true
 
 
 func _on_player_damaged(_amount: int) -> void:
-	shake(Balance.SHAKE_DAMAGE)
-	if _flash_material == null:
+	var over_time: bool = GameState.is_damage_over_time()
+	if HitFlashRules.shakes(over_time):
+		shake(Balance.SHAKE_DAMAGE)
+	var peak: float = HitFlashRules.flash_for(over_time, _since_over_time_flash)
+	if peak <= 0.0 or _flash_material == null:
 		return
+	if over_time:
+		_since_over_time_flash = 0.0
+	if _flash_left > 0.0 and _flash_peak > peak:
+		return
+	_flash_peak = peak
 	_flash_left = Balance.HIT_FLASH_TIME
-	_flash_material.set_shader_parameter(FLASH_AMOUNT, 1.0)
+	_flash_material.set_shader_parameter(FLASH_AMOUNT, peak)
 	_sprite.visible = true
 
 
@@ -1040,9 +1050,15 @@ func _update_timers(delta: float) -> void:
 	_blink_timer += delta
 	if _invincible_left <= 0.0:
 		_blink_timer = 0.0
-		_sprite.visible = true
+		_set_blink_alpha(1.0)
 		return
-	_sprite.visible = fmod(_blink_timer, BLINK_INTERVAL * 2.0) < BLINK_INTERVAL
+	var lit: bool = fmod(_blink_timer, BLINK_INTERVAL * 2.0) < BLINK_INTERVAL
+	_set_blink_alpha(1.0 if lit else BLINK_DIM_ALPHA)
+
+
+func _set_blink_alpha(alpha: float) -> void:
+	_sprite.visible = true
+	_sprite.modulate.a = alpha
 
 
 func _movement_blocked() -> bool:
@@ -1204,14 +1220,14 @@ func _update_interaction() -> void:
 	_interaction_target = target
 	var prompt: String = ""
 	if target != null:
-		prompt = InteractionRules.prompt(InteractionRules.glyph(_joypad), target.prompt_text)
+		prompt = target.prompt_with(InteractionRules.glyph(_joypad))
 	if prompt != _interaction_prompt:
 		_interaction_prompt = prompt
 		if prompt.is_empty():
 			EventBus.interaction_cleared.emit()
 		else:
 			EventBus.interaction_available.emit(prompt)
-	if target == null or not is_on_floor():
+	if target == null or not target.is_actionable() or not is_on_floor():
 		return
 	if not Input.is_action_just_pressed(&"interact"):
 		return
@@ -1222,21 +1238,10 @@ func _update_interaction() -> void:
 
 func _pick_interaction_target() -> Interactable:
 	var candidates: Array[Interactable] = []
-	var positions := PackedVector2Array()
-	var enabled := PackedInt32Array()
-	var priorities := PackedInt32Array()
 	for area: Area2D in _sensor.get_overlapping_areas():
-		if not (area is Interactable):
-			continue
-		var candidate: Interactable = area
-		candidates.append(candidate)
-		positions.append(candidate.global_position)
-		enabled.append(1 if candidate.enabled else 0)
-		priorities.append(candidate.interaction_priority)
-	var index: int = InteractionRules.pick_index(positions, enabled, priorities, global_position)
-	if index < 0:
-		return null
-	return candidates[index]
+		if area is Interactable:
+			candidates.append(area as Interactable)
+	return Interactable.pick(candidates, global_position)
 
 
 func _interaction_blocked() -> bool:
@@ -1342,7 +1347,7 @@ func _on_player_died() -> void:
 	_blink_timer = 0.0
 	_damage_accumulator = 0.0
 	_heat_accumulator = 0.0
-	_sprite.visible = true
+	_set_blink_alpha(1.0)
 	_set_flashlight(false)
 	play_action(&"death")
 

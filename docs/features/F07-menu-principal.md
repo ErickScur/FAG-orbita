@@ -184,3 +184,7 @@ Nenhuma.
 - **Portões**: `--import` limpo · 99 testes (91 antigos + 6 de `test_difficulty_text` + 2 de `test_scene_paths`) · smoke 12/12 · varreduras 3D e de comentários vazias.
 - **QA visual** (`tests/qa/f07_menu.json`, janela real, `--qa-scale=3`): `a_menu_foco_inicial` mostra logo, espaço em parallax, CONTINUAR cinza, foco ciano em NOVO SISTEMA e "DEMO v0.1"; `a2_menu_foco_opcoes` confirma a navegação por ↓; `b3_voltou_ao_menu` mostra o foco de volta em OPÇÕES depois de fechar as opções; `a3_novo_sistema` mostra a troca de cena.
 - **Próximo passo**: quando a [F28](F28-fase-nucleo-central.md) criar `core_hub.tscn`, conferir que o loading "NÚCLEO CENTRAL" aparece (ADR-F07-003) e marcar o critério que ficou `[~]`.
+
+### 2026-11-21 — Correção da revisão da campanha (grupo A)
+- **Versão**: "DEMO v0.1" virou `v1.0`, lida de `data/ui/main_menu.json` (`main_menu.gd`
+  `game_version()`), um lugar só. Teste em `tests/test_hud_prompt.gd`.

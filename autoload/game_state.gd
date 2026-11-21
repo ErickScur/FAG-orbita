@@ -28,6 +28,7 @@ var _dialogue_active: bool = false
 var _log_open: bool = false
 var _cutscene_active: bool = false
 var _died_emitted: bool = false
+var _dealing_over_time: bool = false
 var _critical: bool = false
 var _alarm_left: float = 0.0
 var _game_over_sent: bool = false
@@ -159,8 +160,14 @@ func apply_damage_over_time(per_second: float, delta: float, accumulator: float)
 	var rate: float = per_second * Settings.damage_multiplier()
 	var dealt: Vector2 = Vitals.accumulate(accumulator, rate, delta)
 	if dealt.x > 0.0:
+		_dealing_over_time = true
 		_deal_damage(int(dealt.x))
+		_dealing_over_time = false
 	return dealt.y
+
+
+func is_damage_over_time() -> bool:
+	return _dealing_over_time
 
 
 func revive() -> void:

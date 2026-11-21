@@ -269,7 +269,7 @@ func _open_overlay(path: String, return_button: Button) -> void:
 
 func _on_overlay_closed(return_button: Button) -> void:
 	if _direct_overlay:
-		close.call_deferred()
+		close()
 		return
 	return_button.grab_focus.call_deferred()
 

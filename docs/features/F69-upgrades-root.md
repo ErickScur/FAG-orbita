@@ -298,3 +298,13 @@ Nenhuma.
   abre com `[E] ACESSO ROOT` → placa → `plates_installed` 4, Integridade máxima 200, HUD com 8
   células, Terminal do Chassi `4/4 200/200`). Capturas lidas.
 - **Pendência fechada**: a 4ª Placa. Continua: a F64 dá o Root (`unlock_ability`).
+
+### 2026-11-21 — Correção da revisão da campanha (grupo A)
+- **Porta ROOT do Laboratório**: o painel ROOT (prioridade 0, meio corpo acima do pé) perdia para o
+  log `log_lab_02` na coluna 39 com o MU-7 barrado na 38; `[E]` reabria o "Log pessoal 12" e a
+  placa 4/4 ficava impossível. Agora o painel tem `InteractionRules.PRIORITY_GATE` quando abrível e
+  vira estado sem tecla (`PORTA SELADA`) sem o Root, deixando o log legível.
+  `tests/test_root_door_priority.gd` cobre todas as portas ROOT das fases. QA:
+  `review_campaign_lab_root` 8/8, `f69_b_porta_root_estufa` 8/8, `f69_f_placa_docas` 9/9,
+  `f69_c_comporta_reator` 6/6.
+- **Acoplador ROOT**: `ACOPLADOR SEM ENERGIA` e `SELADO - ACESSO ROOT` sem `[E]` (não agem).

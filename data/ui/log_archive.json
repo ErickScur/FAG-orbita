@@ -6,7 +6,7 @@
   "unknown_author": "NÃO ENCONTRADOS",
   "missing_title": "???",
   "missing_body": "REGISTRO AUSENTE. CONTINUE PROCURANDO.",
-  "read_hint": "[ENTER] LER",
+  "read_hint": "%s LER",
   "empty": "NENHUM REGISTRO NO ARQUIVO.",
   "footer_list": "[CIMA/BAIXO] LOG  [LADOS] AGRUPAR  [ESC] VOLTAR",
   "footer_reader": "[CIMA/BAIXO] ROLAR  [ESC] LISTA"

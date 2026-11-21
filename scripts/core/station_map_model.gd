@@ -12,6 +12,7 @@ const KEY_ID: String = "id"
 const KEY_NAME: String = "name"
 const KEY_LEVEL: String = "level"
 const KEY_SCENE: String = "scene"
+const KEY_EXTRA_SCENES: String = "extra_scenes"
 const KEY_REQUIRES: String = "requires"
 const KEY_REQUIRES_ABILITY: String = "requires_ability"
 const KEY_RESTORED_WHEN: String = "restored_when"
@@ -120,8 +121,12 @@ static func sealed_by_ability_only(sector: Dictionary, snap: Dictionary) -> bool
 
 
 static func is_current(sector: Dictionary, snap: Dictionary) -> bool:
-	var scene: String = sector[KEY_SCENE]
-	return not scene.is_empty() and scene == String(snap.get(SNAP_CURRENT, ""))
+	var current: String = String(snap.get(SNAP_CURRENT, ""))
+	if current.is_empty():
+		return false
+	if String(sector[KEY_SCENE]) == current:
+		return true
+	return (sector.get(KEY_EXTRA_SCENES, PackedStringArray()) as PackedStringArray).has(current)
 
 
 static func was_visited(sector: Dictionary, snap: Dictionary, logs: Dictionary) -> bool:
@@ -271,11 +276,20 @@ static func _normalized(raw: Dictionary) -> Dictionary:
 		KEY_NAME: String(raw.get(KEY_NAME, "")),
 		KEY_LEVEL: StringName(String(raw.get(KEY_LEVEL, raw.get(KEY_ID, "")))),
 		KEY_SCENE: String(raw.get(KEY_SCENE, "")),
+		KEY_EXTRA_SCENES: _scene_list(raw.get(KEY_EXTRA_SCENES, [])),
 		KEY_REQUIRES: StringName(String(raw.get(KEY_REQUIRES, ""))),
 		KEY_REQUIRES_ABILITY: StringName(String(raw.get(KEY_REQUIRES_ABILITY, ""))),
 		KEY_RESTORED_WHEN: StringName(String(raw.get(KEY_RESTORED_WHEN, ""))),
 		KEY_CELL: cell,
 	}
+
+
+static func _scene_list(values: Variant) -> PackedStringArray:
+	var result := PackedStringArray()
+	if values is Array:
+		for value: Variant in values as Array:
+			result.append(String(value))
+	return result
 
 
 static func _names(values: Variant) -> Array[StringName]:

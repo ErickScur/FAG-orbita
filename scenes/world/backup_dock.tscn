@@ -10,6 +10,7 @@ script = ExtResource("1_dock")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -24)
+z_index = -1
 
 [node name="ChargeZone" type="Area2D" parent="."]
 collision_layer = 8

@@ -317,3 +317,11 @@ Nenhuma.
     de 8×8 recolorido; uma folha de FX com poeira, faísca e anel de energia daria outro nível.
   - [SPR-MU7](../ASSETS.md#spr-mu7): a cadência foi ajustada dentro do que a folha permite
     (2 a 6 quadros por ação); `land` com 2 quadros não tem como dar squash de verdade.
+
+### 2026-11-21 — Correção da revisão da campanha (grupo A)
+- **Flash de dano só em golpe**: sob dano contínuo (vácuo, calor do Reator, piso elétrico) o
+  flash cheio disparava a cada tick e o MU-7 virava silhueta branca. `GameState` marca o dano
+  por tempo (`is_damage_over_time()`, verdadeiro só durante o sinal `player_damaged` do tick) e
+  `HitFlashRules` decide: golpe = flash cheio + tremor; contínuo = pulso de 0,35 a cada 0,6 s, sem
+  tremor. Testes `test_hit_flash.gd` (regra, marca do `GameState`, MU-7 sob 30/s nunca passa de
+  0,35, golpe ainda dá 1,0).

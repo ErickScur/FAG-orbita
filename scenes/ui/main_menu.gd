@@ -9,6 +9,7 @@ const ARCHIVE_SCENE: String = "res://scenes/ui/log_archive.tscn"
 const LOGO_PATH: String = "res://assets/ui/logo.png"
 const BACKDROP_PATH: String = "res://assets/backgrounds/menu_backdrop.png"
 const COMPLETED_MARK_COLOR: Color = Color(0.541176, 0.607843, 0.658824, 0.8)
+const TEXTS_PATH: String = "res://data/ui/main_menu.json"
 
 @export var new_game_question: String = ""
 @export var corrupted_message: String = ""
@@ -22,11 +23,13 @@ const COMPLETED_MARK_COLOR: Color = Color(0.541176, 0.607843, 0.658824, 0.8)
 @onready var archive_button: Button = %ArchiveButton
 @onready var quit_button: Button = %QuitButton
 @onready var toast: Label = %Toast
+@onready var version_label: Label = %Version
 @onready var toast_timer: Timer = %ToastTimer
 @onready var overlay: Control = %Overlay
 
 
 func _ready() -> void:
+	version_label.text = game_version()
 	_apply_backdrop()
 	_apply_logo()
 	_show_completed_mark()
@@ -219,3 +222,7 @@ func _show_completed_mark() -> void:
 	mark.add_theme_color_override("font_color", COMPLETED_MARK_COLOR)
 	add_child(mark)
 	move_child(mark, overlay.get_index())
+
+
+static func game_version() -> String:
+	return HudModel.text_for(&"version", HudModel.load_texts(TEXTS_PATH))

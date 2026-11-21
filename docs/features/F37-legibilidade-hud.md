@@ -360,3 +360,12 @@ Nenhuma.
   Estufa escura igual (a sombra some no escuro). Variações lado a lado (sombra, sombra grossa,
   contorno 2, sombra só embaixo) antes de escolher.
 - **Portões**: `tools/gates.sh` — 1148 passed, 0 failed · 111 cenas no smoke · PORTÕES VERDES.
+
+### 2026-11-21 — Correção da revisão da campanha (grupo A)
+- **Objetivo sobre cenário claro** (achado da revisão no hub, "Ir ao Núcleo de Memória" sobre a
+  tela ROOT): conferido com o roteiro novo `tests/qa/f37_objetivo_sobre_root.json` (4/4) no mesmo
+  ponto, depois da sombra 1,1 do ADR-F37-007. Captura ampliada: legível sobre a parede e os
+  quadros vermelhos da comporta; nada reforçado (HUD não cresce, fonte 16).
+- **Prompt de interação** saiu do centro inferior para cima da cabeça do MU-7 (AJ-077,
+  [ADR-F16-008](F16-interacao.md#adr-f16-008--prompt-acima-da-cabeça-do-mu-7-aj-077)); nunca sobe
+  acima de y = 56, a faixa de Integridade/Carga/objetivo.

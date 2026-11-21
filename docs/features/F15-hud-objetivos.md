@@ -328,3 +328,9 @@ Nenhuma.
   medida no [ADR-F37-007](F37-legibilidade-hud.md#adr-f37-007--ordem-das-camadas-num-lugar-só-e-sombra-de-1-px-nos-rótulos-da-hud).
 - **O que mudou aqui**: `hud.tscn` ganhou um tema local no `Root` (sombra 1,1 em todo `Label`); a
   camada da HUD passa a ser conferida contra `UiLayers.HUD` por `tests/test_ui_layers.gd`.
+
+### 2026-11-21 — Correção da revisão da campanha (grupo A)
+- **Prompt**: `PromptRow` deixou de ser ancorado no centro inferior; a HUD o posiciona todo
+  quadro acima do MU-7 (`InteractionRules.prompt_position`, grupo `player`), preso à tela. Sem
+  MU-7 na cena volta ao centro inferior. `hud.prompt_rect()`/`prompt_visible()` para teste.
+  Ver [ADR-F16-008](F16-interacao.md#adr-f16-008--prompt-acima-da-cabeça-do-mu-7-aj-077) e AJ-077.

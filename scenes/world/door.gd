@@ -27,9 +27,9 @@ const ROOT_TINT: Color = Color("c49bff")
 const ROOT_PLATE_OFFSET: Vector2 = Vector2(0.0, -30.0)
 const ROOT_PANEL_SIZE: Vector2 = Vector2(32.0, 48.0)
 const ROOT_PANEL_LAYER: int = 8
-const PROMPT_ROOT: String = "ACESSO ROOT"
-const PROMPT_SEALED: String = "PORTA SELADA"
-const PROMPT_ROOT_MISSING: String = "SELADA - ACESSO ROOT"
+const PROMPT_ROOT: StringName = &"door_root"
+const PROMPT_SEALED: StringName = &"door_sealed"
+const PROMPT_ROOT_MISSING: StringName = &"door_root_missing"
 
 @export var terminal_id: StringName = &""
 @export var system_id: StringName = &""
@@ -151,7 +151,8 @@ func try_root_access() -> bool:
 	if not GameState.open_root_door(door_id):
 		AudioManager.play_sfx(&"ui_error")
 		if _root_panel != null:
-			_root_panel.set_prompt(PROMPT_ROOT_MISSING)
+			_root_panel.set_prompt(InteractionRules.text(PROMPT_ROOT_MISSING))
+			_root_panel.set_actionable(false)
 		return false
 	_root_locked = false
 	_held_open = true
@@ -245,6 +246,7 @@ func _apply_root_visuals() -> void:
 		_root_panel = Interactable.new()
 		_root_panel.name = "RootPanel"
 		_root_panel.collision_layer = ROOT_PANEL_LAYER
+		_root_panel.interaction_priority = InteractionRules.PRIORITY_GATE
 		_root_panel.position = Vector2(0.0, -ROOT_PANEL_SIZE.y * 0.5)
 		var shape := CollisionShape2D.new()
 		var rectangle := RectangleShape2D.new()
@@ -263,7 +265,8 @@ func _refresh_root_prompt() -> void:
 	if _root_panel == null:
 		return
 	_root_panel.set_enabled(not sealed)
-	_root_panel.set_prompt(PROMPT_ROOT if unlocked else PROMPT_SEALED)
+	_root_panel.set_actionable(unlocked)
+	_root_panel.set_prompt(InteractionRules.text(PROMPT_ROOT if unlocked else PROMPT_SEALED))
 
 
 func _clear_root_visuals() -> void:

@@ -23,6 +23,8 @@ const VITALS_SLOT_WIDTH: int = 72
 const CELL_ART_REGION: Rect2i = Rect2i(3, 0, 9, 16)
 const TOAST_ROW_HEIGHT: float = 16.0
 const TOAST_HINT_COLOR: Color = Color(0.541176, 0.607843, 0.658824)
+const PLAYER_GROUP: StringName = &"player"
+const PROMPT_FALLBACK_BOTTOM: float = 36.0
 const REACTOR_STATE_COLORS: Dictionary = {
 	HudModel.REACTOR_STATE_CRITICAL: Color(1.0, 0.360784, 0.360784),
 	HudModel.REACTOR_STATE_NO_TIMER: Color(0.372549, 0.831373, 0.784314),
@@ -85,6 +87,31 @@ func _process(delta: float) -> void:
 	_update_flash(delta)
 	_update_reactor_visibility()
 	_update_reactor_state_text()
+	_place_prompt()
+
+
+func prompt_rect() -> Rect2:
+	return Rect2(_prompt_row.position, _prompt_row.size)
+
+
+func prompt_visible() -> bool:
+	return _prompt_row.visible
+
+
+func _place_prompt() -> void:
+	if not _prompt_row.visible:
+		return
+	var size: Vector2 = _prompt_row.get_combined_minimum_size()
+	_prompt_row.size = size
+	var screen: Vector2 = get_viewport().get_visible_rect().size
+	var player: Node2D = get_tree().get_first_node_in_group(PLAYER_GROUP) as Node2D
+	if player == null:
+		_prompt_row.position = Vector2(
+			roundf((screen.x - size.x) * 0.5), screen.y - PROMPT_FALLBACK_BOTTOM
+		)
+		return
+	var anchor: Vector2 = player.get_global_transform_with_canvas().origin
+	_prompt_row.position = InteractionRules.prompt_position(anchor, size, screen)
 
 
 func _reactor_should_show() -> bool:
@@ -496,6 +523,7 @@ func _on_interaction_cleared() -> void:
 func _refresh_prompt() -> void:
 	_prompt.text = _prompt_text
 	_prompt_row.visible = not _prompt_text.is_empty() and not _dialogue_active
+	_place_prompt()
 
 
 func _on_dialogue_started() -> void:

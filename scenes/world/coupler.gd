@@ -20,8 +20,8 @@ const GLOW_ENERGY: Dictionary = {
 }
 const SOCKET_LAYER: int = 8
 const SOCKET_SIZE: Vector2 = Vector2(24.0, 28.0)
-const PROMPT_CHARGE: String = "SEGURAR PARA ACOPLAR"
-const PROMPT_SEALED: String = "ACOPLADOR TRANCADO"
+const PROMPT_CHARGE: StringName = &"coupler_charge"
+const PROMPT_SEALED: StringName = &"coupler_sealed"
 const BLINK_HZ: float = 2.0
 const ARMED_GLOW: float = 0.35
 const CHARGE_GLOW_MIN: float = 0.3
@@ -173,7 +173,7 @@ func _build_socket() -> void:
 	_socket = Interactable.new()
 	_socket.name = "Socket"
 	_socket.collision_layer = SOCKET_LAYER
-	_socket.prompt_text = PROMPT_CHARGE
+	_socket.prompt_text = InteractionRules.text(PROMPT_CHARGE)
 	_socket.enabled = false
 	var shape := CollisionShape2D.new()
 	var box := RectangleShape2D.new()
@@ -200,7 +200,10 @@ func _refresh_socket() -> void:
 	if _socket == null:
 		return
 	_socket.set_enabled(_armed and state != State.POWERED)
-	_socket.set_prompt(PROMPT_SEALED if state == State.SEALED else PROMPT_CHARGE)
+	_socket.set_actionable(state != State.SEALED)
+	_socket.set_prompt(
+		InteractionRules.text(PROMPT_SEALED if state == State.SEALED else PROMPT_CHARGE)
+	)
 
 
 func _refresh_look() -> void:

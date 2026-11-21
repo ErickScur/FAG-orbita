@@ -122,6 +122,11 @@ O modelo é generoso com energia (toda porta aberta, toda planta crescida, garra
   até o teto: fechar só a célula do `|` no modelo deixou o MU-7 "passar por cima" da porta ROOT do
   Laboratório. O modelo de alcançabilidade fecha a coluna inteira (`_close_gate`); porta nova com
   teto alto confira com `tools/level_reach.gd`.
+- **(revisão da campanha)** **Interativo colado numa porta ROOT disputa o `[E]`**: o log na coluna
+  39 do Laboratório roubava o `[E]` da comporta (37) com o MU-7 barrado na 38, e a placa 4/4 ficou
+  impossível. O painel ROOT abrível tem `PRIORITY_GATE` e `tests/test_root_door_priority.gd` monta
+  cada porta ROOT de toda fase com o que estiver a 4 tiles e prova que ela vence; fase nova com
+  porta ROOT já entra nesse teste.
 - **(F69)** **Letra de legenda é de uma entidade só**: F62 e F69 pegaram o `A` em paralelo e o
   dicionário `LEGEND` ficou com a chave duas vezes, sem erro (o acoplador venceu). Hoje
   `test_no_legend_letter_is_declared_twice` lê o código e reprova; em fase nova, confira a

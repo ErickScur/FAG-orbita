@@ -222,3 +222,10 @@ Nenhuma.
   estável**: eventos do mesmo quadro rodavam fora da ordem do roteiro (`new_game` depois do
   `from_dict` apagava o checkpoint). Agora `QAMarks.ordered_events` desempata pela posição no
   roteiro; teste `test_events_in_the_same_frame_keep_the_script_order`.
+
+### 2026-11-21 — Correção da revisão da campanha (grupo A)
+- **Sala de comando no mapa**: dentro dela o mapa marcava "NÚCLEO CENTRAL — VOCÊ ESTÁ AQUI"
+  (nenhum setor tinha a cena). O setor do Reator ganhou `extra_scenes` em
+  `data/map/station.json` com a sala; `StationMapModel.is_current` confere a lista. Teste
+  `test_the_command_room_counts_as_the_reactor_on_the_map`; QA `review_campaign_telas_sala` 8/8,
+  `sala_2_mapa` mostra NÚCLEO DO REATOR — VOCÊ ESTÁ AQUI.

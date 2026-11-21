@@ -257,3 +257,17 @@ func _neighbor(sector_id: StringName, direction: Vector2i) -> StringName:
 
 func _width(font: Font, text: String) -> float:
 	return font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, FONT_SIZE).x
+
+
+func test_the_command_room_counts_as_the_reactor_on_the_map() -> void:
+	var snap: Dictionary = _snap(
+		[&"greenhouse", &"lab", &"infirmary", &"docks", &"memory", &"reactor"],
+		{},
+		[],
+		ScenePaths.COMMAND_ROOM
+	)
+	assert_eq(StationMapModel.current_sector(_sectors, snap), &"reactor", "sala é do Reator")
+	assert_false(
+		StationMapModel.is_current(StationMapModel.find(_sectors, &"core_hub"), snap),
+		"o Núcleo Central não diz VOCÊ ESTÁ AQUI na sala de comando"
+	)

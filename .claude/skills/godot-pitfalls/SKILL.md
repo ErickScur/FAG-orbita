@@ -111,6 +111,18 @@ origem).
   não para qualquer tecla — senão o cartão de tutorial nunca completa numa fase com fala
   ambiente (F36).
 
+- **Despausar a árvore dentro de `call_deferred` com a arena do ARGOS viva dá
+  `ERROR: Condition "p_elem->_root" is true (self_list.h:46)`** (2× por vez, a partir do 3º ciclo
+  abre/fecha do arquivo pelo `L`; o caminho pela pausa, que despausa no `_unhandled_input`, nunca
+  dava). O `PauseMenu` fechava o arquivo direto com `close.call_deferred()`; hoje fecha na hora.
+  Mude `get_tree().paused` no fluxo de input, não no flush de chamadas adiadas; repro em
+  `tests/qa/review_campaign_telas_reator.json` (o `stderr` vai para o fim do `godot.log` do QA:
+  para saber o quadro do erro leia o `user://logs/godot.log`, que intercala na ordem) (revisão da
+  campanha).
+- **Pisca de invencibilidade por `visible` some com o MU-7 dentro da doca**: a captura caiu no
+  quadro apagado e a revisão leu "renasce escondido atrás da doca". O pisca esmaece
+  (`modulate.a` 0,4), nunca esconde; flash branco só em golpe — dano contínuo dá um pulso fraco a
+  cada 0,6 s (`HitFlashRules`, `GameState.is_damage_over_time()`) (revisão da campanha).
 - Status aplicado por fonte de dano tem de passar por `GameState.apply_status`: o antigo
   `DamageArea.notify_status()` só emitia o sinal, a HUD mostrava o ícone e o efeito nunca valia
   (F68; `test_notify_status_goes_through_game_state`).

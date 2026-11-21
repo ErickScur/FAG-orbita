@@ -9,10 +9,10 @@ const COLUMN_ON: int = 1
 const COLUMN_ACTIVE: int = 2
 const ROLE_CONSOLE: StringName = &"console"
 const ROLE_SECTOR_NODE: StringName = &"sector_node"
-const PROMPT_CONSOLE: String = "ACESSAR TERMINAL"
-const PROMPT_NODE: String = "RELIGAR NÓ DO SETOR"
-const PROMPT_NODE_DONE: String = "NÓ DO SETOR RELIGADO"
-const PROMPT_NO_POWER: String = "TERMINAL SEM ENERGIA"
+const PROMPT_CONSOLE: StringName = &"terminal_console"
+const PROMPT_NODE: StringName = &"terminal_node"
+const PROMPT_NODE_DONE: StringName = &"terminal_node_done"
+const PROMPT_NO_POWER: StringName = &"terminal_no_power"
 
 @export var terminal_id: StringName = &""
 @export var role: StringName = &"console"
@@ -85,12 +85,14 @@ func _refresh() -> void:
 	if is_sector_node():
 		_restored = GameState.sectors_restored.has(sector_id)
 		enabled = true
-		prompt_text = PROMPT_NODE_DONE if _restored else PROMPT_NODE
+		set_actionable(not _restored)
+		prompt_text = InteractionRules.text(PROMPT_NODE_DONE if _restored else PROMPT_NODE)
 		_apply_column(COLUMN_ON if _restored else COLUMN_OFF)
 		return
 	var live: bool = _has_grid()
-	enabled = live
-	prompt_text = PROMPT_CONSOLE if live else PROMPT_NO_POWER
+	enabled = true
+	set_actionable(live)
+	prompt_text = InteractionRules.text(PROMPT_CONSOLE if live else PROMPT_NO_POWER)
 	_apply_column(COLUMN_ON if live else COLUMN_OFF)
 
 
@@ -120,7 +122,8 @@ func _restore_sector() -> void:
 	if _restored or sector_id == &"":
 		return
 	_restored = true
-	prompt_text = PROMPT_NODE_DONE
+	set_actionable(false)
+	prompt_text = InteractionRules.text(PROMPT_NODE_DONE)
 	_apply_column(COLUMN_ON)
 	if not GameState.sectors_restored.has(sector_id):
 		GameState.sectors_restored.append(sector_id)

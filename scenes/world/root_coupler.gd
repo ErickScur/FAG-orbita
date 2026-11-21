@@ -17,11 +17,11 @@ const ROOT_COLOR: Color = Color("c08cff")
 const FED_ENERGY: float = 0.9
 const CHARGING_ENERGY: float = 1.4
 const BURNT_ENERGY: float = 0.5
-const PROMPT_UNFED: String = "ACOPLADOR SEM ENERGIA"
-const PROMPT_READY: String = "SOBRECARGA ROOT"
-const PROMPT_NO_ROOT: String = "SELADO - ACESSO ROOT"
-const PROMPT_CHARGING: String = "SOBRECARREGANDO"
-const PROMPT_DONE: String = "ACOPLADOR SOBRECARREGADO"
+const PROMPT_UNFED: StringName = &"root_coupler_unfed"
+const PROMPT_READY: StringName = &"root_coupler_ready"
+const PROMPT_NO_ROOT: StringName = &"root_coupler_no_root"
+const PROMPT_CHARGING: StringName = &"root_coupler_charging"
+const PROMPT_DONE: StringName = &"root_coupler_done"
 
 var _panel: Interactable = null
 var _charger: Node2D = null
@@ -198,16 +198,17 @@ func _refresh_panel() -> void:
 	if _panel == null:
 		return
 	_panel.set_enabled(not _burnt and state != State.CHARGING)
+	var prompt_id: StringName = PROMPT_READY
 	if _burnt:
-		_panel.set_prompt(PROMPT_DONE)
+		prompt_id = PROMPT_DONE
 	elif state == State.CHARGING:
-		_panel.set_prompt(PROMPT_CHARGING)
+		prompt_id = PROMPT_CHARGING
 	elif not powered:
-		_panel.set_prompt(PROMPT_UNFED)
+		prompt_id = PROMPT_UNFED
 	elif not _has_root():
-		_panel.set_prompt(PROMPT_NO_ROOT)
-	else:
-		_panel.set_prompt(PROMPT_READY)
+		prompt_id = PROMPT_NO_ROOT
+	_panel.set_actionable(prompt_id == PROMPT_READY)
+	_panel.set_prompt(InteractionRules.text(prompt_id))
 
 
 func _on_panel_interacted(actor: Node) -> void:

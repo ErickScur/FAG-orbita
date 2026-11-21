@@ -324,3 +324,11 @@ Nenhuma.
 - **QA visual** (11 capturas lidas pelo agente): doca recarrega 42→47 de Carga em 1 s (`CHARGE_DOCK_REGEN`) com o toast "BACKUP SALVO"; contato tira **exatamente 10** em Normal e empurra o chassi para trás no ar (X 194→193 subindo, animação `hurt`); sprite pisca e a Integridade fica em 90 durante toda a invencibilidade; área de dano por segundo leva 79→69 em 2 s (`SPORE_DPS = 5`); queda no poço → tela "SINAL DO CHASSI PERDIDO"; respawn **na doca** (X 64) com 50 de Integridade (54 já com o reparo da doca), Carga 100 e MORTES 1; 3 s parado na doca: 54→84 (`DOCK_REPAIR_RATE = 10`).
 - **Pendências**: a zona de morte da F21 (`level_base.gd`) usa `apply_damage(integrity_max)` — no Fácil (×0,5) isso **não** mata; o contrato desta feature é `integrity_max * 2` (usado na sala de prova). Reportado à F21.
 - **Próximo passo**: F14 aplica os −3% de reator; F15 desenha células e barra; F20 usa `repair()`/`add_charge()`.
+
+### 2026-11-21 — Correção da revisão da campanha (grupo A)
+- **"Renasce escondido atrás da doca"**: medido com marco no roteiro da morte do Serralheiro
+  (`AnimatedSprite2D.is_visible` = false no quadro 1200): era o pisca da invencibilidade
+  (`visible` alternando) caindo no quadro apagado, com o MU-7 inteiro dentro da doca. O pisca
+  agora esmaece (`modulate.a` 0,4) e nunca esconde; a doca desenha em `z_index` −1, atrás do MU-7
+  em qualquer ordem de árvore. Testes `test_invincibility_blink_never_hides_the_mu7` e
+  `test_dock_draws_behind_the_mu7`; captura do respawn com o MU-7 visível na frente da doca.

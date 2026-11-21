@@ -195,3 +195,13 @@ Nenhuma.
   Central/Estufa/Laboratório com `???`, ficha à direita com autor em âmbar), `04_por_autor`
   (Dra. Helena Vasquez + NÃO ENCONTRADOS), `05_lendo` (texto inteiro, acentos, rolagem; a última
   linha visível corta na borda da área de rolagem, como esperado). Fonte só em 16 px.
+
+### 2026-11-21 — Correção da revisão da campanha (grupo A)
+- **Dica de leitura com o glifo do dispositivo**: `read_hint` virou `"%s LER"` e o arquivo põe
+  `[ENTER]` ou `[A]` conforme o último aperto (`InteractionRules.note_device`, o mesmo rastreio do
+  prompt de interação). QA `f33_archive_key` 9/9 (`[ENTER] LER`).
+- **Erro do motor com `L` durante o ARGOS**: `ERROR: Condition "p_elem->_root" is true
+  (self_list.h:46)` 2× a partir do 3º abre/fecha do arquivo pelo `L` no Reator. Isolado por
+  bisseção de roteiros: só o caminho direto (que despausava em `close.call_deferred()`) dava; pela
+  pausa, nunca. O `PauseMenu` agora fecha o arquivo direto na hora. `review_campaign_telas_reator`
+  21/21 sem nenhum `ERROR`. Lição no `godot-pitfalls`.
