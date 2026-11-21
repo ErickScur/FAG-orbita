@@ -35,6 +35,7 @@
 | [SPR-BOTANICO](#spr-botanico) | Sprite sheet | Drone BOTÂNICO 04 | C | IA | **integrado** | F34 |
 | [SPR-CX2](#spr-cx2) | Sprite sheet | Torre Calibradora CX-2 (inimigo do Laboratório) | A | IA | **integrado (IA)** | F60 |
 | [SPR-STEAM](#spr-steam) | Sprite | Bocal do jato de vapor | B | IA | **integrado (IA)** | F60 |
+| [SPR-ELECTRIC-FLOOR](#spr-electric-floor) | Sprite | Placa do piso eletrificado (ligada/apagada) | B | IA | **integrado (IA)** | F32/F68 |
 | [SPR-V9](#spr-v9) | Sprite sheet | Sentinela Voadora V-9 (inimigo da Enfermaria) | A | IA | **integrado (IA)** | F61 |
 | [SPR-ICE](#spr-ice) | Sprite sheet | Gelo fino e parede de gelo | A | IA | **integrado (IA)** | F61 |
 | [SPR-PROPS-DOCKS](#spr-props-docks) | Sprite sheet | Objetos das Docas (caixa, traje, poltronas…) | B | IA | **integrado (IA)** | F62 |
@@ -403,6 +404,36 @@ Layout: TWO different design variations of this nozzle, side by side, in two SQU
 IMPORTANT RULE: draw ONLY the nozzle. Never draw the floor, walls, pipes, scenery or shadows. The nozzle floats on the flat magenta background.
 
 Solid flat magenta background (#FF00FF) everywhere else. No text, no letters, no labels, no grid lines, no watermark.
+```
+
+<a id="spr-electric-floor"></a>
+### SPR-ELECTRIC-FLOOR — Placa do piso eletrificado
+
+| Campo | Valor |
+|---|---|
+| Caminho final | `assets/sprites/world/electric_floor.png` |
+| Contrato | **64×32 = 4×2 quadros de 16×16**, opacos, cada placa preenche o quadro inteiro (as placas ficam lado a lado no chão). Linha 0: **ligada**, 4 quadros de arco ciano/branco em posições diferentes sobre trilhos de cobre (anima a 10 fps, defasada por coluna). Linha 1: **apagada**, 4 quadros iguais, trilhos opacos, listras de perigo amarelo-acinzentado. Faixa de perigo amarela/preta na frente; silhueta diferente do piso comum |
+| Placeholder | Blocos aço-azulado com pips (forma `rect_index`) |
+| Placeholder gerado | `assets/placeholder/sprites/world/electric_floor.png` (64×32) — `tools/make_placeholders.gd`, id `SPR-ELECTRIC-FLOOR` |
+| Fonte | **IA — geração de imagem do Codex CLI**, 2026-11-21, 2 variações, escolhida a **1ª** (células separadas por linha magenta, arcos que ainda se leem a 16 px; a 2ª tinha trilhos duplos que viravam faixa). Referência: `assets/tiles/lab_tiles.png`. Reduzida por amostragem no centro de cada pixel de arte (célula de ~443 px → 16 px, margem de 10 px), sem franja e sem pixel transparente |
+| Status | **integrado (IA)** em 2026-11-21 |
+
+**Prompt (Codex):**
+```
+Pixel art sprite sheet for a 2D side-view sci-fi platformer set in an abandoned space station (style: the attached tileset reference: 16-bit pixel art, hard pixels, no anti-aliasing, thick dark outlines, muted steel blue-grey metal).
+
+Subject: an ELECTRIFIED FLOOR PLATE, a square floor tile seen from the side, the kind of metal floor block the player walks on. It must read instantly as "dangerous electric floor", different from normal floor: a dark steel block with two thick copper/brass conductor rails running horizontally along its top surface, a row of black-and-yellow hazard stripes on the front face, and small insulator studs.
+
+Grid of 4 columns x 2 rows of SQUARE cells, every cell the same size, each cell containing exactly one floor tile that FILLS the whole cell edge to edge (the tile is a solid square block that touches all four borders of its cell, because tiles sit side by side in the game).
+
+Row 1 (POWERED, animation of 4 frames): the same tile with bright electric-blue and white zig-zag arcs crackling along the top rails, the hazard stripes lit, rails glowing. Each of the 4 frames shows the arcs in a DIFFERENT position so it animates (arc on the left, arc in the middle, arc on the right, two short arcs). Arcs stay inside the top third of the cell.
+Row 2 (UNPOWERED, 4 identical frames): the same tile with NO arcs and NO sparks, rails dull and dark, hazard stripes dim grey-yellow. Clearly switched off.
+
+Palette: steel #2b3a47 #3f5566 #5d7a8c, copper #b8743a #e0a35c, hazard yellow #e8c23a, arc cyan #5fe8ff and white #e8fbff, outline #0b1218.
+
+Solid flat magenta background (#FF00FF) between the cells. No text, no labels, no grid lines, no characters, no scenery beyond the tile itself.
+
+CRITICAL DELIVERY SIZE: keep the image small and blocky, each cell drawn with chunky pixels as if it were a 16x16 pixel tile scaled up.
 ```
 
 <a id="spr-v9"></a>
@@ -1208,8 +1239,8 @@ Caminho final: `assets/audio/sfx/<nome>.ogg` (ou `.wav`). Fontes CC0 sugeridas: 
 | `claw_grab` | Garras magnéticas agarrando a parede | Kenney Sci-fi Sounds |
 | `dash` | Pulso magnético do dash (F31) | Kenney Sci-fi Sounds |
 | `beam` | Feixe de Manutenção (F31) | Kenney Sci-fi Sounds |
-| `steam_hiss` | Jato de vapor (F32) | Freesound "steam hiss" CC0 |
-| `electric_buzz` | Piso eletrificado (F32, loop) | Freesound "electric buzz" CC0 |
+| `steam_hiss` | Aviso do jato de vapor, só com o bocal na tela (F32, em uso desde 2026-11-21) | Freesound "steam hiss" CC0 |
+| `electric_buzz` | Zumbido curto da DESCARGA: começo do status e habilidade recusada (F68, em uso desde 2026-11-21) | Freesound "electric buzz" CC0 |
 | `spores` | Chiado orgânico (loop) | Freesound CC0 |
 | `plant_grow` | Crescimento rápido | Freesound CC0 |
 | `v9_alert` | Alerta da V-9 antes de perseguir (F61; hoje toca `ui_error`) | Kenney Sci-fi Sounds |

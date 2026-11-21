@@ -1,0 +1,20 @@
+{
+  "id": "hazard_test",
+  "name": "Bancada de perigos",
+  "tileset": "res://assets/tiles/lab_tileset.tres",
+  "entity_tiles": "res://assets/tiles/lab_tiles.png",
+  "ambient_color": "#3c4552",
+  "floor_sfx": "step_metal",
+  "reactor_online": false,
+  "objective": "obj_lab",
+  "terminals": ["hazard_test"],
+  "entities": {
+    "2,10": { "id": "dock_hazard" },
+    "16,10": { "id": "hazard_console", "terminal": "hazard_test" },
+    "20,11": { "id": "hazard_floor_a", "terminal_id": "hazard_test", "system_id": "floor_grid" },
+    "21,11": { "id": "hazard_floor_b", "terminal_id": "hazard_test", "system_id": "floor_grid" },
+    "22,11": { "id": "hazard_floor_c", "terminal_id": "hazard_test", "system_id": "floor_grid" },
+    "23,11": { "id": "hazard_floor_d", "terminal_id": "hazard_test", "system_id": "floor_grid" },
+    "29,10": { "id": "hazard_vent", "terminal_id": "hazard_test", "system_id": "vent_line" }
+  }
+}

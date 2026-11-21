@@ -1,0 +1,49 @@
+{
+  "id": "hazard_test",
+  "title": "BANCADA DE PERIGOS - DISTRIBUIÇÃO",
+  "budget": 2,
+  "goal_text": "Ligar a linha de teste",
+  "goal_done_text": "Linha de teste ligada",
+  "goal_systems": [
+    "test_line"
+  ],
+  "initial": [
+    "floor_grid",
+    "vent_line"
+  ],
+  "systems": [
+    {
+      "id": "floor_grid",
+      "name": "GRADE DO PISO",
+      "tag": "PERIGO",
+      "description": "Energiza o piso eletrificado.",
+      "effect_off": "O piso apaga e fica inerte.",
+      "cost": 1,
+      "requires": [],
+      "locked": false,
+      "effects": []
+    },
+    {
+      "id": "vent_line",
+      "name": "LINHA DE VAPOR",
+      "tag": "CLIMA",
+      "description": "Alimenta o jato de vapor.",
+      "effect_off": "O jato para.",
+      "cost": 1,
+      "requires": [],
+      "locked": false,
+      "effects": []
+    },
+    {
+      "id": "test_line",
+      "name": "LINHA DE TESTE",
+      "tag": "META",
+      "description": "Sistema de meta da bancada.",
+      "effect_off": "A meta fica pendente.",
+      "cost": 1,
+      "requires": [],
+      "locked": false,
+      "effects": []
+    }
+  ]
+}

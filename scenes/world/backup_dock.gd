@@ -9,6 +9,7 @@ const ANIMATION_ROWS: Array[Dictionary] = [
 ]
 const REST_SPEED: float = 1.0
 const CORROSION: StringName = &"corrosion"
+const OVERLOAD_TINT: Color = Color(1.0, 0.95, 0.7, 1.0)
 
 @export var dock_id: StringName = &"dock"
 
@@ -16,6 +17,7 @@ var _player: CharacterBody2D = null
 var _repair_accumulator: float = 0.0
 var _corroded: bool = false
 var _charging: bool = false
+var _overload: OverloadRule = OverloadRule.new()
 
 @onready var _sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var _zone: Area2D = $ChargeZone
@@ -40,13 +42,17 @@ func _physics_process(delta: float) -> void:
 		return
 	_set_charging(true)
 	if not _corroded:
-		GameState.add_charge(Balance.CHARGE_DOCK_REGEN * delta)
+		_recharge(delta)
 	var repaired: Vector2 = Vitals.accumulate(
 		_repair_accumulator, Balance.DOCK_REPAIR_RATE, delta
 	)
 	_repair_accumulator = repaired.y
 	if repaired.x > 0.0:
 		GameState.repair(int(repaired.x))
+
+
+func overload_rule() -> OverloadRule:
+	return _overload
 
 
 func spawn_position() -> Vector2:
@@ -72,6 +78,16 @@ func _build_animations() -> void:
 		push_warning("BackupDock: sprite sheet ausente em %s" % SHEET_PATH)
 		return
 	_sprite.sprite_frames = SpriteSheet.build_frames(texture, FRAME_SIZE, ANIMATION_ROWS)
+
+
+func _recharge(delta: float) -> void:
+	var before: float = GameState.charge
+	GameState.add_charge(Balance.CHARGE_DOCK_REGEN * delta)
+	if not _overload.feed(before, GameState.charge, GameState.charge_max):
+		return
+	GameState.apply_status(StatusEffects.OVERLOAD)
+	AudioManager.play_sfx(&"power_on")
+	Fx.burst(self, Fx.POWER_PULSE, _player.global_position + Vector2(0.0, -12.0), OVERLOAD_TINT)
 
 
 func _is_resting() -> bool:
@@ -106,6 +122,7 @@ func _on_body_entered(body: Node2D) -> void:
 	if not body.is_in_group(&"player") or not (body is CharacterBody2D):
 		return
 	_player = body
+	_overload.begin()
 	activate()
 
 

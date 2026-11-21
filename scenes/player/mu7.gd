@@ -51,6 +51,17 @@ const JET_DISTANCE: float = 10.0
 const JET_BURST_TIME: float = 0.25
 const JET_PARTICLE_COLOR: Color = Color(0.37, 0.91, 1.0, 0.8)
 const JET_PARTICLE_SPEED: float = 60.0
+const SPARK_BURST: String = "res://scenes/fx/spark_burst.tscn"
+const DISCHARGE_SFX: StringName = &"electric_buzz"
+const DISCHARGE_TINT: Color = Color("bff6ff")
+const DISCHARGE_SPARK_OFFSET: Vector2 = Vector2(0, -14)
+const DISCHARGE_REFUSE_INTERVAL: float = 0.3
+const DISCHARGE_CRACKLE_INTERVAL: float = 0.45
+const OVERLOAD_GLOW: Color = Color(1.35, 1.3, 1.0, 1.0)
+const OVERLOAD_PULSE_HZ: float = 2.0
+const OVERLOAD_TRAIL_COLOR: Color = Color(1.0, 0.93, 0.62, 0.75)
+const OVERLOAD_TRAIL_MIN_SPEED: float = 20.0
+const OVERLOAD_TRAIL_ORIGIN: Vector2 = Vector2(0, -12)
 
 @export var floor_sfx: StringName = &"step_metal"
 
@@ -99,6 +110,11 @@ var _jet_left: float = 0.0
 var _jet_clock: float = 0.0
 var _jet_sprite: Sprite2D = null
 var _jet_particles: CPUParticles2D = null
+var _refuse_left: float = 0.0
+var _crackle_left: float = 0.0
+var _was_discharged: bool = false
+var _overload_clock: float = 0.0
+var _overload_trail: CPUParticles2D = null
 
 @onready var _sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var _camera: Camera2D = $Camera2D
@@ -124,6 +140,7 @@ func _ready() -> void:
 	_setup_beam()
 	_setup_dash_trail()
 	_setup_jet()
+	_setup_status_fx()
 	_camera.offset = Vector2.ZERO
 	_camera.position.y = Balance.CAMERA_OFFSET_Y
 	_camera.position_smoothing_speed = Balance.CAMERA_SMOOTHING
@@ -174,6 +191,7 @@ func _physics_process(delta: float) -> void:
 	_update_flash(delta)
 	_update_beam_flash(delta)
 	_update_jet(delta)
+	_update_status_fx(delta)
 
 
 func _walk_step(delta: float) -> void:
@@ -555,7 +573,7 @@ func _try_dash() -> void:
 		return
 	var blocked: bool = GameState.statuses.blocks_abilities()
 	if not DashLogic.can_use(GameState.charge, Balance.DASH_COST, _dash_cooldown, blocked):
-		AudioManager.play_sfx(REFUSE_SFX)
+		_refuse(blocked)
 		return
 	if not GameState.spend_charge(Balance.DASH_COST):
 		AudioManager.play_sfx(REFUSE_SFX)
@@ -627,7 +645,7 @@ func _try_beam() -> void:
 		return
 	var blocked: bool = GameState.statuses.blocks_abilities()
 	if not BeamLogic.can_fire(GameState.charge, Balance.BEAM_COST, blocked):
-		AudioManager.play_sfx(REFUSE_SFX)
+		_refuse(blocked)
 		return
 	if not GameState.spend_charge(Balance.BEAM_COST):
 		AudioManager.play_sfx(REFUSE_SFX)
@@ -746,6 +764,8 @@ func _try_double_jump(delta: float) -> bool:
 		GameState.charge,
 		Balance.DOUBLE_JUMP_COST
 	)
+	if not allowed and blocked and _double_jump_was_possible():
+		_refuse(true)
 	if not allowed or not GameState.spend_charge(Balance.DOUBLE_JUMP_COST):
 		return false
 	_double_jump_used = true
@@ -756,6 +776,101 @@ func _try_double_jump(delta: float) -> bool:
 	AudioManager.play_sfx(&"dash")
 	_set_state(State.JUMP)
 	return true
+
+
+func _double_jump_was_possible() -> bool:
+	return VacuumRules.can_double_jump(
+		_has_thruster(),
+		_double_jump_used,
+		is_on_floor(),
+		_jump_assist.coyote_left(),
+		_climbing,
+		false,
+		GameState.charge,
+		Balance.DOUBLE_JUMP_COST
+	)
+
+
+func _refuse(discharged: bool) -> void:
+	if not discharged:
+		AudioManager.play_sfx(REFUSE_SFX)
+		return
+	if _refuse_left > 0.0:
+		return
+	_refuse_left = DISCHARGE_REFUSE_INTERVAL
+	_spark(true)
+
+
+func _spark(with_sound: bool) -> void:
+	if with_sound:
+		AudioManager.play_sfx(DISCHARGE_SFX)
+	var burst: SparkBurst = Fx.burst(
+		self, SPARK_BURST, global_position + DISCHARGE_SPARK_OFFSET, DISCHARGE_TINT
+	)
+	if burst != null:
+		burst.material = _unshaded_material()
+
+
+func is_discharged() -> bool:
+	return GameState.statuses.blocks_abilities()
+
+
+func is_overloaded() -> bool:
+	return GameState.has_status(StatusEffects.OVERLOAD)
+
+
+func _setup_status_fx() -> void:
+	_overload_trail = CPUParticles2D.new()
+	_overload_trail.name = "OverloadTrail"
+	_overload_trail.emitting = false
+	_overload_trail.local_coords = false
+	_overload_trail.z_index = -1
+	_overload_trail.position = OVERLOAD_TRAIL_ORIGIN
+	_overload_trail.amount = 18
+	_overload_trail.lifetime = 0.35
+	_overload_trail.emission_shape = CPUParticles2D.EMISSION_SHAPE_RECTANGLE
+	_overload_trail.emission_rect_extents = Vector2(3, 8)
+	_overload_trail.gravity = Vector2.ZERO
+	_overload_trail.initial_velocity_min = 0.0
+	_overload_trail.initial_velocity_max = 4.0
+	_overload_trail.scale_amount_min = 1.0
+	_overload_trail.scale_amount_max = 2.0
+	_overload_trail.color = OVERLOAD_TRAIL_COLOR
+	var fade := Gradient.new()
+	fade.set_color(0, Color.WHITE)
+	fade.set_color(1, Color(1.0, 1.0, 1.0, 0.0))
+	_overload_trail.color_ramp = fade
+	_overload_trail.material = _unshaded_material()
+	add_child(_overload_trail)
+
+
+func _update_status_fx(delta: float) -> void:
+	_refuse_left = maxf(0.0, _refuse_left - delta)
+	var discharged: bool = is_discharged() and not _dead
+	if discharged and not _was_discharged:
+		_spark(true)
+		_crackle_left = DISCHARGE_CRACKLE_INTERVAL
+	_was_discharged = discharged
+	if discharged:
+		_crackle_left -= delta
+		if _crackle_left <= 0.0:
+			_crackle_left = DISCHARGE_CRACKLE_INTERVAL
+			_spark(false)
+	_update_overload_fx(delta)
+
+
+func _update_overload_fx(delta: float) -> void:
+	if _overload_trail == null:
+		return
+	var overloaded: bool = is_overloaded() and not _dead
+	_overload_trail.emitting = overloaded and absf(velocity.x) > OVERLOAD_TRAIL_MIN_SPEED
+	if not overloaded:
+		_overload_clock = 0.0
+		_sprite.self_modulate = Color.WHITE
+		return
+	_overload_clock += delta
+	var pulse: float = 0.5 + 0.5 * sin(_overload_clock * TAU * OVERLOAD_PULSE_HZ)
+	_sprite.self_modulate = Color.WHITE.lerp(OVERLOAD_GLOW, pulse)
 
 
 func _vacuum_step(delta: float) -> void:
@@ -810,6 +925,8 @@ func _vacuum_push(input: Vector2, normal: Vector2) -> void:
 func _vacuum_thrust(input: Vector2, delta: float) -> void:
 	var blocked: bool = GameState.statuses.blocks_abilities()
 	if not VacuumRules.can_thrust(_has_thruster(), blocked, GameState.charge, input):
+		if blocked and VacuumRules.can_thrust(_has_thruster(), false, GameState.charge, input):
+			_refuse(true)
 		return
 	if not GameState.spend_charge(VacuumRules.thrust_cost(delta, Balance.THRUSTER_DRAIN)):
 		return
@@ -953,6 +1070,7 @@ func _process_hurtbox(delta: float) -> void:
 			continue
 		if source.hurts_over_time():
 			per_second += source.damage_per_second
+			source.notify_status()
 		if not source.hurts_on_contact() or is_invincible():
 			continue
 		GameState.apply_damage(source.contact_damage)

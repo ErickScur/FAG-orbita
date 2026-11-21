@@ -33,4 +33,4 @@ func hurts_over_time() -> bool:
 func notify_status() -> void:
 	if status_id == &"" or status_duration <= 0.0:
 		return
-	EventBus.status_applied.emit(status_id, status_duration)
+	GameState.apply_status(status_id, status_duration)

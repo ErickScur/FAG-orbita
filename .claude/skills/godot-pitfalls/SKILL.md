@@ -94,6 +94,12 @@ origem).
   não para qualquer tecla — senão o cartão de tutorial nunca completa numa fase com fala
   ambiente (F36).
 
+- Status aplicado por fonte de dano tem de passar por `GameState.apply_status`: o antigo
+  `DamageArea.notify_status()` só emitia o sinal, a HUD mostrava o ícone e o efeito nunca valia
+  (F68; `test_notify_status_goes_through_game_state`).
+- O Terminal do Chassi recusa abrir, em silêncio, numa cena fora de `scenes/levels/` sem o grupo
+  `gameplay` (banco em `scenes/dev/`): QA do chassi usa `tests/qa/scenes/chassis_probe.tscn` (F68).
+
 ## Animação
 - **Atribuir `sprite_frames` escolhe a primeira animação mas não toca.** O guarda
   `if sprite.animation == anim: return` precisa de `and sprite.is_playing()`, senão o sprite fica

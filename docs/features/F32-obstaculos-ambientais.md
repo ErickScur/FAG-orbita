@@ -1,7 +1,7 @@
 ---
 id: F32
 title: Obstáculos ambientais (vapor, piso elétrico)
-status: not-started
+status: done
 scope: stretch
 block: 5
 priority: P2
@@ -9,10 +9,16 @@ rubric: ["Efeitos visuais/sonoros"]
 depends_on: ["F13", "F17", "F23", "F29"]
 unblocks: []
 estimate: 1h
-last_updated: 2026-09-19
+last_updated: 2026-11-21
 ---
 
 # F32 — Obstáculos ambientais (vapor, piso elétrico)
+
+> **Estado em 2026-11-21:** entregue junto da [F68](F68-status-restantes.md). O jato de vapor
+> nasceu no Laboratório (F60) como `scenes/world/steam_vent.*` com o ciclo em
+> `SteamVent.phase_at()` (o `cycle_timer.gd` planejado abaixo não foi preciso); o piso
+> eletrificado é `scenes/world/electric_floor.*`, letra `z`. O plano original (seções 4–10) fica
+> como histórico; o que vale está no log de 2026-11-21 e no ADR-F32-004.
 
 ## 1. Contexto e objetivo
 
@@ -189,7 +195,26 @@ Nenhuma.
 - **Consequências:** duas linhas novas no `ASSETS.md`.
 - **Data:** 2026-09-19
 
+### ADR-F32-004 — Piso como chão sólido, fora da Estufa
+- **Contexto:** o mapa da Estufa mudou muito desde a F29 (o `z` em `20,8` não existe mais) e as
+  fases reais estão com outros agentes; o piso só faz sentido como puzzle de energia.
+- **Decisão:** `z` é uma placa sólida (`StaticBody2D`, camada `world`) com uma faixa de dano de
+  16×4 px em cima (`DamageArea`, 8/s + DESCARGA renovada) e o tile do tileset embaixo
+  (`LevelBuilder.solid_cells`, legenda `"solid": true`), para o autotile, a sombra e a
+  alcançabilidade tratarem como chão. Não entra na Estufa; as F64/F65 o usam (receita na F68 §6).
+  Dash não atravessa (a DESCARGA bloqueia o dash no primeiro toque).
+- **Data:** 2026-11-21
+
 ## 12. Log de evolução
+
+### 2026-11-21 — Entregue (com a F68)
+- **Quem**: agente de sistemas · **O que**: jato de vapor conferido contra o GDD (3 s ligado /
+  2 s desligado, 20 de dano com empurrão, aviso de 0,5 s com bocal piscando e chiado; teste
+  `test_steam_cycle_matches_the_gdd` da F60) e ganhou o som `steam_hiss` no início do aviso,
+  só quando o bocal está na tela. Piso eletrificado novo: arte gerada pelo Codex (folha 64×32,
+  4 quadros de arco + 4 apagados), faíscas, luz ciano fundida a cada 4 placas, apagado e inerte
+  quando o sistema desliga. Bancada `scenes/dev/hazard_test.tscn`; QA `tests/qa/f68_hazards.json`
+  (18 marcos). Decisões: ADR-F32-004 e ADR-F68-003 (vapor não aplica DESCARGA).
 
 ### 2026-09-19 — Feature criada
 - **Quem**: agente de planejamento · **O que**: documento inicial a partir do GDD-2.6.2-E, aproveitando os tiles `v` e `z` já reservados na F29 · **Próximo passo**: só depois do Bloco 4 inteiro `[x]`.

@@ -249,6 +249,15 @@
       "seed": 120
     },
     {
+      "id": "SPR-ELECTRIC-FLOOR",
+      "path": "sprites/world/electric_floor.png",
+      "frame": [16, 16],
+      "grid": [4, 2],
+      "palette": "lab",
+      "body": "#3F5566",
+      "seed": 168
+    },
+    {
       "id": "TIL-INFIRMARY",
       "path": "tiles/infirmary_tiles.png",
       "frame": [16, 16],

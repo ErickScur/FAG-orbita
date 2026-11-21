@@ -9,6 +9,7 @@ const WINDOW_PX: int = 256
 const WINDOW_STEP_PX: int = 32
 const MAX_LIGHTS_PER_WINDOW: int = 12
 const MAGNETIC_SYMBOL: String = "M"
+const ELECTRIC_SYMBOL: String = "z"
 const RADIUS_BY_SYMBOL: Dictionary = {
 	"@": 96.0,
 	"g": 56.0,
@@ -121,6 +122,37 @@ func _lights(level_id: String) -> Array[Dictionary]:
 				"extent": Vector2(radius, radius),
 			})
 	found.append_array(_magnetic_lights(level_id))
+	found.append_array(_electric_lights(level_id))
+	return found
+
+
+func _electric_lights(level_id: String) -> Array[Dictionary]:
+	var rows: PackedStringArray = _grid(level_id).get("rows", PackedStringArray())
+	var found: Array[Dictionary] = []
+	for y: int in range(rows.size()):
+		var row: String = rows[y]
+		var x: int = 0
+		while x < row.length():
+			if row[x] != ELECTRIC_SYMBOL:
+				x += 1
+				continue
+			var start: int = x
+			while x < row.length() and row[x] == ELECTRIC_SYMBOL:
+				x += 1
+			var index: int = start
+			while index < x:
+				var span: int = mini(ElectricFloor.GLOW_SEGMENT_TILES, x - index)
+				found.append({
+					"position": Vector2(
+						float(index * TILE_SIZE) + float(span * TILE_SIZE) * 0.5,
+						float(y * TILE_SIZE)
+					),
+					"extent": Vector2(
+						float(span * TILE_SIZE) * 0.5 + ElectricFloor.GLOW_RADIUS,
+						ElectricFloor.GLOW_RADIUS
+					),
+				})
+				index += ElectricFloor.GLOW_SEGMENT_TILES
 	return found
 
 

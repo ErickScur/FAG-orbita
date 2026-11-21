@@ -7,6 +7,9 @@ const HUD_COLUMNS: int = 8
 const PICKUP_SHEET: String = "res://assets/sprites/pickups/pickups_sheet.png"
 const PICKUP_FRAME: Vector2i = Vector2i(16, 16)
 const ABILITY_PREFIX: String = "ability_"
+const STATUS_PREFIX: String = "status_"
+const MAX_STATUS_ROWS: int = 2
+const COLOR_STATUS: Color = Color(0.937255, 0.898039, 0.478431)
 const GAMEPLAY_GROUP: StringName = &"gameplay"
 const ROW_HEIGHT: float = 16.0
 const COLOR_ABILITY: Color = Color(0.843137, 0.890196, 0.909804)
@@ -43,6 +46,8 @@ var _station_sectors: Array[Dictionary] = []
 @onready var _research_value: Label = %ResearchValue
 @onready var _abilities_title: Label = %AbilitiesTitle
 @onready var _abilities: GridContainer = %Abilities
+@onready var _locked_columns: HBoxContainer = $Root/Center/Panel/Body/LockedColumns
+@onready var _status_list: VBoxContainer = %StatusList
 @onready var _map_label: Label = %MapLabel
 @onready var _map_value: Label = %MapValue
 @onready var _sectors_label: Label = %SectorsLabel
@@ -173,6 +178,7 @@ func _refresh() -> void:
 	_research_value.text = _pair(GameState.research_collected.size(), Balance.RESEARCH_TOTAL)
 	_refresh_station()
 	_refresh_abilities()
+	_refresh_statuses()
 
 
 func upgrade_counts() -> Vector2i:
@@ -238,6 +244,55 @@ func _refresh_abilities() -> void:
 		return
 	for ability_id: StringName in GameState.abilities:
 		_abilities.add_child(_ability_row(ability_id))
+
+
+func status_text(status_id: StringName) -> String:
+	var described: String = _text(StringName(STATUS_PREFIX + String(status_id)))
+	if described.is_empty():
+		return String(status_id).to_upper()
+	return described
+
+
+func shown_statuses() -> Array[StringName]:
+	var ids: Array[StringName] = GameState.statuses.active_ids()
+	if ids.size() > MAX_STATUS_ROWS:
+		ids.resize(MAX_STATUS_ROWS)
+	return ids
+
+
+func _refresh_statuses() -> void:
+	for child: Node in _status_list.get_children():
+		_status_list.remove_child(child)
+		child.queue_free()
+	var ids: Array[StringName] = shown_statuses()
+	var any: bool = not ids.is_empty()
+	_status_list.visible = any
+	_locked_columns.visible = not any
+	for status_id: StringName in ids:
+		_status_list.add_child(_status_row(status_id))
+
+
+func _status_row(status_id: StringName) -> HBoxContainer:
+	var row := HBoxContainer.new()
+	row.custom_minimum_size = Vector2(0.0, ROW_HEIGHT)
+	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	row.add_theme_constant_override("separation", COST_SEPARATION)
+	var icon := TextureRect.new()
+	icon.custom_minimum_size = Vector2(HUD_FRAME)
+	icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	icon.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
+	icon.texture = _counter_icon(HudModel.status_icon_index(status_id))
+	row.add_child(icon)
+	var label: Label = _ability_label(status_text(status_id), COLOR_STATUS)
+	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_child(label)
+	var seconds: int = HudModel.status_seconds(GameState.statuses.remaining(status_id))
+	var timer: Label = _ability_label(
+		HudModel.format_single(_text(&"status_seconds"), seconds), COLOR_EMPTY
+	)
+	timer.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	row.add_child(timer)
+	return row
 
 
 func ability_name(ability_id: StringName) -> String:

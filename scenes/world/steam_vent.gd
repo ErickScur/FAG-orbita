@@ -8,6 +8,8 @@ const POWERED_GROUP: StringName = &"powered"
 const HAZARD_GROUP: StringName = &"hazard"
 const WARN_TINT: Color = Color("ffb36b")
 const WARN_BLINK_HZ: float = 8.0
+const WARN_SFX: StringName = &"steam_hiss"
+const SCREEN_RECT: Rect2 = Rect2(-8, -64, 16, 64)
 
 @export var terminal_id: StringName = &""
 @export var system_id: StringName = &""
@@ -16,6 +18,7 @@ const WARN_BLINK_HZ: float = 8.0
 
 var _elapsed: float = 0.0
 var _phase: Phase = Phase.IDLE
+var _screen: VisibleOnScreenNotifier2D = null
 
 @onready var _nozzle: Sprite2D = $Nozzle
 @onready var _jet: DamageArea = $Jet
@@ -32,6 +35,9 @@ func _ready() -> void:
 	_plume.material = HeatZone.unshaded_material()
 	_hiss.material = HeatZone.unshaded_material()
 	_apply_nozzle()
+	_screen = VisibleOnScreenNotifier2D.new()
+	_screen.rect = SCREEN_RECT
+	add_child(_screen)
 	set_powered_silent(powered)
 
 
@@ -86,6 +92,10 @@ func current_phase() -> Phase:
 	return _phase
 
 
+func is_on_screen() -> bool:
+	return _screen != null and _screen.is_on_screen()
+
+
 func is_jetting() -> bool:
 	return _phase == Phase.JET
 
@@ -97,6 +107,8 @@ func _apply_phase(next: Phase) -> void:
 	if changed or next == Phase.IDLE:
 		_plume.emitting = next == Phase.JET
 		_hiss.emitting = next == Phase.WARN
+	if changed and next == Phase.WARN and is_on_screen():
+		AudioManager.play_sfx(WARN_SFX)
 	if next == Phase.WARN:
 		var blink: bool = fmod(_elapsed * WARN_BLINK_HZ, 1.0) < 0.5
 		_nozzle.modulate = WARN_TINT if blink else Color.WHITE

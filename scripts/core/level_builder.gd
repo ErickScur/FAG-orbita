@@ -145,8 +145,9 @@ const LEGEND: Dictionary = {
 	"z": {
 		"name": "piso eletrificado",
 		"scene": "res://scenes/world/electric_floor.tscn",
-		"anchor": &"feet",
+		"anchor": &"center",
 		"feature": "F32",
+		"solid": true,
 	},
 	"X": {
 		"name": "torre calibradora CX-2",
@@ -228,7 +229,7 @@ static func entity_chars() -> String:
 static func build_tiles(parsed: Dictionary, solid: TileMapLayer, background: TileMapLayer) -> void:
 	var width: int = int(parsed.get("width", 0))
 	var height: int = int(parsed.get("height", 0))
-	var solids: Dictionary = parsed.get("solids", {})
+	var solids: Dictionary = solid_cells(parsed)
 	if background != null:
 		background.clear()
 		for row: int in range(height):
@@ -248,6 +249,15 @@ static func build_tiles(parsed: Dictionary, solid: TileMapLayer, background: Til
 	build_occluders(parsed, solid)
 
 
+static func solid_cells(parsed: Dictionary) -> Dictionary:
+	var solids: Dictionary = (parsed.get("solids", {}) as Dictionary).duplicate()
+	for entry: Dictionary in parsed.get("entities", []) as Array:
+		var definition: Dictionary = LEGEND.get(String(entry.get("symbol", "")), {})
+		if bool(definition.get("solid", false)):
+			solids[entry.get("cell", Vector2i.ZERO)] = true
+	return solids
+
+
 static func build_occluders(parsed: Dictionary, solid: TileMapLayer) -> void:
 	if solid == null:
 		return
@@ -259,7 +269,7 @@ static func build_occluders(parsed: Dictionary, solid: TileMapLayer) -> void:
 	holder.name = OCCLUDERS_NODE
 	solid.add_child(holder)
 	var tile: int = Balance.TILE_SIZE
-	for loop: PackedVector2Array in silhouette_loops(parsed.get("solids", {})):
+	for loop: PackedVector2Array in silhouette_loops(solid_cells(parsed)):
 		var polygon := OccluderPolygon2D.new()
 		var scaled := PackedVector2Array()
 		for point: Vector2 in loop:

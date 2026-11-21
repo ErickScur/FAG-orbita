@@ -22,5 +22,11 @@
   "map_label": "MAPA DA ESTAÇÃO",
   "map_value": "[TAB]",
   "sectors_label": "SETORES RELIGADOS",
-  "sectors_value": "%d/%d"
+  "sectors_value": "%d/%d",
+  "status_corrosion": "CORROSÃO · A CARGA NÃO RECARREGA",
+  "status_overheat": "SUPERAQUECIMENTO · PERDE INTEGRIDADE, CARGA 2X",
+  "status_freeze": "CONGELAMENTO · LENTO, PULO CURTO, CHÃO LISO",
+  "status_discharge": "DESCARGA · SEM DASH, FEIXE, GARRAS, PROPULSOR",
+  "status_overload": "SOBRECARGA · +30% DE VELOCIDADE",
+  "status_seconds": "%dS"
 }

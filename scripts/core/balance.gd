@@ -119,6 +119,7 @@ const FREEZE_JUMP_MULT: float = 0.7
 const DISCHARGE_TIME: float = 3.0
 const OVERLOAD_TIME: float = 10.0
 const OVERLOAD_SPEED_MULT: float = 1.3
+const OVERLOAD_MIN_RECHARGE: float = 10.0
 const CX2_PULSE_DAMAGE: int = 15
 const CX2_LOCK_TIME: float = 0.8
 const CX2_RANGE: float = 112.0

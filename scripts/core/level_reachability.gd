@@ -23,6 +23,7 @@ const MAGNETIC_SYMBOL: String = "M"
 const PLANT_SYMBOL: String = "g"
 const PLATFORM_SYMBOL: String = "m"
 const THIN_ICE_SYMBOL: String = "_"
+const ELECTRIC_FLOOR_SYMBOL: String = "z"
 const VACUUM_SYMBOL: String = "V"
 const META_REACH: String = "reach"
 const REACH_DOUBLE_JUMP: String = "double_jump"
@@ -463,7 +464,7 @@ func _build_grid(parsed: Dictionary, meta: Dictionary, profile: Dictionary) -> v
 			_close_gate(symbol, cell)
 		elif symbol == MAGNETIC_SYMBOL:
 			_cells[cell.y * _width + cell.x] = CELL_MAGNETIC
-		elif symbol == THIN_ICE_SYMBOL:
+		elif symbol == THIN_ICE_SYMBOL or symbol == ELECTRIC_FLOOR_SYMBOL:
 			_cells[cell.y * _width + cell.x] = CELL_SOLID
 		elif symbol == VACUUM_SYMBOL:
 			var zone_params: Variant = meta_entities.get(LevelParser.cell_key(cell), {})

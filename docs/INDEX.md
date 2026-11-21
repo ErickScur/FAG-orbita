@@ -111,7 +111,7 @@ Top-down por bloco. Dentro de um bloco, top-down, respeitando `depends_on`. **N�
 | # | Feature | Escopo | Rubrica | Status | Atualizado |
 |---|---|:--:|---|:--:|---|
 | F31 | [Dash magnético & Feixe de Manutenção](features/F31-dash-feixe.md) | STRETCH | Habilidades · Combate (não-letal) | `[x]` | 2026-10-27 |
-| F32 | [Obstáculos ambientais (vapor, piso elétrico)](features/F32-obstaculos-ambientais.md) | STRETCH | Efeitos visuais/sonoros | `[ ]` | 2026-09-19 |
+| F32 | [Obstáculos ambientais (vapor, piso elétrico)](features/F32-obstaculos-ambientais.md) | STRETCH | Efeitos visuais/sonoros | `[x]` | 2026-11-21 |
 | F33 | [Arquivo de Logs (codex)](features/F33-arquivo-logs.md) | FINAL | Diálogo · Itens e inventário | `[x]` | 2026-11-21 |
 | F34 | [Drone BOTÂNICO 04](features/F34-drone-botanico.md) | STRETCH | Movimento aleatório de NPCs | `[x]` | 2026-11-21 |
 | F35 | [Polimento visual da Demo](features/F35-polimento-visual.md) | STRETCH | Efeitos visuais · Efeitos naturais · HUD · Paralax | `[x]` | 2026-09-20 |
@@ -169,7 +169,7 @@ Top-down por bloco. Dentro de um bloco, top-down, respeitando `depends_on`. **N�
 | F65 | Fase 6 — Núcleo do Reator / ARGOS | FINAL | Boss | [GDD-2.6.2-I](design/GDD.md#gdd-2-6-2-i) | `[ ]` |
 | F66 | [Sala da escolha, finais alternativos, epílogo por Dados, 40 nomes & créditos](features/F66-finais-epilogo-creditos.md) | FINAL | Fim de jogo alternativo · Missões secundárias | [Jornada 8–9](design/JORNADA-DO-HEROI.md#jh-8) | `[x]` |
 | F67 | [Mapa da estação (TAB e pausa)](features/F67-mapa-estacao.md) | FINAL | Scanner | [GDD-2.8](design/GDD.md#gdd-2-8-telas) | `[x]` |
-| F68 | Status restantes (Superaquecimento, Congelamento, Descarga, Sobrecarga) | FINAL | Efeitos naturais | [GDD-2.6.2-F](design/GDD.md#gdd-2-6-2-f) | `[ ]` |
+| F68 | [Status restantes (Descarga, Sobrecarga) e piso eletrificado](features/F68-status-restantes.md) | FINAL | Efeitos naturais | [GDD-2.6.2-F](design/GDD.md#gdd-2-6-2-f) | `[x]` |
 | [F69](features/F69-upgrades-root.md) | Upgrades permanentes (Capacitor, Blindagem) & Acesso Root | FINAL | Nível/progressão · Recompensas | [GDD-2.6.3](design/GDD.md#gdd-2-6-3) | `[x]` |
 | F70 | Música adaptativa por camadas | FINAL | Música | [GDD-2.9](design/GDD.md#gdd-2-9-musica) | `[ ]` |
 | F71 | [Remapeamento de teclas & acessibilidade](features/F71-opcoes-acessibilidade.md) | FINAL | — | [GDD-2.8](design/GDD.md#gdd-2-8-telas) | `[x]` |
