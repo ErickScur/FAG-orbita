@@ -1,7 +1,7 @@
 ---
 id: F34
 title: Drone BOTÂNICO 04
-status: not-started
+status: done
 scope: stretch
 block: 5
 priority: P2
@@ -9,7 +9,7 @@ rubric: ["Movimento aleatório de NPCs"]
 depends_on: ["F12", "F18", "F21", "F29"]
 unblocks: []
 estimate: 1h
-last_updated: 2026-09-19
+last_updated: 2026-11-21
 ---
 
 # F34 — Drone BOTÂNICO 04
@@ -52,17 +52,19 @@ Entrega o item **Movimento aleatório de NPCs** da rubrica: o drone escolhe dest
 
 ## 5. Critérios de aceite
 
-- [ ] O drone nasce no tile `b` (`31,17` da Estufa) e flutua em torno dele, mudando de direção de forma imprevisível, sem sair do corredor.
-- [ ] Ele **não** atravessa paredes nem fica preso nelas (ao bater, escolhe outro destino em até `Balance.DRONE_RETARGET_TIME`).
-- [ ] Com o MU-7 a menos de `Balance.DRONE_FOLLOW_RADIUS`, o drone passa a vaguear em torno **dele**, acompanhando sem grudar.
-- [ ] Afastando-se, o drone volta a vaguear perto da própria base (não persegue pela fase inteira).
-- [ ] A luz do drone ilumina o chão o bastante para revelar um dos buracos do corredor escuro.
-- [ ] Duas execuções do mesmo roteiro de QA produzem trajetos **diferentes** (aleatoriedade real em jogo) — e, com RNG semeado, o teste produz sempre o mesmo resultado.
-- [ ] O primeiro encontro dispara `gh_botanico` uma única vez.
-- [ ] Sem esta feature, a Estufa continua jogável (o `b` é tratado como tile vazio — [ADR-F29-003](F29-fase-estufa.md)).
-- [ ] `tests/test_wander_logic.gd` verde.
-- [ ] Portões do `/CLAUDE.md` §6 verdes
-- [ ] Sem comentários no código; nada 3D
+> Revistos na implementação (ADR-F34-004 a 006): o drone mora no **Corredor de Serviço** (Zona E,
+> tile `16,18`), não no `31,17` do mapa antigo da F29; não há fala `gh_botanico`.
+
+- [x] O drone nasce no tile `b` (`16,18` da Estufa) e flutua em torno dele, mudando de direção de forma imprevisível, sem sair do corredor (território `zone` no JSON da fase).
+- [x] Ele **não** atravessa paredes: todo destino é preso ao ar do território (corredor sem parede interna, provado em `test_greenhouse_drone_lives_in_the_dark_corridor`).
+- [x] Com o MU-7 a menos de `Balance.DRONE_FOLLOW_RADIUS`, o drone acorda com um bipe e passa a vaguear **à frente e acima** dele, acompanhando sem grudar.
+- [x] Saindo do território, o drone volta a vaguear perto da própria base (não persegue pela fase inteira).
+- [x] A luz do drone ilumina o chão o bastante para revelar o poço do corredor escuro (captura `04_segue_e_ilumina_o_poco`).
+- [x] Duas execuções do mesmo roteiro de QA produzem trajetos **diferentes**, e com RNG semeado o teste produz sempre o mesmo resultado.
+- [x] Sem fala: o primeiro encontro só bipa (ADR-F34-005).
+- [x] `tests/test_wander_logic.gd` verde.
+- [x] Portões do `/CLAUDE.md` §6 verdes (exceto `test_each_sealed_door_really_guards_its_exit`, que já falhava na base `final/integracao`, sem relação com esta feature)
+- [x] Sem comentários no código; nada 3D
 
 ## 6. Definição técnica
 
@@ -120,6 +122,34 @@ Fala nova em `data/dialogue/greenhouse.json`:
 ### Input actions / camadas de colisão
 - Sem input. O drone não tem `collision_layer` (ninguém colide com ele); ele só **mascara** `world` para não atravessar parede, e o `Sense` mascara `player`.
 
+### 6.1 Como ficou (2026-11-21)
+
+```
+scenes/npc/botanico.tscn (+ botanico.gd)   Botanico (Node2D, grupo npc, z 5)
+  ├─ Lamp (PointLight2D)    #ffd98a, raio Balance.DRONE_LIGHT_RADIUS, sombra PCF13
+  └─ Sprite (AnimatedSprite2D)  SPR-BOTANICO: hover (0–3) e spray (4–5)
+scripts/core/wander_logic.gd  WanderLogic: pick_target, clamp_to, step, reached,
+                              should_retarget, follow_point, should_follow, should_spray,
+                              territory_rect (RNG injetado)
+```
+
+- **Sem física**: o drone é um `Node2D` que voa; quem garante "não atravessa parede" é o
+  território (`"zone": [2, 16, 43, 6]` em tiles), um corredor sem parede interna. Destinos são
+  presos ao ar do território (20 px abaixo do teto, 12 px acima do piso).
+- **Sozinho**: sorteia um ponto em `home_radius` (56 px no JSON) em torno da base, a
+  `DRONE_SPEED`; ao chegar, rega (`spray`, `DRONE_SPRAY_TIME`) com chance `DRONE_SPRAY_CHANCE`;
+  troca de alvo a cada `DRONE_RETARGET_TIME`.
+- **Acompanhando**: acorda quando o MU-7 chega a `DRONE_FOLLOW_RADIUS` e segue enquanto o pé
+  dele estiver no território (estendido um tile para baixo, a linha do piso). O centro do sorteio
+  é `DRONE_LEAD` à frente (lado do `facing` do MU-7) e `DRONE_HOVER_HEIGHT` acima do pé; raio
+  `DRONE_FOLLOW_JITTER`, novo ponto a cada `DRONE_FOLLOW_RETARGET_TIME`, a `DRONE_FOLLOW_SPEED`
+  (mais rápido que o MU-7, senão a luz fica atrás).
+- **Bipe**: `ui_confirm` uma vez por cena, no primeiro encontro (sinal `noticed_player`).
+- **Marcos de QA**: `is_following`, `has_met_player`, `is_within(d)`, `is_home(d)`,
+  `lamp_lit`, `mark_position` + `moved_since_mark(d)`.
+- **Limite de luzes**: `tests/test_light_crowding.gd` conta a luz do drone como se ocupasse o
+  território inteiro mais o raio (pior caso de luz móvel).
+
 ## 7. Assets necessários
 
 | Asset id | Uso nesta feature | Placeholder |
@@ -134,12 +164,12 @@ Nenhuma.
 
 ## 9. Plano de execução
 
-- [ ] **Passo 1** — Constantes do ADR-F34-002 em `Balance` + proposta de GDD-P e Ajustes.
-- [ ] **Passo 2** — `tests/test_wander_logic.gd` (RNG semeado) + `scripts/core/wander_logic.gd`.
-- [ ] **Passo 3** — Placeholder do SPR-BOTANICO; `botanico_drone.tscn` + `botanico_drone.gd`.
-- [ ] **Passo 4** — Legenda `b` apontando para a cena no `LevelBuilder`.
-- [ ] **Passo 5** — Fala `gh_botanico` + flag de primeiro encontro.
-- [ ] **Passo 6** — QA (roteiro da seção 10), conferindo dois trajetos diferentes; `/verify-gates`; commit `feat(F34): drone BOTÂNICO 04 com vagueio aleatório e luz`.
+- [x] **Passo 1** — Constantes novas na GDD-P (AJ-059) e em `Balance`.
+- [x] **Passo 2** — `tests/test_wander_logic.gd` (RNG semeado) + `scripts/core/wander_logic.gd`.
+- [x] **Passo 3** — `scenes/npc/botanico.tscn` + `botanico.gd` com a folha definitiva.
+- [x] **Passo 4** — `b` no mapa da Estufa (a legenda já apontava para `scenes/npc/botanico.tscn`).
+- [x] **Passo 5** — Bipe no primeiro encontro (sem fala, ADR-F34-005).
+- [x] **Passo 6** — QA com marcos (`tests/qa/f34_botanico.json`, duas rodadas), portões, commit.
 
 ## 10. Verificação
 
@@ -184,7 +214,48 @@ Nenhuma.
 - **Consequências:** o mesmo padrão serve a qualquer inimigo com comportamento estocástico no Final (V-9, Serralheiro).
 - **Data:** 2026-09-19
 
+### ADR-F34-004 — A função de jogo é a luz do corredor escuro
+- **Contexto:** o humano reprova objeto que não muda nada ("toda escolha tem consequência
+  visível"); um drone que só passeia não passa no playtest. As duas rotas da Estufa atravessam o
+  Corredor de Serviço com a ILUMINAÇÃO DO CORREDOR desligada, e os poços só aparecem sob luz.
+- **Decisão:** o BOTÂNICO 04 mora nesse corredor (`16,18`) e, acompanhando, voa à frente e acima
+  do MU-7 com luz própria de 88 px: mostra o poço seguinte sem gastar Carga da lanterna. Não
+  resolve puzzle, não abre porta, não enfrenta a SR-3.
+- **Consequências:** apagar o corredor no terminal continua custando (o resto da fase segue no
+  escuro e a lanterna segue útil na câmara do Nó), mas o trecho mais injusto ganha um aliado.
+- **Data:** 2026-11-21
+
+### ADR-F34-005 — Sem fala no encontro
+- **Contexto:** o plano previa `gh_botanico` (3 linhas da ÓRBITA). O playtest reprovou fala fora
+  de marco ("muito diálogo e pouca gameplay"), e encontrar o drone não é marco de fase.
+- **Decisão:** o drone só bipa (`ui_confirm`) uma vez; a presença dele é o texto.
+- **Consequências:** nenhuma linha nova em `data/dialogue/greenhouse.json`.
+- **Data:** 2026-11-21
+
+### ADR-F34-006 — Território em vez de colisão
+- **Contexto:** `CharacterBody2D` com `move_and_slide` contra os tiles exige esperar 2 quadros de
+  física e trata quinas; o corredor não tem parede interna.
+- **Decisão:** `Node2D` sem física; destinos presos a um retângulo de território vindo do JSON
+  (`zone`, em tiles). O mesmo retângulo decide até onde ele segue o MU-7.
+- **Consequências:** posicionar o drone noutra sala é só mudar `zone`; o teste confere que o
+  território não cruza parede.
+- **Data:** 2026-11-21
+
 ## 12. Log de evolução
 
 ### 2026-09-19 — Feature criada
 - **Quem**: agente de planejamento · **O que**: documento inicial a partir do GDD-2.7-F1 e da Jornada (personagens) · **Próximo passo**: só depois do Bloco 4 inteiro `[x]`; é a **primeira** da ordem de corte ([ADR-009](../DECISIONS.md#adr-009)).
+
+### 2026-11-21 — Implementada
+- **Quem**: agente de features (F34+F71) · **O que**: `WanderLogic` + `Botanico` no Corredor de
+  Serviço da Estufa (`16,18`, território `[2,16,43,6]`), luz própria que revela os poços, bipe no
+  encontro, 9 constantes novas (AJ-059), limite de luzes contando o drone como luz móvel.
+- **Testes**: `tests/test_wander_logic.gd` (19 casos, RNG semeado).
+- **QA**: `tests/qa/f34_botanico.json` (cena `tests/qa/scenes/f34_probe_corridor.tscn`, corredor
+  apagado), 16 marcos OK em duas rodadas. `01_vagueia_a`/`02`/`03`: três posições diferentes em
+  torno da base; `04_segue_e_ilumina_o_poco`: drone à frente e acima do MU-7, poço à direita
+  aceso; `06_virou_e_o_drone_veio`: drone do lado para onde o MU-7 olha; `07`: de volta à base
+  depois de o MU-7 descer para a Copa. A captura `01` da 1ª e da 2ª rodada mostram o drone em
+  pontos diferentes (aleatoriedade real em jogo).
+- **Próximo passo**: playtest humano. Se o drone parecer nervoso, subir
+  `DRONE_FOLLOW_RETARGET_TIME`; se a luz parecer fraca, `DRONE_LIGHT_ENERGY`.

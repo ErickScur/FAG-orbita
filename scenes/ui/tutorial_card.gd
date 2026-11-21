@@ -62,7 +62,9 @@ func request(tutorial_id: StringName) -> void:
 	_done_left = 0.0
 	_dialogue_was_active = DialogueManager.is_active()
 	var data: Dictionary = TutorialData.entry(tutorial_id, _catalog)
-	_key.text = String(data["key"])
+	_key.text = KeyBindings.relabel(
+		String(data["key"]), TutorialData.actions_of(tutorial_id, _catalog)
+	)
 	_action.text = String(data["text"])
 	_hint.text = String(data["hint"])
 	_hint.visible = not _hint.text.is_empty()

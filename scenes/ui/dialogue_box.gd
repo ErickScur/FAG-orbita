@@ -64,6 +64,7 @@ func show_line(
 	_text.modulate = DEGRADED_TINT if degraded else Color.WHITE
 	_header.text = header
 	_header.visible = not header.is_empty()
+	_text.add_theme_font_size_override(&"normal_font_size", Settings.subtitle_font_size())
 	_text.text = text
 	_text.visible_characters = 0
 	_show_next = blocking

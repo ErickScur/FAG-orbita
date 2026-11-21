@@ -17,6 +17,7 @@ const RADIUS_BY_SYMBOL: Dictionary = {
 	"Y": 22.0,
 }
 const TOWER_SYMBOL: String = "X"
+const DRONE_SYMBOL: String = "b"
 const RECT_LIGHT_SYMBOLS: String = "hi"
 const RECT_LIGHT_COVER: float = 1.3
 const TOWER_AIM_BY_MOUNT: Dictionary = {
@@ -106,6 +107,9 @@ func _lights(level_id: String) -> Array[Dictionary]:
 			if symbol == TOWER_SYMBOL:
 				found.append(_tower_light(x, y, entity))
 				continue
+			if symbol == DRONE_SYMBOL:
+				found.append(_drone_light(x, y, entity))
+				continue
 			if not RADIUS_BY_SYMBOL.has(symbol):
 				continue
 			var radius: float = float(entity.get("radius", RADIUS_BY_SYMBOL[symbol]))
@@ -134,6 +138,19 @@ func _tower_light(x: int, y: int, entity: Dictionary) -> Dictionary:
 	var swing: float = radius * sin(deg_to_rad(Balance.CX2_SWEEP_ARC * 0.5))
 	var center := Vector2(float(x * TILE_SIZE) + 8.0, float(y * TILE_SIZE) + 8.0)
 	return {"position": center + aim * radius, "extent": Vector2.ONE * (radius + swing)}
+
+
+func _drone_light(x: int, y: int, entity: Dictionary) -> Dictionary:
+	var radius: float = Balance.DRONE_LIGHT_RADIUS
+	var territory: Rect2 = WanderLogic.territory_rect(entity.get("zone", []), TILE_SIZE)
+	if territory.size == Vector2.ZERO:
+		var home: float = float(entity.get("home_radius", Balance.DRONE_WANDER_RADIUS))
+		var center := Vector2(float(x * TILE_SIZE) + 8.0, float(y * TILE_SIZE) + 8.0)
+		return {"position": center, "extent": Vector2.ONE * (home + radius)}
+	return {
+		"position": territory.get_center(),
+		"extent": territory.size * 0.5 + Vector2.ONE * radius,
+	}
 
 
 func _magnetic_lights(level_id: String) -> Array[Dictionary]:

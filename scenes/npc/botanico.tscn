@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0rbitabotanico"]
+
+[ext_resource type="Script" path="res://scenes/npc/botanico.gd" id="1_botanico"]
+
+[node name="Botanico" type="Node2D" groups=["npc"]]
+z_index = 5
+script = ExtResource("1_botanico")
+
+[node name="Lamp" type="PointLight2D" parent="."]
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]

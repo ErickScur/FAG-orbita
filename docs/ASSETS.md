@@ -310,7 +310,8 @@ FRAME MARGIN: leave at least one empty pixel inside every frame on all four side
 | Caminho final | `assets/sprites/npc/botanico_sheet.png` |
 | Contrato | Frames **16×16**: `hover` 4f · `spray` 2f |
 | Placeholder gerado | `assets/placeholder/sprites/npc/botanico_sheet.png` (96×16 = 6 frames de 16×16) — `tools/make_placeholders.gd` |
-| Status | placeholder |
+| Uso no jogo | `scenes/npc/botanico.gd` (F34): `hover` = colunas 0–3 a 8 fps, `spray` = colunas 4–5 a 6 fps; o sprite olha para a direita e vira com `flip_h`. Luz própria `#ffd98a` (`Balance.DRONE_LIGHT_RADIUS`) com a textura de FX-LIGHT |
+| Status | **integrado** (folha definitiva da leva F51/F52, em jogo desde a F34 em 2026-11-21) |
 
 **Prompt:**
 ```

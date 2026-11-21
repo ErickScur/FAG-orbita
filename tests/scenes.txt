@@ -88,3 +88,5 @@ res://scenes/enemies/v9.tscn
 res://scenes/world/thin_ice.tscn
 res://scenes/world/ice_wall.tscn
 res://tests/qa/scenes/infirmary_sandbox.tscn
+res://scenes/npc/botanico.tscn
+res://tests/qa/scenes/f34_probe_corridor.tscn

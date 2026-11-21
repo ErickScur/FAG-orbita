@@ -113,7 +113,7 @@ Top-down por bloco. Dentro de um bloco, top-down, respeitando `depends_on`. **N�
 | F31 | [Dash magnético & Feixe de Manutenção](features/F31-dash-feixe.md) | STRETCH | Habilidades · Combate (não-letal) | `[x]` | 2026-10-27 |
 | F32 | [Obstáculos ambientais (vapor, piso elétrico)](features/F32-obstaculos-ambientais.md) | STRETCH | Efeitos visuais/sonoros | `[ ]` | 2026-09-19 |
 | F33 | [Arquivo de Logs (codex)](features/F33-arquivo-logs.md) | FINAL | Diálogo · Itens e inventário | `[x]` | 2026-11-21 |
-| F34 | [Drone BOTÂNICO 04](features/F34-drone-botanico.md) | STRETCH | Movimento aleatório de NPCs | `[ ]` | 2026-09-19 |
+| F34 | [Drone BOTÂNICO 04](features/F34-drone-botanico.md) | STRETCH | Movimento aleatório de NPCs | `[x]` | 2026-11-21 |
 | F35 | [Polimento visual da Demo](features/F35-polimento-visual.md) | STRETCH | Efeitos visuais · Efeitos naturais · HUD · Paralax | `[x]` | 2026-09-20 |
 
 ## Bloco 5B — Revisão de jogabilidade (playtest humano de 2026-09-20)
@@ -172,7 +172,7 @@ Top-down por bloco. Dentro de um bloco, top-down, respeitando `depends_on`. **N�
 | F68 | Status restantes (Superaquecimento, Congelamento, Descarga, Sobrecarga) | FINAL | Efeitos naturais | [GDD-2.6.2-F](design/GDD.md#gdd-2-6-2-f) | `[ ]` |
 | F69 | Upgrades permanentes (Capacitor, Blindagem) & Acesso Root | FINAL | Nível/progressão · Recompensas | [GDD-2.6.3](design/GDD.md#gdd-2-6-3) | `[ ]` |
 | F70 | Música adaptativa por camadas | FINAL | Música | [GDD-2.9](design/GDD.md#gdd-2-9-musica) | `[ ]` |
-| F71 | Remapeamento de teclas & acessibilidade | FINAL | — | [GDD-2.8](design/GDD.md#gdd-2-8-telas) | `[ ]` |
+| F71 | [Remapeamento de teclas & acessibilidade](features/F71-opcoes-acessibilidade.md) | FINAL | — | [GDD-2.8](design/GDD.md#gdd-2-8-telas) | `[x]` |
 | F72 | Apresentação final (5–10 min) | FINAL | Apresentação | [ENTREGAS](ENTREGAS.md#apresentacao) | `[ ]` |
 
 ## Fora de escopo

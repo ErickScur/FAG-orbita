@@ -99,6 +99,8 @@ func _run_event(event: Dictionary) -> void:
 		var action: StringName = StringName(String(event.get("action", "")))
 		var pressed: bool = bool(event.get("pressed", true))
 		_inject(action, pressed)
+	if event.has("key"):
+		_inject_key(String(event.get("key", "")), bool(event.get("pressed", true)))
 	if event.has("scene"):
 		var scene_path: String = String(event.get("scene", ""))
 		if ResourceLoader.exists(scene_path):
@@ -145,6 +147,19 @@ func _inject(action: StringName, pressed: bool) -> void:
 	event.strength = 1.0
 	Input.parse_input_event(event)
 	_log("frame %d action %s %s" % [_frame, action, "pressed" if pressed else "released"])
+
+
+func _inject_key(key_name: String, pressed: bool) -> void:
+	var keycode: Key = OS.find_keycode_from_string(key_name)
+	if keycode == KEY_NONE:
+		_log("frame %d ERRO tecla inexistente %s" % [_frame, key_name])
+		return
+	var event := InputEventKey.new()
+	event.keycode = keycode
+	event.physical_keycode = keycode
+	event.pressed = pressed
+	Input.parse_input_event(event)
+	_log("frame %d key %s %s" % [_frame, key_name, "pressed" if pressed else "released"])
 
 
 func _capture(shot_name: String) -> void:

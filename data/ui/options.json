@@ -1,0 +1,36 @@
+{
+  "section_audio": "ÁUDIO",
+  "section_game": "JOGO",
+  "section_access": "ACESSIBILIDADE",
+  "section_controls": "CONTROLES",
+  "subtitle_label": "LEGENDA",
+  "subtitle_sizes": {
+    "normal": "NORMAL",
+    "large": "GRANDE"
+  },
+  "colorblind": "MODO DALTÔNICO",
+  "colorblind_hint": "Verde e vermelho viram azul e laranja",
+  "restore": "RESTAURAR PADRÕES",
+  "waiting": "APERTE A TECLA NOVA",
+  "waiting_message": "%s: aperte a tecla nova ([ESC] cancela)",
+  "assigned": "%s agora é %s",
+  "swapped": "%s era de %s: as duas trocaram",
+  "reserved": "%s é fixa de %s",
+  "cancelled": "Remapeamento cancelado",
+  "restored": "Teclas padrão restauradas",
+  "controls_hint": "Controle: mapeamento padrão",
+  "actions": {
+    "move_left": "ESQUERDA",
+    "move_right": "DIREITA",
+    "move_up": "SUBIR / ESCALAR",
+    "move_down": "DESCER",
+    "jump": "PULAR",
+    "dash": "IMPULSO",
+    "interact": "INTERAGIR",
+    "beam": "FEIXE",
+    "flashlight": "LANTERNA",
+    "map": "TERMINAL DO CHASSI",
+    "log_archive": "ARQUIVO DE LOGS",
+    "pause": "PAUSA"
+  }
+}

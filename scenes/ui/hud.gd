@@ -5,8 +5,6 @@ const ATLAS_FRAME: Vector2i = Vector2i(16, 16)
 const ATLAS_COLUMNS: int = 8
 const MAX_TOASTS: int = 3
 const FLASH_TIME: float = 0.1
-const CRITICAL_COLOR: Color = Color(1.0, 0.36, 0.36)
-const CRITICAL_DIM_COLOR: Color = Color(0.72, 0.16, 0.16)
 const NORMAL_COLOR: Color = Color(1.0, 1.0, 1.0)
 const FLASH_COLOR: Color = Color(1.0, 0.45, 0.45)
 const PARTIAL_DIM: Color = Color(0.55, 0.62, 0.66)
@@ -22,7 +20,6 @@ const CHARGE_FRAME_WIDTH: float = 60.0
 const CHARGE_SLOT_WIDTH: float = 68.0
 const TOAST_ROW_HEIGHT: float = 16.0
 const TOAST_HINT_COLOR: Color = Color(0.541176, 0.607843, 0.658824)
-const CELL_LOST_COLOR: Color = Color(1.0, 0.55, 0.45)
 const REACTOR_STATE_COLORS: Dictionary = {
 	HudModel.REACTOR_STATE_CRITICAL: Color(1.0, 0.360784, 0.360784),
 	HudModel.REACTOR_STATE_NO_TIMER: Color(0.372549, 0.831373, 0.784314),
@@ -197,7 +194,7 @@ func _pulse_lost_cells(previous: Array[int], current: Array[int]) -> void:
 func _pulse_cell(cell: TextureRect) -> void:
 	cell.pivot_offset = Vector2(ATLAS_FRAME) * 0.5
 	cell.scale = Vector2.ONE * Balance.HUD_CELL_LOST_SCALE
-	cell.modulate = CELL_LOST_COLOR
+	cell.modulate = _cell_lost_color()
 	var tween: Tween = cell.create_tween()
 	tween.tween_property(cell, "scale", Vector2.ONE, Balance.HUD_CELL_LOST_TIME)
 	tween.parallel().tween_property(
@@ -237,7 +234,7 @@ func _update_blink() -> void:
 			continue
 		_cells[index].modulate.a = alpha
 	if _critical:
-		_reactor.modulate = CRITICAL_DIM_COLOR.lerp(CRITICAL_COLOR, wave)
+		_reactor.modulate = _critical_dim_color().lerp(_critical_color(), wave)
 	else:
 		_reactor.modulate = NORMAL_COLOR
 
@@ -545,3 +542,15 @@ func _toast_label(text: String, color: Color) -> Label:
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	label.text = text
 	return label
+
+
+func _critical_color() -> Color:
+	return Settings.signal_color(Accessibility.ROLE_REACTOR_CRITICAL)
+
+
+func _critical_dim_color() -> Color:
+	return Settings.signal_color(Accessibility.ROLE_REACTOR_CRITICAL_DIM)
+
+
+func _cell_lost_color() -> Color:
+	return Settings.signal_color(Accessibility.ROLE_INTEGRITY_LOST)

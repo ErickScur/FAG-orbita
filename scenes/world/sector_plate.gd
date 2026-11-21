@@ -6,8 +6,6 @@ const BORDER: int = 2
 const LED_SIZE: Vector2 = Vector2(6.0, 2.0)
 const FRAME_COLOR: Color = Color("0b1016")
 const BACK_COLOR: Color = Color("18232e")
-const LED_RESTORED: Color = Color("6fe08a")
-const LED_PENDING: Color = Color("c0463c")
 
 var sector_id: StringName = &""
 
@@ -20,6 +18,7 @@ func _ready() -> void:
 	var glow := CanvasItemMaterial.new()
 	glow.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
 	material = glow
+	Settings.accessibility_changed.connect(queue_redraw)
 
 
 func setup(id: StringName, table: Dictionary) -> void:
@@ -53,4 +52,12 @@ func _draw() -> void:
 	if not _shows_status:
 		return
 	var led := Rect2(Vector2(-LED_SIZE.x * 0.5, side * 0.5 - LED_SIZE.y), LED_SIZE)
-	draw_rect(led, LED_RESTORED if is_restored() else LED_PENDING)
+	draw_rect(led, _led_restored() if is_restored() else _led_pending())
+
+
+func _led_restored() -> Color:
+	return Settings.signal_color(Accessibility.ROLE_SECTOR_RESTORED)
+
+
+func _led_pending() -> Color:
+	return Settings.signal_color(Accessibility.ROLE_SECTOR_PENDING)

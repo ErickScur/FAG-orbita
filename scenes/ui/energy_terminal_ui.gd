@@ -14,13 +14,10 @@ const TAG_WIDTH: float = 46.0
 const COST_WIDTH: float = 22.0
 const STATE_WIDTH: float = 74.0
 const ROW_MARGIN: float = 4.0
-const COLOR_ON: Color = Color(0.372549, 0.831373, 0.784314, 1.0)
 const COLOR_OFF: Color = Color(0.184314, 0.309804, 0.352941, 1.0)
 const COLOR_LOCKED: Color = Color(0.337255, 0.376471, 0.415686, 1.0)
 const COLOR_TEXT: Color = Color(0.843137, 0.890196, 0.909804, 1.0)
 const COLOR_MUTED: Color = Color(0.552941, 0.65098, 0.686275, 1.0)
-const COLOR_ALERT: Color = Color(0.85098, 0.32549, 0.309804, 1.0)
-const COLOR_GOAL: Color = Color(0.878431, 0.705882, 0.235294, 1.0)
 const STATE_ON: String = "LIGADO"
 const STATE_OFF: String = "DESLIGADO"
 const STATE_LOCKED: String = "SELADO"
@@ -254,7 +251,7 @@ func _refresh() -> void:
 	_budget.text = TEXT_BUDGET % [used, _grid.budget]
 	_refresh_goal()
 	for index: int in range(_cells.size()):
-		_cells[index].color = COLOR_ON if index < used else COLOR_OFF
+		_cells[index].color = _color_on() if index < used else COLOR_OFF
 	for index: int in range(_ids.size()):
 		_refresh_row(index)
 	_refresh_description()
@@ -274,7 +271,7 @@ func _refresh_row(index: int) -> void:
 		_lamps[index].color = COLOR_LOCKED
 		_states[index].text = STATE_LOCKED
 	elif on:
-		_lamps[index].color = COLOR_ON
+		_lamps[index].color = _color_on()
 		_states[index].text = STATE_ON
 	elif blocked:
 		_lamps[index].color = COLOR_LOCKED
@@ -288,7 +285,7 @@ func _refresh_row(index: int) -> void:
 	_states[index].add_theme_color_override(&"font_color", tint)
 	var goal: bool = _verbose and _grid.goal_systems().has(system_id)
 	_tags[index].add_theme_color_override(
-		&"font_color", COLOR_GOAL if goal and not locked else tint
+		&"font_color", _color_goal() if goal and not locked else tint
 	)
 
 
@@ -301,7 +298,7 @@ func _refresh_goal() -> void:
 		return
 	_goal.visible = true
 	_goal.text = (TEXT_GOAL_DONE if done else TEXT_GOAL) % text
-	_goal.add_theme_color_override(&"font_color", COLOR_ON if done else COLOR_GOAL)
+	_goal.add_theme_color_override(&"font_color", _color_on() if done else _color_goal())
 
 
 func _refresh_description() -> void:
@@ -355,16 +352,16 @@ func _report(system_id: StringName, outcome: Dictionary) -> void:
 	var switched_on: Array[StringName] = outcome["on"]
 	var switched_off: Array[StringName] = outcome["off"]
 	if code != EnergyGrid.Result.OK:
-		_show_message(_failure_text(system_id, code), COLOR_ALERT)
+		_show_message(_failure_text(system_id, code), _color_alert())
 		return
 	if not switched_on.is_empty():
-		_show_message(TEXT_ONLINE % _grid.system_name(system_id), COLOR_ON)
+		_show_message(TEXT_ONLINE % _grid.system_name(system_id), _color_on())
 		return
 	if switched_off.size() > 1:
 		var names := PackedStringArray()
 		for index: int in range(1, switched_off.size()):
 			names.append(_grid.system_name(switched_off[index]))
-		_show_message(TEXT_CASCADE % ", ".join(names), COLOR_ALERT)
+		_show_message(TEXT_CASCADE % ", ".join(names), _color_alert())
 		return
 	_show_message(TEXT_OFFLINE % _grid.system_name(system_id), COLOR_MUTED)
 
@@ -400,3 +397,15 @@ func _on_row_focused(index: int) -> void:
 	_message_left = 0.0
 	_refresh_description()
 	_refresh_hint()
+
+
+func _color_on() -> Color:
+	return Settings.signal_color(Accessibility.ROLE_TERMINAL_ON)
+
+
+func _color_alert() -> Color:
+	return Settings.signal_color(Accessibility.ROLE_TERMINAL_ALERT)
+
+
+func _color_goal() -> Color:
+	return Settings.signal_color(Accessibility.ROLE_TERMINAL_GOAL)

@@ -43,4 +43,6 @@ static func prompt(glyph: String, text: String) -> String:
 
 
 static func glyph(joypad: bool) -> String:
-	return JOYPAD_GLYPH if joypad else KEYBOARD_GLYPH
+	if joypad:
+		return JOYPAD_GLYPH
+	return KeyBindings.relabel(KEYBOARD_GLYPH, [&"interact"])
