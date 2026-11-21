@@ -16,7 +16,7 @@ Três pilares:
 
 ## Status
 
-🚧 **Demo (1ª entrega)** — Fase 0 Núcleo Central (tutorial) + Fase 1 Estufa.
+**Jogo completo (entrega final)**: Núcleo Central (tutorial e hub), Estufa, Laboratório, Enfermaria, Docas (mini boss O Serralheiro), Núcleo de Memória (boss Protocolo Luto) e Núcleo do Reator (batalha final contra ARGOS), dois finais com epílogo, os 40 nomes da tripulação e créditos. Músicas novas e build exportada ainda pendentes.
 
 ## Controles
 
@@ -28,10 +28,14 @@ Três pilares:
 | Interagir / ler registro | E | X |
 | Escalar parede magnética (depois das garras) | encostar e segurar W ou ↑ | Analógico para cima |
 | Lanterna | F | LB |
-| Terminal do chassi (reator, coleta, habilidades) | Tab | Select |
-| Pausa, opções e lista de controles | Esc | Start |
+| Pulo duplo / pilotar no vácuo (depois do Propulsor) | Espaço no ar | A no ar |
+| Dash magnético | Shift | B |
+| Feixe de Manutenção (desliga máquinas) | Q | Y |
+| Terminal do chassi (reator, coleta, habilidades); de novo = mapa da estação | Tab | Select |
+| Arquivo de Logs | L | pela pausa |
+| Pausa, opções, mapa, arquivo e lista de controles | Esc | Start |
 
-Dash magnético, Feixe de Manutenção e Arquivo de Logs estão no GDD para a entrega final e **não fazem parte da demo**.
+As teclas podem ser trocadas em **Opções → Controles**.
 
 ## Como rodar
 
