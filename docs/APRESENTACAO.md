@@ -12,13 +12,15 @@
 4. No terminal, dentro da pasta do projeto, deixe pronto **um** dos comandos:
    - `tools/demo.sh novidades` — só o que veio depois da Enfermaria (~14 min sem pausas).
    - `tools/demo.sh completo` — do menu aos créditos (~26 min sem pausas).
-5. Teclas durante a demo (o teclado normal do jogo fica desligado, nada atrapalha o roteiro):
+5. **Volume:** confira em Opções que o volume geral do jogo não está em 0 (a demo usa as
+   configurações do Mac).
+6. Teclas durante a demo (o teclado normal do jogo fica desligado, nada atrapalha o roteiro):
    - **P** congela tudo / retoma do mesmo ponto (aparece um selo PAUSADO no canto; a música continua).
    - **N** pula para o próximo capítulo · **R** reinicia o capítulo atual.
    - **Esc segurado 1 s** ou **Cmd+Q** fecha.
    - Opções do comando: `--tela=1` (projetor), `--final=transmissao`, `--capitulo=reator`,
      `--janela`, `--rapido` (falas sem tempo de leitura), `--sem-selo` (sem o selo PAUSADO).
-6. Ensaio: `tools/demo.sh novidades --verificar` roda mudo, sem roubar a tela, e diz no fim se
+7. Ensaio: `tools/demo.sh novidades --verificar` roda mudo, sem roubar a tela, e diz no fim se
    todos os capítulos passaram (~14 min). Rode uma vez antes de sair de casa, **sem outro Godot
    aberto** (janelas disputando o foco podem soltar uma tecla segurada do roteiro).
 
@@ -30,6 +32,9 @@ Se o professor decidir na hora: comece por `completo`. Se ele disser "só o que 
 - O MU-7 travou ou algo saiu do roteiro: **N** pula para o próximo capítulo, que começa limpo.
 - O jogo fechou: `tools/demo.sh <playlist> --capitulo=<nome>` volta direto ao capítulo.
 - Precisa explicar uma tela com calma: **P**. Nada anda enquanto estiver congelado.
+- Plano C, sem depender do jogo: o vídeo gravado da demo (`tools/grava_demo.sh completo
+  ~/Desktop/orbita-demo-completo.mp4` grava no segundo monitor e converte para MP4 1080p com som;
+  a parte das novidades começa em 11:55 do vídeo completo).
 
 ---
 

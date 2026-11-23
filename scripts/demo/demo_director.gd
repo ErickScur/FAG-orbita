@@ -11,6 +11,10 @@ const FLAG_NO_PACE: String = "--qa-demo-sem-ritmo"
 const FLAG_NO_BADGE: String = "--qa-demo-sem-selo"
 const FLAG_WINDOW: String = "--qa-demo-janela"
 const FLAG_PAUSES: String = "--qa-demo-pausas="
+const FLAG_RECORD: String = "--qa-demo-gravar"
+const RECORD_FPS: float = 60.0
+const RECORD_TAIL_TIME: float = 2.0
+const RECORD_MASTER_VOLUME: float = 0.8
 const DEMO_DEVICE: int = 7707
 const GATE_PRIORITY: int = 1000000
 const FRAME_MIN_USEC: int = 16000
@@ -41,6 +45,8 @@ var _phase: Phase = Phase.IDLE
 var _start_wanted: String = ""
 var _final_id: String = DemoPlaylist.DEFAULT_FINAL
 var _verify: bool = false
+var _record: bool = false
+var _start_frame: int = 0
 var _pace: bool = true
 var _badge_on: bool = true
 var _windowed: bool = false
@@ -98,6 +104,8 @@ func setup(qa: Node, arguments: PackedStringArray) -> void:
 			_badge_on = false
 		elif argument == FLAG_WINDOW:
 			_windowed = true
+		elif argument == FLAG_RECORD:
+			_record = true
 	_pauses = DemoPlaylist.parse_pauses(pauses_spec)
 	_load_playlist(playlist_path)
 
@@ -113,8 +121,11 @@ func _ready() -> void:
 		Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 	else:
 		AudioServer.set_bus_mute(AudioServer.get_bus_index(&"Master"), true)
+	if _record:
+		AudioManager.set_bus_volume(&"Master", RECORD_MASTER_VOLUME)
 	_last_tick = Time.get_ticks_usec()
 	_demo_started_at = Time.get_ticks_msec()
+	_start_frame = Engine.get_process_frames()
 	_announce("teclas: P pausa/retoma · N próximo capítulo · R reinicia · Esc segurado sai")
 	call_deferred(&"_present_window")
 
@@ -146,6 +157,8 @@ func _process(_delta: float) -> void:
 	_limit_frame_rate()
 	var now: int = Time.get_ticks_usec()
 	var real_delta: float = float(now - _last_tick) / 1000000.0
+	if _record:
+		real_delta = 1.0 / RECORD_FPS
 	_last_tick = now
 	_check_quit_hold()
 	if _phase == Phase.DONE:
@@ -319,6 +332,8 @@ func _finish_demo() -> void:
 	_announce("%s fim da demonstração" % DemoPlaylist.clock(_elapsed()))
 	if _verify:
 		_qa.call(&"finish")
+	elif _record:
+		get_tree().create_timer(RECORD_TAIL_TIME, true).timeout.connect(get_tree().quit.bind(0))
 
 
 func _reset_world() -> void:
@@ -650,6 +665,8 @@ func _update_curtain() -> void:
 
 
 func _elapsed() -> float:
+	if _record:
+		return float(Engine.get_process_frames() - _start_frame) / RECORD_FPS
 	return float(Time.get_ticks_msec() - _demo_started_at) / 1000.0
 
 

@@ -11,6 +11,7 @@ uso: tools/demo.sh novidades|completo [opções]
   --tela=N            monitor onde o jogo abre (0 = principal; projetor costuma ser 1)
   --rapido            sem ritmo de leitura (as falas passam no tempo do roteiro de QA)
   --sem-selo          não mostra o selo PAUSADO no canto
+  --gravar=ARQ.avi    grava a demo inteira (vídeo + som do jogo) e fecha no fim; ver tools/grava_demo.sh
 
   --verificar         rodada de conferência: janela sem foco, mudo, capturas, sai no fim
   --out=DIR           (com --verificar) pasta das capturas e do log
@@ -43,6 +44,7 @@ badge=1
 verify=0
 out=""
 pauses=""
+record=""
 limit=3600
 for argument in "$@"; do
   case "$argument" in
@@ -55,6 +57,7 @@ for argument in "$@"; do
     --verificar) verify=1 ;;
     --out=*) out="${argument#--out=}" ;;
     --pausas=*) pauses="${argument#--pausas=}" ;;
+    --gravar=*) record="${argument#--gravar=}" ;;
     --timeout=*) limit="${argument#--timeout=}" ;;
     *) echo "DEMO ABORT: opção desconhecida $argument"; usage; exit 64 ;;
   esac
@@ -103,6 +106,10 @@ if [ $verify -eq 0 ]; then
   engine_args=(--path "$PWD" --fixed-fps 60)
   [ -n "$screen" ] && engine_args+=(--screen "$screen")
   [ $windowed -eq 1 ] && engine_args+=(--windowed)
+  if [ -n "$record" ]; then
+    engine_args+=(--write-movie "$record")
+    user_args+=(--qa-demo-gravar)
+  fi
   echo "Abrindo o jogo. Log completo: $out/godot.log"
   perl -e 'alarm 14400; exec @ARGV' "$GODOT" "${engine_args[@]}" -- "${user_args[@]}" 2>&1 \
     | tee "$out/godot.log" | grep --line-buffered -E "\[DEMO\]|SCRIPT ERROR|ERRO"
