@@ -81,6 +81,31 @@ Saída no scratchpad da sessão, nunca no repo.
    conserte a temporização e rode de novo, não aceite.
 4. Registre no log da feature: roteiro, resultado do `qa.sh`, o que as capturas-chave mostram.
 
+## 3b. Modo demonstração (`tools/demo.sh`, F72)
+Gameplay guiada para apresentação: `tools/demo.sh novidades|completo [--capitulo=id|N]
+[--final=semeadura|transmissao] [--tela=N] [--janela] [--rapido]`. Liga `--qa --qa-demo` e o
+`QACapture` cria o `DemoDirector` (`scripts/demo/demo_director.gd`); sem `--qa-demo` nada muda.
+- **Playlist** em `tests/qa/demo/<nome>.json` (capítulos `id`, `titulo`, `roteiro`,
+  `espera_transicao`), gerada por `tests/qa/gen/demo.py` a partir do `review_campaign.py` (sem
+  mexer nos roteiros dele). Cada capítulo é um roteiro comum que começa com `setup()` + `scene`;
+  entre capítulos o diretor solta as ações, limpa fala/pausa/transição e cobre com uma cortina.
+  Capítulo que termina num portal acaba logo depois do `interact`: o diretor espera a transição
+  do `SceneManager` e só troca quando a tela já está preta.
+- **Congelar** (P e ritmo de leitura) = `Engine.time_scale = 0` no fim do quadro + árvore pausada
+  no começo do seguinte + linha do tempo parada; descongela no fim de um quadro. Assim nenhum nó
+  (nem os `PROCESS_MODE_ALWAYS`, nem os Tweens do fade) ganha ou perde um passo. Nunca congela no
+  quadro de um aperto injetado (o `just_pressed` seria engolido pela árvore pausada).
+- **Ritmo de leitura**: antes de um `ui_accept`/`interact`/`jump` que avançaria uma fala travante
+  já escrita, segura `1,5 s + 0,035 s/letra` (teto 5 s). `--rapido` desliga.
+- **Entrada real isolada**: os eventos do `InputMap` passam para um `device` só da demo; teclado,
+  mouse e controle reais são engolidos no `_input` do diretor. P/N/R/Esc são lidos por tecla física.
+- **Teleporte do roteiro** (`set_indexed global_position`) ganha um corte preto curto automático.
+- Eventos novos (valem em qualquer roteiro): `{"wait_call": "No.metodo", "equals": v,
+  "timeout": s}` e `{"wait_scene": "res://...", "timeout": s}` param a linha do tempo, com o jogo
+  rodando, até a condição valer (conta como marco; estourar o tempo reprova).
+- Conferência: `tools/demo.sh <playlist> --verificar [--rapido] [--pausas=docas@1200:3,...]`
+  (janela sem foco, mudo, capturas, resumo por capítulo, sai no fim).
+
 ## 4. Armadilhas conhecidas
 - **(F12)** Exercite **o controle que o GDD documenta**, não o que o código aceita: a descida de
   plataforma fina passou com ↓+pulo e quebrou na mão do jogador, que apertou só ↓.

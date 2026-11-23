@@ -1,0 +1,54 @@
+{
+  "nome": "novidades",
+  "capitulos": [
+    {
+      "id": "hub_docas",
+      "titulo": "Núcleo Central: mapa, arquivo e rumo às Docas",
+      "roteiro": "res://tests/qa/demo/hub_docas.json",
+      "espera_transicao": 12,
+      "inicio_s": 0
+    },
+    {
+      "id": "docas",
+      "titulo": "Docas: Propulsor e o Serralheiro",
+      "roteiro": "res://tests/qa/demo/docas.json",
+      "espera_transicao": 25,
+      "inicio_s": 27
+    },
+    {
+      "id": "hub_memoria",
+      "titulo": "Núcleo Central: rumo ao Núcleo de Memória",
+      "roteiro": "res://tests/qa/demo/hub_memoria.json",
+      "espera_transicao": 12,
+      "inicio_s": 220
+    },
+    {
+      "id": "memoria",
+      "titulo": "Núcleo de Memória: Protocolo Luto e Acesso Root",
+      "roteiro": "res://tests/qa/demo/memoria.json",
+      "espera_transicao": 0,
+      "inicio_s": 233
+    },
+    {
+      "id": "lab_root",
+      "titulo": "Laboratório: o Acesso Root abre a comporta",
+      "roteiro": "res://tests/qa/demo/lab_root.json",
+      "espera_transicao": 0,
+      "inicio_s": 382
+    },
+    {
+      "id": "reator",
+      "titulo": "Núcleo do Reator: ARGOS",
+      "roteiro": "res://tests/qa/demo/reator.json",
+      "espera_transicao": 20,
+      "inicio_s": 389
+    },
+    {
+      "id": "final",
+      "titulo": "Sala de comando, final e créditos",
+      "roteiro": "res://tests/qa/demo/final_{final}.json",
+      "espera_transicao": 0,
+      "inicio_s": 441
+    }
+  ]
+}

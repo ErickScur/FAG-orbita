@@ -7,6 +7,8 @@ const FLAG_OUT: String = "--qa-out="
 const FLAG_SCALE: String = "--qa-scale="
 const FLAG_NEW_GAME: String = "--qa-new-game"
 const FLAG_SCREEN: String = "--qa-screen="
+const FLAG_DEMO: String = "--qa-demo"
+const DEMO_SCRIPT: String = "res://scripts/demo/demo_director.gd"
 const DEFAULT_OUT: String = "user://qa/"
 const LOG_FILE: String = "qa_log.txt"
 const TAIL_FRAMES: int = 30
@@ -26,6 +28,11 @@ var _pending_scene: String = ""
 var _scene_opened: bool = false
 var _checks: int = 0
 var _check_failures: int = 0
+var _demo: Node = null
+var _held: Dictionary = {}
+var _last_input_frame: int = -1
+var _wait: Dictionary = {}
+var _wait_frames: int = 0
 
 
 func _ready() -> void:
@@ -52,6 +59,10 @@ func _ready() -> void:
 			screen_index = int(argument.substr(FLAG_SCREEN.length()))
 		elif argument == FLAG_NEW_GAME:
 			new_game = true
+	if arguments.has(FLAG_DEMO):
+		_demo = (load(DEMO_SCRIPT) as GDScript).new()
+		_demo.call(&"setup", self, arguments)
+		add_child(_demo)
 	_place_window(screen_index)
 	_prepare_out_dir()
 	_events = _load_script(script_path)
@@ -69,6 +80,8 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	if not is_active or _finishing:
 		return
+	if _demo != null and bool(_demo.call(&"holds_timeline")):
+		return
 	if not _scene_opened:
 		_scene_opened = true
 		if not _pending_scene.is_empty():
@@ -78,6 +91,8 @@ func _process(_delta: float) -> void:
 			else:
 				_log("ERRO cena inexistente %s" % _pending_scene)
 		return
+	if not _wait.is_empty() and not _wait_done():
+		return
 	_frame += 1
 	while _next_event < _events.size():
 		var event: Dictionary = _events[_next_event]
@@ -85,13 +100,124 @@ func _process(_delta: float) -> void:
 			break
 		_next_event += 1
 		_run_event(event)
-	if _finishing:
+		if not _wait.is_empty():
+			break
+	if _finishing or not _wait.is_empty():
 		return
 	if _next_event >= _events.size() and _frame >= _end_frame:
-		_finish()
-	elif _frame >= SAFETY_FRAMES:
-		_log("tempo esgotado em %d frames" % SAFETY_FRAMES)
-		_finish()
+		_end_script()
+	elif _frame >= _safety_frames():
+		_log("tempo esgotado em %d frames" % _safety_frames())
+		_end_script()
+
+
+func begin_script(events: Array[Dictionary], label: String) -> void:
+	_events = events
+	_next_event = 0
+	_frame = 0
+	_end_frame = _last_frame() + TAIL_FRAMES
+	_scene_opened = true
+	_wait = {}
+	_wait_frames = 0
+	_last_input_frame = -1
+	_log("roteiro %s (%d eventos)" % [label, _events.size()])
+
+
+func load_script_file(path: String) -> Array[Dictionary]:
+	return _load_script(path)
+
+
+func current_frame() -> int:
+	return _frame
+
+
+func upcoming(frame: int) -> Array[Dictionary]:
+	var found: Array[Dictionary] = []
+	for index: int in range(_next_event, _events.size()):
+		var event: Dictionary = _events[index]
+		var at: int = int(event.get("frame", 0))
+		if at > frame:
+			break
+		if at == frame:
+			found.append(event)
+	return found
+
+
+func last_input_frame() -> int:
+	return _last_input_frame
+
+
+func held_actions() -> Dictionary:
+	return _held
+
+
+func release_held() -> void:
+	for action: Variant in _held.keys():
+		if bool(_held[action]):
+			Input.action_release(StringName(action))
+			_log("frame %d solta %s" % [_frame, action])
+	_held.clear()
+
+
+func check_totals() -> Vector2i:
+	return Vector2i(_checks, _check_failures)
+
+
+func log_line(line: String) -> void:
+	_log(line)
+
+
+func finish() -> void:
+	_finish()
+
+
+func _end_script() -> void:
+	if _demo != null:
+		_demo.call(&"script_finished")
+		return
+	_finish()
+
+
+func _safety_frames() -> int:
+	if _demo != null:
+		return maxi(SAFETY_FRAMES, _end_frame + SAFETY_FRAMES)
+	return SAFETY_FRAMES
+
+
+func _wait_done() -> bool:
+	_wait_frames += 1
+	if _wait_condition():
+		_log("frame %d espera OK %s após %d quadros" % [
+			_frame, String(_wait.get("label", "sem_nome")), _wait_frames
+		])
+		_wait = {}
+		return true
+	var limit: float = float(_wait.get("timeout", 60.0)) * float(Engine.physics_ticks_per_second)
+	if float(_wait_frames) < limit:
+		return false
+	_check_failures += 1
+	_log("frame %d ERRO espera %s: tempo esgotado em %d quadros" % [
+		_frame, String(_wait.get("label", "sem_nome")), _wait_frames
+	])
+	_wait = {}
+	return true
+
+
+func _wait_condition() -> bool:
+	if _wait.has("wait_scene"):
+		var current: Node = get_tree().current_scene
+		var actual: String = current.scene_file_path if current != null else ""
+		return actual == String(_wait.get("wait_scene", ""))
+	var target: String = String(_wait.get("wait_call", ""))
+	var parts: PackedStringArray = target.rsplit(".", true, 1)
+	if parts.size() != 2 or parts[0].is_empty():
+		return false
+	var node: Node = get_tree().root.get_node_or_null(NodePath(parts[0]))
+	if node == null or not node.has_method(parts[1]):
+		return false
+	var raw_args: Variant = _wait.get("args", [])
+	var actual_value: Variant = node.callv(parts[1], raw_args if raw_args is Array else [])
+	return QAMarks.same_value(actual_value, _wait.get("equals", true))
 
 
 func _run_event(event: Dictionary) -> void:
@@ -116,11 +242,15 @@ func _run_event(event: Dictionary) -> void:
 		_check_scene(String(event.get("expect_scene", "")))
 	if event.has("expect_call"):
 		_check_call(event)
-	if event.has("screenshot"):
+	if event.has("wait_call") or event.has("wait_scene"):
+		_checks += 1
+		_wait = event
+		_wait_frames = 0
+	if event.has("screenshot") and (_demo == null or bool(_demo.call(&"captures"))):
 		_capture(String(event.get("screenshot", "")))
 	if bool(event.get("quit", false)):
 		_log("frame %d quit" % _frame)
-		_finish()
+		_end_script()
 
 
 func _run_call(target: String, arguments: Variant) -> void:
@@ -146,6 +276,8 @@ func _inject(action: StringName, pressed: bool) -> void:
 	event.pressed = pressed
 	event.strength = 1.0
 	Input.parse_input_event(event)
+	_held[String(action)] = pressed
+	_last_input_frame = _frame
 	_log("frame %d action %s %s" % [_frame, action, "pressed" if pressed else "released"])
 
 
@@ -158,7 +290,10 @@ func _inject_key(key_name: String, pressed: bool) -> void:
 	event.keycode = keycode
 	event.physical_keycode = keycode
 	event.pressed = pressed
+	if _demo != null:
+		event.device = int(_demo.call(&"demo_device"))
 	Input.parse_input_event(event)
+	_last_input_frame = _frame
 	_log("frame %d key %s %s" % [_frame, key_name, "pressed" if pressed else "released"])
 
 
@@ -333,7 +468,8 @@ func _write_log() -> void:
 func _place_window(screen_index: int) -> void:
 	if DisplayServer.get_name() == "headless":
 		return
-	DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_NO_FOCUS, true)
+	if _demo == null or not bool(_demo.call(&"wants_focus")):
+		DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_NO_FOCUS, true)
 	if screen_index < 0 or screen_index >= DisplayServer.get_screen_count():
 		var current: int = DisplayServer.window_get_current_screen()
 		var size: Vector2i = DisplayServer.screen_get_size(current)

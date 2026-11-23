@@ -179,6 +179,12 @@ origem).
   não o projeto: cada nova tentativa empilha mais um processo preso. Teste antes com
   `perl -e 'alarm 20; exec @ARGV' "$GODOT" --headless --version`, mate o que travar e avise o
   humano; não mexa em quarentena nem em segurança do sistema (F62).
+- `--fixed-fps` desliga o `Engine.max_fps`/`--max-fps`: o tempo real fica limitado só pelo vsync
+  (2× numa tela de 120 Hz, ~20× com a janela em segundo plano). Quem precisa de tempo real com
+  `--fixed-fps` limita os quadros por conta própria (`OS.delay_usec`, F72).
+- A carga em thread da tela de loading (`load_threaded_request`) corre em tempo real, não em
+  quadros: roteiro longo encadeado pré-carrega as cenas ou espera com `wait_scene`, nunca com
+  folga fixa de quadros (25 marcos do reator caíram em cascata, F72).
 - UID inventado à mão em `.tscn` não pode ter `z`: o alfabeto de UID do Godot é `a`–`y` + `0`–`9`
   (F60).
 

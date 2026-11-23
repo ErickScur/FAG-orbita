@@ -1,0 +1,96 @@
+{
+  "nome": "completo",
+  "capitulos": [
+    {
+      "id": "tutorial",
+      "titulo": "Menu, briefing e tutorial",
+      "roteiro": "res://tests/qa/demo/tutorial.json",
+      "espera_transicao": 12,
+      "inicio_s": 0
+    },
+    {
+      "id": "estufa",
+      "titulo": "Estufa",
+      "roteiro": "res://tests/qa/demo/estufa.json",
+      "espera_transicao": 25,
+      "inicio_s": 202
+    },
+    {
+      "id": "hub_lab",
+      "titulo": "Núcleo Central: rumo ao Laboratório",
+      "roteiro": "res://tests/qa/demo/hub_lab.json",
+      "espera_transicao": 12,
+      "inicio_s": 368
+    },
+    {
+      "id": "laboratorio",
+      "titulo": "Laboratório",
+      "roteiro": "res://tests/qa/demo/laboratorio.json",
+      "espera_transicao": 25,
+      "inicio_s": 383
+    },
+    {
+      "id": "hub_enfermaria",
+      "titulo": "Núcleo Central: rumo à Enfermaria",
+      "roteiro": "res://tests/qa/demo/hub_enfermaria.json",
+      "espera_transicao": 12,
+      "inicio_s": 641
+    },
+    {
+      "id": "enfermaria",
+      "titulo": "Enfermaria",
+      "roteiro": "res://tests/qa/demo/enfermaria.json",
+      "espera_transicao": 25,
+      "inicio_s": 655
+    },
+    {
+      "id": "hub_docas",
+      "titulo": "Núcleo Central: mapa, arquivo e rumo às Docas",
+      "roteiro": "res://tests/qa/demo/hub_docas.json",
+      "espera_transicao": 12,
+      "inicio_s": 829
+    },
+    {
+      "id": "docas",
+      "titulo": "Docas: Propulsor e o Serralheiro",
+      "roteiro": "res://tests/qa/demo/docas.json",
+      "espera_transicao": 25,
+      "inicio_s": 856
+    },
+    {
+      "id": "hub_memoria",
+      "titulo": "Núcleo Central: rumo ao Núcleo de Memória",
+      "roteiro": "res://tests/qa/demo/hub_memoria.json",
+      "espera_transicao": 12,
+      "inicio_s": 1049
+    },
+    {
+      "id": "memoria",
+      "titulo": "Núcleo de Memória: Protocolo Luto e Acesso Root",
+      "roteiro": "res://tests/qa/demo/memoria.json",
+      "espera_transicao": 0,
+      "inicio_s": 1062
+    },
+    {
+      "id": "lab_root",
+      "titulo": "Laboratório: o Acesso Root abre a comporta",
+      "roteiro": "res://tests/qa/demo/lab_root.json",
+      "espera_transicao": 0,
+      "inicio_s": 1211
+    },
+    {
+      "id": "reator",
+      "titulo": "Núcleo do Reator: ARGOS",
+      "roteiro": "res://tests/qa/demo/reator.json",
+      "espera_transicao": 20,
+      "inicio_s": 1218
+    },
+    {
+      "id": "final",
+      "titulo": "Sala de comando, final e créditos",
+      "roteiro": "res://tests/qa/demo/final_{final}.json",
+      "espera_transicao": 0,
+      "inicio_s": 1270
+    }
+  ]
+}

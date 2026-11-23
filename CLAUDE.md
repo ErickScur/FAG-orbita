@@ -186,6 +186,7 @@ export GODOT="/Users/BRScurPaEr/Downloads/Godot.app/Contents/MacOS/Godot"   # j�
 "$GODOT" -e --path .                                # abre o editor
 tools/gates.sh                                      # portões completos (--skip-smoke para iterar)
 tools/qa.sh tests/qa/<roteiro>.json --scene=res://... --out=<scratchpad>/qa/x   # QA (skill godot-qa)
+tools/demo.sh novidades|completo [--capitulo=X] [--final=transmissao] [--tela=1]   # demo guiada (P pausa, N/R capítulo)
 "$GODOT" --version                                  # comando do Godot voltou vazio? confira se o binário existe
 ```
 

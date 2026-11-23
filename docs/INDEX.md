@@ -173,7 +173,7 @@ Top-down por bloco. Dentro de um bloco, top-down, respeitando `depends_on`. **N�
 | [F69](features/F69-upgrades-root.md) | Upgrades permanentes (Capacitor, Blindagem) & Acesso Root | FINAL | Nível/progressão · Recompensas | [GDD-2.6.3](design/GDD.md#gdd-2-6-3) | `[x]` |
 | F70 | Música adaptativa por camadas | FINAL | Música | [GDD-2.9](design/GDD.md#gdd-2-9-musica) | `[ ]` |
 | F71 | [Remapeamento de teclas & acessibilidade](features/F71-opcoes-acessibilidade.md) | FINAL | — | [GDD-2.8](design/GDD.md#gdd-2-8-telas) | `[x]` |
-| F72 | Apresentação final (5–10 min) | FINAL | Apresentação | [ENTREGAS](ENTREGAS.md#apresentacao) | `[ ]` |
+| F72 | Apresentação final (5–10 min) | FINAL | Apresentação | [APRESENTACAO](APRESENTACAO.md) · `tools/demo.sh` | `[~]` |
 
 ## Fora de escopo
 
