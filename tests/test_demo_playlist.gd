@@ -85,7 +85,7 @@ func test_teleports_are_found_and_cut_smoothly() -> void:
 
 func test_reading_hold_grows_with_text_and_caps() -> void:
 	assert_almost_eq(DemoPlaylist.reading_hold(0), DemoPlaylist.HOLD_BASE, 0.001, "mínimo")
-	assert_almost_eq(DemoPlaylist.reading_hold(40), 2.9, 0.001, "1,5 + 0,035 por letra")
+	assert_almost_eq(DemoPlaylist.reading_hold(40), 1.1, 0.001, "0,5 + 0,015 por letra")
 	assert_almost_eq(DemoPlaylist.reading_hold(1000), DemoPlaylist.HOLD_MAX, 0.001, "teto")
 	assert_true(DemoPlaylist.reading_hold(80) > DemoPlaylist.reading_hold(20), "cresce")
 

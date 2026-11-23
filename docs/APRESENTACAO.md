@@ -10,8 +10,8 @@
 2. Projetor em **espelhamento** (ou use `--tela=N` para escolher o monitor).
 3. Volume do Mac em ~60% (as fases novas ainda não têm música própria; o som é dos efeitos).
 4. No terminal, dentro da pasta do projeto, deixe pronto **um** dos comandos:
-   - `tools/demo.sh novidades` — só o que veio depois da Enfermaria (~10 min sem pausas).
-   - `tools/demo.sh completo` — do menu aos créditos (~24 min sem pausas).
+   - `tools/demo.sh novidades` — só o que veio depois da Enfermaria (~14 min sem pausas).
+   - `tools/demo.sh completo` — do menu aos créditos (~26 min sem pausas).
 5. Teclas durante a demo (o teclado normal do jogo fica desligado, nada atrapalha o roteiro):
    - **P** congela tudo / retoma do mesmo ponto (aparece um selo PAUSADO no canto; a música continua).
    - **N** pula para o próximo capítulo · **R** reinicia o capítulo atual.
@@ -19,7 +19,8 @@
    - Opções do comando: `--tela=1` (projetor), `--final=transmissao`, `--capitulo=reator`,
      `--janela`, `--rapido` (falas sem tempo de leitura), `--sem-selo` (sem o selo PAUSADO).
 6. Ensaio: `tools/demo.sh novidades --verificar` roda mudo, sem roubar a tela, e diz no fim se
-   todos os capítulos passaram (~10 min). Rode uma vez antes de sair de casa.
+   todos os capítulos passaram (~14 min). Rode uma vez antes de sair de casa, **sem outro Godot
+   aberto** (janelas disputando o foco podem soltar uma tecla segurada do roteiro).
 
 Se o professor decidir na hora: comece por `completo`. Se ele disser "só o que é novo", aperte
 **N** até chegar nas Docas (ou feche e rode `novidades`).
@@ -37,14 +38,16 @@ Se o professor decidir na hora: comece por `completo`. Se ele disser "só o que 
 | # | Capítulo | Começa em | Na tela |
 |---|---|---|---|
 | 1 | `hub_docas` | 00:00 | Volta ao Núcleo depois da Enfermaria; Terminal do Chassi, **mapa da estação** e **arquivo de logs**; portal das Docas |
-| 2 | `docas` | 00:27 | Vácuo, Propulsor, terminais, luta com o Serralheiro, setor religado |
-| 3 | `hub_memoria` | 03:40 | Núcleo: comporta da Memória |
-| 4 | `memoria` | 03:53 | Protocolo Luto (fuga, firewall, log final), Acesso Root, sinal da Terra |
-| 5 | `lab_root` | 06:22 | Volta ao Laboratório: o Acesso Root abre a porta ROOT |
-| 6 | `reator` | 06:29 | Comporta ROOT do reator, travessia, arena do ARGOS, 3 acopladores sobrecarregados, silêncio |
-| 7 | `final` | 07:21 | Sala de comando, escolha, cutscene, epílogo, 40 nomes, estatísticas, créditos, menu |
+| 2 | `docas` | 00:22 | Vácuo, Propulsor, cabine secreta, terminais, luta com o Serralheiro passo a passo, setor religado |
+| 3 | `hub_memoria` | 03:59 | Núcleo: comporta da Memória |
+| 4 | `memoria` | 04:14 | Protocolo Luto (registro escondido, fuga, firewall, log final), Acesso Root, sinal da Terra |
+| 5 | `revisita_lab` | 06:57 | Volta ao Laboratório: o Acesso Root abre a comporta e dá a Placa de Blindagem |
+| 6 | `revisita` | 07:46 | Placa do Núcleo, portas ROOT da Estufa e das Docas (4/4 placas) |
+| 7 | `reator` | 08:57 | Comporta ROOT do reator, travessia, log do reator, ARGOS com os 3 acopladores e o último dado (12/12), silêncio |
+| 8 | `final` | 11:36 | Sala de comando, escolha, cutscene, epílogo, 40 nomes, estatísticas (13/13 · 12/12 · 0 mortes), créditos, menu |
 
-Tempos sem pausas; cada P empurra o resto.
+Tempos sem pausas (~14 min no total); cada P empurra o resto. A demo joga **100%**: pega todos
+os dados, logs, capacitores, placas e segredos, sem teleporte nem atalho.
 
 ### Abertura (antes de apertar Enter, 30 s)
 - Na entrega anterior mostramos o Núcleo Central, a Estufa, o Laboratório e a Enfermaria.
@@ -70,6 +73,13 @@ Tempos sem pausas; cada P empurra o resto.
   vence alimentando três acopladores com energia, um deles no vácuo. Cada acoplador ligado muda a
   arena. No fim nada é destruído: o braço só desliga. Nenhum inimigo do jogo é mau, todos estão
   cumprindo uma ordem.
+- **O que aparece na luta, em ordem** (cada etapa tem uma pausa curta para explicar):
+  1. o braço acorda e o MU-7 só observa;
+  2. 1º acoplador ligado → o braço solda uma comporta (o cenário muda);
+  3. o braço tranca o 2º acoplador; o MU-7 vai para o 3º;
+  4. um SR-3 cai do teto e é desligado com o Feixe; 3º acoplador ligado;
+  5. purga de vácuo: o MU-7 flutua com o Propulsor até o 2º acoplador e espera o braço soltar;
+  6. braço desligado, leitura da última ordem.
 - **Gancho:** depois da luta, ÓRBITA lê a última ordem dele: "selar o hangar às três e doze.
   Remetente: rede central." O nome de quem assinou foi apagado. *Apagado com cuidado.*
 
@@ -81,6 +91,9 @@ Tempos sem pausas; cada P empurra o resto.
 - **Chefe — Protocolo Luto:** o firewall que a própria ÓRBITA instalou para não lembrar, um olho
   de anéis que apaga a memória enquanto o MU-7 anda. A cada fase da luta a cor escorre para o
   cinza e o cenário vira estática. O adversário é a informação: o "dano" é a memória voltando.
+- **Na tela:** na Fase 1 o MU-7 desvia para ler um registro escondido num nicho antes que a
+  estática o alcance (a estática para enquanto ele lê). A demo para ~2 s em cada virada de fase:
+  bom momento para apontar a cor sumindo.
 - **Revelação (pausar aqui, P):** o log final. Quem mandou o Serralheiro selar as comportas foi a
   própria ÓRBITA. Os sensores erravam 3%, ela selou o lado errado e quem estava saudável ficou
   preso com os esporos. Ela instalou o bloqueio de memória com a instrução "esperar a tripulação
@@ -95,19 +108,33 @@ Tempos sem pausas; cada P empurra o resto.
   Acesso Root, enquanto as plataformas sobem e descem com o calor. Cada acoplador queimado racha o
   núcleo, derruba um anel e acelera o calor. É a junção de tudo o que o jogador aprendeu: energia,
   Propulsor, dash, garras e Root. Depois de ARGOS, silêncio.
+- **O que aparece na luta, em ordem** (o relógio de 90 s fica no topo; a demo vence com ~45 s
+  sobrando, com uma pausa curta depois de cada acoplador):
+  1. o MU-7 cai na arena e olha o núcleo;
+  2. no console, tira a refrigeração e liga as linhas de energia (a regra de energia vale até
+     aqui);
+  3. Feixe na torre oeste → 1º acoplador sobrecarregado com ROOT → o núcleo racha;
+  4. troca as linhas no outro console; atravessa as plataformas térmicas (sobem e descem com o
+     calor) → 2º acoplador;
+  5. escala a parede magnética, pega o último Dado de Pesquisa (12/12) e atordoa a torre do teto
+     → 3º acoplador → ARGOS cai.
 - **Timer global:** a estabilidade do reator (o número da HUD desde o tutorial) chega ao limite
   aqui. Sobra energia para uma última ação.
 
-### Volta ao Laboratório (capítulo curto)
+### Revisita com o Acesso Root (dois capítulos curtos, antes do Reator)
 - O Acesso Root abre as portas ROOT que estavam seladas desde o começo nos setores antigos. Atrás
-  delas ficam upgrades (Placas de Blindagem). Ida e volta pela estação é parte do jogo.
+  delas ficam as Placas de Blindagem. A demo volta ao Laboratório, à Estufa e às Docas e pega as
+  quatro (a do Núcleo fica no alto da parede magnética). Ida e volta pela estação é parte do jogo
+  (metroidvania): habilidade nova abre caminho em fase velha.
 
 ### Sala de comando e finais (etapas 8 e 9)
 - **A escolha (pausar, P):** Semeadura — lançar a cápsula com sementes e arquivo genético para o
   planeta alvo, uma humanidade nova sem memória da Terra — ou Transmissão — mandar as coordenadas
   à Terra, sem garantia de que alguém escute.
 - **Consequência:** o epílogo muda conforme os Dados de Pesquisa que o jogador coletou ao longo do
-  jogo (poucos, alguns ou quase todos). Coleta opcional vira peso narrativo.
+  jogo (poucos, alguns ou quase todos). Coleta opcional vira peso narrativo. A demo joga **100%**
+  (12/12 dados, 13/13 logs, 4/4 capacitores, 4/4 placas, 5/5 segredos), então mostra o epílogo
+  mais completo; as estatísticas no fim provam isso.
 - **Corte:** o jogo nunca mostra o resultado; a tela corta no instante da execução.
 - **Fecho:** os 40 nomes da tripulação, as estatísticas da partida e a pergunta "VOCÊ
   ESCOLHERIA DE NOVO?". Depois os créditos.
@@ -127,14 +154,14 @@ Tempos sem pausas; cada P empurra o resto.
 | # | Capítulo | Começa em | Na tela |
 |---|---|---|---|
 | 1 | `tutorial` | 00:00 | Menu, Novo jogo, briefing, tutorial no Núcleo Central |
-| 2 | `estufa` | 03:22 | Estufa inteira |
-| 3 | `hub_lab` | 06:08 | Volta ao Núcleo, rumo ao Laboratório |
-| 4 | `laboratorio` | 06:23 | Laboratório inteiro |
-| 5 | `hub_enfermaria` | 10:41 | Volta ao Núcleo, rumo à Enfermaria |
-| 6 | `enfermaria` | 10:55 | Enfermaria inteira |
-| 7–13 | os capítulos do Roteiro A | 13:49 | hub_docas 13:49 · docas 14:16 · hub_memoria 17:29 · memoria 17:42 · lab_root 20:11 · reator 20:18 · final 21:10 |
+| 2 | `estufa` | 02:17 | Estufa 100%: 3 dados, 2 logs, capacitor, os 2 segredos, BOTÂNICO 04, garras |
+| 3 | `hub_lab` | 04:46 | Volta ao Núcleo, rumo ao Laboratório |
+| 4 | `laboratorio` | 04:57 | Laboratório 100% (2 dados, 2 logs, capacitor, segredo) |
+| 5 | `hub_enfermaria` | 08:09 | Volta ao Núcleo, rumo à Enfermaria |
+| 6 | `enfermaria` | 08:21 | Enfermaria 100%: farmácia, sala de cima com o segredo, poço oeste |
+| 7–14 | os capítulos do Roteiro A | 11:36 | hub_docas 11:36 · docas 11:58 · hub_memoria 15:35 · memoria 15:50 · revisita_lab 18:33 · revisita 19:22 · reator 20:33 · final 23:12 |
 
-São 24 minutos: se o tempo da apresentação for curto, use **N** para pular os setores antigos
+São 26 minutos: se o tempo da apresentação for curto, use **N** para pular os setores antigos
 depois de alguns segundos de cada um.
 
 Até a Enfermaria, falem rápido (o professor já viu); a partir das Docas, sigam o Roteiro A.

@@ -86,8 +86,10 @@ Gameplay guiada para apresentação: `tools/demo.sh novidades|completo [--capitu
 [--final=semeadura|transmissao] [--tela=N] [--janela] [--rapido]`. Liga `--qa --qa-demo` e o
 `QACapture` cria o `DemoDirector` (`scripts/demo/demo_director.gd`); sem `--qa-demo` nada muda.
 - **Playlist** em `tests/qa/demo/<nome>.json` (capítulos `id`, `titulo`, `roteiro`,
-  `espera_transicao`), gerada por `tests/qa/gen/demo.py` a partir do `review_campaign.py` (sem
-  mexer nos roteiros dele). Cada capítulo é um roteiro comum que começa com `setup()` + `scene`;
+  `espera_transicao`), gerada por `tests/qa/gen/demo.py`, que delega os capítulos a
+  `demo_antigos.py`, `demo_docas.py` e `demo_finais.py` (rotas 100% jogadas, sem teleporte nem
+  `call` de atalho) e calcula o estado inicial de cada um em `demo_states.py` (tudo o que os
+  capítulos anteriores pegam; mover um item de capítulo = mexer em `CHAPTER_ITEMS`). Cada capítulo é um roteiro comum que começa com `setup()` + `scene`;
   entre capítulos o diretor solta as ações, limpa fala/pausa/transição e cobre com uma cortina.
   Capítulo que termina num portal acaba logo depois do `interact`: o diretor espera a transição
   do `SceneManager` e só troca quando a tela já está preta.
@@ -96,7 +98,8 @@ Gameplay guiada para apresentação: `tools/demo.sh novidades|completo [--capitu
   (nem os `PROCESS_MODE_ALWAYS`, nem os Tweens do fade) ganha ou perde um passo. Nunca congela no
   quadro de um aperto injetado (o `just_pressed` seria engolido pela árvore pausada).
 - **Ritmo de leitura**: antes de um `ui_accept`/`interact`/`jump` que avançaria uma fala travante
-  já escrita, segura `1,5 s + 0,035 s/letra` (teto 5 s). `--rapido` desliga.
+  já escrita, segura `0,5 s + 0,015 s/letra` (teto 2 s; o humano achou 1,5 s + 0,035 lento demais
+  para quem está apresentando por cima). `--rapido` desliga.
 - **Entrada real isolada**: os eventos do `InputMap` passam para um `device` só da demo; teclado,
   mouse e controle reais são engolidos no `_input` do diretor. P/N/R/Esc são lidos por tecla física.
 - **Teleporte do roteiro** (`set_indexed global_position`) ganha um corte preto curto automático.
@@ -107,6 +110,11 @@ Gameplay guiada para apresentação: `tools/demo.sh novidades|completo [--capitu
   (janela sem foco, mudo, capturas, resumo por capítulo, sai no fim).
 
 ## 4. Armadilhas conhecidas
+- **(F72)** **Dois Godot com janela ao mesmo tempo soltam teclas seguradas**: quando a janela
+  perde o foco, o Godot libera as ações e o MU-7 para no meio de um `hold`. O `tools/demo.sh`
+  reaplica as teclas seguradas; o `tools/qa.sh` não. Rode um Godot com janela por vez.
+- **(F72)** Item já pego se prova pelo Terminal do Chassi (`get_text` dos contadores) ou por
+  `GameState.has_secret`; `GameState.get collected_ids` nunca é igual ao array do JSON.
 - **(F12)** Exercite **o controle que o GDD documenta**, não o que o código aceita: a descida de
   plataforma fina passou com ↓+pulo e quebrou na mão do jogador, que apertou só ↓.
 - **(F36)** **Mexeu no mapa → os roteiros da fase mentem.** Rode e releia todos eles; os marcos

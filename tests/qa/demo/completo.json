@@ -13,84 +13,91 @@
       "titulo": "Estufa",
       "roteiro": "res://tests/qa/demo/estufa.json",
       "espera_transicao": 25,
-      "inicio_s": 202
+      "inicio_s": 137
     },
     {
       "id": "hub_lab",
       "titulo": "Núcleo Central: rumo ao Laboratório",
       "roteiro": "res://tests/qa/demo/hub_lab.json",
       "espera_transicao": 12,
-      "inicio_s": 368
+      "inicio_s": 286
     },
     {
       "id": "laboratorio",
       "titulo": "Laboratório",
       "roteiro": "res://tests/qa/demo/laboratorio.json",
       "espera_transicao": 25,
-      "inicio_s": 383
+      "inicio_s": 297
     },
     {
       "id": "hub_enfermaria",
       "titulo": "Núcleo Central: rumo à Enfermaria",
       "roteiro": "res://tests/qa/demo/hub_enfermaria.json",
       "espera_transicao": 12,
-      "inicio_s": 641
+      "inicio_s": 489
     },
     {
       "id": "enfermaria",
       "titulo": "Enfermaria",
       "roteiro": "res://tests/qa/demo/enfermaria.json",
       "espera_transicao": 25,
-      "inicio_s": 655
+      "inicio_s": 501
     },
     {
       "id": "hub_docas",
       "titulo": "Núcleo Central: mapa, arquivo e rumo às Docas",
       "roteiro": "res://tests/qa/demo/hub_docas.json",
       "espera_transicao": 12,
-      "inicio_s": 829
+      "inicio_s": 696
     },
     {
       "id": "docas",
       "titulo": "Docas: Propulsor e o Serralheiro",
       "roteiro": "res://tests/qa/demo/docas.json",
       "espera_transicao": 25,
-      "inicio_s": 856
+      "inicio_s": 718
     },
     {
       "id": "hub_memoria",
       "titulo": "Núcleo Central: rumo ao Núcleo de Memória",
       "roteiro": "res://tests/qa/demo/hub_memoria.json",
       "espera_transicao": 12,
-      "inicio_s": 1049
+      "inicio_s": 935
     },
     {
       "id": "memoria",
       "titulo": "Núcleo de Memória: Protocolo Luto e Acesso Root",
       "roteiro": "res://tests/qa/demo/memoria.json",
       "espera_transicao": 0,
-      "inicio_s": 1062
+      "inicio_s": 950
     },
     {
-      "id": "lab_root",
+      "id": "revisita_lab",
       "titulo": "Laboratório: o Acesso Root abre a comporta",
-      "roteiro": "res://tests/qa/demo/lab_root.json",
+      "roteiro": "res://tests/qa/demo/revisita_lab.json",
       "espera_transicao": 0,
-      "inicio_s": 1211
+      "inicio_s": 1113
+    },
+    {
+      "id": "revisita",
+      "titulo": "Portas ROOT: as placas da Estufa, das Docas e do Núcleo",
+      "roteiro": "res://tests/qa/demo/revisita.json",
+      "espera_transicao": 0,
+      "inicio_s": 1162
     },
     {
       "id": "reator",
       "titulo": "Núcleo do Reator: ARGOS",
       "roteiro": "res://tests/qa/demo/reator.json",
       "espera_transicao": 20,
-      "inicio_s": 1218
+      "inicio_s": 1233
     },
     {
       "id": "final",
       "titulo": "Sala de comando, final e créditos",
       "roteiro": "res://tests/qa/demo/final_{final}.json",
       "espera_transicao": 0,
-      "inicio_s": 1270
+      "inicio_s": 1392
     }
   ]
 }
