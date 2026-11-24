@@ -90,7 +90,7 @@ scripts/core/
 scenes/
   boot/                   splash.tscn, loading.tscn
   ui/                     main_menu, options_menu, pause_menu, hud, dialogue_box, chassis_lost, game_over, energy_terminal_ui, station_map, log_archive,
-                          ending_cutscene, ending_epilogue, credits (F66: corte, epílogo, 40 nomes, estatísticas, créditos)
+						  ending_cutscene, ending_epilogue, credits (F66: corte, epílogo, 40 nomes, estatísticas, créditos)
   player/                 mu7.tscn + mu7.gd
   enemies/                sr3.tscn, spore_swarm.tscn, cx2_armored.tscn (torre blindada de ARGOS, F65)
   bosses/                 serralheiro.tscn (mini-boss das Docas, `K` no ASCII, F63), protocol_luto.tscn (diretor do Protocolo Luto, F64) + luto_eye, static_field, memory_tint, memory_overlay, earth_signal, argos_encounter.gd (nó da fase do Reator: núcleo, timer, fases, falha, vitória — F65)
